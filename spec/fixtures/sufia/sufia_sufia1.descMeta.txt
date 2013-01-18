@@ -1,0 +1,12 @@
+<info:fedora/sufia:sufia1> <http://purl.org/dc/terms/publisher> "archivist1" .
+<info:fedora/sufia:sufia1> <http://purl.org/dc/terms/description> "sufia test Description" .
+<info:fedora/sufia:sufia1> <http://purl.org/dc/terms/created> "01/18/2013" .
+<info:fedora/sufia:sufia1> <http://purl.org/dc/terms/contributor> "archivist1" .
+<info:fedora/sufia:sufia1> <http://purl.org/dc/terms/title> "sufia test" .
+<info:fedora/sufia:sufia1> <http://purl.org/dc/terms/relation> "test" .
+<info:fedora/sufia:sufia1> <http://purl.org/dc/terms/subject> "sufia test Test" .
+<info:fedora/sufia:sufia1> <http://purl.org/dc/terms/language> "En" .
+<info:fedora/sufia:sufia1> <http://xmlns.com/foaf/0.1/based_near> "State College" .
+<info:fedora/sufia:sufia1> <http://purl.org/dc/terms/rights> "archivist1" .
+<info:fedora/sufia:sufia1> <http://purl.org/dc/terms/creator> "archivist1" .
+<info:fedora/sufia:sufia1> <http://purl.org/dc/terms/identifier> "Test" .
