@@ -119,7 +119,7 @@ module Sufia
         retval = render :json => [{:error => "Error occurred while creating generic file."}].to_json
       ensure
         # remove the tempfile (only if it is a temp file)
-        file.tempfile.delete if file.respond_to?(:tempfile)
+        file.tempfile.delete if file && file.respond_to?(:tempfile)
       end
 
       return retval
