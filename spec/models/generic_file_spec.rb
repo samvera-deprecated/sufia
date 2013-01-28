@@ -34,6 +34,13 @@ describe GenericFile do
     end
   end
 
+  describe "get_values" do
+    it "should return values" do
+       @file.contributor = "contrib"
+       @file.get_values[:contributor].should == ["contrib"]
+     end
+  end
+
   describe "attributes" do
     it "should have rightsMetadata" do
       @file.rightsMetadata.should be_instance_of ParanoidRightsDatastream

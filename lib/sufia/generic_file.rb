@@ -169,12 +169,12 @@ module Sufia
     end
 
     def get_values
-      terms = get_terms
+      terms = terms_for_editing
       values = {}
       terms.each do |t|
           next if t.empty?
           next if ['part_of', 'date_modified', 'date_uploaded'].include?(t)
-          values[t] = self.send(key) if self.respond_to?(key)
+          values[t] = self.send(t) if self.respond_to?(t)
       end        
       values          
     end
