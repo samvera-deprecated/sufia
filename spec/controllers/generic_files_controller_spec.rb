@@ -87,8 +87,8 @@ describe GenericFilesController do
       saved_file.content.dsChecksumValid.should be_true
 
       # Confirming that date_uploaded and date_modified were set
-      saved_file.date_uploaded.should_not be_nil
-      saved_file.date_modified.should_not be_nil
+      saved_file.date_uploaded.should == Date.today
+      saved_file.date_modified.should == Date.today
     end
 
     it "should record what user created the first version of content" do
