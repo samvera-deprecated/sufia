@@ -5,7 +5,7 @@ Feature: Browse files
     When I go to the home page
     And I follow "more Keyword"
     And I follow "test"
-    Then I should see "1 - 4 of 4"
+    Then I should see "1 - 5 of 5"
     When I follow "Test Document PDF"
     Then I should see "Download"
     But I should not see "Edit"

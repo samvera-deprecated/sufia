@@ -71,6 +71,7 @@ rake sufia:fixtures:create sufia:fixtures:generate
 rake fixtures
 
 # run the tests
+# n.b. redis needs to be running on localhost for all the tests to pass.
 rake clean spec
 bundle exec cucumber features
 ```
