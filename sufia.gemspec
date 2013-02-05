@@ -43,4 +43,5 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'rainbow', '1.1.4'
   gem.add_dependency 'activerecord-import'
   gem.add_dependency 'font-awesome-sass-rails', '~>2.0'
+  gem.add_development_dependency 'simplecov'
 end
