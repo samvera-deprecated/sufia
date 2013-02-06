@@ -6,7 +6,7 @@ gem 'sqlite3'
 
 gem 'devise' #BL adds this later, so check to see if we can remove this
 gem 'blacklight'
-gem "hydra-head"
+gem 'hydra-head', github: 'projecthydra/hydra-head'
 
 gem 'sufia', :path=>'../../'
 gem 'rspec-rails', :group=>:test
