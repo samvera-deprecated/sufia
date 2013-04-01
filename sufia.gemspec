@@ -21,7 +21,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "hydra-head", ">= 5.4"
   gem.add_dependency "active-fedora", ">= 5.5"
 
-  gem.add_dependency 'noid', '0.5.5'
+  gem.add_dependency 'noid', '~> 0.6.6'
   gem.add_dependency 'hydra-batch-edit', '~> 0.1.0'
 
 # Other components
