@@ -6,7 +6,8 @@ gem 'sqlite3'
 
 gem 'devise' #BL adds this later, so check to see if we can remove this
 gem 'blacklight'
-gem "hydra-head"
+gem "hydra-head", "5.4.0"
+gem "solrizer", "2.1.0"
 
 gem 'sufia', :path=>'../../'
 gem 'rspec-rails', :group=>:test
