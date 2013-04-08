@@ -8,11 +8,12 @@ class TranscodeVideoJob < FfmpegTranscodeJob
   end
 
   def process
-    encode_mp4()
-    encode_webm()
+    return unless Sufia::Engine.config.enable_ffmpeg
+    encode_mp4
+    encode_webm
   end
 
-  private 
+  private
 
   def encode_webm
     # -g 30 enforces keyframe generation every second (30fps)
