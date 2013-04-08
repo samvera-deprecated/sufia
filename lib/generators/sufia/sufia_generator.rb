@@ -1,12 +1,12 @@
 # -*- encoding : utf-8 -*-
 require 'rails/generators'
-require 'rails/generators/migration'     
+require 'rails/generators/migration'
 
 class SufiaGenerator < Rails::Generators::Base
   include Rails::Generators::Migration
 
   source_root File.expand_path('../templates', __FILE__)
-  
+
   argument     :model_name, :type => :string , :default => "user"
   desc """
 This generator makes the following changes to your application:
@@ -17,7 +17,7 @@ This generator makes the following changes to your application:
  5. Copies the catalog controller into the local app
  6. Adds Sufia::SolrDocumentBehavior to app/models/solr_document.rb
  7. Generates mailboxer
-       """ 
+       """
 
   # Implement the required interface for Rails::Generators::Migration.
   # taken from http://github.com/rails/rails/blob/master/activerecord/lib/generators/active_record.rb
@@ -43,31 +43,33 @@ add_groups_to_users.rb		create_local_authorities.rb	create_trophies.rb}.each do 
   # Add behaviors to the user model
   def inject_sufia_user_behavior
     file_path = "app/models/#{model_name.underscore}.rb"
-    if File.exists?(file_path) 
-      inject_into_class file_path, model_name.classify do 
+    if File.exists?(file_path)
+      inject_into_class file_path, model_name.classify do
         "# Connects this user object to Sufia behaviors. " +
-        "\n include Sufia::User\n"        
+        "\n include Sufia::User\n"
       end
     else
-      puts "     \e[31mFailure\e[0m  Sufia requires a user object. This generators assumes that the model is defined in the file #{file_path}, which does not exist.  If you used a different name, please re-run the generator and provide that name as an argument. Such as \b  rails -g sufia client" 
-    end    
+      puts "     \e[31mFailure\e[0m  Sufia requires a user object. This generators assumes that the model is defined in the file #{file_path}, which does not exist.  If you used a different name, please re-run the generator and provide that name as an argument. Such as \b  rails -g sufia client"
+    end
   end
 
   # Add behaviors to the application controller
-  def inject_sufia_controller_behavior    
+  def inject_sufia_controller_behavior
     controller_name = "ApplicationController"
     file_path = "app/controllers/application_controller.rb"
-    if File.exists?(file_path) 
-      insert_into_file file_path, :after => 'include Blacklight::Controller' do 
-        "  \n# Adds Sufia behaviors into the application controller \n" +        
+    if File.exists?(file_path)
+      insert_into_file file_path, :after => 'include Blacklight::Controller' do
+        "  \n# Adds Hydra behaviors into the application controller \n" +
+        "  include Hydra::Controller::ControllerBehavior \n" +
+        "  \n# Adds Sufia behaviors into the application controller \n" +
         "  include Sufia::Controller\n"
       end
       gsub_file file_path, "layout 'blacklight'", "layout 'hydra-head'"
     else
-      puts "     \e[31mFailure\e[0m  Could not find #{file_path}.  To add Sufia behaviors to your  Controllers, you must include the Sufia::Controller module in the Controller class definition." 
+      puts "     \e[31mFailure\e[0m  Could not find #{file_path}.  To add Sufia behaviors to your  Controllers, you must include the Sufia::Controller module in the Controller class definition."
     end
   end
-  
+
   def create_configuration_files
     copy_file "config/sufia.rb", "config/initializers/sufia.rb"
     copy_file "config/redis.yml", "config/redis.yml"
