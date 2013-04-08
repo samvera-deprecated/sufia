@@ -33,8 +33,8 @@ describe GenericFilesController do
       begin
         Batch.find("sample:batch_id").delete
       rescue
-      end                                         
-      @mock.delete unless @mock.inner_object.class == ActiveFedora::UnsavedDigitalObject 
+      end
+      @mock.delete unless @mock.inner_object.class == ActiveFedora::UnsavedDigitalObject
     end
 
     it "should render error the file wasn't actually a file" do
@@ -126,15 +126,14 @@ describe GenericFilesController do
       #TODO make sure this is moved to scholarsphere:
       #saved_file.depositor.should == 'jilluser'
       saved_file.depositor.should == 'jilluser@example.com'
-      saved_file.properties.to_solr.keys.should include('depositor_t')
+      saved_file.properties.to_solr.keys.should include('depositor_tesim')
       #TODO make sure this is moved to scholarsphere:
-      #saved_file.properties.to_solr['depositor_t'].should == ['jilluser']
-      saved_file.properties.to_solr['depositor_t'].should == ['jilluser@example.com']
-      saved_file.to_solr.keys.should include('depositor_t')
-      saved_file.to_solr['depositor_t'].should == ['jilluser@example.com']
+      saved_file.properties.to_solr['depositor_tesim'].should == ['jilluser@example.com']
+      saved_file.to_solr.keys.should include('depositor_tesim')
+      saved_file.to_solr['depositor_tesim'].should == ['jilluser@example.com']
     end
     it "Should call virus check" do
-      controller.should_receive(:virus_check).and_return(0)      
+      controller.should_receive(:virus_check).and_return(0)
       file = fixture_file_upload('/world.png','image/png')
 
       s1 = stub('one')
@@ -163,7 +162,7 @@ describe GenericFilesController do
       end
       it "failing virus check should create flash" do
         GenericFile.any_instance.stub(:to_solr).and_return({})
-        ClamAV.any_instance.should_receive(:scanfile).and_return(1)      
+        ClamAV.any_instance.should_receive(:scanfile).and_return(1)
         file = fixture_file_upload('/world.png','image/png')
         controller.send :virus_check, file
         flash[:error].should_not be_empty
@@ -171,8 +170,8 @@ describe GenericFilesController do
     end
 
     it "should error out of create and save after on continuos rsolr error" do
-      GenericFile.any_instance.stub(:save).and_raise(RSolr::Error::Http.new({},{}))  
-          
+      GenericFile.any_instance.stub(:save).and_raise(RSolr::Error::Http.new({},{}))
+
       file = fixture_file_upload('/world.png','image/png')
       xhr :post, :create, :files=>[file], :Filename=>"The world", :batch_id => "sample:batch_id", :permission=>{"group"=>{"public"=>"read"} }, :terms_of_service=>"1"
       response.body.should include("Error occurred while creating generic file.")
@@ -210,7 +209,7 @@ describe GenericFilesController do
     end
     after do
       @user.delete
-    end    
+    end
     it "should delete the file" do
       GenericFile.find(@generic_file.pid).should_not be_nil
       delete :destroy, :id=>@generic_file.pid
@@ -226,7 +225,7 @@ describe GenericFilesController do
 
   describe "update" do
     before do
-      #controller.should_receive(:virus_check).and_return(0)      
+      #controller.should_receive(:virus_check).and_return(0)
       @generic_file = GenericFile.new
       @generic_file.apply_depositor_metadata(@user.user_key)
       @generic_file.save
@@ -242,7 +241,7 @@ describe GenericFilesController do
       @user = FactoryGirl.find_or_create(:user)
       sign_in @user
       post :update, :id=>@generic_file.pid, :generic_file=>{:title=>'new_title', :tag=>[''], :permissions=>{:new_user_name=>{'archivist1'=>'edit'}}}
-      @user.delete      
+      @user.delete
     end
 
     it "should spawn a content new version event job" do
@@ -271,7 +270,7 @@ describe GenericFilesController do
       version1 = posted_file.content.latest_version
       posted_file.content.version_committer(version1).should == @user.user_key
 
-      # other user uploads new version 
+      # other user uploads new version
       # TODO this should be a separate test
       archivist = FactoryGirl.find_or_create(:archivist)
       controller.stub(:current_user).and_return(archivist)
@@ -329,7 +328,7 @@ describe GenericFilesController do
     end
     it "should spawn a virus check" do
       # The expectation is in the begin block
-      controller.should_receive(:virus_check).and_return(0)      
+      controller.should_receive(:virus_check).and_return(0)
       s1 = stub('one')
       ContentNewVersionEventJob.should_receive(:new).with(@generic_file.pid, 'jilluser@example.com').and_return(s1)
       Sufia.queue.should_receive(:push).with(s1).once

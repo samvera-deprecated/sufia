@@ -169,7 +169,6 @@ module Sufia
 
       #always save the file so the new version or metadata gets recorded
       @generic_file.save!
-      
 
       # do not trigger an update event if a version event has already been triggered
       Sufia.queue.push(ContentUpdateEventJob.new(@generic_file.pid, current_user.user_key)) unless version_event

@@ -23,10 +23,10 @@ namespace :sufia do
   desc "Restore missing user accounts"
   task :restore_users => :environment do
     # Query Solr for unique depositors
-    terms_url = "#{ActiveFedora.solr_config[:url]}/terms?terms.fl=depositor_t&terms.sort=index&terms.limit=5000&wt=json&omitHeader=true"
-    # Parse JSON response (looks like {"terms":{"depositor_t":["mjg36",3]}})
+    terms_url = "#{ActiveFedora.solr_config[:url]}/terms?terms.fl=depositor_tesim&terms.sort=index&terms.limit=5000&wt=json&omitHeader=true"
+    # Parse JSON response (looks like {"terms":{"depositor_tesim":["mjg36",3]}})
     terms_json = open(terms_url).read
-    depositor_logins = JSON.parse(terms_json)['terms']['depositor_t'] rescue []
+    depositor_logins = JSON.parse(terms_json)['terms']['depositor_tesim'] rescue []
     # Filter out doc counts, and leave logins
     depositor_logins.select! { |item| item.is_a? String }
     # Check for depositor User accounts & restore/populate if missing
@@ -44,14 +44,14 @@ namespace :sufia do
     caution_sz = 3000000000   # 3GB
     warning_sz = 5000000000   # 5GB
     problem_sz = 10000000000  # 10GB
-    # loop over users in active record 
+    # loop over users in active record
     users = {}
     User.all.each do |u|
-      # for each user query get list of documents 
-      user_files = GenericFile.find( :depositor_t => u.login )
+      # for each user query get list of documents
+      user_files = GenericFile.find( :depositor_tesim => u.login )
       # sum the size of the users docs
       sz = 0
-      user_files.each do |f| 
+      user_files.each do |f|
         #puts number_to_human_size(f.file_size.first.to_i)
         sz += f.file_size.first.to_i
         #puts "#{sz}:#{f.file_size.first}"
@@ -62,7 +62,7 @@ namespace :sufia do
     longest_key = users.keys.max { |a,b| a.length <=> b.length }
     printf "%-#{longest_key.length}s %s".background(:white).foreground(:black), "User", "Space Used"
     puts ""
-    users.each_pair do |k,v| 
+    users.each_pair do |k,v|
       if v >= problem_sz
         printf "%-#{longest_key.length}s %s".background(:red).foreground(:white).blink, k, number_to_human_size(v)
       elsif v >= warning_sz
