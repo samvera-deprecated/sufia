@@ -61,7 +61,7 @@ class DashboardController < ApplicationController
     @all_checked = (count_on_page == @document_list.count)
     @entire_result_set_selected = @response.response["numFound"] == batch_size
     @batch_size_on_other_page = batch_size - count_on_page
-    @batch_part_on_other_page = (@batch_size_on_other_page) > 0    
+    @batch_part_on_other_page = (@batch_size_on_other_page) > 0
   end
 
   def activity
@@ -72,7 +72,7 @@ class DashboardController < ApplicationController
     # return the event, a formatted date string, and a numerical timestamp
     render :json => events.map { |event| [event[:action], "#{time_ago_in_words(Time.at(event[:timestamp].to_i))} ago", event[:timestamp].to_i] }
   rescue
-    render :json => [] 
+    render :json => []
   end
 
   protected

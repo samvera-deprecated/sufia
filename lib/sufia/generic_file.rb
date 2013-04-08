@@ -25,7 +25,7 @@ module Sufia
       has_metadata :name => "descMetadata", :type => GenericFileRdfDatastream
       has_metadata :name => "properties", :type => PropertiesDatastream
       has_file_datastream :name => "content", :type => FileContentDatastream
-      has_file_datastream :name => "thumbnail", :type => FileContentDatastream
+      has_file_datastream :name => "thumbnail"
 
       belongs_to :batch, :property => :is_part_of
 
@@ -55,15 +55,21 @@ module Sufia
     end
 
     def pdf?
-      ["application/pdf"].include? self.mime_type
+      ['application/pdf'].include? self.mime_type
     end
 
     def image?
-      ["image/png","image/jpeg", 'image/jpg', 'image/bmp', "image/gif"].include? self.mime_type
+      ['image/png','image/jpeg', 'image/jpg', 'image/jp2', 'image/bmp', 'image/gif'].include? self.mime_type
     end
 
     def video?
-      ["video/mpeg", "video/mp4", "video/x-msvideo", "video/avi", "video/quicktime"].include? self.mime_type
+      ['video/mpeg', 'video/mp4', 'video/webm', 'video/x-msvideo', 'video/avi', 'video/quicktime'].include? self.mime_type
+    end
+
+    def audio?
+      # audio/x-wave is the mime type that fits 0.6.0 returns for a wav file.
+      # audio/mpeg is the mime type that fits 0.6.0 returns for an mp3 file.
+      ['audio/mp3', 'audio/mpeg', 'audio/x-wave', 'audio/ogg'].include? self.mime_type
     end
 
     def persistent_url
@@ -111,21 +117,25 @@ module Sufia
       relateds = begin
                    self.batch.generic_files
                  rescue NoMethodError => e
-                   #batch is nil
+                   #batch is nil - When would this ever happen?
                    batch_id = self.object_relations["isPartOf"].first || self.object_relations[:is_part_of].first
                    return [] if batch_id.nil?
-                   self.class.find(:is_part_of_s => batch_id)
+                   self.class.find(Solrizer.solr_name('is_part_of', :symbol) => batch_id)
                  end
       relateds.reject { |gf| gf.pid == self.pid }
     end
 
+    # Unstemmed, searchable, stored
+    def self.noid_indexer
+      @noid_indexer ||= Solrizer::Descriptor.new(:text, :indexed, :stored)
+    end 
 
     def to_solr(solr_doc={}, opts={})
       super(solr_doc, opts)
-      solr_doc["label_t"] = self.label
-      solr_doc["noid_s"] = noid
-      solr_doc["file_format_t"] = file_format
-      solr_doc["file_format_facet"] = solr_doc["file_format_t"]
+      solr_doc[Solrizer.solr_name('label')] = self.label
+      solr_doc[Solrizer.solr_name('noid', Sufia::GenericFile.noid_indexer)] = noid
+      solr_doc[Solrizer.solr_name('file_format')] = file_format
+      solr_doc[Solrizer.solr_name('file_format', :facetable)] = file_format
       return solr_doc
     end
 

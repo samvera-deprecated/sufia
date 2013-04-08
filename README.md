@@ -1,14 +1,19 @@
 # Sufia
 
+## Code Status
+
+[![Build Status](https://travis-ci.org/psu-stewardship/sufia.png?branch=master)](https://travis-ci.org/psu-stewardship/sufia)
+[![Dependencies Status](https://gemnasium.com/psu-stewardship/sufia.png)](https://gemnasium.com/psu-stewardship/sufia)
+
 ## What is Sufia?
-Sufia is a component that adds self-deposit institutional repository features to a Rails app. 
+Sufia is a component that adds self-deposit institutional repository features to a Rails app.
 Sufia is created with Ruby on Rails and builds on the Hydra Framework.
 
 Sufia has the following features:
 
 * Multiple file, or folder, upload
 * Flexible user- and group-based access controls
-* Transcoding of audio and video files 
+* Transcoding of audio and video files
 * Generation and validation of identifiers
 * Fixity checking
 * Version control
@@ -26,6 +31,7 @@ Sufia has the following features:
 * Single-use links
 
 Sufia needs the following software to work:
+
 * Solr
 * Fedora Commons
 * A SQL RDBMS (MySQL, SQLite)

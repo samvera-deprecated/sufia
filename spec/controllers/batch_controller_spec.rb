@@ -93,15 +93,15 @@ describe BatchController do
         file.discover_groups.should == []
       end
       it "should set metadata like title" do
-        post :update, :id=>@batch.pid, "generic_file"=>{"tag"=>["footag", "bartag"]}, "title"=>{@file.pid=>"New Title"} 
+        post :update, :id=>@batch.pid, "generic_file"=>{"tag"=>["footag", "bartag"]}, "title"=>{@file.pid=>"New Title"}
         file = GenericFile.find(@file.pid)
         file.title.should == ["New Title"]
         file.tag.should == ["footag", "bartag"]
       end
-      it "should not set any tags" do
+      it "should set tag to be one blank string" do
         post :update, :id=>@batch.pid, "generic_file"=>{"read_groups_string"=>"", "read_users_string"=>"archivist1", "tag"=>[""]}
         file = GenericFile.find(@file.pid)
-        file.tag.should be_empty
+        file.tag.should == [""]
       end
     end
     describe "when user does not have edit permissions on a file" do
@@ -129,7 +129,6 @@ describe BatchController do
       @file2 = GenericFile.new(:batch=>@b1, :label=>'f2')
       @file2.apply_depositor_metadata(@user.user_key)
       @file2.save
-      controller.stub(:params).and_return({id:@b1.id})
     end
     after do
       @b1.delete
@@ -137,9 +136,9 @@ describe BatchController do
       @file2.delete
     end
     it "should default creator" do
-       controller.edit
-       controller.instance_variable_get(:@generic_file).creator[0].should == @user.display_name
-       controller.instance_variable_get(:@generic_file).title[0].should == 'f1'
+       get :edit, id: @b1.id
+       assigns[:generic_file].creator[0].should == @user.display_name
+        assigns[:generic_file].title[0].should == 'f1'
     end
   end
 end

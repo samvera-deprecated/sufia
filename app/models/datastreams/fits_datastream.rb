@@ -12,17 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-class FitsDatastream < ActiveFedora::NokogiriDatastream
-  include OM::XML::Document
+class FitsDatastream < ActiveFedora::OmDatastream
 
   set_terminology do |t|
-    t.root(:path => "fits", 
-           :xmlns => "http://hul.harvard.edu/ois/xml/ns/fits/fits_output", 
+    t.root(:path => "fits",
+           :xmlns => "http://hul.harvard.edu/ois/xml/ns/fits/fits_output",
            :schema => "http://hul.harvard.edu/ois/xml/xsd/fits/fits_output.xsd")
     t.identification {
       t.identity {
         t.format_label(:path=>{:attribute=>"format"})
-        t.mime_type(:path=>{:attribute=>"mimetype"}, index_as: [:searchable])
+        t.mime_type(:path=>{:attribute=>"mimetype"}, index_as: [:stored_searchable])
       }
     }
     t.fileinfo {
@@ -34,7 +33,7 @@ class FitsDatastream < ActiveFedora::NokogiriDatastream
       t.copyright_basis(:path=>"copyrightBasis")
       t.copyright_note(:path=>"copyrightNote")
     }
-    t.filestatus { 
+    t.filestatus {
       t.well_formed(:path=>"well-formed")
       t.valid(:path=>"valid")
       t.status_message(:path=>"message")
@@ -146,7 +145,7 @@ class FitsDatastream < ActiveFedora::NokogiriDatastream
                :version => "0.6.0",
                :timestamp => "1/25/12 11:04 AM") {
         xml.identification {
-          xml.identity(:format => '', :mimetype => '', 
+          xml.identity(:format => '', :mimetype => '',
                        :toolname => 'FITS', :toolversion => '') {
             xml.tool(:toolname => '', :toolversion => '')
             xml.version(:toolname => '', :toolversion => '')
@@ -175,7 +174,7 @@ class FitsDatastream < ActiveFedora::NokogiriDatastream
             xml.isTagged(:toolname => '', :toolversion => '')
             xml.hasOutline(:toolname => '', :toolversion => '')
             xml.hasAnnotations(:toolname => '', :toolversion => '')
-            xml.isRightsManaged(:toolname => '', :toolversion => '', 
+            xml.isRightsManaged(:toolname => '', :toolversion => '',
                                 :status => '')
             xml.isProtected(:toolname => '', :toolversion => '')
             xml.hasForms(:toolname => '', :toolversion => '', :status => '')
