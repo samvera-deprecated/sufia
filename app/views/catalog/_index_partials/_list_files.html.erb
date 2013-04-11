@@ -24,7 +24,7 @@
     </tr>
     <tr>
       <th><h4>Keywords:</h4></th>
-      <td><%= document.tags.join(', ') %></td>
+      <td><%= document.tags.join(', ') unless document.tags.blank? %></td>
     </tr>
     <tr>
       <th><h4>Date Uploaded:</h4></th>
