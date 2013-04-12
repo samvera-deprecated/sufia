@@ -8,11 +8,12 @@ class TranscodeAudioJob < FfmpegTranscodeJob
   end
 
   def process
-    encode_mp3()
-    encode_ogg()
+    return unless Sufia::Engine.config.enable_ffmpeg
+    encode_mp3
+    encode_ogg
   end
 
-  private 
+  private
     def encode_ogg
       opts = ""
       if generic_file.mime_type == 'audio/ogg'
