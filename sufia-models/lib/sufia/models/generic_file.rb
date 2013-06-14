@@ -150,6 +150,33 @@ module Sufia
       end
     end
 
+    def to_jq_upload
+      return {
+        "name" => self.title,
+        "size" => self.file_size,
+        "url" => "/files/#{noid}",
+        "thumbnail_url" => self.pid,
+        "delete_url" => "deleteme", # generic_file_path(:id => id),
+        "delete_type" => "DELETE"
+      }
+    end
+
+    # Test to see if the given field is required
+    # @param [Symbol] key a field
+    # @return [Boolean] is it required or not
+    def required?(key)
+      self.class.validators_on(key).any?{|v| v.kind_of? ActiveModel::Validations::PresenceValidator}
+    end
+    
+    def terms_for_editing
+      terms_for_display -
+       [:part_of, :date_modified, :date_uploaded, :format] #, :resource_type]
+    end
+
+    def terms_for_display
+      self.descMetadata.class.config.keys
+    end
+
     # Is this file in the middle of being processed by a batch?
     def processing?
        return false if self.batch.blank?
