@@ -17,6 +17,7 @@ module Sufia
     engine_name 'sufia'
  
     config.autoload_paths += %W(
+      #{config.root}/app/jobs
       #{config.root}/app/controllers/concerns
       #{config.root}/app/models/concerns
       #{config.root}/app/models/datastreams
