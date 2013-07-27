@@ -1,6 +1,23 @@
 require 'spec_helper'
 
 describe GenericFile do
+  before(:all) do
+    if defined? ClamAV
+      ClamAV.instance.loaddb
+    else
+      class ClamAV
+        def self.instance
+          new
+        end
+      end
+      @stubbed_clamav = true
+    end
+  end
+
+  after(:all) do
+    Object.send(:remove_const, :ClamAV) if @stubbed_clamav
+  end
+
   before do
     subject.apply_depositor_metadata('jcoyne')
     @file = subject #TODO remove this line someday (use subject instead)
@@ -154,6 +171,10 @@ describe GenericFile do
     end
     it "should have a dc desc metadata" do
       @file.descMetadata.should be_kind_of GenericFileRdfDatastream
+    end
+    it "should call the before hook on add_file" do
+      @file.should_receive(:before_add_file)
+      @file.add_file(File.open(fixture_path + '/world.png'), 'content', 'world.png')
     end
     it "should have content datastream" do
       @file.add_file(File.open(fixture_path + '/world.png'), 'content', 'world.png')

@@ -16,7 +16,7 @@ module Sufia::GenericFile
       yield(generic_file) if block_given?
       generic_file.save!
     end
-    
+
     def self.create_content(generic_file, file, file_name, dsid, user)
       generic_file.add_file(file, dsid, file_name)
 
@@ -37,18 +37,18 @@ module Sufia::GenericFile
       if Sufia.config.respond_to?(:after_create_content)
         Sufia.config.after_create_content.call(generic_file, user)
       end
+    rescue Sufia::VirusFoundError => error
+      logger.error(error.message)
     end
 
     def self.virus_check(file)
-      if defined? ClamAV
-        stat = ClamAV.instance.scanfile(file.path)
-        logger.warn "Virus checking did not pass for #{file.inspect} status = #{stat}" unless stat == 0
-        stat
-      else
-        logger.warn "Virus checking disabled for #{file.inspect}"
-        0
+      unless defined? ClamAV
+        logger.warn "Virus checking disabled"
+        return nil
       end
-    end 
-
+      stat = ClamAV.instance.scanfile(file.path)
+      return if stat == 0
+      raise Sufia::VirusFoundError.new("A virus was found in #{file.path}: #{stat}")
+    end
   end
 end
