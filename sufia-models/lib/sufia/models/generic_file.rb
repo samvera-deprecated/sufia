@@ -38,6 +38,9 @@ module Sufia
       attr_accessible *(ds_specs['descMetadata'][:type].fields + [:permissions])
     end
 
+    def before_add_file(file, dsid, filename)
+      Actions.virus_check(file)
+    end
 
     def record_version_committer(user)
       version = content.latest_version
