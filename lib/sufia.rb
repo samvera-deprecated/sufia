@@ -3,7 +3,7 @@ require 'blacklight'
 require 'blacklight_advanced_search'
 require 'hydra/head'
 require 'hydra-batch-edit'
-require 'sufia/models'
+
 
 require 'rails_autolink'
 
@@ -19,6 +19,10 @@ module Sufia
       #{config.root}/app/models/datastreams
       #{Hydra::Engine.root}/app/models/concerns
     )
+
+    initializer 'sufia.initializer' do
+      require 'sufia/models'
+    end
   end
 
   autoload :Controller
