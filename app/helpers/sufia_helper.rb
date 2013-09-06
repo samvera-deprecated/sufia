@@ -83,7 +83,7 @@ module SufiaHelper
     if item.is_a? Array
       render_array_facet_value(facet_solr_field, item, options)
     end
-    if params[:controller] == "dashboard"
+    if respond_to?(:sufia)
       path = sufia.url_for(add_facet_params_and_redirect(facet_solr_field,item.value ).merge(:only_path=>true))
       path = sufia.url_for(add_facet_params_and_redirect(facet_solr_field,item.value ).merge(:only_path=>true))
       (link_to_unless(options[:suppress_link], facet_display_value(facet_solr_field, item), path, :class=>"facet_select") + " " + render_facet_count(item.hits)).html_safe
