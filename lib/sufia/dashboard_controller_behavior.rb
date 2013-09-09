@@ -52,7 +52,7 @@ module Sufia
         extra_head_content << view_context.auto_discovery_link_tag(:rss, url_for(params.merge(:format => 'rss')), :title => "RSS for results")
         extra_head_content << view_context.auto_discovery_link_tag(:atom, url_for(params.merge(:format => 'atom')), :title => "Atom for results")
       end
-      (@response, @document_list) = get_search_results
+      (@response, @document_list) = get_dashboard_results
       @user = current_user
       @events = @user.events(100)
       @last_event_timestamp = @user.events.first[:timestamp].to_i || 0 rescue 0
@@ -94,6 +94,11 @@ module Sufia
     # show only files with edit permissions in lib/hydra/access_controls_enforcement.rb apply_gated_discovery
     def discovery_permissions
       ["edit"]
+    end
+
+    # return only GenericFile objects from our search results
+    def get_dashboard_results
+      get_search_results(params, {:fq => 'has_model_ssim:"info:fedora/afmodel:GenericFile"'})
     end
   end
 end
