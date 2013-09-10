@@ -96,9 +96,9 @@ module Sufia
       ["edit"]
     end
 
-    # return only GenericFile objects from our search results
+    # calls Blacklight's get_search_results, but can be overridden if needed
     def get_dashboard_results
-      get_search_results(params, {:fq => 'has_model_ssim:"info:fedora/afmodel:GenericFile"'})
+      get_search_results params
     end
   end
 end
