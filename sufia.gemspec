@@ -21,7 +21,8 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'blacklight', '~> 4.0', '< 4.4' # blacklight 4.4.1/0 doesn't work with kaminari > 0.14.1
   gem.add_dependency 'blacklight_advanced_search', '~> 2.1.0'
 
-  gem.add_dependency 'hydra-batch-edit', '~> 1.0'
+  gem.add_dependency 'hydra-batch-edit', '~> 1.0.2'
+  gem.add_dependency 'hydra-collections', '~> 1.0.0'
 
   gem.add_dependency 'daemons', '1.1.9'
   gem.add_dependency 'mail_form'
