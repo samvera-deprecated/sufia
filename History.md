@@ -1,5 +1,8 @@
 # History of Sufia releases
 
+## 3.3.1
+* Update gemspec to specify versions of hydra-batch-edit and hydra-collections [Jim Coble]
+
 ## 3.3.0
 * Fix authorities deprecations [Justin Coyne]
 * Fix deprecation on MailboxController [Justin Coyne]
