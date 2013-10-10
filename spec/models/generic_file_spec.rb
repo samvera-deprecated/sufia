@@ -560,43 +560,6 @@ describe GenericFile do
       @file.save
       @file.delete
     end
-    describe "after job runs" do
-      before(:all) do
-        myfile = GenericFile.new
-        myfile.add_file(File.open(fixture_path + '/sufia/sufia_test4.pdf'), 'content', 'sufia_test4.pdf')
-        myfile.label = 'label123'
-        myfile.apply_depositor_metadata('mjg36')
-        myfile.save
-        @myfile = myfile.reload
-      end
-      after(:all) do
-        @myfile.delete
-      end
-      it "should return expected results after a save" do
-        @myfile.file_size.should == ['218882']
-        @myfile.original_checksum.should == ['5a2d761cab7c15b2b3bb3465ce64586d']
-      end
-      it "should return a hash of all populated values from the characterization terminology" do
-        @myfile.characterization_terms[:format_label].should == ["Portable Document Format"]
-        @myfile.characterization_terms[:mime_type].should == "application/pdf"
-        @myfile.characterization_terms[:file_size].should == ["218882"]
-        @myfile.characterization_terms[:original_checksum].should == ["5a2d761cab7c15b2b3bb3465ce64586d"]
-        @myfile.characterization_terms.keys.should include(:last_modified)
-        @myfile.characterization_terms.keys.should include(:filename)
-      end
-      it "should append metadata from the characterization" do
-        @myfile.title.should include("Microsoft Word - sample.pdf.docx")
-        @myfile.filename[0].should == @myfile.label
-      end
-      it "should include thumbnail generation in characterization job" do
-        @myfile.thumbnail.size.should_not be_nil
-      end
-      it "should append each term only once" do
-        @myfile.append_metadata
-        @myfile.format_label.should == ["Portable Document Format"]
-        @myfile.title.should include("Microsoft Word - sample.pdf.docx")
-      end
-    end
   end
   describe "label" do
     it "should set the inner label" do

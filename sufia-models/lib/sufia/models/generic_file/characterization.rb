@@ -33,39 +33,16 @@ module Sufia
 
       ## Extract the metadata from the content datastream and record it in the characterization datastream
       def characterize
-        self.characterization.ng_xml = self.content.extract_metadata
-        self.append_metadata
-        self.filename = self.label
-        save
-      end
-
-      # Populate descMetadata with fields from FITS (e.g. Author from pdfs)
-      def append_metadata
-        terms = self.characterization_terms
-        Sufia.config.fits_to_desc_mapping.each_pair do |k, v|
-          if terms.has_key?(k)
-            # coerce to array to remove a conditional
-            terms[k] = [terms[k]] unless terms[k].is_a? Array
-            terms[k].each do |term_value|
-              proxy_term = self.send(v)
-              if proxy_term.kind_of?(Array)
-                proxy_term << term_value unless proxy_term.include?(term_value)
-              else
-                # these are single-valued terms which cannot be appended to
-                self.send("#{v}=", term_value)
-              end
-            end
-          end
-        end
+        characterization_service.call
       end
 
       def characterization_terms
         h = {}
-        self.characterization.class.terminology.terms.each_pair do |k, v|
+        characterization.class.terminology.terms.each_pair do |k, v|
           next unless v.respond_to? :proxied_term
           term = v.proxied_term
           begin
-            value = self.send(term.name)
+            value = object.send(term.name)
             h[term.name] = value unless value.empty?
           rescue NoMethodError
             next
@@ -74,7 +51,11 @@ module Sufia
         h
       end
 
-
+      attr_writer :characterization_service
+      private
+      def characterization_service
+        @characterization_service ||= CharacterizationService.new(self)
+      end
     end
   end
 end
