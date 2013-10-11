@@ -26,6 +26,7 @@ module Sufia
       config.queue = Sufia::Resque::Queue
 
       config.autoload_paths += %W(
+        #{config.root}/app/services
         #{config.root}/lib/sufia/models/jobs
         #{config.root}/app/models/datastreams
       )

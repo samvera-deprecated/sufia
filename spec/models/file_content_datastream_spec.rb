@@ -54,9 +54,6 @@ describe FileContentDatastream do
       @subject.stub(:pid=>'my_pid')
       @subject.stub(:dsVersionID=>'content.7')
     end
-    it "should have the path" do
-      @subject.send(:fits_path).should be_present
-    end
     it "should return an xml document", :unless => $in_travis do
       repo = double("repo")
       repo.stub(:config=>{})
