@@ -13,9 +13,6 @@ describe 'event jobs' do
   end
   after(:each) do
     @gf.delete
-    @user.delete
-    @another_user.delete
-    @third_user.delete
     $redis.keys('events:*').each { |key| $redis.del key }
     $redis.keys('User:*').each { |key| $redis.del key }
     $redis.keys('GenericFile:*').each { |key| $redis.del key }

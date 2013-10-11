@@ -6,6 +6,7 @@ require 'rspec/rails'
 require 'rspec/autorun'
 require 'capybara/rspec'
 require 'capybara/rails'
+require 'database_cleaner'
 
 require File.expand_path('../support/features', __FILE__)
 
@@ -57,6 +58,19 @@ RSpec.configure do |config|
 
   config.include Devise::TestHelpers, :type => :controller
   config.include EngineRoutes, :type => :controller
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
 end
 
 

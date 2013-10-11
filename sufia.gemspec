@@ -28,4 +28,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'yaml_db', '0.2.3'
   gem.add_dependency 'rainbow', '1.1.4'
   gem.add_dependency 'font-awesome-sass-rails', '~>3.0'
+
+  gem.add_development_dependency "database_cleaner"
 end

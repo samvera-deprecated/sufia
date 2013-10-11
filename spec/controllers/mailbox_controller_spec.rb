@@ -11,10 +11,6 @@ describe MailboxController do
     MailboxController.any_instance.stub(:authenticate_user!).and_return(true)
     sign_in @user
   end
-  after(:each) do
-    @rec1.delete
-    @rec2.delete
-  end
   describe "#index" do
     it "should show message" do
       User.any_instance.should_receive(:mark_as_read)

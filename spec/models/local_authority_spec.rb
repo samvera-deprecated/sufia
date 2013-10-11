@@ -10,15 +10,6 @@ describe LocalAuthority do
     LocalAuthority.count.should == 0
     LocalAuthorityEntry.count.should == 0
   end
-  after(:each) do
-    LocalAuthorityEntry.all.each(&:destroy)
-    DomainTerm.all.each do |term|
-      term.local_authorities.each do |auth|
-        auth.destroy
-      end
-      term.destroy
-    end
-  end
   it "should harvest an ntriples RDF vocab" do
     LocalAuthority.harvest_rdf("genres", @nt)
     LocalAuthority.count.should == 1
