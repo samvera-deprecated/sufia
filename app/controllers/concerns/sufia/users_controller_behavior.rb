@@ -47,11 +47,7 @@ module Sufia::UsersControllerBehavior
   # Process changes from profile form
   def update
     if params[:user]
-      if Rails::VERSION::MAJOR == 3
-        @user.update_attributes(params[:user])
-      else
-        @user.update_attributes(params.require(:user).permit(*User.permitted_attributes))
-      end
+      @user.update_attributes(params.require(:user).permit(*User.permitted_attributes))
     end
     @user.populate_attributes if params[:update_directory]
     @user.avatar = nil if params[:delete_avatar]
