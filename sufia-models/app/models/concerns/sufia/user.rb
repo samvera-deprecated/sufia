@@ -18,9 +18,6 @@ module Sufia::User
     # Users should be followable
     acts_as_followable
 
-    # Setup accessible (or protected) attributes for your model
-    deprecated_attr_accessible  *permitted_attributes
-
     # Add user avatar (via paperclip library)
     has_attached_file :avatar, :styles => { medium: "300x300>", thumb: "100x100>" }, :default_url => '/assets/missing_:style.png'
     validates :avatar, :attachment_content_type => { :content_type => /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/ }, :if => Proc.new { |p| p.avatar.file? }
