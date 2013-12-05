@@ -1049,6 +1049,7 @@ describe GenericFile do
         subject.destroy if subject.persisted?
       end
       it "populates the errors hash during validation" do
+        pending unless defined? ClamAV
         ClamAV.instance.stub(:scanfile).and_return("EL CRAPO VIRUS")
         subject.add_file(f, 'content', 'small_file.txt')
         subject.save
@@ -1056,6 +1057,7 @@ describe GenericFile do
         subject.errors.messages.should == { content: ["A virus was found in #{f.path}: EL CRAPO VIRUS"] }
       end
       it "does not save a new version of a GenericFile" do
+        pending unless defined? ClamAV
         subject.add_file(f, 'content', 'small_file.txt')
         subject.save
         ClamAV.instance.stub(:scanfile).and_return("EL CRAPO VIRUS")
