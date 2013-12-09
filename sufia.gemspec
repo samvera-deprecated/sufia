@@ -17,6 +17,8 @@ Gem::Specification.new do |gem|
   gem.version       = version
   gem.license       = 'APACHE2'
 
+  gem.add_dependency 'rails', '>4.0.0'
+
   gem.add_dependency 'sufia-models', version
   gem.add_dependency 'blacklight_advanced_search', '~> 2.1.0'
 
