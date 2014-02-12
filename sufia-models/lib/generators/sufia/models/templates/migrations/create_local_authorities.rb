@@ -23,7 +23,7 @@ class CreateLocalAuthorities < ActiveRecord::Migration
     create_table :subject_local_authority_entries, :force => true  do |t|
       t.string :label
       t.string :lowerLabel
-      t.string :url
+      t.string :uri
     end
 
     add_index :local_authority_entries, [:local_authority_id, :label], :name => 'entries_by_term_and_label'
