@@ -24,6 +24,11 @@ describe LocalAuthority do
     LocalAuthority.count.should == 1
     LocalAuthorityEntry.count.should == 6
   end
+  it "should harvest a lc_subject vocab" do
+    LocalAuthority.harvest_rdf("lc_subject", @nt)
+    LocalAuthority.count.should == 1
+    SubjectLocalAuthorityEntry.count.should == 6
+  end
   it "should harvest an RDF/XML vocab (w/ an alt predicate)" do
     LocalAuthority.harvest_rdf("langs", @rdfxml, 
                                :format => 'rdfxml',

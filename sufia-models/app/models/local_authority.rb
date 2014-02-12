@@ -15,9 +15,14 @@ class LocalAuthority < ActiveRecord::Base
       RDF::Reader.open(uri, :format => format) do |reader|
         reader.each_statement do |statement|
           if statement.predicate == predicate
-            entries << LocalAuthorityEntry.new(:local_authority => authority,
-                                               :label => statement.object.to_s,
-                                               :uri => statement.subject.to_s)
+            if (name == 'lc_subject')
+              entries << SubjectLocalAuthorityEntry.new(:label => statement.object.to_s,
+                                                        :uri => statement.subject.to_s)
+            else
+              entries << LocalAuthorityEntry.new(:local_authority => authority,
+                                                 :label => statement.object.to_s,
+                                                 :uri => statement.subject.to_s)
+            end
           end
         end
       end
