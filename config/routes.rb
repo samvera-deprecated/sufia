@@ -34,7 +34,7 @@ Sufia::Engine.routes.draw do
   end
 
   # User profile & follows
-  resources :users, only: [:index, :show, :edit, :update], as: :profiles do
+  resources :users, only: [:index, :show, :edit, :update], constraints: { id: /.*/ }, as: :profiles do
     member do
       post 'trophy' => 'users#toggle_trophy' #used by trophy.js
       post 'follow' => 'users#follow'
