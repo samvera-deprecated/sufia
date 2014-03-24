@@ -1,3 +1,3 @@
 module Sufia
-  VERSION = "3.7.2"
+  VERSION = File.read(File.expand_path("../../../SUFIA_VERSION", __FILE__)).strip
 end
