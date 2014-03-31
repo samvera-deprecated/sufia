@@ -1,0 +1,4 @@
+<h1>About</h1> 
+<h2>What is <%=t('sufia.product_name') %>?</h2>
+<p id="<%= @page.name %>"<%= ' data-mercury=text' if can? :edit, @page %>><%= @page.value.html_safe %>
+</p>

@@ -1,19 +1,3 @@
-/*
-Copyright © 2012 The Pennsylvania State University
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
-
 //= require jquery-ui-1.9.2/jquery.ui.core
 //= require jquery-ui-1.9.2/jquery.ui.widget
 //= require jquery-ui-1.9.2/jquery.ui.menu
@@ -29,6 +13,9 @@ limitations under the License.
 //= require bootstrap/tooltip
 //= require bootstrap/popover
 //= require bootstrap/tab
+
+//= require mercury
+//= require regions/text
 
 //= require video
 //= require audio.min
@@ -46,6 +33,7 @@ limitations under the License.
 //= require sufia/edit_metadata
 //= require sufia/single_use_link
 //= require sufia/audio
+//= require sufia/editor
 //= require hydra/batch_select
 //= require hydra_collections
 

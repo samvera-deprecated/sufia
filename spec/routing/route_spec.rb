@@ -166,7 +166,7 @@ describe 'Routes' do
 
   describe "Static Pages" do
     it "should route to about" do
-      { get: '/about' }.should route_to(controller: 'static', action: 'about')
+      { get: '/about' }.should route_to(controller: 'pages', action: 'show', id: 'about_page')
     end
 
     it "should route to help" do

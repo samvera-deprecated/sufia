@@ -147,3 +147,13 @@ To change what happens to files that fail validation add an after_validation hoo
       end
     end
 ```
+
+
+## Editing the about page.
+
+If you edit your `app/models/ability.rb` file you can give edit access to some users.  If you add:
+```ruby
+  can :update, Page
+```
+
+Then every user will be able to edit the about page via the web editor.

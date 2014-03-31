@@ -81,6 +81,10 @@ Sufia::Engine.routes.draw do
     end
   end
 
+  # Dynamic pages
+  resources :pages, only: :create
+  get 'about' => 'pages#show', id: 'about_page' 
+
   # Static page routes (workaround)
   get ':action' => 'static#:action', :constraints => { :action => /about|help|terms|zotero|mendeley|agreement|subject_libraries|versions/ }, :as => :static
 
