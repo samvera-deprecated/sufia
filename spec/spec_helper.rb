@@ -1,13 +1,17 @@
 ENV["RAILS_ENV"] ||= 'test'
+require "bundler/setup"
 
+
+require 'factory_girl'
+require 'devise'
 require 'engine_cart'
 EngineCart.load_application!
+
 
 require 'mida'
 require 'rspec/rails'
 require 'rspec/its'
 require 'rspec/active_model/mocks'
-require 'factory_girl_rails'
 require 'capybara/poltergeist'
 Capybara.javascript_driver = :poltergeist
 Capybara.default_wait_time = ENV['TRAVIS'] ? 30 : 15
@@ -60,6 +64,9 @@ else
 end
 
 Resque.inline = Rails.env.test?
+
+FactoryGirl.definition_file_paths = [File.expand_path("../factories", __FILE__)]
+FactoryGirl.find_definitions
 
 module EngineRoutes
   def self.included(base)

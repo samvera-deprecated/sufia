@@ -2,8 +2,6 @@ require 'spec_helper'
 
 describe GenericFile do
 
-  subject { GenericFile.new }
-
   before do
     subject.apply_depositor_metadata('jcoyne')
   end
@@ -232,14 +230,8 @@ describe GenericFile do
       # before(:each) do
       #   Sufia.queue.should_receive(:push).once
       # end
-      after(:each) do
-        unless subject.inner_object.class == ActiveFedora::UnsavedDigitalObject
-          begin
-            subject.delete
-          rescue ActiveFedora::ObjectNotFoundError
-            # do nothing
-          end
-        end
+      after do
+        @file.delete unless @file.new_record?
       end
       it "should have activity stream-related methods defined" do
         subject.save
@@ -351,7 +343,7 @@ describe GenericFile do
       it "should make a png thumbnail" do
         @f.create_thumbnail
         @f.thumbnail.content.size.should == 4768 # this is a bad test. I just want to show that it did something.
-        @f.thumbnail.mimeType.should == 'image/png'
+        @f.thumbnail.mime_type.should == 'image/png'
       end
     end
   end
@@ -495,7 +487,8 @@ describe GenericFile do
   end
   describe "noid integration" do
     before(:all) do
-      @new_file = GenericFile.new(pid: 'ns:123')
+      GenericFile.any_instance.should_receive(:characterize_if_changed).and_yield
+      @new_file = GenericFile.new('ns-123')
       @new_file.apply_depositor_metadata('mjg36')
       @new_file.save
     end
@@ -561,9 +554,9 @@ describe GenericFile do
     end
   end
   describe "label" do
-    it "should set the inner label" do
-      subject.label = "My New Label"
-      subject.inner_object.label.should == "My New Label"
+    it "should set the label" do
+      @file.label = "My New Label"
+      @file.label.should == "My New Label"
     end
   end
   context "with rightsMetadata" do
@@ -640,9 +633,9 @@ describe GenericFile do
         @file.errors[:edit_users].should include('Depositor must have edit access')
         expect(@file).to_not be_valid
       end
-      it "should work via update_attributes" do
+      it "should work via update" do
         # automatically triggers save
-        lambda { @file.update_attributes(read_users_string: 'mjg36') }.should_not raise_error
+        expect { @file.update(read_users_string: 'mjg36') }.to_not raise_error
         expect(@file).to be_new_record
         @file.errors.should include(:edit_users)
         @file.errors[:edit_users].should include('Depositor must have edit access')
@@ -740,9 +733,9 @@ describe GenericFile do
         @file.errors[:edit_groups].should include('Public cannot have edit access')
         expect(@file).to_not be_valid
       end
-      it "should work via update_attributes" do
+      it "should work via update" do
         # automatically triggers save
-        lambda { @file.update_attributes(edit_groups_string: 'public') }.should_not raise_error
+        expect { @file.update(edit_groups_string: 'public') }.to_not raise_error
         expect(@file).to be_new_record
         @file.errors.should include(:edit_groups)
         @file.errors[:edit_groups].should include('Public cannot have edit access')
@@ -840,9 +833,9 @@ describe GenericFile do
         @file.errors[:edit_groups].should include('Registered cannot have edit access')
         expect(@file).to_not be_valid
       end
-      it "should work via update_attributes" do
+      it "should work via update" do
         # automatically triggers save
-        lambda { @file.update_attributes(edit_groups_string: 'registered') }.should_not raise_error
+        expect { @file.update(edit_groups_string: 'registered') }.to_not raise_error
         expect(@file).to be_new_record
         @file.errors.should include(:edit_groups)
         @file.errors[:edit_groups].should include('Registered cannot have edit access')
@@ -941,9 +934,9 @@ describe GenericFile do
         @file.errors.should be_empty
         expect(@file).to be_valid
       end
-      it "should work via update_attributes" do
+      it "should work via update" do
         # automatically triggers save
-        lambda { @file.update_attributes(read_groups_string: 'registered') }.should_not raise_error
+        expect { @file.update(read_groups_string: 'registered') }.to_not raise_error
         expect(@file).to_not be_new_record
         @file.errors.should be_empty
         expect(@file).to be_valid
@@ -1017,9 +1010,13 @@ describe GenericFile do
   end
 
   describe "should create a full to_solr record" do
-    before do
-      subject.save
+    subject do
+      GenericFile.new.tap do |f|
+        f.apply_depositor_metadata('jcoyne')
+        f.save
+      end
     end
+
     after do
       subject.destroy
     end
