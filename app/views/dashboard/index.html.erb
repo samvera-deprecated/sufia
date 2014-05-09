@@ -26,6 +26,21 @@
       <strong><%= params[:q] %></strong></div>
 <% end %>
 
+<ul class="nav nav-tabs">
+  <li class="<%= "active" if @selected_tab == :files %>">
+    <%= link_to "Files", sufia.dashboard_files_path %>
+  </li>
+  <li class="<%= "active" if @selected_tab == :collections %>">
+    <%= link_to "Collections", sufia.dashboard_collections_path %>
+  </li>
+  <li class="<%= "active" if @selected_tab == :highlighted %>">
+    <%= link_to "Highlighted", sufia.dashboard_highlights_path %>
+  </li>
+  <li class="<%= "active" if @selected_tab == :shared %>">
+    <%= link_to "Shared with Me", sufia.dashboard_shares_path %>
+  </li>
+</ul>
+
 <%= render :partial => 'did_you_mean' %>
 <%= render :partial => 'facet_selected' %>
 
