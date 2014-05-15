@@ -137,9 +137,14 @@ module Sufia
 
     protected
 
+    def push_characterize_job
+      Sufia.queue.push(CharacterizeJob.new(@generic_file.pid))
+    end
+
     def update_version
       Sufia::GenericFile::Actions.revert_content(@generic_file, params[:revision], datastream_id, current_user)
       return false unless @generic_file.save
+      push_characterize_job
       Sufia.queue.push(ContentRestoredVersionEventJob.new(@generic_file.pid, current_user.user_key, params[:revision]))
       @generic_file.record_version_committer(current_user)
     end
@@ -147,6 +152,7 @@ module Sufia
     def update_file
       Sufia::GenericFile::Actions.update_content(@generic_file, params[:filedata], datastream_id, current_user)
       return false unless @generic_file.save
+      push_characterize_job
       Sufia.queue.push(ContentNewVersionEventJob.new(@generic_file.pid, current_user.user_key))
       @generic_file.record_version_committer(current_user)
     end
@@ -175,6 +181,7 @@ module Sufia
       update_metadata_from_upload_screen
       create_metadata(@generic_file)
       if Sufia::GenericFile::Actions.create_content(@generic_file, file, file.original_filename, datastream_id, current_user)
+        push_characterize_job
         respond_to do |format|
           format.html {
             render json: [@generic_file.to_jq_upload],
