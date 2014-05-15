@@ -386,7 +386,7 @@ describe GenericFilesController do
         end
       end
       before do
-        GenericFile.any_instance.stub(:characterize_if_changed).and_yield
+        allow(controller).to receive(:push_characterize_job)
         sign_in user
       end
 
@@ -490,9 +490,9 @@ describe GenericFilesController do
       f.add_file(File.open(fixture_path + '/world.png'), 'content', 'world.png')
       # grant public read access explicitly
       f.read_groups = ['public']
-      f.should_receive(:characterize_if_changed).and_yield
       f.save
       @file = f
+      allow(controller).to receive(:push_characterize_job)
     end
     after do
       GenericFile.find('sufia:test5').destroy
