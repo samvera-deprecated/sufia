@@ -227,3 +227,10 @@ To change what happens to files that fail validation add an after_validation hoo
       end
     end
 ```
+
+### Explain what partials are being used
+
+If you start your server with ```EXPLAIN_PARTIALS=true``` you'll get html comments that mark the start and end of each of the view partials. It can be helpful for debugging.
+```bash
+EXPLAIN_PARTIALS=true rails server
+```
