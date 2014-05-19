@@ -42,11 +42,8 @@ Sufia has the following features:
 ### Add gems to Gemfile
 ```
 gem 'sufia'
-gem 'kaminari', github: 'harai/kaminari', branch: 'route_prefix_prototype'  # required to handle pagination properly in dashboard. See https://github.com/amatsuda/kaminari/pull/322
 ```
 Then `bundle install`
-
-Note the line with kaminari listed as a dependency.  This is a temporary fix to address a problem in the current release of kaminari. Technically you should not have to list kaminari, which is a dependency of blacklight and sufia.
 
 ### Run the sufia generator
 ```
@@ -69,17 +66,20 @@ rake jetty:start
 ### To use the CSS and JavaScript and other assets that ship with Sufia...
 
 #### Modify app/assets/stylesheets/application.css
-Add this line:
+**Add** this line *before* the require_self line:
 ```
  *= require sufia
 ```
+
 **Remove** this line:
-```*= require_tree .```
+```
+*= require_tree .
+```
 
 _Removing the require_tree from application.css will ensure you're not loading the blacklight.css.  This is because blacklight's css styling does not mix well with sufia's default styling._
 #### Modify app/assets/javascripts/application.js
 
-Add this line:
+**Add** this line *before* the blacklight/blacklight and require_tree lines:
 ```
 //= require sufia
 ```
