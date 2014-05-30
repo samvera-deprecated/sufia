@@ -1,13 +1,25 @@
 <li>
   <h2>
-    <%= link_to document.title_or_label, sufia.generic_file_path(document.noid) %>
+    <% case document.hydra_model %>
+    <% when "GenericFile" %>
+        <%= link_to document.title_or_label, sufia.generic_file_path(document.noid) %>
+    <% when "Collection" %>
+        <%= link_to document.title_or_label, collections.collection_path(document.noid) %>
+    <% end %>
     <small>[<%= link_to 'Download', sufia.download_path(document.noid), target: '_new' %>]</small>
   </h2>
   <table class="table">
     <tr>
       <td rowspan="6" class="span20">
-        <%= link_to sufia.generic_file_path(document) do %>
-          <%= render_thumbnail_tag document, { width: 150 } %>
+        <% case document.hydra_model %>
+        <% when "GenericFile" %>
+            <%= link_to sufia.generic_file_path(document) do %>
+              <%= render_thumbnail_tag document, { width: 150 } %>
+            <% end %>
+        <% when "Collection" %>
+            <%= link_to collections.collection_path(document.noid) do %>
+                <%= image_tag "folder.jpg", { width: 150 } %>
+            <% end %>
         <% end %>
       </td>
       <th><h4>Title:</h4></th>
