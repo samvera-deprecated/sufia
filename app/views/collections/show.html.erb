@@ -17,6 +17,15 @@
         <%= render partial: 'collections/show_actions' %>
       </div>
     </div> <!-- /columns two-b -->
+<% else %>
+    <div itemscope itemtype="http://schema.org/CollectionPage" class="row">
+      <div class="col-sm-9 pull-right"><!-- class="column second"> -->
+        <header>
+          <h1><%= @collection.title %></h1>
+          <p class="collection_description"><%=@collection.description%> </p>
+        </header>
+      </div><!-- /columns second -->
+    </div> <!-- /columns two-b -->
 <% end %>
 
 <%= render 'sort_and_per_page' %>
