@@ -55,6 +55,7 @@ en:
       upload:                   "Upload"
       create_collection:        "Create Collection"
       view_files:               "View Files"
+      view_collections:         "View Collections"
       user_activity:            "User Activity"
       no_activity:              "User has no recent activity"
       user_notiticiations:      "User Notifications"
