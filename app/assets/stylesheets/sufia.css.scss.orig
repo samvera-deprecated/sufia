@@ -7,7 +7,11 @@
  *= require home-page
  *= require tagcloud
  *= require featured
+<<<<<<< HEAD
+=======
+ *= require file-listing
  *= require collections
+>>>>>>> Reworked collections show title, description, icon, and made table description list, refs #9319
  *= require usage-stats
  *= require nestable
 */
