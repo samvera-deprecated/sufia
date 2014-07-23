@@ -97,5 +97,6 @@ en:
     background_attribution: "Background image courtesy of Penn State University"
     bread_crumb:
       file_list: "Your File Listing"
-      previous:  "Back to Previous"
+      files:  "files"
+      collections:  "collections"
       search_results: "Back to search results"
