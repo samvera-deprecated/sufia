@@ -28,6 +28,9 @@ if ENV['COVERAGE']
   SimpleCov.command_name "spec"
 end
 
+# HttpLogger.logger = Logger.new(STDOUT)
+# HttpLogger.ignore = [/localhost:8983\/solr/]
+
 $in_travis = !ENV['TRAVIS'].nil? && ENV['TRAVIS'] == 'true'
 
 if $in_travis

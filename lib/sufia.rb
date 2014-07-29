@@ -28,7 +28,7 @@ module Sufia
       #{Hydra::Engine.root}/app/models/concerns
     )
 
-    # config.assets.paths << config.root.join('vendor', 'assets', 'fonts')
-    # config.assets.precompile << %r(vjs\.(?:eot|ttf|woff)$)
+    config.assets.paths << config.root.join('vendor', 'assets', 'fonts')
+    config.assets.precompile << %r(vjs\.(?:eot|ttf|woff)$)
   end
 end
