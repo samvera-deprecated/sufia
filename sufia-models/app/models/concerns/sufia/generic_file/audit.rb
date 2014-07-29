@@ -56,12 +56,13 @@ module Sufia
           ::GenericFile.audit(version, true)
         end
 
-        def audit(version, force = false)
-          latest_audit = self.find(version.pid).logs(version.dsid).first
+        def audit(version_uri, force = false)
+          return true; # TODO Just skipping the audit for now
+          version = self.find(version_uri.to_s)
+          latest_audit = self.find(version.id).logs(version.dsid).first
           unless force
             return latest_audit unless ::GenericFile.needs_audit?(version, latest_audit)
           end
-          #  Resque.enqueue(AuditJob, version.pid, version.dsid, version.versionID)
           Sufia.queue.push(AuditJob.new(version.pid, version.dsid, version.versionID))
 
           # run the find just incase the job has finished already
