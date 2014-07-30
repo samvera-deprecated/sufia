@@ -6,9 +6,7 @@ describe Batch do
     @file = GenericFile.new
     @file.apply_depositor_metadata('mjg36')
     @file.save
-    @batch = Batch.create(title: ["test collection"],
-                          creator: @user.user_key,
-                          part: @file.pid)
+    @batch = Batch.create(title: ["test collection"], creator: [@user.user_key], part: [@file.pid])
   end
   after(:all) do
     @user.delete
@@ -57,9 +55,9 @@ describe Batch do
     end
     describe "when the object does not exist" do
       it "should create" do
-        lambda {Batch.find("batch:123")}.should raise_error(ActiveFedora::ObjectNotFoundError)
+        lambda {Batch.find("batch-123")}.should raise_error(ActiveFedora::ObjectNotFoundError)
         Batch.should_receive(:create).once.and_return("the batch")
-        @b2 = Batch.find_or_create( "batch:123")
+        @b2 = Batch.find_or_create( "batch-123")
         @b2.should == "the batch"
       end
     end
