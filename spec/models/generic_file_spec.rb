@@ -33,106 +33,114 @@ describe GenericFile do
   end
 
   describe "mime type recognition" do
-    context "when image?" do
-      it "should be true for jpeg2000" do
-        subject.mime_type = 'image/jp2'
-        expect(subject).to be_image
+    context "#image?" do
+      context "when image/jp2" do
+        before { subject.mime_type = 'image/jp2' }
+        it { should be_image }
       end
-      it "should be true for jpeg" do
-        subject.mime_type = 'image/jpg'
-        expect(subject).to be_image
+      context "when image/jpg" do
+        before { subject.mime_type = 'image/jpg' }
+        it { should be_image }
       end
-      it "should be true for png" do
-        subject.mime_type = 'image/png'
-        expect(subject).to be_image
+      context "when image/png" do
+        before { subject.mime_type = 'image/png' }
+        it { should be_image }
       end
-      it "should be true for tiff" do
-        subject.mime_type = 'image/tiff'
-        expect(subject).to be_image
-      end
-    end
-    context "when pdf?" do
-      it "should be true for pdf" do
-        subject.mime_type = 'application/pdf'
-        subject.should be_pdf
+      context "when image/tiff" do
+        before { subject.mime_type = 'image/tiff' }
+        it { should be_image }
       end
     end
-    context "when audio?" do
-      it "should be true for wav" do
-        subject.mime_type = 'audio/x-wave'
-        subject.should be_audio
-        subject.mime_type = 'audio/x-wav'
-        subject.should be_audio
+
+    describe "#pdf?" do
+      before { subject.mime_type = 'application/pdf' }
+      it { should be_pdf }
+    end
+
+    describe "#audio?" do
+      context "when x-wave" do
+        before { subject.mime_type = 'audio/x-wave' }
+        it { should be_audio }
       end
-      it "should be true for mpeg" do
-        subject.mime_type = 'audio/mpeg'
-        subject.should be_audio
-        subject.mime_type = 'audio/mp3'
-        subject.should be_audio
+      context "when x-wav" do
+        before { subject.mime_type = 'audio/x-wav' }
+        it { should be_audio }
       end
-      it "should be true for ogg" do
-        subject.mime_type = 'audio/ogg'
-        subject.should be_audio
+      context "when mpeg" do
+        before { subject.mime_type = 'audio/mpeg' }
+        it { should be_audio }
+      end
+      context "when mp3" do
+        before { subject.mime_type = 'audio/mp3' }
+        it { should be_audio }
+      end
+      context "when ogg" do
+        before { subject.mime_type = 'audio/ogg' }
+        it { should be_audio }
       end
     end
-    context "when video?" do
-      it "should be true for avi" do
-        subject.mime_type = 'video/avi'
-        subject.should be_video
+
+    describe "#video?" do
+      context "should be true for avi" do
+        before { subject.mime_type = 'video/avi' }
+        it { should be_video }
       end
-      it "should be true for webm" do
-        subject.mime_type = 'video/webm'
-        subject.should be_video
+
+      context "should be true for webm" do
+        before { subject.mime_type = 'video/webm' }
+        it { should be_video }
       end
-      it "should be true for mpeg" do
-        subject.mime_type = 'video/mp4'
-        subject.should be_video
-        subject.mime_type = 'video/mpeg'
-        subject.should be_video
+      context "should be true for mp4" do
+        before { subject.mime_type = 'video/mp4' }
+        it { should be_video }
       end
-      it "should be true for quicktime" do
-        subject.mime_type = 'video/quicktime'
-        subject.should be_video
+      context "should be true for mpeg" do
+        before { subject.mime_type = 'video/mpeg' }
+        it { should be_video }
       end
-      it "should be true for mxf" do
-        subject.mime_type = 'application/mxf'
-        subject.should be_video
+      context "should be true for quicktime" do
+        before { subject.mime_type = 'video/quicktime' }
+        it { should be_video }
+      end
+      context "should be true for mxf" do
+        before { subject.mime_type = 'application/mxf' }
+        it { should be_video }
       end
     end
   end
 
   describe "visibility" do
     it "should not be changed when it's new" do
-      subject.should_not be_visibility_changed
+      expect(subject).to_not be_visibility_changed
     end
     it "should be changed when it has been changed" do
       subject.visibility= 'open'
-      subject.should be_visibility_changed
+      expect(subject).to be_visibility_changed
     end
 
     it "should not be changed when it's set to its previous value" do
       subject.visibility= 'restricted'
-      subject.should_not be_visibility_changed
+      expect(subject).to_not be_visibility_changed
     end
 
   end
 
   describe "attributes" do
     it "should have rightsMetadata" do
-      subject.rightsMetadata.should be_instance_of ParanoidRightsDatastream
+      expect(subject.rightsMetadata).to be_instance_of ParanoidRightsDatastream
     end
     it "should have properties datastream for depositor" do
-      subject.properties.should be_instance_of PropertiesDatastream
+      expect(subject.properties).to be_instance_of PropertiesDatastream
     end
     it "should have apply_depositor_metadata" do
-      subject.rightsMetadata.edit_access.should == ['jcoyne']
-      subject.depositor.should == 'jcoyne'
+      expect(subject.rightsMetadata.edit_access).to eq ['jcoyne']
+      expect(subject.depositor).to eq 'jcoyne'
     end
     it "should have a set of permissions" do
       subject.read_groups=['group1', 'group2']
       subject.edit_users=['user1']
       subject.read_users=['user2', 'user3']
-      subject.permissions.should == [{type: "group", access: "read", name: "group1"},
+      expect(subject.permissions).to eq [{type: "group", access: "read", name: "group1"},
           {type: "group", access: "read", name: "group2"},
           {type: "user", access: "read", name: "user2"},
           {type: "user", access: "read", name: "user3"},
@@ -141,89 +149,89 @@ describe GenericFile do
     describe "updating permissions" do
       it "should create new group permissions" do
         subject.permissions = {new_group_name: {'group1'=>'read'}}
-        subject.permissions.should == [{type: "group", access: "read", name: "group1"},
+        expect(subject.permissions).to eq [{type: "group", access: "read", name: "group1"},
                                      {type: "user", access: "edit", name: "jcoyne"}]
       end
       it "should create new user permissions" do
         subject.permissions = {new_user_name: {'user1'=>'read'}}
-        subject.permissions.should == [{type: "user", access: "read", name: "user1"},
+        expect(subject.permissions).to eq [{type: "user", access: "read", name: "user1"},
                                      {type: "user", access: "edit", name: "jcoyne"}]
       end
       it "should not replace existing groups" do
         subject.permissions = {new_group_name: {'group1' => 'read'}}
         subject.permissions = {new_group_name: {'group2' => 'read'}}
-        subject.permissions.should == [{type: "group", access: "read", name: "group1"},
+        expect(subject.permissions).to eq [{type: "group", access: "read", name: "group1"},
                                      {type: "group", access: "read", name: "group2"},
                                      {type: "user", access: "edit", name: "jcoyne"}]
       end
       it "should not replace existing users" do
         subject.permissions = {new_user_name:{'user1'=>'read'}}
         subject.permissions = {new_user_name:{'user2'=>'read'}}
-        subject.permissions.should == [{type: "user", access: "read", name: "user1"},
+        expect(subject.permissions).to eq [{type: "user", access: "read", name: "user1"},
                                      {type: "user", access: "read", name: "user2"},
                                      {type: "user", access: "edit", name: "jcoyne"}]
       end
       it "should update permissions on existing users" do
         subject.permissions = {new_user_name:{'user1'=>'read'}}
         subject.permissions = {user:{'user1'=>'edit'}}
-        subject.permissions.should == [{type: "user", access: "edit", name: "user1"},
+        expect(subject.permissions).to eq [{type: "user", access: "edit", name: "user1"},
                                      {type: "user", access: "edit", name: "jcoyne"}]
       end
       it "should update permissions on existing groups" do
         subject.permissions = {new_group_name:{'group1'=>'read'}}
         subject.permissions = {group:{'group1'=>'edit'}}
-        subject.permissions.should == [{type: "group", access: "edit", name: "group1"},
+        expect(subject.permissions).to eq [{type: "group", access: "edit", name: "group1"},
                                      {type: "user", access: "edit", name: "jcoyne"}]
       end
     end
     it "should have a characterization datastream" do
-      subject.characterization.should be_kind_of FitsDatastream
+      expect(subject.characterization).to be_kind_of FitsDatastream
     end
     it "should have a dc desc metadata" do
-      subject.descMetadata.should be_kind_of GenericFileRdfDatastream
+      expect(subject.descMetadata).to be_kind_of GenericFileRdfDatastream
     end
     it "should have content datastream" do
       subject.add_file(File.open(fixture_path + '/world.png'), 'content', 'world.png')
-      subject.content.should be_kind_of FileContentDatastream
+      expect(subject.content).to be_kind_of FileContentDatastream
     end
   end
   describe "delegations" do
     it "should delegate methods to properties metadata" do
-      subject.should respond_to(:relative_path)
-      subject.should respond_to(:depositor)
+      expect(subject).to respond_to(:relative_path)
+      expect(subject).to respond_to(:depositor)
     end
     it "should delegate methods to descriptive metadata" do
-      subject.should respond_to(:related_url)
-      subject.should respond_to(:based_near)
-      subject.should respond_to(:part_of)
-      subject.should respond_to(:contributor)
-      subject.should respond_to(:creator)
-      subject.should respond_to(:title)
-      subject.should respond_to(:description)
-      subject.should respond_to(:publisher)
-      subject.should respond_to(:date_created)
-      subject.should respond_to(:date_uploaded)
-      subject.should respond_to(:date_modified)
-      subject.should respond_to(:subject)
-      subject.should respond_to(:language)
-      subject.should respond_to(:rights)
-      subject.should respond_to(:resource_type)
-      subject.should respond_to(:identifier)
+      expect(subject).to respond_to(:related_url)
+      expect(subject).to respond_to(:based_near)
+      expect(subject).to respond_to(:part_of)
+      expect(subject).to respond_to(:contributor)
+      expect(subject).to respond_to(:creator)
+      expect(subject).to respond_to(:title)
+      expect(subject).to respond_to(:description)
+      expect(subject).to respond_to(:publisher)
+      expect(subject).to respond_to(:date_created)
+      expect(subject).to respond_to(:date_uploaded)
+      expect(subject).to respond_to(:date_modified)
+      expect(subject).to respond_to(:subject)
+      expect(subject).to respond_to(:language)
+      expect(subject).to respond_to(:rights)
+      expect(subject).to respond_to(:resource_type)
+      expect(subject).to respond_to(:identifier)
     end
     it "should delegate methods to characterization metadata" do
-      subject.should respond_to(:format_label)
-      subject.should respond_to(:mime_type)
-      subject.should respond_to(:file_size)
-      subject.should respond_to(:last_modified)
-      subject.should respond_to(:filename)
-      subject.should respond_to(:original_checksum)
-      subject.should respond_to(:well_formed)
-      subject.should respond_to(:file_title)
-      subject.should respond_to(:file_author)
-      subject.should respond_to(:page_count)
+      expect(subject).to respond_to(:format_label)
+      expect(subject).to respond_to(:mime_type)
+      expect(subject).to respond_to(:file_size)
+      expect(subject).to respond_to(:last_modified)
+      expect(subject).to respond_to(:filename)
+      expect(subject).to respond_to(:original_checksum)
+      expect(subject).to respond_to(:well_formed)
+      expect(subject).to respond_to(:file_title)
+      expect(subject).to respond_to(:file_author)
+      expect(subject).to respond_to(:page_count)
     end
     it "should redefine to_param to make redis keys more recognizable" do
-      subject.to_param.should == subject.noid
+      expect(subject.to_param).to eq subject.noid
     end
 
     describe "that have been saved" do
@@ -234,10 +242,10 @@ describe GenericFile do
       it "should have activity stream-related methods defined" do
         subject.save
         f = subject.reload
-        f.should respond_to(:stream)
-        f.should respond_to(:events)
-        f.should respond_to(:create_event)
-        f.should respond_to(:log_event)
+        expect(f).to respond_to(:stream)
+        expect(f).to respond_to(:events)
+        expect(f).to respond_to(:create_event)
+        expect(f).to respond_to(:log_event)
       end
 
       it "should be able to set values via delegated methods" do
@@ -321,7 +329,7 @@ describe GenericFile do
   end
   it "should support multi-valued fields in solr" do
     subject.tag = ["tag1", "tag2"]
-    lambda { subject.save }.should_not raise_error
+    expect { subject.save }.to_not raise_error
     subject.delete
   end
   it "should support setting and getting the relative_path value" do
@@ -338,7 +346,7 @@ describe GenericFile do
     end
     describe "with a video", if: Sufia.config.enable_ffmpeg do
       before do
-        @f.stub(mime_type: 'video/quicktime')  #Would get set by the characterization job
+        allow(@f).to receive(mime_type: 'video/quicktime')  #Would get set by the characterization job
         @f.add_file(File.open("#{fixture_path}/countdown.avi", 'rb'), 'content', 'countdown.avi')
         @f.save
       end
@@ -379,33 +387,33 @@ describe GenericFile do
     it "should schedule a audit job for each datastream" do
       skip "Disabled audit"
       s0 = double('zero')
-      AuditJob.should_receive(:new).with(@f.pid, 'descMetadata', "descMetadata.0").and_return(s0)
-      Sufia.queue.should_receive(:push).with(s0)
+      expect(AuditJob).to receive(:new).with(@f.pid, 'descMetadata', "descMetadata.0").and_return(s0)
+      expect(Sufia.queue).to receive(:push).with(s0)
       s1 = double('one')
-      AuditJob.should_receive(:new).with(@f.pid, 'DC', "DC1.0").and_return(s1)
-      Sufia.queue.should_receive(:push).with(s1)
+      expect(AuditJob).to receive(:new).with(@f.pid, 'DC', "DC1.0").and_return(s1)
+      expect(Sufia.queue).to receive(:push).with(s1)
       s2 = double('two')
-      AuditJob.should_receive(:new).with(@f.pid, 'RELS-EXT', "RELS-EXT.0").and_return(s2)
-      Sufia.queue.should_receive(:push).with(s2)
+      expect(AuditJob).to receive(:new).with(@f.pid, 'RELS-EXT', "RELS-EXT.0").and_return(s2)
+      expect(Sufia.queue).to receive(:push).with(s2)
       s3 = double('three')
-      AuditJob.should_receive(:new).with(@f.pid, 'rightsMetadata', "rightsMetadata.0").and_return(s3)
-      Sufia.queue.should_receive(:push).with(s3)
+      expect(AuditJob).to receive(:new).with(@f.pid, 'rightsMetadata', "rightsMetadata.0").and_return(s3)
+      expect(Sufia.queue).to receive(:push).with(s3)
       s4 = double('four')
-      AuditJob.should_receive(:new).with(@f.pid, 'properties', "properties.0").and_return(s4)
-      Sufia.queue.should_receive(:push).with(s4)
+      expect(AuditJob).to receive(:new).with(@f.pid, 'properties', "properties.0").and_return(s4)
+      expect(Sufia.queue).to receive(:push).with(s4)
       s5 = double('five')
-      AuditJob.should_receive(:new).with(@f.pid, 'content', "content.0").and_return(s5)
-      Sufia.queue.should_receive(:push).with(s5)
+      expect(AuditJob).to receive(:new).with(@f.pid, 'content', "content.0").and_return(s5)
+      expect(Sufia.queue).to receive(:push).with(s5)
       @f.audit!
     end
     it "should log a failing audit" do
-      @f.datastreams.each { |ds| ds.stub(:dsChecksumValid).and_return(false) }
-      GenericFile.stub(:run_audit).and_return(double(:respose, pass:1, created_at: '2005-12-20', pid: 'foo:123', dsid: 'foo', version: '1'))
+      @f.datastreams.each { |ds| allow(ds).to receive(:dsChecksumValid).and_return(false) }
+      allow(GenericFile).to receive(:run_audit).and_return(double(:respose, pass:1, created_at: '2005-12-20', pid: 'foo:123', dsid: 'foo', version: '1'))
       @f.audit!
       expect(ChecksumAuditLog.all).to be_all { |cal| cal.pass == 0 }
     end
     it "should log a passing audit" do
-      GenericFile.stub(:run_audit).and_return(double(:respose, pass:1, created_at: '2005-12-20', pid: 'foo:123', dsid: 'foo', version: '1'))
+      allow(GenericFile).to receive(:run_audit).and_return(double(:respose, pass:1, created_at: '2005-12-20', pid: 'foo:123', dsid: 'foo', version: '1'))
       @f.audit!
       expect(ChecksumAuditLog.all).to be_all { |cal| cal.pass == 1 }
     end
@@ -428,22 +436,22 @@ describe GenericFile do
       @new = ChecksumAuditLog.create(pid: @f.pid, dsid: @version.dsid, version: @version.versionID, pass: 0)
     end
     it "should not prune failed audits" do
-      @version.should_receive(:dsChecksumValid).and_return(true)
+      expect(@version).to receive(:dsChecksumValid).and_return(true)
       GenericFile.run_audit(@version)
 
-      @version.should_receive(:dsChecksumValid).and_return(false)
+      expect(@version).to receive(:dsChecksumValid).and_return(false)
       GenericFile.run_audit(@version)
 
-      @version.should_receive(:dsChecksumValid).and_return(false)
+      expect(@version).to receive(:dsChecksumValid).and_return(false)
       GenericFile.run_audit(@version)
 
-      @version.should_receive(:dsChecksumValid).and_return(true)
+      expect(@version).to receive(:dsChecksumValid).and_return(true)
       GenericFile.run_audit(@version)
 
-      @version.should_receive(:dsChecksumValid).and_return(false)
+      expect(@version).to receive(:dsChecksumValid).and_return(false)
       GenericFile.run_audit(@version)
 
-      @f.logs(@version.dsid).map(&:pass).should == [0, 1, 0, 0, 1, 0, 1]
+      expect(@f.logs(@version.dsid).map(&:pass)).to eq [0, 1, 0, 0, 1, 0, 1]
     end
 
   end
@@ -997,7 +1005,7 @@ describe GenericFile do
         allow(Sufia::GenericFile::Actor).to receive(:virus_check).and_raise(Sufia::VirusFoundError, "A virus was found in #{f.path}: EL CRAPO VIRUS")
         subject.add_file(f, 'content', 'small_file.txt')
         subject.save
-        subject.should_not be_persisted
+        expect(subject).to_not be_persisted
         expect(subject.errors.messages).to eq(base: ["A virus was found in #{f.path}: EL CRAPO VIRUS"])
       end
       it "does not save a new version of a GenericFile" do
@@ -1006,7 +1014,7 @@ describe GenericFile do
         allow(Sufia::GenericFile::Actor).to receive(:virus_check).and_raise(Sufia::VirusFoundError)
         subject.add_file(File.new(fixture_path + '/sufia_generic_stub.txt') , 'content', 'sufia_generic_stub.txt')
         subject.save
-        subject.reload.content.content.should == "small\n"
+        expect(subject.reload.content.content).to eq "small\n"
       end
     end
   end
