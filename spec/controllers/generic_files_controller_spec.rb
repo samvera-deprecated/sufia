@@ -7,6 +7,7 @@ describe GenericFilesController do
     sign_in @user
     User.any_instance.stub(:groups).and_return([])
     controller.stub(:clear_session_user) ## Don't clear out the authenticated session
+    allow_any_instance_of(GenericFile).to receive(:characterize)
   end
 
   describe "#create" do
@@ -15,6 +16,10 @@ describe GenericFilesController do
       @mock = GenericFile.new({pid: 'test123'})
       GenericFile.stub(:new).and_return(@mock)
     end
+
+    let(:batch) { Batch.create }
+    let(:batch_id) { batch.id }
+    let(:file) { fixture_file_upload('/world.png','image/png') }
 
     after do
       begin
@@ -25,100 +30,95 @@ describe GenericFilesController do
       @mock.delete unless @mock.new_record?
     end
 
-    it "should render error the file wasn't actually a file" do
-      file = 'hello'
-      xhr :post, :create, files: [file], Filename: "The World", batch_id: 'sample_batch_id', permission: {"group"=>{"public"=>"read"} }, terms_of_service: '1'
-      response.status.should == 422
-      JSON.parse(response.body).first['error'].should match(/no file for upload/i)
+    context "when the file submitted isn't a file" do 
+      let(:file) { 'hello' }
+
+      it "should render 422 error" do
+        xhr :post, :create, files: ['hello'], Filename: "The World", batch_id: 'sample_batch_id', permission: {"group"=>{"public"=>"read"} }, terms_of_service: '1'
+        expect(response.status).to eq 422
+        JSON.parse(response.body).first['error'].should match(/no file for upload/i)
+      end
     end
 
-    it "spawns a content deposit event job" do
-      file = fixture_file_upload('/world.png','image/png')
-      s1 = double('one')
-      allow(ContentDepositEventJob).to receive(:new).with('test123', 'jilluser@example.com').and_return(s1)
-      expect(Sufia.queue).to receive(:push).with(s1).once
+    context "when everything is perfect" do
+      it "spawns a content deposit event job" do
+        expect_any_instance_of(Sufia::GenericFile::Actor).to receive(:create_content).with(file, 'world.png', 'content').and_return(true)
+        xhr :post, :create, files: [file], 'Filename' => 'The world', batch_id: batch_id, permission: {group: { public: 'read' } }, terms_of_service: '1'
+        expect(flash[:error]).to be_nil
+      end
 
-      s2 = double('one')
-      allow(CharacterizeJob).to receive(:new).with('test123').and_return(s2)
-      expect(Sufia.queue).to receive(:push).with(s2).once
-      xhr :post, :create, files: [file], 'Filename' => 'The world', batch_id: 'sample_batch_id', permission: {group: { public: 'read' } }, terms_of_service: '1'
-      expect(flash[:error]).to be_nil
+      it "should create and save a file asset from the given params" do
+        date_today = Date.today
+        Date.stub(:today).and_return(date_today)
+        xhr :post, :create, files: [file], Filename: "The world", batch_id: batch_id, permission: {"group"=>{"public"=>"read"} }, terms_of_service: '1'
+        response.should be_success
+        GenericFile.count.should == @file_count + 1
+
+        saved_file = GenericFile.find('test123')
+
+        # This is confirming that the correct file was attached
+        saved_file.label.should == 'world.png'
+        saved_file.content.checksum.should == 'f794b23c0c6fe1083d0ca8b58261a078cd968967'
+        expect(saved_file.content.dsChecksumValid).to be true
+
+        # Confirming that date_uploaded and date_modified were set
+        saved_file.date_uploaded.should == date_today
+        saved_file.date_modified.should == date_today
+      end
+
+      it "should record what user created the first version of content" do
+        xhr :post, :create, files: [file], Filename: "The world", batch_id: batch_id, permission: {"group"=>{"public"=>"read"} }, terms_of_service: "1"
+        saved_file = GenericFile.find('test123')
+        version = saved_file.content.latest_version
+        version.versionID.should == "content.0"
+        saved_file.content.version_committer(version).should == @user.user_key
+      end
+
+      it "should create batch associations from batch_id" do
+        skip "we need to create the batch, because Fedora 4 doesn't let us set associations to things that don't exist"
+        batch_id = "object-that-doesnt-exist"
+        Sufia.config.stub(:id_namespace).and_return('sample')
+        controller.stub(:add_posted_blob_to_asset)
+        xhr :post, :create, files: [file], Filename: "The world", batch_id: batch_id, permission: {"group"=>{"public"=>"read"} }, terms_of_service: "1"
+        GenericFile.unstub(:new)
+        expect { Batch.find(batch_id) }.to raise_error(ActiveFedora::ObjectNotFoundError) # The controller shouldn't actually save the Batch, but it should write the batch id to the files.
+        batch = Batch.create(pid: batch_id)
+        batch.generic_files.first.pid.should == "test123"
+      end
+
+      it "should set the depositor id" do
+        xhr :post, :create, files: [file], Filename: "The world", batch_id: batch_id, permission: {"group"=>{"public"=>"read"} }, terms_of_service: "1"
+        response.should be_success
+
+        saved_file = GenericFile.find('test123')
+        # This is confirming that apply_depositor_metadata recorded the depositor
+        saved_file.properties.depositor.should == ['jilluser@example.com']
+        saved_file.depositor.should == 'jilluser@example.com'
+        saved_file.properties.to_solr.keys.should include('depositor_tesim')
+        saved_file.properties.to_solr['depositor_tesim'].should == ['jilluser@example.com']
+        saved_file.to_solr.keys.should include('depositor_tesim')
+        saved_file.to_solr['depositor_tesim'].should == ['jilluser@example.com']
+      end
+
     end
 
-    it "displays a flash error when file has a virus" do
-      file = fixture_file_upload('/world.png', 'image/png')
-      Sufia::GenericFile::Actor.should_receive(:virus_check).with(file.path).and_raise(Sufia::VirusFoundError.new('A virus was found'))
-      xhr :post, :create, files: [file], Filename: "The world", batch_id: "sample_batch_id", permission: {"group"=>{"public"=>"read"} }, terms_of_service: '1'
-      flash[:error].should_not be_blank
-      flash[:error].should include('A virus was found')
+    context "when the file has a virus" do
+      it "displays a flash error when file has a virus" do
+        Sufia::GenericFile::Actor.should_receive(:virus_check).with(file.path).and_raise(Sufia::VirusFoundError.new('A virus was found'))
+        xhr :post, :create, files: [file], Filename: "The world", batch_id: "sample_batch_id", permission: {"group"=>{"public"=>"read"} }, terms_of_service: '1'
+        flash[:error].should_not be_blank
+        flash[:error].should include('A virus was found')
+      end
     end
 
-    it "should create and save a file asset from the given params" do
-      date_today = Date.today
-      Date.stub(:today).and_return(date_today)
-      file = fixture_file_upload('/world.png','image/png')
-      xhr :post, :create, files: [file], Filename: "The world", batch_id: "sample_batch_id", permission: {"group"=>{"public"=>"read"} }, terms_of_service: '1'
-      response.should be_success
-      GenericFile.count.should == @file_count + 1
+    context "when solr continuously has errors" do
+      it "should error out of create and save after on continuos rsolr error" do
+        GenericFile.any_instance.stub(:save).and_raise(RSolr::Error::Http.new({},{}))
 
-      saved_file = GenericFile.find('test123')
-
-      # This is confirming that the correct file was attached
-      saved_file.label.should == 'world.png'
-      saved_file.content.checksum.should == 'f794b23c0c6fe1083d0ca8b58261a078cd968967'
-      expect(saved_file.content.dsChecksumValid).to be true
-
-      # Confirming that date_uploaded and date_modified were set
-      saved_file.date_uploaded.should == date_today
-      saved_file.date_modified.should == date_today
-    end
-
-    it "should record what user created the first version of content" do
-      file = fixture_file_upload('/world.png','image/png')
-      xhr :post, :create, files: [file], Filename: "The world", batch_id: "sample_batch_id", permission: {"group"=>{"public"=>"read"} }, terms_of_service: "1"
-      saved_file = GenericFile.find('test123')
-      version = saved_file.content.latest_version
-      version.versionID.should == "content.0"
-      saved_file.content.version_committer(version).should == @user.user_key
-    end
-
-    it "should create batch associations from batch_id" do
-      Sufia.config.stub(:id_namespace).and_return('sample')
-      file = fixture_file_upload('/world.png','image/png')
-      controller.stub(:add_posted_blob_to_asset)
-      xhr :post, :create, files: [file], Filename: "The world", batch_id: "sample_batch_id", permission: {"group"=>{"public"=>"read"} }, terms_of_service: "1"
-      GenericFile.unstub(:new)
-      expect { Batch.find("sample_batch_id") }.to raise_error(ActiveFedora::ObjectNotFoundError) # The controller shouldn't actually save the Batch, but it should write the batch id to the files.
-      batch = Batch.create(pid: "sample_batch_id")
-      batch.generic_files.first.pid.should == "test123"
-    end
-    it "should set the depositor id" do
-      file = fixture_file_upload('/world.png','image/png')
-      xhr :post, :create, files: [file], Filename: "The world", batch_id: "sample_batch_id", permission: {"group"=>{"public"=>"read"} }, terms_of_service: "1"
-      response.should be_success
-
-      saved_file = GenericFile.find('test123')
-      # This is confirming that apply_depositor_metadata recorded the depositor
-      #TODO make sure this is moved to scholarsphere:
-      #saved_file.properties.depositor.should == ['jilluser']
-      saved_file.properties.depositor.should == ['jilluser@example.com']
-      #TODO make sure this is moved to scholarsphere:
-      #saved_file.depositor.should == 'jilluser'
-      saved_file.depositor.should == 'jilluser@example.com'
-      saved_file.properties.to_solr.keys.should include('depositor_tesim')
-      #TODO make sure this is moved to scholarsphere:
-      #saved_file.properties.to_solr['depositor_t'].should == ['jilluser']
-      saved_file.properties.to_solr['depositor_tesim'].should == ['jilluser@example.com']
-      saved_file.to_solr.keys.should include('depositor_tesim')
-      saved_file.to_solr['depositor_tesim'].should == ['jilluser@example.com']
-    end
-
-    it "should error out of create and save after on continuos rsolr error" do
-      GenericFile.any_instance.stub(:save).and_raise(RSolr::Error::Http.new({},{}))
-
-      file = fixture_file_upload('/world.png','image/png')
-      xhr :post, :create, files: [file], Filename: "The world", batch_id: "sample_batch_id", permission: {"group"=>{"public"=>"read"} }, terms_of_service: "1"
-      response.body.should include("Error occurred while creating generic file.")
+        file = fixture_file_upload('/world.png','image/png')
+        xhr :post, :create, files: [file], Filename: "The world", batch_id: "sample_batch_id", permission: {"group"=>{"public"=>"read"} }, terms_of_service: "1"
+        response.body.should include("Error occurred while creating generic file.")
+      end
     end
   end
 
