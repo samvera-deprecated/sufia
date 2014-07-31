@@ -57,7 +57,7 @@ module Sufia
         end
 
         def audit(version_uri, force = false)
-          return true; # TODO Just skipping the audit for now
+          return { pass: true } # TODO Just skipping the audit for now
           version = self.find(version_uri.to_s)
           latest_audit = self.find(version.id).logs(version.dsid).first
           unless force
@@ -67,7 +67,7 @@ module Sufia
 
           # run the find just incase the job has finished already
           latest_audit = self.find(version.pid).logs(version.dsid).first
-          latest_audit = ChecksumAuditLog.new(pass: NO_RUNS, pid: version.pid, dsid: version.dsid, version: version.versionID) unless latest_audit
+          latest_audit ||= ChecksumAuditLog.new(pass: NO_RUNS, pid: version.pid, dsid: version.dsid, version: version.versionID)
           latest_audit
         end
 
