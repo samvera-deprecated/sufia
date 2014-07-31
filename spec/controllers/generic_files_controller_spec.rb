@@ -20,7 +20,6 @@ describe GenericFilesController do
       allow(GenericFile).to receive(:new).and_return(mock)
     end
 
-
     after do
       begin
         GenericFile.unstub(:new)
@@ -71,8 +70,7 @@ describe GenericFilesController do
         xhr :post, :create, files: [file], Filename: "The world", batch_id: batch_id, permission: {"group"=>{"public"=>"read"} }, terms_of_service: "1"
         saved_file = GenericFile.find('test123')
         version = saved_file.content.latest_version
-        #version.versionID.should == "content.0"
-        saved_file.content.version_committer(version).should == @user.user_key
+        expect(saved_file.content.version_committer(version)).to eq @user.user_key
       end
 
       it "should create batch associations from batch_id" do
@@ -148,8 +146,8 @@ describe GenericFilesController do
     before do
       Sufia.config.enable_local_ingest = true
       GenericFile.delete_all
-      # Dir.mkdir mock_upload_directory unless File.exists? @mock_upload_directory
-      FileUtils.mkdir_p([File.join(mock_upload_directory, "import/files"),File.join(@mock_upload_directory, "import/metadata")])
+      # Dir.mkdir mock_upload_directory unless File.exists? mock_upload_directory
+      FileUtils.mkdir_p([File.join(mock_upload_directory, "import/files"),File.join(mock_upload_directory, "import/metadata")])
       FileUtils.copy(File.expand_path('../../fixtures/world.png', __FILE__), mock_upload_directory)
       FileUtils.copy(File.expand_path('../../fixtures/image.jpg', __FILE__), mock_upload_directory)
       FileUtils.copy(File.expand_path('../../fixtures/dublin_core_rdf_descMetadata.nt', __FILE__), File.join(mock_upload_directory, "import/metadata"))
@@ -235,26 +233,23 @@ describe GenericFilesController do
   end
 
   describe "destroy" do
-    before(:each) do
-      @generic_file = GenericFile.new
-      @generic_file.apply_depositor_metadata(@user)
-      @generic_file.save
-      @user = FactoryGirl.find_or_create(:jill)
-      sign_in @user
+    let(:user) { @user }
+    let(:generic_file) do
+      GenericFile.new.tap do |gf|
+        gf.apply_depositor_metadata(user)
+        gf.save!
+      end
     end
-    after do
-      @user.delete
+
+    before do
+      allow(ContentDeleteEventJob).to receive(:new).with(generic_file.id, user.user_key).and_return(delete_message)
     end
+    let(:delete_message) { double('delete message') }
     it "should delete the file" do
-      GenericFile.find(@generic_file.pid).should_not be_nil
-      delete :destroy, id: @generic_file.pid
-      lambda { GenericFile.find(@generic_file.pid) }.should raise_error(ActiveFedora::ObjectNotFoundError)
-    end
-    it "should spawn a content delete event job" do
-      s1 = double('one')
-      ContentDeleteEventJob.should_receive(:new).with(@generic_file.pid, @user.user_key).and_return(s1)
-      Sufia.queue.should_receive(:push).with(s1).once
-      delete :destroy, id: @generic_file.pid
+      expect(Sufia.queue).to receive(:push).with(delete_message)
+      expect {
+        delete :destroy, id: generic_file
+      }.to change { GenericFile.exists?(generic_file.id) }.from(true).to(false)
     end
 
     context "when the file is featured" do
@@ -356,7 +351,6 @@ describe GenericFilesController do
       @user = FactoryGirl.find_or_create(:jill)
       sign_in @user
       post :update, id: generic_file, generic_file: {title: ['new_title'], tag: [''], permissions: { new_user_name: {'archivist1'=>'edit'}}}
-      @user.delete
     end
 
     it "spawns a content new version event job" do
@@ -372,7 +366,6 @@ describe GenericFilesController do
 
       file = fixture_file_upload('/world.png', 'image/png')
       post :update, id: generic_file, filedata: file, generic_file: {tag: [''], permissions: { new_user_name: {archivist1: 'edit' } } }
-      @user.destroy
     end
 
     it "should change mime type when restoring a revision with a different mime type" do
@@ -402,7 +395,6 @@ describe GenericFilesController do
       version3.versionID.should_not == version1.versionID
       restored_file.content.version_committer(version3).should == @user.user_key
       restored_file.content.mimeType.should == "image/png"
-      @user.delete
     end
 
     context "when two users edit a file" do
