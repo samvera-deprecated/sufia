@@ -21,15 +21,11 @@ describe 'collection' do
   let(:user) { FactoryGirl.find_or_create(:archivist) }
   let(:user_key) { user.user_key }
 
-  before(:all) do
-    @old_resque_inline_value = Resque.inline
-    Resque.inline = true
-
+  before do
     @gfs = []
-    (0..12).each do |x|
-      @gfs[x] =  GenericFile.new.tap do |f|
-        f.title = ["title #{x}"]
-        f.apply_depositor_metadata('archivist1@example.com')
+    (0..1).each do |x|
+      @gfs[x] =  GenericFile.new(title: ["title #{x}"]).tap do |f|
+        f.apply_depositor_metadata(user_key)
         f.save!
       end
     end
@@ -37,12 +33,6 @@ describe 'collection' do
     @gf2 = @gfs[1]
   end
 
-  after(:all) do
-    Resque.inline = @old_resque_inline_value
-    Batch.destroy_all
-    GenericFile.destroy_all
-    Collection.destroy_all
-  end
 
   describe 'create collection' do
     before do
@@ -219,9 +209,8 @@ describe 'collection' do
   end
 
   describe 'show pages of a collection' do
-    before (:each) do
-      @collection = Collection.new title:'collection title'
-      @collection.description = 'collection description'
+    before do
+      @collection = Collection.new title: 'collection title', description: 'collection description'
       @collection.apply_depositor_metadata(user_key)
       @collection.members = @gfs
       @collection.save!
