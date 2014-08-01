@@ -4,7 +4,7 @@ describe "Browse Dashboard" do
 
   before do
     @fixtures = find_or_create_file_fixtures
-    sign_in FactoryGirl.create :user_with_fixtures
+    sign_in FactoryGirl.create :archivist
   end
 
   it "should search your files by deafult" do
