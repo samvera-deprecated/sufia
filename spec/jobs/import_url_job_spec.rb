@@ -16,7 +16,7 @@ describe ImportUrlJob do
   let(:mock_response) do
     double('response').tap do |http_res|
       allow(http_res).to receive(:start).and_yield
-       allow(http_res).to receive(:read_body).and_yield(File.open(File.expand_path('../../fixtures/world.png', __FILE__)).read)
+      allow(http_res).to receive(:read_body).and_yield(File.open(File.expand_path('../../fixtures/world.png', __FILE__)).read)
     end
   end
 
@@ -27,7 +27,7 @@ describe ImportUrlJob do
   subject(:job) { ImportUrlJob.new(generic_file.id) }
 
   it "should have no content at the outset" do
-    generic_file.content.size.should be_nil
+    expect(generic_file.content.size).to be_nil
   end
 
   context "after running the job" do
@@ -44,10 +44,9 @@ describe ImportUrlJob do
     end
 
     it "should create a content datastream" do
-      Net::HTTP.any_instance.should_receive(:request_get).with(file_path).and_yield(mock_response)
+      expect_any_instance_of(Net::HTTP).to receive(:request_get).with(file_path).and_yield(mock_response)
       job.run
       expect(generic_file.reload.content.size).to eq 4218
-      expect(generic_file.content.dsLabel).to eq file_path
     end
   end
 
