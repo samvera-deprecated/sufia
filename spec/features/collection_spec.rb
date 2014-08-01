@@ -131,7 +131,7 @@ describe 'collection' do
   end
 
   describe 'edit collection' do
-    before (:each) do
+    before do
       @collection = Collection.new(title: 'collection title')
       @collection.description = 'collection description'
       @collection.apply_depositor_metadata(user_key)
@@ -210,6 +210,12 @@ describe 'collection' do
 
   describe 'show pages of a collection' do
     before do
+      (2..12).each do |x|
+        @gfs[x] =  GenericFile.new(title: ["title #{x}"]).tap do |f|
+          f.apply_depositor_metadata(user_key)
+          f.save!
+        end
+      end
       @collection = Collection.new title: 'collection title', description: 'collection description'
       @collection.apply_depositor_metadata(user_key)
       @collection.members = @gfs
@@ -219,11 +225,11 @@ describe 'collection' do
     end
 
     it "should show a collection with a listing of Descriptive Metadata and catalog-style search results" do
-      page.should have_content(@collection.title)
+      expect(page).to have_content(@collection.title)
       within('#document_'+@collection.noid) do
         click_link("Display all details of collection title")
       end
-      page.should have_css(".pager")
+      expect(page).to have_css(".pager")
     end
   end
 end
