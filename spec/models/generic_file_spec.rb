@@ -28,7 +28,7 @@ describe GenericFile do
   describe "assign_pid" do
     it "should use the noid id service" do
       expect(Sufia::IdService).to receive(:mint)
-      GenericFile.assign_pid(nil)
+      subject.assign_pid
     end
   end
 
