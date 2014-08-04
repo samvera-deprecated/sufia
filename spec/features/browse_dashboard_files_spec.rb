@@ -57,7 +57,6 @@ describe "Browse Dashboard" do
       click_button "search-submit-header"
       click_button "Select an action"
       click_link "Edit File"
-      save_and_open_page
       expect(page).to have_content("Edit Fake Wav File.wav")
     end
 
