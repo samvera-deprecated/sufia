@@ -6,7 +6,7 @@ describe "Browse files" do
     allow(User).to receive(:find_by_user_key).and_return(stub_model(User, twitter_handle: 'bob'))
   end
 
-  before(:all) do
+  before do
     @fixtures = find_or_create_file_fixtures
     @fixtures[0].tag = ["key"]
     (1..25).each do |i|
@@ -25,15 +25,15 @@ describe "Browse files" do
   describe "when not logged in" do
     it "should let us browse some of the fixtures" do
       click_link "18"
-      page.should have_content "Search Results"
+      expect(page).to have_content "Search Results"
       click_link @fixtures[0].title[0]
-      page.should have_content "Download"
-      page.should_not have_content "Edit"
+      expect(page).to have_content "Download"
+      expect(page).to_not have_content "Edit"
     end
     it "should allow you to click next" do
       first(:link, 'Next').click
-      page.should have_content "5"
-      page.should_not have_content "11"
+      expect(page).to have_content "5"
+      expect(page).to_not have_content "11"
     end
   end
 end
