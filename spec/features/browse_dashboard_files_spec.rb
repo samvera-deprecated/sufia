@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "Browse Dashboard" do
 
   before do
-    @fixtures = find_or_create_file_fixtures
+    @fixtures = create_file_fixtures
     sign_in FactoryGirl.create :archivist
   end
 
@@ -57,6 +57,7 @@ describe "Browse Dashboard" do
       click_button "search-submit-header"
       click_button "Select an action"
       click_link "Edit File"
+      save_and_open_page
       expect(page).to have_content("Edit Fake Wav File.wav")
     end
 
