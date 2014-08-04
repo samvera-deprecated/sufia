@@ -2,18 +2,17 @@ require 'spec_helper'
 
 describe "Browse files", :type => :feature do
 
-  before :all do
-    cleanup_jetty
+  before do
+    allow(User).to receive(:find_by_user_key).and_return(stub_model(User, twitter_handle: 'bob'))
+  end
+
+  before do
     @fixtures = find_or_create_file_fixtures
     @fixtures[0].tag = ["key"]
     (1..25).each do |i|
       @fixtures[0].tag << i
     end
     @fixtures[0].save
-  end
-
-  after :all do
-    cleanup_jetty
   end
 
   before do
