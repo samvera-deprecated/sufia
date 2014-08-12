@@ -26,12 +26,12 @@ describe 'users/show.html.erb' do
 
   it "should have the vitals" do
     render
-    rendered.should match /Joined on #{join_date.strftime("%b %d, %Y")}/
+    expect(rendered).to match /Joined on #{join_date.strftime("%b %d, %Y")}/
   end
 
   context "with trophy" do
 
-    let(:generic_file) { GenericFile.new(title: ["Fake object"], pid:"sufia:abc123") }
+    let(:generic_file) { GenericFile.new(title: ["Fake object"], pid: "abc123") }
     before do
       allow(view).to receive(:search_session).and_return({})
       allow(view).to receive(:blacklight_config).and_return(CatalogController.blacklight_config)
