@@ -254,9 +254,9 @@ describe GenericFile do
         subject.title = ["New work"]
         subject.save
         f = subject.reload
-        f.related_url.should == ["http://example.org/"]
-        f.creator.should == ["John Doe"]
-        f.title.should == ["New work"]
+        expect(f.related_url).to eq ["http://example.org/"]
+        expect(f.creator).to eq ["John Doe"]
+        expect(f.title).to eq ["New work"]
       end
 
       it "should be able to be added to w/o unexpected graph behavior" do
@@ -264,14 +264,14 @@ describe GenericFile do
         subject.title = ["New work"]
         subject.save
         f = subject.reload
-        f.creator.should == ["John Doe"]
-        f.title.should == ["New work"]
+        expect(f.creator).to eq ["John Doe"]
+        expect(f.title).to eq ["New work"]
         f.creator = ["Jane Doe"]
         f.title << "Newer work"
         f.save
         f = subject.reload
-        f.creator.should == ["Jane Doe"]
-        f.title.should == ["New work", "Newer work"]
+        expect(f.creator).to eq ["Jane Doe"]
+        expect(f.title).to eq ["New work", "Newer work"]
       end
     end
   end
@@ -334,7 +334,7 @@ describe GenericFile do
   end
   it "should support setting and getting the relative_path value" do
     subject.relative_path = "documents/research/NSF/2010"
-    subject.relative_path.should == "documents/research/NSF/2010"
+    expect(subject.relative_path).to eq "documents/research/NSF/2010"
   end
   describe "create_thumbnail" do
     before do
@@ -352,8 +352,8 @@ describe GenericFile do
       end
       it "should make a png thumbnail" do
         @f.create_thumbnail
-        @f.thumbnail.content.size.should == 4768 # this is a bad test. I just want to show that it did something.
-        @f.thumbnail.mime_type.should == 'image/png'
+        expect(@f.thumbnail.content.size).to eq 4768 # this is a bad test. I just want to show that it did something.
+        expect(@f.thumbnail.mime_type).to eq 'image/png'
       end
     end
   end
@@ -533,7 +533,6 @@ describe GenericFile do
       before do
         myfile = GenericFile.new
         myfile.add_file(File.open(fixture_path + '/sufia/sufia_test4.pdf', 'rb').read, 'content', 'sufia_test4.pdf')
-        myfile.label = 'label123'
         myfile.apply_depositor_metadata('mjg36')
         # characterize method saves
         myfile.characterize
@@ -543,22 +542,21 @@ describe GenericFile do
         @myfile.destroy
       end
       it "should return expected results after a save" do
-        @myfile.file_size.should == ['218882']
-        @myfile.original_checksum.should == ['5a2d761cab7c15b2b3bb3465ce64586d']
+        expect(@myfile.file_size).to eq ['218882']
+        expect(@myfile.original_checksum).to eq ['5a2d761cab7c15b2b3bb3465ce64586d']
 
-        @myfile.characterization_terms[:format_label].should == ["Portable Document Format"]
-        @myfile.characterization_terms[:mime_type].should == "application/pdf"
-        @myfile.characterization_terms[:file_size].should == ["218882"]
-        @myfile.characterization_terms[:original_checksum].should == ["5a2d761cab7c15b2b3bb3465ce64586d"]
-        @myfile.characterization_terms.keys.should include(:last_modified)
-        @myfile.characterization_terms.keys.should include(:filename)
+        expect(@myfile.characterization_terms[:format_label]).to eq ["Portable Document Format"]
+        expect(@myfile.characterization_terms[:mime_type]).to eq "application/pdf"
+        expect(@myfile.characterization_terms[:file_size]).to eq ["218882"]
+        expect(@myfile.characterization_terms[:original_checksum]).to eq ["5a2d761cab7c15b2b3bb3465ce64586d"]
+        expect(@myfile.characterization_terms.keys).to include(:last_modified, :filename)
 
-        @myfile.title.should include("Microsoft Word - sample.pdf.docx")
-        @myfile.filename[0].should == @myfile.label
-        
+        expect(@myfile.title).to include("Microsoft Word - sample.pdf.docx")
+        expect(@myfile.filename[0]).to eq 'sufia_test4.pdf'
+
         @myfile.append_metadata
-        @myfile.format_label.should == ["Portable Document Format"]
-        @myfile.title.should include("Microsoft Word - sample.pdf.docx")
+        expect(@myfile.format_label).to eq ["Portable Document Format"]
+        expect(@myfile.title).to include("Microsoft Word - sample.pdf.docx")
 
         expect(@myfile.full_text.content).to eq("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMicrosoft Word - sample.pdf.docx\n\n\n \n \n\n \n\n \n\n \n\nThis PDF file was created using CutePDF. \n\nwww.cutepdf.com")
       end
@@ -573,27 +571,27 @@ describe GenericFile do
       m
     end
     it "should have read groups accessor" do
-      subject.read_groups.should == ['group-6', 'group-7']
+      expect(subject.read_groups).to eq ['group-6', 'group-7']
     end
     it "should have read groups string accessor" do
-      subject.read_groups_string.should == 'group-6, group-7'
+      expect(subject.read_groups_string).to eq 'group-6, group-7'
     end
     it "should have read groups writer" do
       subject.read_groups = ['group-2', 'group-3']
-      subject.rightsMetadata.groups.should == {'group-2' => 'read', 'group-3'=>'read', 'group-8' => 'edit'}
-      subject.rightsMetadata.users.should == {"person1"=>"read","person2"=>"read", 'jcoyne' => 'edit'}
+      expect(subject.rightsMetadata.groups).to eq('group-2' => 'read', 'group-3'=>'read', 'group-8' => 'edit')
+      expect(subject.rightsMetadata.users).to eq("person1"=>"read","person2"=>"read", 'jcoyne' => 'edit')
     end
 
     it "should have read groups string writer" do
       subject.read_groups_string = 'umg/up.dlt.staff, group-3'
-      subject.rightsMetadata.groups.should == {'umg/up.dlt.staff' => 'read', 'group-3'=>'read', 'group-8' => 'edit'}
-      subject.rightsMetadata.users.should == {"person1"=>"read","person2"=>"read", 'jcoyne' => 'edit'}
+      expect(subject.rightsMetadata.groups).to eq('umg/up.dlt.staff' => 'read', 'group-3'=>'read', 'group-8' => 'edit')
+      expect(subject.rightsMetadata.users).to eq("person1"=>"read","person2"=>"read", 'jcoyne' => 'edit')
     end
     it "should only revoke eligible groups" do
       subject.set_read_groups(['group-2', 'group-3'], ['group-6'])
       # 'group-7' is not eligible to be revoked
-      subject.rightsMetadata.groups.should == {'group-2' => 'read', 'group-3'=>'read', 'group-7' => 'read', 'group-8' => 'edit'}
-      subject.rightsMetadata.users.should == {"person1"=>"read","person2"=>"read", 'jcoyne' => 'edit'}
+      expect(subject.rightsMetadata.groups).to eq('group-2' => 'read', 'group-3'=>'read', 'group-7' => 'read', 'group-8' => 'edit')
+      expect(subject.rightsMetadata.users).to eq("person1"=>"read","person2"=>"read", 'jcoyne' => 'edit')
     end
   end
   describe "permissions validation" do
@@ -633,66 +631,66 @@ describe GenericFile do
       end
       it "should work via permissions=()" do
         @file.permissions = {user: {'mjg36' => 'read'}}
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_users)
-        @file.errors[:edit_users].should include('Depositor must have edit access')
+        expect(@file.errors).to include(:edit_users)
+        expect(@file.errors[:edit_users]).to include('Depositor must have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via update" do
         # automatically triggers save
         expect { @file.update(read_users_string: 'mjg36') }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_users)
-        @file.errors[:edit_users].should include('Depositor must have edit access')
+        expect(@file.errors).to include(:edit_users)
+        expect(@file.errors[:edit_users]).to include('Depositor must have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via update_indexed_attributes" do
         @rightsmd.update_indexed_attributes([:edit_access, :person] => '')
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_users)
-        @file.errors[:edit_users].should include('Depositor must have edit access')
+        expect(@file.errors).to include(:edit_users)
+        expect(@file.errors[:edit_users]).to include('Depositor must have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via permissions()" do
         @rightsmd.permissions({person: "mjg36"}, "read")
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_users)
-        @file.errors[:edit_users].should include('Depositor must have edit access')
+        expect(@file.errors).to include(:edit_users)
+        expect(@file.errors[:edit_users]).to include('Depositor must have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via update_permissions()" do
         @rightsmd.update_permissions({"person" => {"mjg36" => "read"}})
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_users)
-        @file.errors[:edit_users].should include('Depositor must have edit access')
+        expect(@file.errors).to include(:edit_users)
+        expect(@file.errors[:edit_users]).to include('Depositor must have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via content=()" do
         @rightsmd.content=(@rights_xml)
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_users)
-        @file.errors[:edit_users].should include('Depositor must have edit access')
+        expect(@file.errors).to include(:edit_users)
+        expect(@file.errors[:edit_users]).to include('Depositor must have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via ng_xml=()" do
         @rightsmd.ng_xml=(Nokogiri::XML::Document.parse(@rights_xml))
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_users)
-        @file.errors[:edit_users].should include('Depositor must have edit access')
+        expect(@file.errors).to include(:edit_users)
+        expect(@file.errors[:edit_users]).to include('Depositor must have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via update_values()" do
         @rightsmd.update_values([:edit_access, :person] => '')
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_users)
-        @file.errors[:edit_users].should include('Depositor must have edit access')
+        expect(@file.errors).to include(:edit_users)
+        expect(@file.errors[:edit_users]).to include('Depositor must have edit access')
         expect(@file).to_not be_valid
       end
     end
@@ -733,66 +731,66 @@ describe GenericFile do
       end
       it "should work via permissions=()" do
         @file.permissions = {group: {'public' => 'edit'}}
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_groups)
-        @file.errors[:edit_groups].should include('Public cannot have edit access')
+        expect(@file.errors).to include(:edit_groups)
+        expect(@file.errors[:edit_groups]).to include('Public cannot have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via update" do
         # automatically triggers save
         expect { @file.update(edit_groups_string: 'public') }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_groups)
-        @file.errors[:edit_groups].should include('Public cannot have edit access')
+        expect(@file.errors).to include(:edit_groups)
+        expect(@file.errors[:edit_groups]).to include('Public cannot have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via update_indexed_attributes" do
         @rightsmd.update_indexed_attributes([:edit_access, :group] => 'public')
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_groups)
-        @file.errors[:edit_groups].should include('Public cannot have edit access')
+        expect(@file.errors).to include(:edit_groups)
+        expect(@file.errors[:edit_groups]).to include('Public cannot have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via permissions()" do
         @rightsmd.permissions({group: "public"}, "edit")
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_groups)
-        @file.errors[:edit_groups].should include('Public cannot have edit access')
+        expect(@file.errors).to include(:edit_groups)
+        expect(@file.errors[:edit_groups]).to include('Public cannot have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via update_permissions()" do
         @rightsmd.update_permissions({"group" => {"public" => "edit"}})
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_groups)
-        @file.errors[:edit_groups].should include('Public cannot have edit access')
+        expect(@file.errors).to include(:edit_groups)
+        expect(@file.errors[:edit_groups]).to include('Public cannot have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via content=()" do
         @rightsmd.content=(@rights_xml)
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_groups)
-        @file.errors[:edit_groups].should include('Public cannot have edit access')
+        expect(@file.errors).to include(:edit_groups)
+        expect(@file.errors[:edit_groups]).to include('Public cannot have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via ng_xml=()" do
         @rightsmd.ng_xml=(Nokogiri::XML::Document.parse(@rights_xml))
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_groups)
-        @file.errors[:edit_groups].should include('Public cannot have edit access')
+        expect(@file.errors).to include(:edit_groups)
+        expect(@file.errors[:edit_groups]).to include('Public cannot have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via update_values()" do
         @rightsmd.update_values([:edit_access, :group] => 'public')
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_groups)
-        @file.errors[:edit_groups].should include('Public cannot have edit access')
+        expect(@file.errors).to include(:edit_groups)
+        expect(@file.errors[:edit_groups]).to include('Public cannot have edit access')
         expect(@file).to_not be_valid
       end
     end
@@ -833,66 +831,66 @@ describe GenericFile do
       end
       it "should work via permissions=()" do
         @file.permissions = {group: {'registered' => 'edit'}}
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_groups)
-        @file.errors[:edit_groups].should include('Registered cannot have edit access')
+        expect(@file.errors).to include(:edit_groups)
+        expect(@file.errors[:edit_groups]).to include('Registered cannot have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via update" do
         # automatically triggers save
         expect { @file.update(edit_groups_string: 'registered') }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_groups)
-        @file.errors[:edit_groups].should include('Registered cannot have edit access')
+        expect(@file.errors).to include(:edit_groups)
+        expect(@file.errors[:edit_groups]).to include('Registered cannot have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via update_indexed_attributes" do
         @rightsmd.update_indexed_attributes([:edit_access, :group] => 'registered')
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_groups)
-        @file.errors[:edit_groups].should include('Registered cannot have edit access')
+        expect(@file.errors).to include(:edit_groups)
+        expect(@file.errors[:edit_groups]).to include('Registered cannot have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via permissions()" do
         @rightsmd.permissions({group: "registered"}, "edit")
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_groups)
-        @file.errors[:edit_groups].should include('Registered cannot have edit access')
+        expect(@file.errors).to include(:edit_groups)
+        expect(@file.errors[:edit_groups]).to include('Registered cannot have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via update_permissions()" do
         @rightsmd.update_permissions({"group" => {"registered" => "edit"}})
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_groups)
-        @file.errors[:edit_groups].should include('Registered cannot have edit access')
+        expect(@file.errors).to include(:edit_groups)
+        expect(@file.errors[:edit_groups]).to include('Registered cannot have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via content=()" do
         @rightsmd.content=(@rights_xml)
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_groups)
-        @file.errors[:edit_groups].should include('Registered cannot have edit access')
+        expect(@file.errors).to include(:edit_groups)
+        expect(@file.errors[:edit_groups]).to include('Registered cannot have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via ng_xml=()" do
         @rightsmd.ng_xml=(Nokogiri::XML::Document.parse(@rights_xml))
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_groups)
-        @file.errors[:edit_groups].should include('Registered cannot have edit access')
+        expect(@file.errors).to include(:edit_groups)
+        expect(@file.errors[:edit_groups]).to include('Registered cannot have edit access')
         expect(@file).to_not be_valid
       end
       it "should work via update_values()" do
         @rightsmd.update_values([:edit_access, :group] => 'registered')
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to be_new_record
-        @file.errors.should include(:edit_groups)
-        @file.errors[:edit_groups].should include('Registered cannot have edit access')
+        expect(@file.errors).to include(:edit_groups)
+        expect(@file.errors[:edit_groups]).to include('Registered cannot have edit access')
         expect(@file).to_not be_valid
       end
     end
@@ -935,58 +933,58 @@ describe GenericFile do
       end
       it "should work via permissions=()" do
         @file.permissions = {group: {'registered' => 'read'}}
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to_not be_new_record
-        @file.errors.should be_empty
+        expect(@file.errors).to be_empty
         expect(@file).to be_valid
       end
       it "should work via update" do
         # automatically triggers save
         expect { @file.update(read_groups_string: 'registered') }.to_not raise_error
         expect(@file).to_not be_new_record
-        @file.errors.should be_empty
+        expect(@file.errors).to be_empty
         expect(@file).to be_valid
       end
       it "should work via update_indexed_attributes" do
         @rightsmd.update_indexed_attributes([:read_access, :group] => 'registered')
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to_not be_new_record
-        @file.errors.should be_empty
+        expect(@file.errors).to be_empty
         expect(@file).to be_valid
       end
       it "should work via permissions()" do
         @rightsmd.permissions({group: "registered"}, "read")
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to_not be_new_record
-        @file.errors.should be_empty
+        expect(@file.errors).to be_empty
         expect(@file).to be_valid
       end
       it "should work via update_permissions()" do
         @rightsmd.update_permissions({"group" => {"registered" => "read"}})
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to_not be_new_record
-        @file.errors.should be_empty
+        expect(@file.errors).to be_empty
         expect(@file).to be_valid
       end
       it "should work via content=()" do
         @rightsmd.content=(@rights_xml)
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to_not be_new_record
-        @file.errors.should be_empty
+        expect(@file.errors).to be_empty
         expect(@file).to be_valid
       end
       it "should work via ng_xml=()" do
         @rightsmd.ng_xml=(Nokogiri::XML::Document.parse(@rights_xml))
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to_not be_new_record
-        @file.errors.should be_empty
+        expect(@file.errors).to be_empty
         expect(@file).to be_valid
       end
       it "should work via update_values()" do
         @rightsmd.update_values([:read_access, :group] => 'registered')
-        lambda { @file.save }.should_not raise_error
+        expect { @file.save }.to_not raise_error
         expect(@file).to_not be_new_record
-        @file.errors.should be_empty
+        expect(@file.errors).to be_empty
         expect(@file).to be_valid
       end
     end
