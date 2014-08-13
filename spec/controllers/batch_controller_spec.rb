@@ -28,7 +28,7 @@ describe BatchController do
       let!(:file) do
         GenericFile.new(batch: batch).tap do |f|
           f.apply_depositor_metadata(user)
-          f.save
+          f.save!
         end
       end
 
@@ -87,7 +87,7 @@ describe BatchController do
       let(:file) do
         GenericFile.new(batch: batch, title: ['Original Title']).tap do |f|
           f.apply_depositor_metadata('someone_else')
-          f.save
+          f.save!
         end
       end
 
@@ -111,15 +111,10 @@ describe BatchController do
       @file2.apply_depositor_metadata(user)
       @file2.save
     end
-    after do
-      @b1.delete
-      @file.delete
-      @file2.delete
-    end
     it "should default creator" do
       get :edit, id: @b1.id
-      assigns[:generic_file].creator[0].should == user.display_name
-      assigns[:generic_file].title[0].should == 'f1'
+      expect(assigns[:generic_file].creator[0]).to eq user.display_name
+      expect(assigns[:generic_file].title[0]).to eq 'f1'
     end
   end
 end
