@@ -2,11 +2,8 @@ require 'spec_helper'
 
 describe BatchEditsController do
   before do
-    controller.stub(:has_access?).and_return(true)
-    @user = FactoryGirl.find_or_create(:jill)
-    sign_in @user
-    User.any_instance.stub(:groups).and_return([])
-    controller.stub(:clear_session_user) ## Don't clear out the authenticated session
+    sign_in FactoryGirl.find_or_create(:jill)
+    allow_any_instance_of(User).to receive(:groups).and_return([])
     request.env["HTTP_REFERER"] = 'test.host/original_page'
   end
 
@@ -26,8 +23,8 @@ describe BatchEditsController do
     end
     it "should be successful" do
       get :edit
-      response.should be_successful
-      assigns[:terms].should == [:creator, :contributor, :description, :tag, :rights, :publisher,
+      expect(response).to be_successful
+      expect(assigns[:terms]).to eq [:creator, :contributor, :description, :tag, :rights, :publisher,
                         :date_created, :subject, :language, :identifier, :based_near, :related_url]
       expect(assigns[:show_file].creator).to eq ["Fred", "Wilma"]
       expect(assigns[:show_file].publisher).to eq ["Rand McNally"]
@@ -63,7 +60,7 @@ describe BatchEditsController do
       expect(response).to redirect_to(Sufia::Engine.routes.url_for(controller: mycontroller, only_path: true))
     end
     it "should update the records" do
-      put :update , update_type: "update", "generic_file"=>{"subject"=>["zzz"]}
+      put :update , update_type: "update", generic_file: { subject: ["zzz"] }
       expect(response).to be_redirect
       expect(GenericFile.find(@one.id).subject).to eq ["zzz"]
       expect(GenericFile.find(@two.id).subject).to eq ["zzz"]
