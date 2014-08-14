@@ -10,7 +10,7 @@ describe 'generic_files/_breadcrumbs.html.erb' do
     it "should link back to dashboard" do
       allow(view).to receive(:request).and_return(request)
       render partial: 'generic_files/breadcrumbs', locals: {include_file: false, generic_file: generic_file }
-      expect(rendered).to have_link(t('sufia.bread_crumb.file_list'), sufia.dashboard_files_path)
+      expect(rendered).to have_link(t('sufia.dashboard.title'), sufia.dashboard_index_path)
     end
   end
   describe 'when coming from files list' do
@@ -18,7 +18,7 @@ describe 'generic_files/_breadcrumbs.html.erb' do
     it "should link back to files list" do
       allow(view).to receive(:request).and_return(request)
       render partial: 'generic_files/breadcrumbs', locals: {include_file: false, generic_file: generic_file }
-      expect(rendered).to have_link(t('sufia.bread_crumb.file_list'), sufia.dashboard_files_path)
+      expect(rendered).to have_link(t('sufia.dashboard.my.files'), sufia.dashboard_files_path)
     end
   end
   describe 'when coming from collections list' do
@@ -26,7 +26,7 @@ describe 'generic_files/_breadcrumbs.html.erb' do
     it "should link back to collections" do
       allow(view).to receive(:request).and_return(request)
       render partial: 'generic_files/breadcrumbs', locals: {include_file: false, generic_file: generic_file }
-      expect(rendered).to have_link(t('sufia.bread_crumb.collections_list'), sufia.dashboard_collections_path)
+      expect(rendered).to have_link(t('sufia.dashboard.my.collections'), sufia.dashboard_collections_path)
     end
   end
 end
