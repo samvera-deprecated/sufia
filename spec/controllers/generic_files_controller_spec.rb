@@ -20,7 +20,7 @@ describe GenericFilesController do
       allow(GenericFile).to receive(:new).and_return(mock)
     end
 
-    context "when the file submitted isn't a file" do 
+    context "when the file submitted isn't a file" do
       let(:file) { 'hello' }
 
       it "should render 422 error" do
@@ -78,16 +78,12 @@ describe GenericFilesController do
 
       it "should set the depositor id" do
         xhr :post, :create, files: [file], Filename: "The world", batch_id: batch_id, permission: {"group"=>{"public"=>"read"} }, terms_of_service: "1"
-        response.should be_success
+        expect(response).to be_success
 
         saved_file = GenericFile.find('test123')
         # This is confirming that apply_depositor_metadata recorded the depositor
-        saved_file.properties.depositor.should == ['jilluser@example.com']
-        saved_file.depositor.should == 'jilluser@example.com'
-        saved_file.properties.to_solr.keys.should include('depositor_tesim')
-        saved_file.properties.to_solr['depositor_tesim'].should == ['jilluser@example.com']
-        saved_file.to_solr.keys.should include('depositor_tesim')
-        saved_file.to_solr['depositor_tesim'].should == ['jilluser@example.com']
+        expect(saved_file.depositor).to eq 'jilluser@example.com'
+        expect(saved_file.to_solr['depositor_tesim']).to eq ['jilluser@example.com']
       end
 
     end

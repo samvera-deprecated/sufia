@@ -518,57 +518,6 @@ describe GenericFile do
     end
   end
 
-  describe "characterize" do
-
-
-    context "makes a datastream" do
-      before do
-        subject.add_file(File.open(fixture_path + '/world.png'), 'content', 'world.png')
-        subject.characterize
-        # characterize method saves
-      end
-      let(:datastream) { subject.characterization }
-      let(:xml) { datastream.ng_xml }
-      let(:namespace) { {'ns'=>'http://hul.harvard.edu/ois/xml/ns/fits/fits_output'} }
-      it "should return expected results when called", unless: $in_travis do
-        expect(xml.xpath('//ns:imageWidth/text()', namespace).inner_text).to eq '50'
-      end
-    end
-
-    context "after characterization" do
-      before do
-        myfile = GenericFile.new
-        myfile.add_file(File.open(fixture_path + '/sufia/sufia_test4.pdf', 'rb').read, 'content', 'sufia_test4.pdf')
-        myfile.apply_depositor_metadata('mjg36')
-        # characterize method saves
-        myfile.characterize
-        @myfile = myfile.reload
-      end
-      after do
-        @myfile.destroy
-      end
-      it "should return expected results after a save" do
-        expect(@myfile.file_size).to eq ['218882']
-        expect(@myfile.original_checksum).to eq ['5a2d761cab7c15b2b3bb3465ce64586d']
-
-        expect(@myfile.characterization_terms[:format_label]).to eq ["Portable Document Format"]
-        expect(@myfile.characterization_terms[:mime_type]).to eq "application/pdf"
-        expect(@myfile.characterization_terms[:file_size]).to eq ["218882"]
-        expect(@myfile.characterization_terms[:original_checksum]).to eq ["5a2d761cab7c15b2b3bb3465ce64586d"]
-        expect(@myfile.characterization_terms.keys).to include(:last_modified, :filename)
-
-        expect(@myfile.title).to include("Microsoft Word - sample.pdf.docx")
-        expect(@myfile.filename[0]).to eq 'sufia_test4.pdf'
-
-        @myfile.append_metadata
-        expect(@myfile.format_label).to eq ["Portable Document Format"]
-        expect(@myfile.title).to include("Microsoft Word - sample.pdf.docx")
-
-        expect(@myfile.full_text.content).to eq("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMicrosoft Word - sample.pdf.docx\n\n\n \n \n\n \n\n \n\n \n\nThis PDF file was created using CutePDF. \n\nwww.cutepdf.com")
-      end
-    end
-  end
-
   context "with rightsMetadata" do
     subject do
       m = GenericFile.new()
