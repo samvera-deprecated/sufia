@@ -251,6 +251,22 @@ To change what happens to files that fail validation add an after_validation hoo
     end
 ```
 
+### How to fix Kaminari routing errors
+
+When running the app from ```/spec/internal```, you'll get an error like this on some pages:
+```
+No route matches {:action=>"index", :controller=>"my/files", :page=>nil, :per_page=>"3"}
+```
+
+This is a missing feature in Kaminari. There's a pull request to add it here: https://github.com/amatsuda/kaminari/pull/322.
+
+The temporary workaround is to add this line to your ```/spec/internal/Gemfile```:
+```
+gem 'kaminari', github: 'harai/kaminari', branch: 'route_prefix_prototype'
+```
+
+Once that gets fixed in Kaminari and updated in Blacklight, we won't need to do this anymore.
+
 ## Acknowledgments
 
 This software has been developed by and is brought to you by the Hydra community.  Learn more at the
