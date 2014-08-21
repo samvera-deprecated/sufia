@@ -14,7 +14,7 @@ describe FileUsage, :type => :model do
 
   # This is what the data looks like that's returned from Google Analytics (GA) via the Legato gem
   # Due to the nature of querying GA, testing this data in an automated fashion is problematc.
-  # Sample data structures were created by sending real events to GA from a test instance of 
+  # Sample data structures were created by sending real events to GA from a test instance of
   # Scholarsphere.  The data below are essentially a "cut and paste" from the output of query
   # results from the Legato gem.
 
@@ -82,7 +82,7 @@ describe FileUsage, :type => :model do
     it "should return an array of hashes for use with JQuery Flot" do
       expect(usage.to_flot[0][:label]).to eq("Pageviews")
       expect(usage.to_flot[1][:label]).to eq("Downloads")
-      expect(usage.to_flot[0][:data]).to include([1388534400000, 4], [1388620800000, 8], [1388707200000, 6], [1388793600000, 10], [1388880000000, 2]) 
+      expect(usage.to_flot[0][:data]).to include([1388534400000, 4], [1388620800000, 8], [1388707200000, 6], [1388793600000, 10], [1388880000000, 2])
       expect(usage.to_flot[1][:data]).to include([1388534400000, 1], [1388620800000, 1], [1388707200000, 2], [1388793600000, 3],  [1388880000000, 5])
     end
 
@@ -139,5 +139,4 @@ describe FileUsage, :type => :model do
 
     end
   end
-
 end

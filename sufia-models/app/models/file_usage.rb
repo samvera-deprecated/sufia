@@ -19,8 +19,8 @@ class FileUsage
   def total_pageviews
     self.pageviews.map(&:marshal_dump).reduce(0) { |total, result| total + result[:pageviews].to_i }
   end
-  
-  # Package data for visualization using JQuery Flot 
+
+  # Package data for visualization using JQuery Flot
   def to_flot
     [
       { label: "Pageviews",  data: pageviews_to_flot },
