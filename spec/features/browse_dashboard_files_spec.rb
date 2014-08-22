@@ -67,7 +67,7 @@ describe "Browse Dashboard" do
     end
 
     it "should allow me to edit files in batches" do
-      pending "Need to enable javascript testing"
+      skip "Need to enable javascript testing"
       first('input#check_all').click
       click_button('Edit Selected')
       expect(page).to have_content('3 files')
