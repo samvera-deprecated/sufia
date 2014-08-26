@@ -7,14 +7,10 @@
 <% end %>
 
 <%= content_for :sidebar do %>
-  
-  <div class="row">
-    <div class="portal"><%= render partial: "dashboard/_index_partials/stats" %></div>
-  </div>
 
-  <div class="row">
-    <div class="portal"><%= render partial: "dashboard/_index_partials/user_info" %></div>
-  </div>
+    <%= render partial: "dashboard/_index_partials/stats" %>
+
+    <%= render partial: "dashboard/_index_partials/user_info" %>
 
 <% end %>
 
