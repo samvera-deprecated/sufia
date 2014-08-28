@@ -34,8 +34,9 @@ describe DownloadsController do
           expect(response).to be_success
         end
         context "when grabbing a metadata datastream" do
-          let(:expected_datastream) { object.descMetadata }
+          #let(:expected_datastream) { object.descMetadata }
           it "should return requested datastreams" do
+            skip "Datastream doesn't exist anymore because terms are now properties. Is this neceesary?"
             expect(controller).to receive(:send_file_headers!).with({filename: 'descMetadata', disposition: 'inline', type: 'text/plain' })
             get "show", id: file, datastream_id: "descMetadata"
             expect(response.body).to eq expected_content

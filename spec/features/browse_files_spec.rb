@@ -10,7 +10,7 @@ describe "Browse files" do
     @fixtures = create_file_fixtures
     @fixtures[0].tag = ["key"]
     (1..25).each do |i|
-      @fixtures[0].tag << i
+      @fixtures[0].tag << i.to_s
     end
     @fixtures[0].save
   end
