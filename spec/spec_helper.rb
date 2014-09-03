@@ -19,6 +19,7 @@ require 'capybara/rspec'
 require 'capybara/rails'
 require 'equivalent-xml/rspec_matchers'
 require 'database_cleaner'
+require 'byebug' unless ENV['TRAVIS']
 
 require File.expand_path('../support/features', __FILE__)
 
