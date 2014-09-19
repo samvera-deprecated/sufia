@@ -11,13 +11,7 @@ module Features
     end
 
     def sign_in(who = :user)
-      user = if who.instance_of?(User)
-        who
-      else
-        FactoryGirl.build(:user).tap do |u|
-          u.save!
-        end
-      end
+      user = who.is_a?(User) ? who : FactoryGirl.find_or_create(who)
       visit new_user_session_path
       fill_in 'Email', with: user.email
       fill_in 'Password', with: user.password
