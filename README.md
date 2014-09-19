@@ -32,7 +32,7 @@ Sufia has the following features:
 * Full-text indexing & searching
 * Responsive, fluid, Bootstrap 3-based UI
 * Dynamically configurable featured works and researchers on homepage
-* Proxy deposit and transfers of ownership (coming soon!)
+* Proxy deposit and transfers of ownership
 
 ## License
 
@@ -119,8 +119,8 @@ Turbolinks does not mix well with Blacklight.
 
 #### Kaminari
 
-The line with kaminari listed as a dependency in Gemfile is a temporary fix to address a 
-[problem](https://github.com/amatsuda/kaminari/pull/322) in the current release of kaminari. 
+The line with kaminari listed as a dependency in Gemfile is a temporary fix to address a
+[problem](https://github.com/amatsuda/kaminari/pull/322) in the current release of kaminari.
 Technically you should not have to list kaminari, which is a dependency of blacklight and sufia.
 
 #### Bundler
