@@ -22,8 +22,8 @@ module Sufia
         end
       end
 
-      def logs(dsid)
-        ChecksumAuditLog.where(dsid: dsid, pid: self.pid).order('created_at desc, id desc')
+      def logs()
+        ChecksumAuditLog.where(pid: self.pid).order('created_at desc, id desc')
       end
 
       def audit!
