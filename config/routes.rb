@@ -58,18 +58,18 @@ Sufia::Engine.routes.draw do
   # Preserves existing behavior by maintaining paths to /dashboard
   # Routes actions to the various My controllers
   scope :dashboard do
-    get '/files',             controller: 'my/files', action: :index, as: 'dashboard_files'
-    get '/files/page/:page',  controller: 'my/files', action: :index
-    get '/files/facet/:id',   controller: 'my/files', action: :facet, as: 'dashboard_files_facet'
-    
+    get '/files',              controller: 'my/files', action: :index, as: 'dashboard_files'
+    get '/files(/page/:page)', controller: 'my/files', action: :index
+    get '/files/facet/:id',    controller: 'my/files', action: :facet, as: 'dashboard_files_facet'
+
     get '/collections',             controller: 'my/collections', action: :index, as: 'dashboard_collections'
     get '/collections/page/:page',  controller: 'my/collections', action: :index
     get '/collections/facet/:id',   controller: 'my/collections', action: :facet, as: 'dashboard_collections_facet'
-    
+
     get '/highlights',            controller: 'my/highlights', action: :index, as: 'dashboard_highlights'
     get '/highlights/page/:page', controller: 'my/highlights', action: :index
     get '/highlights/facet/:id',  controller: 'my/highlights', action: :facet, as: 'dashboard_highlights_facet'
-    
+
     get '/shares',            controller: 'my/shares', action: :index, as: 'dashboard_shares'
     get '/shares/page/:page', controller: 'my/shares', action: :index
     get '/shares/facet/:id',  controller: 'my/shares', action: :facet, as: 'dashboard_shares_facet'
