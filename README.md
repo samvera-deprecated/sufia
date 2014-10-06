@@ -1,12 +1,5 @@
 # Sufia [![Version](https://badge.fury.io/rb/sufia.png)](http://badge.fury.io/rb/sufia) [![Build Status](https://travis-ci.org/projecthydra/sufia.png?branch=master)](https://travis-ci.org/projecthydra/sufia) [![Dependency Status](https://gemnasium.com/projecthydra/sufia.png)](https://gemnasium.com/projecthydra/sufia) [![Stories in Ready](https://badge.waffle.io/waffleio/waffle.io.png)](https://waffle.io/ualbertalib/sufia)
 
-# Please Note!
-Sufia is currently in transition to a new 4.0 release scheduled for late summer 2014.  If wish to use Sufia now,
-please ensure you using version 3.7.2, available from RubyGems.org. For documentation specific to this version,
-please consult the [Sufia 3.7.2 documentation](http://rubydoc.info/gems/sufia/3.7.2/frames).
-
-If you have questions or need help, please email `hydra-tech@googlegroups.com`
-
 ## What is Sufia?
 Sufia is a component that adds self-deposit institutional repository features to a Rails app.
 Sufia is created with Ruby on Rails and builds on the Hydra Framework.
@@ -41,6 +34,14 @@ Sufia has the following features:
 * Dynamically configurable featured works and researchers on homepage
 * Proxy deposit and transfers of ownership (coming soon!)
 
+## License
+
+Sufia is available under [the Apache 2.0 license](LICENSE.md).
+
+## Contributing
+
+We'd love to accept your contributions.  Please see our guide to [contributing to Sufia](CONTRIBUTING.md).
+
 ## Sufia needs the following software to work:
 1. Solr
 1. [Fedora Commons](http://www.fedora-commons.org/) digital repository
@@ -51,21 +52,28 @@ Sufia has the following features:
 
 #### !! Ensure that you have all of the above components installed before you continue. !!
 
+## Need Help?
+
+If you have questions or need help, please email [the Hydra community development list](mailto:hydra-tech@googlegroups.com).
+
 ## Creating an application
+
 ### Generate base Rails install
+
 ```rails new my_app```
+
 ### Add gems to Gemfile
+
 ```
-gem 'sufia'
+gem 'sufia', '~> 4.0.0'
 gem 'kaminari', github: 'harai/kaminari', branch: 'route_prefix_prototype'  # required to handle pagination properly in dashboard. See https://github.com/amatsuda/kaminari/pull/322
 ```
-Then `bundle install`
 
-Note the line with kaminari listed as a dependency.  This is a temporary fix to address a problem in the current release of kaminari. Technically you should not have to list kaminari, which is a dependency of blacklight and sufia.
+Then `bundle install`
 
 ### Run the sufia generator
 ```
-rails g sufia -f
+rails generate sufia:install -f
 ```
 
 ### Run the migrations
@@ -106,6 +114,30 @@ Add this line at the bottom of the file:
 ```
 
 Turbolinks does not mix well with Blacklight.
+
+### Install Notes
+
+#### Kaminari
+
+The line with kaminari listed as a dependency in Gemfile is a temporary fix to address a 
+[problem](https://github.com/amatsuda/kaminari/pull/322) in the current release of kaminari. 
+Technically you should not have to list kaminari, which is a dependency of blacklight and sufia.
+
+#### Bundler
+
+Users have reported problems with the initial `bundle install` command, seeing an error such as:
+
+```
+Bundler could not find compatible versions for gem "bootstrap-sass":
+  In Gemfile:
+    sufia (~> 4.0.0) ruby depends on
+      bootstrap-sass (< 3.2) ruby
+
+    sufia (~> 4.0.0) ruby depends on
+      bootstrap-sass (3.2.0.2)
+```
+
+The solution is to update your bundler gem to the latest version.
 
 ### Analytics
 
@@ -179,7 +211,7 @@ config.browse_everything = BrowseEverything.config
         * OR
     1. By adding/changing config/initializers/sufia.rb to point to your fits location:   `config.fits_path = "/<your full path>/fits.sh"`
 1. You may additionally need to chmod the fits.sh (chmod a+x fits.sh)
-1. You may need to restart your shell to pick up the changes to you path
+1. You may need to restart your shell to pick up the changes to your path
 1. You should be able to run "fits.sh" from the command line and see a help message
 
 ### Start background workers
@@ -227,6 +259,8 @@ See https://ffmpeg.org/trac/ffmpeg/wiki/UbuntuCompilationGuide
 This information is for people who want to modify the engine itself, not an application that uses the engine:
 
 ### run the tests
+
+```
 rake clean spec
 ```
 
@@ -243,3 +277,10 @@ To change what happens to files that fail validation add an after_validation hoo
       end
     end
 ```
+
+## Acknowledgments
+
+This software has been developed by and is brought to you by the Hydra community.  Learn more at the
+[Project Hydra website](http://projecthydra.org)
+
+![Project Hydra Logo](https://github.com/uvalib/libra-oa/blob/a6564a9e5c13b7873dc883367f5e307bf715d6cf/public/images/powered_by_hydra.png?raw=true)

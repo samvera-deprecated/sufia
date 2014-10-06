@@ -20,10 +20,15 @@ describe "Browse Dashboard" do
       visit "dashboard/files"
     end
 
-    it "should show me files that are not part of any collection" do
+    it "should display all the necessary information" do
       expect(page).to have_content("Edit File")
       expect(page).to have_content("Download File")
       expect(page).to_not have_content("Is part of:")
+      first(".label-success") do
+        expect(page).to have_content("Open Access")
+      end
+      expect(page).to have_link("Create Collection")
+      expect(page).to have_link("Upload")
     end
 
     it "should allow you to search your own files and remove constraints" do
@@ -42,7 +47,7 @@ describe "Browse Dashboard" do
       click_link "more Subjects"
       click_link "consectetur"
       within("#document_#{@fixtures[1].noid}") do
-        click_link "Test Document MP3.mp3"
+        click_link "Display all details of Test Document MP3.mp3"
       end
       expect(page).to have_content("File Details")
     end
@@ -66,14 +71,6 @@ describe "Browse Dashboard" do
       first('input#check_all').click
       click_button('Edit Selected')
       expect(page).to have_content('3 files')
-    end
-
-    it "should display a button for uploading files" do
-      click_link('Upload')
-    end
-
-    it "should display a button for creating collections" do
-      click_link('Create Collection')
     end
 
   end

@@ -74,10 +74,8 @@ describe GenericFilesController do
     end
 
     it "should record what user created the first version of content" do
-      #GenericFile.any_instance.stub(:to_solr).and_return({})
       file = fixture_file_upload('/world.png','image/png')
-      xhr :post, :create, files: [file], Filename: "The world", terms_of_service: "1"
-
+      xhr :post, :create, files: [file], Filename: "The world", batch_id: "sample:batch_id", permission: {"group"=>{"public"=>"read"} }, terms_of_service: "1"
       saved_file = GenericFile.find('test:123')
       version = saved_file.content.latest_version
       version.versionID.should == "content.0"
@@ -257,6 +255,17 @@ describe GenericFilesController do
       Sufia.queue.should_receive(:push).with(s1).once
       delete :destroy, id: @generic_file.pid
     end
+
+    context "when the file is featured" do
+      before do
+        FeaturedWork.create(generic_file_id: @generic_file.pid)
+      end
+      it "should make the file not featured" do
+        expect(FeaturedWorkList.new.featured_works.map(&:generic_file_id)).to include(@generic_file.pid)
+        delete :destroy, id: @generic_file.pid
+        expect(FeaturedWorkList.new.featured_works.map(&:generic_file_id)).to_not include(@generic_file.pid)
+      end
+    end
   end
 
   describe 'stats' do
@@ -273,7 +282,6 @@ describe GenericFilesController do
 
     context 'when user has access to file' do
       before do
-        sign_in @user
         mock_query = double('query')
         allow(mock_query).to receive(:for_path).and_return([
             OpenStruct.new(date: '2014-01-01', pageviews: 4),
@@ -283,7 +291,7 @@ describe GenericFilesController do
             OpenStruct.new(date: '2014-01-05', pageviews: 2)])
         allow(mock_query).to receive(:map).and_return(mock_query.for_path.map(&:marshal_dump))
         profile = double('profile')
-        allow(profile).to receive(:pageview).and_return(mock_query)
+        allow(profile).to receive(:sufia__pageview).and_return(mock_query)
         allow(Sufia::Analytics).to receive(:profile).and_return(profile)
 
         download_query = double('query')
@@ -291,13 +299,27 @@ describe GenericFilesController do
           OpenStruct.new(eventCategory: "Files", eventAction: "Downloaded", eventLabel: "sufia:123456789", totalEvents: "3")
         ])
         allow(download_query).to receive(:map).and_return(download_query.for_file.map(&:marshal_dump))
-        allow(profile).to receive(:download).and_return(download_query)
+        allow(profile).to receive(:sufia__download).and_return(download_query)
       end
 
       it 'renders the stats view' do
         get :stats, id: @generic_file.noid
         expect(response).to be_success
         expect(response).to render_template(:stats)
+      end
+
+      context "user is not signed in but the file is public" do
+        before do
+          sign_out @user
+          @generic_file.read_groups = ['public']
+          @generic_file.save
+        end
+
+        it 'renders the stats view' do
+          get :stats, id: @generic_file.noid
+          expect(response).to be_success
+          expect(response).to render_template(:stats)
+        end
       end
     end
 
@@ -332,7 +354,7 @@ describe GenericFilesController do
       Sufia.queue.should_receive(:push).with(s1).once
       @user = FactoryGirl.find_or_create(:jill)
       sign_in @user
-      post :update, id: generic_file, generic_file: {title: 'new_title', tag: [''], permissions: { new_user_name: {'archivist1'=>'edit'}}}
+      post :update, id: generic_file, generic_file: {title: ['new_title'], tag: [''], permissions: { new_user_name: {'archivist1'=>'edit'}}}
       @user.delete
     end
 
@@ -524,6 +546,10 @@ describe GenericFilesController do
         response.should_not redirect_to(action: 'show')
         flash[:alert].should be_nil
       end
+      it "should set the breadcrumbs" do
+        expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.title'), Sufia::Engine.routes.url_helpers.dashboard_index_path)
+        get :show, id: "test5"
+      end
     end
     describe "flash" do
       it "should not let the user submit if they logout" do
@@ -545,8 +571,7 @@ describe GenericFilesController do
         end
         it "should display failing audits" do
           sign_in @archivist
-          @ds = @file.datastreams.first
-          AuditJob.new(@file.pid, @ds[0], @ds[1].versionID).run
+          AuditJob.new(@file.pid, "RELS-EXT", @file.rels_ext.versionID).run
           get :show, id: "test5"
           assigns[:notify_number].should == 1
           @archivist.mailbox.inbox[0].messages[0].subject.should == "Failing Audit Run"

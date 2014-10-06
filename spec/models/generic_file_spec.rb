@@ -250,9 +250,9 @@ describe GenericFile do
         f.should respond_to(:log_event)
       end
       it "should be able to set values via delegated methods" do
-        subject.related_url = "http://example.org/"
-        subject.creator = "John Doe"
-        subject.title = "New work"
+        subject.related_url = ["http://example.org/"]
+        subject.creator = ["John Doe"]
+        subject.title = ["New work"]
         subject.save
         f = subject.reload
         f.related_url.should == ["http://example.org/"]
@@ -260,13 +260,13 @@ describe GenericFile do
         f.title.should == ["New work"]
       end
       it "should be able to be added to w/o unexpected graph behavior" do
-        subject.creator = "John Doe"
-        subject.title = "New work"
+        subject.creator = ["John Doe"]
+        subject.title = ["New work"]
         subject.save
         f = subject.reload
         f.creator.should == ["John Doe"]
         f.title.should == ["New work"]
-        f.creator = "Jane Doe"
+        f.creator = ["Jane Doe"]
         f.title << "Newer work"
         f.save
         f = subject.reload
@@ -278,24 +278,24 @@ describe GenericFile do
   describe "to_solr" do
     before do
       allow(subject).to receive(:pid).and_return('stubbed_pid')
-      subject.part_of = "Arabiana"
-      subject.contributor = "Mohammad"
-      subject.creator = "Allah"
-      subject.title = "The Work"
-      subject.description = "The work by Allah"
-      subject.publisher = "Vertigo Comics"
-      subject.date_created = "1200-01-01"
+      subject.part_of = ["Arabiana"]
+      subject.contributor = ["Mohammad"]
+      subject.creator = ["Allah"]
+      subject.title = ["The Work"]
+      subject.description = ["The work by Allah"]
+      subject.publisher = ["Vertigo Comics"]
+      subject.date_created = ["1200-01-01"]
       subject.date_uploaded = Date.parse("2011-01-01")
       subject.date_modified = Date.parse("2012-01-01")
-      subject.subject = "Theology"
-      subject.language = "Arabic"
-      subject.rights = "Wide open, buddy."
-      subject.resource_type = "Book"
-      subject.identifier = "urn:isbn:1234567890"
-      subject.based_near = "Medina, Saudi Arabia"
-      subject.related_url = "http://example.org/TheWork/"
+      subject.subject = ["Theology"]
+      subject.language = ["Arabic"]
+      subject.rights = ["Wide open, buddy."]
+      subject.resource_type = ["Book"]
+      subject.identifier = ["urn:isbn:1234567890"]
+      subject.based_near = ["Medina, Saudi Arabia"]
+      subject.related_url = ["http://example.org/TheWork/"]
       subject.mime_type = "image/jpeg"
-      subject.format_label = "JPEG Image"
+      subject.format_label = ["JPEG Image"]
       subject.full_text.content = 'abcxyz'
     end
     it "supports to_solr" do
@@ -362,15 +362,14 @@ describe GenericFile do
         gf.apply_depositor_metadata(u)
         gf.save!
       end
-      @t = Trophy.create(user_id: u.id, generic_file_id: @f.pid)
+      @t = Trophy.create(user_id: u.id, generic_file_id: @f.noid)
     end
     it "should have a trophy" do
-      Trophy.where(generic_file_id: @f.pid).count.should == 1
+      expect(Trophy.where(generic_file_id: @f.noid).count).to eq 1
     end
     it "should remove all trophies when file is deleted" do
-      @f.should_receive(:cleanup_trophies)
       @f.destroy
-      Trophy.where(generic_file_id: @f.pid).count.should == 0
+      expect(Trophy.where(generic_file_id: @f.noid).count).to eq 0
     end
   end
 
@@ -452,39 +451,46 @@ describe GenericFile do
 
   end
 
-  describe "related_files" do
-    let(:batch_id) { "foobar:100" }
-    before(:each) do
-      @f1 = GenericFile.new
-      @f2 = GenericFile.new
-      @f3 = GenericFile.new
-      @f1.apply_depositor_metadata('mjg36')
-      @f2.apply_depositor_metadata('mjg36')
-      @f3.apply_depositor_metadata('mjg36')
+  describe "#related_files" do
+    let!(:f1) do
+      GenericFile.new.tap do |f|
+        f.apply_depositor_metadata('mjg36')
+        f.batch_id = batch_id
+        f.save
+      end
+    end
+    let!(:f2) do
+      GenericFile.new.tap do |f|
+        f.apply_depositor_metadata('mjg36')
+        f.batch_id = batch_id
+        f.save
+      end
+    end
+    let!(:f3) do
+      GenericFile.new.tap do |f|
+        f.apply_depositor_metadata('mjg36')
+        f.batch_id = batch_id
+        f.save
+      end
     end
 
-    describe "when the files belong to a batch" do
-      after(:each) do
-        @f1.delete
-        @f2.delete
-        @f3.delete
-      end
-      before do
-        @f1.add_relationship("isPartOf", "info:fedora/#{@batch_id}")
-        @f2.add_relationship("isPartOf", "info:fedora/#{@batch_id}")
-        @f3.add_relationship("isPartOf", "info:fedora/#{@batch_id}")
-        @f1.save!
-        @f2.save!
-        @f3.save!
-      end
-      it "should never return a file in its own related_files method" do
-        @f1.related_files.should match_array [@f2, @f3]
-        @f2.related_files.should match_array [@f1, @f3]
-        @f3.related_files.should match_array [@f1, @f2]
+    context "when the files belong to a batch" do
+      let(:batch) { Batch.create }
+      let(:batch_id) { batch.id }
+
+      it "shouldn't return itself from the related_files method" do
+        expect(f1.related_files).to match_array [f2, f3]
+        expect(f2.related_files).to match_array [f1, f3]
+        expect(f3.related_files).to match_array [f1, f2]
       end
     end
-    it "should return an empty array when there are no related files" do
-      @f1.related_files.should == []
+
+    context "when there are no related files" do
+      let(:batch_id) { nil }
+
+      it "should return an empty array when there are no related files" do
+        expect(f1.related_files).to eq []
+      end
     end
   end
   describe "noid integration" do
@@ -1022,7 +1028,7 @@ describe GenericFile do
      f2 = GenericFile.find(subject.id)
      f2.reload_on_save = true
      f1.mime_type = "video/abc123"
-     f2.title = "abc123"
+     f2.title = ["abc123"]
      f1.save
      mime_type_key = Solrizer.solr_name("mime_type")
      title_key = Solrizer.solr_name("desc_metadata__title", :stored_searchable, type: :string)

@@ -28,9 +28,7 @@ module Sufia
       config.max_notifications_for_dashboard = 5
 
       config.autoload_paths += %W(
-        #{config.root}/lib/sufia/models/jobs
         #{config.root}/app/models/datastreams
-        #{config.root}/app/models/concerns
       )
 
       rake_tasks do
@@ -45,7 +43,6 @@ module Sufia
       initializer 'requires' do
         require 'activerecord-import'
         require 'hydra/derivatives'
-        require 'sufia/models/model_methods'
         require 'sufia/models/file_content'
         require 'sufia/models/file_content/versions'
         require 'sufia/models/user_local_directory_behavior'

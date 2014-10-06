@@ -9,6 +9,7 @@
  *= require featured
  *= require usage-stats
  *= require nestable
+ *= require catalog
 */
 
 @import 'bootstrap';
@@ -22,6 +23,7 @@
 @import 'styles';
 @import 'file-listing';
 @import 'collections';
+@import 'batch-edit';
 
 #browse-everything {
   top:10%;
@@ -50,5 +52,9 @@
  *    http://stackoverflow.com/a/19938049/446681
  */
 .visible-all-inline-block {
+  display: inline-block;
+}
+
+.button_to-inline {
   display: inline-block;
 }

@@ -8,7 +8,7 @@ module Sufia::HomepageController
     include Sufia::Controller
     include Blacklight::SolrHelper
 
-    self.solr_search_params_logic += [:only_generic_files]
+    self.solr_search_params_logic += [:only_generic_files, :add_access_controls_to_solr_params]
     layout 'homepage'
   end
 
@@ -27,7 +27,7 @@ module Sufia::HomepageController
   end
 
   def sort_field
-    "#{Solrizer.solr_name('system_create', :sortable)} desc"
+    "#{Solrizer.solr_name('system_create', :stored_sortable, type: :date)} desc"
   end
 
   # Limits search results just to GenericFiles

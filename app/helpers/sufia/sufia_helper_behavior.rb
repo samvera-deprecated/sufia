@@ -5,14 +5,21 @@ module Sufia
     # example:
     #   config.index.thumbnail_method = :sufia_thumbnail_tag
     def sufia_thumbnail_tag(document, options)
-      path = if document.image? || document.pdf? || document.video? || document.office_document?
-        sufia.download_path document.noid, datastream_id: 'thumbnail'
-      elsif document.audio?
-        "audio.png"
+      # collection
+      if (document.collection?)
+        content_tag(:span, "", class: "glyphicon glyphicon-th collection-icon-search")
+
+      # file
       else
-        "default.png"
+        path = if document.image? || document.pdf? || document.video? || document.office_document?
+          sufia.download_path document.noid, datastream_id: 'thumbnail'
+        elsif document.audio?
+          "audio.png"
+        else
+          "default.png"
+        end
+        image_tag path, options
       end
-      image_tag path, options
     end
 
     # Create a link back to the dashboard screen, keeping the user's facet, query and paging choices intact by using session.
@@ -117,6 +124,21 @@ module Sufia
         search_action_for_dashboard
       else  
         catalog_index_path
+      end
+    end
+
+    def render_visibility_link document
+      link_to render_visibility_label(document), sufia.edit_generic_file_path(document.noid, {anchor: "permissions_display"}),
+        id: "permission_"+document.noid, class: "visibility-link"
+    end
+
+    def render_visibility_label document
+      if document.registered?
+        content_tag :span, t('sufia.institution_name'), class: "label label-info", title: t('sufia.institution_name')
+      elsif document.public?
+        content_tag :span, t('sufia.visibility.open'), class: "label label-success", title: t('sufia.visibility.open')
+      else
+        content_tag :span, t('sufia.visibility.private'), class: "label label-danger", title: t('sufia.visibility.private')
       end
     end
 

@@ -17,18 +17,19 @@ module Sufia::GenericFile
       generic_file.apply_depositor_metadata(user)
       generic_file.date_uploaded = Date.today
       generic_file.date_modified = Date.today
-      generic_file.creator = user.name
+      generic_file.creator = [user.name]
 
       if batch_id
-        generic_file.add_relationship("isPartOf", "info:fedora/#{Sufia::Noid.namespaceize(batch_id)}")
+        generic_file.batch_id = Sufia::Noid.namespaceize(batch_id)
       else
-        logger.warn "unable to find batch to attach to"
+        ActiveFedora::Base.logger.warn "unable to find batch to attach to"
       end
       yield(generic_file) if block_given?
     end
 
     def create_content(file, file_name, dsid)
-      generic_file.add_file(file, dsid, file_name)
+      fname = generic_file.label.blank? ? file_name.truncate(255) : generic_file.label
+      generic_file.add_file(file, dsid, fname)
       save_characterize_and_record_committer do
         if Sufia.config.respond_to?(:after_create_content)
           Sufia.config.after_create_content.call(generic_file, user)
@@ -57,8 +58,9 @@ module Sufia::GenericFile
 
     def update_metadata(attributes, visibility)
       generic_file.attributes = generic_file.sanitize_attributes(attributes)
-      generic_file.visibility = visibility
+      update_visibility(visibility)
       generic_file.date_modified = DateTime.now
+      remove_from_feature_works if generic_file.visibility_changed? && !generic_file.public?
       save_and_record_committer do
         if Sufia.config.respond_to?(:after_update_metadata)
           Sufia.config.after_update_metadata.call(generic_file, user)
@@ -69,6 +71,7 @@ module Sufia::GenericFile
     def destroy
       pid = generic_file.pid  #Work around for https://github.com/projecthydra/active_fedora/issues/422
       generic_file.destroy
+      FeaturedWork.where(generic_file_id: pid).destroy_all
       if Sufia.config.respond_to?(:after_destroy)
         Sufia.config.after_destroy.call(pid, user)
       end
@@ -87,7 +90,7 @@ module Sufia::GenericFile
       begin
         return false unless generic_file.save
       rescue RSolr::Error::Http => error
-        logger.warn "Sufia::GenericFile::Actor::save_and_record_committer Caught RSOLR error #{error.inspect}"
+        ActiveFedora::Base.logger.warn "Sufia::GenericFile::Actor::save_and_record_committer Caught RSOLR error #{error.inspect}"
         save_tries+=1
         # fail for good if the tries is greater than 3
         raise error if save_tries >=3
@@ -107,12 +110,26 @@ module Sufia::GenericFile
       def virus_check(file)
         path = file.is_a?(String) ? file : file.path
         unless defined?(ClamAV)
-          logger.warn "Virus checking disabled, #{path} not checked"
+          ActiveFedora::Base.logger.warn "Virus checking disabled, #{path} not checked"
           return
         end
         scan_result = ClamAV.instance.scanfile(path)
         raise Sufia::VirusFoundError.new("A virus was found in #{path}: #{scan_result}") unless scan_result == 0
       end
     end
+
+    protected
+
+      # This method can be overridden in case there is a custom approach for visibility (e.g. embargo)
+      def update_visibility(visibility)
+        generic_file.visibility = visibility
+      end
+
+    private
+      def remove_from_feature_works
+        featured_work = FeaturedWork.find_by_generic_file_id(generic_file.noid)
+        featured_work.destroy unless featured_work.nil?
+      end
+
   end
 end

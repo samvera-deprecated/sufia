@@ -106,7 +106,7 @@ Blacklight.onLoad(function() {
   $(".tagcloud").blacklightTagCloud({
     size: {start: 0.9, end: 2.5, unit: 'em'},
     cssHooks: {granularity: 15},
-    // color: {start: '#cde', end: '#f52'}
+    color: {start: '#0F0', end: '#F00'}
   });
 
 
@@ -115,11 +115,11 @@ Blacklight.onLoad(function() {
    */
   $("li.expandable").click(function(){
     $(this).next("ul").slideToggle();
-    $(this).find('i').toggleClass("glyphicon glyphicon-chevron-down");
+    $(this).find('i').toggleClass("glyphicon-chevron-right glyphicon-chevron-down");
   });
 
   $("li.expandable_new").click(function(){
-    $(this).find('i').toggleClass("glyphicon glyphicon-chevron-down");
+    $(this).find('i').toggleClass("glyphicon-chevron-right glyphicon-chevron-down");
   });
 
   $(".sorts-dash").click(function(){

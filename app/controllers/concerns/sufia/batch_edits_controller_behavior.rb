@@ -1,9 +1,11 @@
 module Sufia
   module BatchEditsControllerBehavior
     extend ActiveSupport::Concern
-    
+    include Sufia::Breadcrumbs
+
     included do
       layout "sufia-one-column"
+      before_filter :build_breadcrumbs, only: :edit
     end
 
     def edit
@@ -40,8 +42,12 @@ module Sufia
     end
 
     def after_update
-      redirect_to sufia.dashboard_files_path unless request.xhr?
+      redirect_to_return_controller unless request.xhr?
     end
+
+    def after_destroy_collection
+      redirect_to_return_controller unless request.xhr?
+    end 
 
     def update_document(obj)
       super
@@ -86,5 +92,14 @@ module Sufia
          file[key] = attributes[key].empty? ? [''] : attributes[key]
        end
     end
+
+    def redirect_to_return_controller
+      if params[:return_controller]
+        redirect_to sufia.url_for(controller: params[:return_controller], only_path: true)
+      else
+        redirect_to sufia.dashboard_index_path
+      end
+    end
+
   end
 end
