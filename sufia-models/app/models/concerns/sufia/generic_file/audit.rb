@@ -22,7 +22,7 @@ module Sufia
         end
       end
 
-      def logs()
+      def logs
         ChecksumAuditLog.where(pid: self.pid).order('created_at desc, id desc')
       end
 
