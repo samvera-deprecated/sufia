@@ -1,16 +1,15 @@
 class ChecksumAuditLog < ActiveRecord::Base
 
-  def ChecksumAuditLog.get_audit_log(version)
-    ChecksumAuditLog.find_or_create_by_pid_and_dsid_and_version(pid: version.pid,
-                                                                dsid: version.dsid,
-                                                                version: version.versionID)
+  def ChecksumAuditLog.get_audit_log(pid, version_uuid)
+    ChecksumAuditLog.find_or_create_by(:pid => pid, :version => version_uuid)
   end
 
-  def ChecksumAuditLog.prune_history(version)
+  def ChecksumAuditLog.prune_history(pid)
     ## Check to see if there are previous passing logs that we can delete
-    # we want to keep the first passing event after a failure, the most current passing event, and all failures so that this table doesn't grow too large
+    # we want to keep the first passing event after a failure, the most current passing event, 
+    # and all failures so that this table doesn't grow too large
     # Simple way (a little naieve): if the last 2 were passing, delete the first one
-    logs = GenericFile.find(version.pid).logs(version.dsid)
+    logs = GenericFile.find(pid).logs
     list = logs.limit(2)
     if list.size > 1 && (list[0].pass == 1) && (list[1].pass == 1)
       list[0].destroy

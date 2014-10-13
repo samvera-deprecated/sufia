@@ -7,11 +7,12 @@ describe ChecksumAuditLog do
     @f.add_file(File.open(fixture_path + '/world.png'), 'content', 'world.png')
     @f.apply_depositor_metadata('mjg36')
     @f.save!
-    @version = @f.datastreams['content'].versions.first
+    version = @f.datastreams['content'].versions.first
+    @version_uuid = version.to_s.split("/").last
   end
 
-  let(:old) { ChecksumAuditLog.create(pid: @f.pid, dsid: @version.dsid, version: @version.versionID, pass: 1, created_at: 2.minutes.ago)}
-  let(:new) { ChecksumAuditLog.create(pid: @f.pid, dsid: @version.dsid, version: @version.versionID, pass: 0) }
+  let(:old) { ChecksumAuditLog.create(pid: @f.pid, version: @version_uuid, pass: 1, created_at: 2.minutes.ago)}
+  let(:new) { ChecksumAuditLog.create(pid: @f.pid, version: @version_uuid, pass: 0) }
 
   after do
     @f.delete
@@ -19,23 +20,37 @@ describe ChecksumAuditLog do
   end
 
   it "should return a list of logs for this datastream sorted by date descending" do
-  skip "Skipping versions for now"
     old; new
-    @f.logs(@version.dsid).should == [new, old]
+    expect(@f.logs).to eq([new, old])
   end
 
   it "should prune history for a datastream" do
-  skip "Skipping versions for now"
     old; new
-    success1 = ChecksumAuditLog.create(pid: @f.pid, dsid: @version.dsid, version: @version.versionID, pass: 1)
-    ChecksumAuditLog.prune_history(@version)
-    success2 = ChecksumAuditLog.create(pid: @f.pid, dsid: @version.dsid, version: @version.versionID, pass: 1)
-    ChecksumAuditLog.prune_history(@version)
-    success3 = ChecksumAuditLog.create(pid: @f.pid, dsid: @version.dsid, version: @version.versionID, pass: 1)
-    ChecksumAuditLog.prune_history(@version)
-    lambda { ChecksumAuditLog.find(success2.id)}.should raise_exception ActiveRecord::RecordNotFound
-    lambda { ChecksumAuditLog.find(success3.id)}.should raise_exception ActiveRecord::RecordNotFound
-    ChecksumAuditLog.find(success1.id).should_not be_nil
-    @f.logs(@version.dsid).should == [success1, new, old]
+    
+    success1 = ChecksumAuditLog.create(pid: @f.pid, version: @version_uuid, pass: 1)
+    ChecksumAuditLog.prune_history(@f.pid)
+    success2 = ChecksumAuditLog.create(pid: @f.pid, version: @version_uuid, pass: 1)
+    ChecksumAuditLog.prune_history(@f.pid)
+    success3 = ChecksumAuditLog.create(pid: @f.pid, version: @version_uuid, pass: 1)
+    ChecksumAuditLog.prune_history(@f.pid)
+    expect { ChecksumAuditLog.find(success2.id) }.to raise_exception ActiveRecord::RecordNotFound
+    expect { ChecksumAuditLog.find(success3.id) }.to raise_exception ActiveRecord::RecordNotFound
+    
+    expect(ChecksumAuditLog.find(success1.id)).not_to be_nil
+    expect(@f.logs).to eq([success1, new, old])
   end
+
+  it "should have an audit log history" do
+    old; new
+    ChecksumAuditLog.create(pid: @f.pid, version: 'v2', pass: 1)
+
+    audit = ChecksumAuditLog.get_audit_log(@f.pid, @version_uuid)
+    expect(audit.pid).to eq(@f.pid)
+    expect(audit.version).to eq(@version_uuid)
+
+    audit = ChecksumAuditLog.get_audit_log(@f.pid, 'v2')
+    expect(audit.pid).to eq(@f.pid)
+    expect(audit.version).to eq('v2')
+  end
+
 end
