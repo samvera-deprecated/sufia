@@ -6,6 +6,7 @@ EngineCart.load_application!
 require 'mida'
 require 'rspec/rails'
 require 'rspec/its'
+require 'rspec/matchers'
 require 'rspec/active_model/mocks'
 require 'factory_girl_rails'
 require 'capybara/poltergeist'
@@ -13,6 +14,7 @@ Capybara.javascript_driver = :poltergeist
 Capybara.default_wait_time = ENV['TRAVIS'] ? 30 : 15
 require 'capybara/rspec'
 require 'capybara/rails'
+require 'equivalent-xml'
 require 'equivalent-xml/rspec_matchers'
 require 'database_cleaner'
 
@@ -96,7 +98,6 @@ RSpec.configure do |config|
 
   config.include Devise::TestHelpers, type: :controller
   config.include EngineRoutes, type: :controller
-  config.include EquivalentXml::RSpecMatchers
 
   config.include Warden::Test::Helpers, type: :feature
   config.after(:each, type: :feature) { Warden.test_reset! }
