@@ -18,5 +18,11 @@ module Features
       click_button 'Log in'
       expect(page).to_not have_text 'Invalid email or password.'
     end
+
+    def wait_for_page(redirect_url)
+      Timeout.timeout(Capybara.default_wait_time * 4) do
+        loop until current_path == redirect_url
+      end
+    end
   end
 end

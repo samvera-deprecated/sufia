@@ -19,6 +19,7 @@
 //= require jquery.validate
 //= require swfobject
 //= require ZeroClipboard.min
+//= require select2
 
 //= require flot/excanvas
 //= require flot/jquery.flot

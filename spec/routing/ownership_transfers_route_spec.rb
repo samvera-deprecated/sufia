@@ -34,8 +34,8 @@ describe "proxy deposit and transfers routing" do
   end
 
   it "adds a proxy depositor" do
-    expect(user_depositors_path('xxx666')).to eq '/users/xxx666/depositors'
-    expect(post: '/users/xxx666/depositors').to route_to(controller: 'depositors', action: 'create', user_id: 'xxx666')
+    expect(user_depositors_path('xxx666@example.org')).to eq '/users/xxx666@example.org/depositors'
+    expect(post: '/users/xxx666@example.org/depositors').to route_to(controller: 'depositors', action: 'create', user_id: 'xxx666@example.org')
   end
 
   it "removes a proxy depositor" do
