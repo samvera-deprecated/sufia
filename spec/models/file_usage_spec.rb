@@ -2,14 +2,11 @@ require 'spec_helper'
 
 describe FileUsage, :type => :model do
 
-  before do
-    @file = GenericFile.new
-    @file.apply_depositor_metadata("awead")
-    @file.save
-  end
-
-  after do
-    @file.delete
+  let(:file) do
+    GenericFile.new.tap do |file|
+      file.apply_depositor_metadata("awead")
+      file.save
+    end
   end
 
   # This is what the data looks like that's returned from Google Analytics (GA) via the Legato gem
@@ -41,21 +38,21 @@ describe FileUsage, :type => :model do
   let(:usage) {
     allow_any_instance_of(FileUsage).to receive(:download_statistics).and_return(sample_download_statistics)
     allow_any_instance_of(FileUsage).to receive(:pageview_statistics).and_return(sample_pageview_statistics)
-    FileUsage.new(@file.id)
+    FileUsage.new(file.id)
   }
 
   describe "#initialize" do
 
     it "should set the id" do
-      expect(usage.id).to eq(@file.id)
+      expect(usage.id).to eq(file.id)
     end
 
     it "should set the path" do
-      expect(usage.path).to eq("/files/#{URI.encode(Sufia::Noid.noidify(@file.id), '/')}")
+      expect(usage.path).to eq("/files/#{URI.encode(Sufia::Noid.noidify(file.id), '/')}")
     end
 
     it "should set the created date" do
-      expect(usage.created).to eq(DateTime.parse(@file.create_date))
+      expect(usage.created).to eq(file.create_date)
     end
 
   end
@@ -102,7 +99,7 @@ describe FileUsage, :type => :model do
           allow_any_instance_of(GenericFile).to receive(:create_date).and_return(create_date.to_s)
           allow_any_instance_of(FileUsage).to receive(:download_statistics).and_return(sample_download_statistics)
           allow_any_instance_of(FileUsage).to receive(:pageview_statistics).and_return(sample_pageview_statistics)
-          FileUsage.new(@file.id)
+          FileUsage.new(file.id)
         }
         it "should set the created date to the earliest date not the created date" do
           expect(usage.created).to eq(earliest)
@@ -115,10 +112,10 @@ describe FileUsage, :type => :model do
           allow_any_instance_of(FileUsage).to receive(:download_statistics).and_return(sample_download_statistics)
           allow_any_instance_of(FileUsage).to receive(:pageview_statistics).and_return(sample_pageview_statistics)
           Sufia.config.analytic_start_date = earliest
-          FileUsage.new(@file.id)
+          FileUsage.new(file.id)
         }
         it "should set the created date to the earliest date not the created date" do
-          expect(usage.created).to eq(@file.create_date)
+          expect(usage.created).to eq(file.create_date)
         end
       end
     end
@@ -128,10 +125,10 @@ describe FileUsage, :type => :model do
       end
 
       let(:usage) {
-        allow_any_instance_of(GenericFile).to receive(:create_date).and_return(create_date.to_s)
+        allow_any_instance_of(GenericFile).to receive(:create_date).and_return(create_date)
         allow_any_instance_of(FileUsage).to receive(:download_statistics).and_return(sample_download_statistics)
         allow_any_instance_of(FileUsage).to receive(:pageview_statistics).and_return(sample_pageview_statistics)
-        FileUsage.new(@file.id)
+        FileUsage.new(file.id)
       }
       it "should set the created date to the earliest date not the created date" do
         expect(usage.created).to eq(create_date)
