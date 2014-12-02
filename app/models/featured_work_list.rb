@@ -11,8 +11,6 @@ class FeaturedWorkList
     end
   end
 
-  delegate :query, :construct_query_for_ids, to: ActiveFedora::SolrService
-
   def featured_works
     return @works if @works
     @works = FeaturedWork.all
@@ -32,7 +30,7 @@ class FeaturedWorkList
     end
 
     def solr_docs
-      query(construct_query_for_ids(ids))
+      ActiveFedora::SolrService.query(ActiveFedora::SolrQueryBuilder.construct_query_for_ids(ids))
     end
 
     def work_with_id(id)
