@@ -9,7 +9,8 @@ class BatchController < ApplicationController
     @batch =  Batch.find_or_create(params[:id])
     @generic_file = GenericFile.new
     @generic_file.creator = [current_user.name]
-    @generic_file.title = @batch.generic_files.map(&:label)
+    # We won't need to call AT::Term#result if AT #74 is closed
+    @generic_file.title = @batch.generic_files.map { |gf| gf.label.result }
     @generic_file.initialize_fields
   end
 
