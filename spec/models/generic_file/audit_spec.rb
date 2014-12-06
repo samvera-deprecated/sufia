@@ -17,6 +17,7 @@ describe "generic file audits" do
 
   context "force an audit on a file with two versions" do 
     specify "should return two log results" do
+      pending "should use new AF version interface"
       logs = f.audit(true)
       expect(logs.length).to eq(2)
     end
