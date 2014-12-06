@@ -29,5 +29,12 @@ module Sufia
       end
     end
 
+    # Could go into ActiveFedora. See projecthydra/active_fedora#637
+    def unique? key
+      if self.class.delegated_attributes.has_key?(key)
+        !self.class.delegated_attributes[key].multiple
+      end
+    end
+
   end
 end
