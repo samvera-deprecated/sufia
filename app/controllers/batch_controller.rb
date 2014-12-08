@@ -9,7 +9,7 @@ class BatchController < ApplicationController
     @batch =  Batch.find_or_create(params[:id])
     @generic_file = GenericFile.new
     @generic_file.creator = [current_user.name]
-    @generic_file.title = @batch.generic_files.map(&:label)
+    @generic_file.title = @batch.generic_files.map { |gf| gf.label }
     @generic_file.initialize_fields
   end
 

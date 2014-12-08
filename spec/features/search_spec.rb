@@ -12,7 +12,7 @@ describe 'searching' do
       within "#search-results" do
         expect(page).to have_content "Toothbrush"
       end
-      
+
       click_link "Gallery"
       expect(page).to have_content "You searched for: Toothbrush"
       within "#documents" do
