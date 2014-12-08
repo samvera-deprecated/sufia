@@ -3,9 +3,6 @@ source 'https://rubygems.org'
 # Please see sufia.gemspec for dependency information.
 gemspec
 
-# Patch gems to be released
-gem 'active-triples', github: 'jcoyne/ActiveTriples', ref: 'd19a91222dc4b77c838f8301efa331f5cbac0dca'
-
 # Required for doing pagination inside an engine. See https://github.com/amatsuda/kaminari/pull/322
 gem 'kaminari', github: 'harai/kaminari', branch: 'route_prefix_prototype'
 gem 'sufia-models', path: './sufia-models'

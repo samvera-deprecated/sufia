@@ -19,7 +19,6 @@ end
 
 EXTRA_GEMS =<<EOF
 gem 'kaminari', github: 'harai/kaminari', branch: 'route_prefix_prototype'
-gem 'active-triples', github: 'jcoyne/ActiveTriples', ref: 'd19a91222dc4b77c838f8301efa331f5cbac0dca'
 EOF
 
 namespace :engine_cart do
