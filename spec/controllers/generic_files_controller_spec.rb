@@ -413,7 +413,7 @@ describe GenericFilesController do
       end
 
       it "should have two versions" do
-        expect(generic_file.content.versions.count).to eq 2
+        expect(generic_file.content.versions.all.count).to eq 2
       end
 
       it "should have the current version" do
@@ -448,8 +448,8 @@ describe GenericFilesController do
             it "should restore the first versions's content and metadata" do
               expect(restored_file.content.mime_type).to eql(file1_type)
               expect(restored_file.content.original_name).to eql(file1)
-              expect(restored_file.content.versions.count).to eq 2
-              expect(restored_file.content.versions[1]).to end_with(latest_version)
+              expect(restored_file.content.versions.all.count).to eq 2
+              expect(restored_file.content.versions.last.label).to eql latest_version
               expect(restored_file.content.version_committer(version1)).to eql(first_user.user_key)
             end
           end
@@ -550,15 +550,15 @@ describe GenericFilesController do
       end
     end
 
-    describe "view" do
-      it "should show me the file" do
-        get :show, id: generic_file
-        expect(response).not_to redirect_to(action: 'show')
-        expect(flash[:alert]).to be_nil
-      end
-      it "should set the breadcrumbs" do
+    describe "#show" do
+      it "should show me the file and set breadcrumbs" do
         expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.title'), Sufia::Engine.routes.url_helpers.dashboard_index_path)
         get :show, id: generic_file
+        expect(response).to be_successful
+        expect(flash).to be_empty
+        expect(assigns[:events]).to be_kind_of Array
+        expect(assigns[:generic_file]).to eq generic_file
+        expect(assigns[:audit_status]).to eq 'Audits have not yet been run on this file.'
       end
     end
   end
