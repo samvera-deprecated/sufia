@@ -5,6 +5,19 @@ module Sufia
 
       NO_RUNS = 999
 
+      # provides a human readable version of the audit status
+      def human_readable_audit_status
+        stat = audit_stat(false)
+        case stat
+          when 0
+            'failing'
+          when 1
+            'passing'
+          else
+            stat
+        end
+      end
+      
       # TODO: Run audits on all attached files. We're only audting "content" at tht moment
       def audit force = false
         @audit_log ||= Array.new
