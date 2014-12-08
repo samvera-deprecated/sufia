@@ -18,7 +18,7 @@ class BatchController < ApplicationController
     @batch = Batch.find_or_create(params[:id])
     @batch.status = ["processing"]
     @batch.save
-    Sufia.queue.push(BatchUpdateJob.new(current_user.user_key, params))
+    Sufia.queue.push(BatchUpdateJob.new(current_user.user_key, batch_params))
     flash[:notice] = 'Your files are being processed by ' + t('sufia.product_name') + ' in the background. The metadata and access controls you specified are being applied. Files will be marked <span class="label label-danger" title="Private">Private</span> until this process is complete (shouldn\'t take too long, hang in there!). You may need to refresh your dashboard to see these updates.'
     redirect_to sufia.dashboard_files_path
   end
@@ -31,4 +31,13 @@ class BatchController < ApplicationController
   end
 
   ActiveSupport::Deprecation.deprecate_methods(BatchController, :initialize_fields)
+
+  private 
+
+  def batch_params
+    # make sure rights value is an array
+    return params if params[:generic_file][:rights].respond_to?('each')
+    params[:generic_file][:rights] = Array(params[:generic_file][:rights])
+    params
+  end
 end

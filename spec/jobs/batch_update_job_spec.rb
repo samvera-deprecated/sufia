@@ -24,7 +24,8 @@ describe BatchUpdateJob do
       {
         generic_file: {
           read_groups_string: '', read_users_string: 'archivist1, archivist2',
-          tag: ['']
+          tag: [''],
+          rights: ['everybody and their dog']
         },
         title: { file.id => ['File One'], file2.id => ['File Two'] },
         id: batch.id,
