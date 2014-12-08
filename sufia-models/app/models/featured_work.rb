@@ -15,7 +15,8 @@ class FeaturedWork < ActiveRecord::Base
 
   class << self
     def can_create_another?
-      FeaturedWork.count < FEATURE_LIMIT
+      return true
+      # FeaturedWork.count < FEATURE_LIMIT
     end
   end
 end
