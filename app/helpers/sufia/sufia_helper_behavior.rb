@@ -155,10 +155,12 @@ module Sufia
     end
 
     def render_visibility_label document
-      if document.registered?
-        content_tag :span, t('sufia.institution_name'), class: "label label-info", title: t('sufia.institution_name')
-      elsif document.public?
+      if document.public?
         content_tag :span, t('sufia.visibility.open'), class: "label label-success", title: t('sufia.visibility.open')
+      elsif document.discoverable?
+        content_tag :span, 'Discoverable', class: "label label-warning", title: 'Discoverable'
+      elsif document.registered?
+        content_tag :span, t('sufia.institution_name'), class: "label label-info", title: t('sufia.institution_name')
       else
         content_tag :span, t('sufia.visibility.private'), class: "label label-danger", title: t('sufia.visibility.private')
       end

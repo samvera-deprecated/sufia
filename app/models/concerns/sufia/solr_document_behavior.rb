@@ -107,5 +107,12 @@ module Sufia
       hydra_model == 'Collection'
     end
 
+    def discoverable?
+      # see sufia-models/lib/sufia/permissions/readable.rb
+      # if you want to see how deep the rabbit hole goes see hydra-head/Hydra/Ability:read_group_field
+      file = GenericFile.find(self[:id])
+      file.discover_groups.include?('public')
+    end
+
   end
 end

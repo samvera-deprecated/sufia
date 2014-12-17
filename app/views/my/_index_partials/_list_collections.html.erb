@@ -26,13 +26,8 @@ on element ids -->
   </td>
   <td width="17%"><%= document.date_uploaded %> </td>
   <td width="5%" class="text-center">
-      <% if document.registered? %>
-     <span class="label label-info" title="<%=t('sufia.institution_name') %>"><%=t('sufia.institution_name') %></span></a> 
-    <% elsif document.public? %>
-      <span class="label label-success" title="Open Access">Open Access</span></a>
-    <% else %>
-      <span class="label label-danger" title="Private">Private</span></a>
-    <% end %>
+
+    <%= render_visibility_link document %>
   
   </td>
   <td class="text-center">
