@@ -13,6 +13,7 @@ module Sufia
     end
 
     def download
+      logger.debug "download path: #{sufia.download_path(id:@asset)}"
       raise not_found_exception unless single_use_link.path == sufia.download_path(id: @asset)
       send_content
     end
@@ -27,6 +28,7 @@ module Sufia
       @su = single_use_link.create_for_path sufia.download_path(id: @asset)
       @download_link = sufia.download_single_use_link_path(@su.downloadKey)
     end
+
 
     protected
 
@@ -51,8 +53,9 @@ module Sufia
     end
 
     def current_ability
-      @current_ability ||= SingleUseLinksViewerController::Ability.new current_user, single_use_link
+      @current_ability ||= ::Ability.new current_user
     end
+
   end
 end
 
