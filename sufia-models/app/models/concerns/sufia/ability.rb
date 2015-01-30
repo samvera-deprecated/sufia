@@ -12,6 +12,7 @@ module Sufia
       editor_abilities
       stats_abilities
       proxy_deposit_abilities
+      single_use_links_abilities
     end
 
     def proxy_deposit_abilities
@@ -45,10 +46,16 @@ module Sufia
       alias_action :stats, to: :read
     end
 
+    def single_use_links_abilities
+      can :read, SingleUseLink 
+    end
+
+
     private
 
     def depositor_for_document(document_id)
       ::GenericFile.load_instance_from_solr(document_id).depositor
     end
+
   end
 end
