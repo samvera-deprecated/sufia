@@ -8,7 +8,11 @@ class CreateDerivativesJob < ActiveFedoraPidBasedJob
     if generic_file.video?
       return unless Sufia.config.enable_ffmpeg
     end
-    generic_file.create_derivatives
+    status = Timeout::timeout(Sufia.config.derivatives_timeout) do
+      generic_file.create_derivatives
+    end
     generic_file.save
+  rescue Timeout::Error => ex
+    raise Hydra::Derivatives::TimeoutError, "Unable to generate derivatives for \"#{generic_file.id}\"\nThe derivatives generation took longer than #{Sufia.config.derivatives_timeout} seconds to execute"
   end
 end
