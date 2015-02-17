@@ -28,7 +28,9 @@ module Sufia
       config.analytics = false
       config.queue = Sufia::Resque::Queue
       config.max_notifications_for_dashboard = 5
-      config.activity_to_show_default_seconds_since_now = 24*60*60
+      config.activity_to_show_default_seconds_since_now = 24.hours
+      config.derivatives_timeout = 20.minutes
+      config.derivatives_task_timeout = 10.minutes
 
       # Defaulting analytic start date to when ever the file was uploaded by leaving it blank
       config.analytic_start_date = nil
@@ -69,6 +71,11 @@ module Sufia
           Hydra::Derivatives.temp_file_base = c.temp_file_base
           Hydra::Derivatives.fits_path      = c.fits_path
           Hydra::Derivatives.enable_ffmpeg  = c.enable_ffmpeg
+
+          # set all the derivatives timeouts based the overall timeout unless they were already set
+          Hydra::Derivatives::Document.timeout ||= c.derivatives_task_timeout
+          Hydra::Derivatives::Audio.timeout ||= c.derivatives_task_timeout
+          Hydra::Derivatives::Video::Processor.timeout ||= c.derivatives_task_timeout
 
           ActiveFedora::Base.translate_uri_to_id = c.translate_uri_to_id
           ActiveFedora::Base.translate_id_to_uri = c.translate_id_to_uri

@@ -116,7 +116,7 @@ Sufia.config do |config|
   # config.fits_path = "fits.sh"
 
   # Specify how many seconds back from the current time that we should show by default of the user's activity on the user's dashboard
-  # config.activity_to_show_default_seconds_since_now = 24*60*60
+  # config.activity_to_show_default_seconds_since_now = 24.hours
 
   # Specify a date you wish to start collecting Google Analytic statistics for.
   # Leaving it blank will set the start date to when ever the file was uploaded by
@@ -127,6 +127,15 @@ Sufia.config do |config|
   # config.translate_uri_to_id = lambda { |uri| uri.to_s.split('/')[-1] }
   # config.translate_id_to_uri = lambda { |id|
   #      "#{ActiveFedora.fedora.host}#{ActiveFedora.fedora.base_path}/#{Sufia::Noid.treeify(id)}" }
+
+  # Sometimes the derivatives jobs get into a bad state and run for eternity
+  # Setting the timeout allows for you to give the jobs a specific amount of time before they must complete
+  # config.derivatives_timeout = 20.minutes
+
+  # Hydra derivatives also allows for setting individual timeouts on each derivative process (creating an thumbnail, converting to a web format, ...)
+  # This values will get copied to each task timeout available in Hydra Derivatives if those values are not individually set
+  # config.derivatives_task_timeout = 10.minutes
+
 
   # If browse-everything has been configured, load the configs.  Otherwise, set to nil.
   begin

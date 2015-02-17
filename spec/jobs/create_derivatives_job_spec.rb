@@ -171,4 +171,22 @@ describe CreateDerivativesJob do
       end
     end
   end
+  context "with timeout set very small" do
+    let(:mime_type) { 'audio/wav' }
+    let(:file_name) { 'piano_note.wav' }
+    before do
+      @generic_file.add_file(File.open(fixture_path + '/' + file_name), path: 'content', original_name: file_name, mime_type: mime_type)
+      allow_any_instance_of(GenericFile).to receive(:mime_type).and_return(mime_type)
+      @generic_file.save!
+      @current_timeout = Sufia.config.derivatives_timeout
+      Sufia.config.derivatives_timeout = 0.0001
+    end
+    after do
+      Sufia.config.derivatives_timeout = @current_timeout
+    end
+
+    it "gets a timeout" do
+      expect { subject.run }.to raise_error Hydra::Derivatives::TimeoutError
+    end
+  end
 end
