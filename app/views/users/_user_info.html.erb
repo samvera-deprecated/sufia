@@ -5,6 +5,11 @@
   <dd class="col-xs-7"><%= link_to user.orcid, user.orcid, { target: '_blank' } %></dd>
 <% end %>
 
+<% if user.zotero_userid.present? %>
+  <dt class="col-xs-5"><%= zotero_label('orcid') %></dt>
+  <dd class="col-xs-7"><%= link_to zotero_profile_url(user.zotero_userid), zotero_profile_url(user.zotero_userid), { target: '_blank' } %></dd>
+<% end %>
+
 <% if user.facebook_handle.present? %>
   <dt class="col-xs-5"><i class="fa fa-facebook"></i> Facebook Handle</dt>
   <dd class="col-xs-7"><%= link_to user.facebook_handle, "http://facebook.com/#{user.facebook_handle}", {target:'_blank'} %></dd>

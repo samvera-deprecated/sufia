@@ -31,6 +31,7 @@
     * [Analytics and usage statistics](#analytics-and-usage-statistics)
       * [Capturing usage](#capturing-usage)
       * [Displaying usage in the UI](#displaying-usage-in-the-ui)
+    * [Zotero integration](#zotero-integration)
     * [Tag Cloud](#tag-cloud)
     * [Customizing metadata](#customizing-metadata)
     * [Proxies and Transfers (Sufia 4.x only)](#proxies-and-transfers-sufia-4x-only)
@@ -75,6 +76,7 @@ Sufia has the following features:
 * Responsive, fluid, Bootstrap 3-based UI
 * Dynamically configurable featured works and researchers on homepage
 * Proxy deposit and transfers of ownership
+* Integration with Zotero for automatic population of user content
 
 # Help
 
@@ -269,6 +271,10 @@ The generator will create a configuration file at _config/analytics.yml_.  Edit 
 Lastly, you will need to set `config.analytics = true` and `config.analytic_start_date` in _config/initializers/sufia.rb_ and ensure that the OAuth client email
 has the proper access within your Google Analyics account.  To do so, go to the _Admin_ tab for your Google Analytics account.
 Click on _User Management_, in the _Account_ column, and add "Read & Analyze" permissions for the OAuth client email address.
+
+## Zotero integration
+
+TODO: Write this up here. Describe the architecture and all the steps required to get it up and running.
 
 ## Tag Cloud
 

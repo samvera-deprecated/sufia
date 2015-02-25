@@ -10,6 +10,7 @@ gem 'slop', '~> 3.6.0' # This just helps us generate a valid Gemfile.lock when R
 
 group :development, :test do
   gem "simplecov", require: false
+  gem 'coveralls', require: false
   gem 'byebug' unless ENV['CI']
 end
 

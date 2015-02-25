@@ -105,7 +105,7 @@ module Sufia::GenericFile
     end
 
     def push_characterize_job
-      Sufia.queue.push(CharacterizeJob.new(@generic_file.id))
+      Sufia.queue.push(CharacterizeJob.new(generic_file.id))
     end
 
     class << self

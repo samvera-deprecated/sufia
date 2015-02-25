@@ -4,6 +4,14 @@ module Sufia
       "#{image_tag 'orcid.png', { alt: t('sufia.user_profile.orcid.alt'), class: style_class }} #{t('sufia.user_profile.orcid.label')}".html_safe
     end
 
+    def zotero_label(style_class='')
+      "#{image_tag 'zotero.png', { alt: t('sufia.user_profile.zotero.alt'), class: style_class }} #{t('sufia.user_profile.zotero.label')}".html_safe
+    end
+
+    def zotero_profile_url(user_id)
+      "https://www.zotero.org/users/#{user_id}"
+    end
+
     def error_messages_for(object)
       if object.try(:errors) and object.errors.full_messages.any?
         content_tag(:div, class: 'alert alert-block alert-error validation-errors') do

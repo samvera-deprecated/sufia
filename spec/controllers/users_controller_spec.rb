@@ -92,8 +92,8 @@ describe UsersController, :type => :controller do
       end
     end
   end
-  describe "#edit" do
 
+  describe "#edit" do
     it "show edit form when user edits own profile" do
       get :edit, id: user.user_key
       expect(response).to be_success
@@ -124,7 +124,7 @@ describe UsersController, :type => :controller do
       end
     end
 
-    describe "when the user has trophies" do
+    context "when the user has trophies" do
       let(:file1) { GenericFile.create { |f| f.apply_depositor_metadata(user) } }
       let(:file2) { GenericFile.create { |f| f.apply_depositor_metadata(user) } }
       let(:file3) { GenericFile.create { |f| f.apply_depositor_metadata(user) } }
@@ -235,7 +235,7 @@ describe UsersController, :type => :controller do
       end
       it "should remove a trophy" do
         expect {
-          post :update, id: user.user_key,  'remove_trophy_'+file.id => 'yes'
+          post :update, id: user.user_key, 'remove_trophy_'+file.id => 'yes'
         }.to change { user.trophies.count }.by(-1)
         expect(response).to redirect_to(@routes.url_helpers.profile_path(user.to_param))
         expect(flash[:notice]).to include("Your profile has been updated")
