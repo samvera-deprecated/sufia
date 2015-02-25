@@ -19,13 +19,15 @@ module Sufia
          """
 
     def run_required_generators
+      say_status("info", "GENERATING BLACKLIGHT", :blue)
       generate "blacklight:install --devise"
+      say_status("info", "GENERATING HYDRA", :blue)
       generate "hydra:head -f"
       generate "sufia:models:install"
     end
 
     def banner
-      say_status("warning", "GENERATING SUFIA", :yellow)
+      say_status("info", "GENERATING SUFIA", :blue)
     end
 
     def insert_abilities
@@ -69,7 +71,6 @@ module Sufia
       gsub_file 'app/assets/javascripts/application.js',
                 '//= require_tree .', '//= require sufia'
     end
-
 
     def tinymce_config
       copy_file "config/tinymce.yml", "config/tinymce.yml"

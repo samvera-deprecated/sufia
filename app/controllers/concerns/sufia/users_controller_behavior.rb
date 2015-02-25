@@ -114,7 +114,6 @@ module Sufia::UsersControllerBehavior
       :twitter_handle, :googleplus_handle, :linkedin_handle, :remove_avatar, :orcid)
   end
 
-
   # You can override base_query to return a list of arguments
   def base_query
     [nil]

@@ -1,13 +1,11 @@
 ENV["RAILS_ENV"] ||= 'test'
 require "bundler/setup"
 
-
 require 'factory_girl'
 require 'engine_cart'
 EngineCart.load_application!
 
 require 'devise'
-
 require 'mida'
 require 'rspec/rails'
 require 'rspec/its'
@@ -73,6 +71,19 @@ end
 
 Resque.inline = Rails.env.test?
 
+class JsonStrategy
+  def initialize
+    @strategy = FactoryGirl.strategy_by_name(:create).new
+  end
+
+  delegate :association, to: :@strategy
+
+  def result(evaluation)
+    @strategy.result(evaluation).to_json
+  end
+end
+
+FactoryGirl.register_strategy(:json, JsonStrategy)
 FactoryGirl.definition_file_paths = [File.expand_path("../factories", __FILE__)]
 FactoryGirl.find_definitions
 
@@ -134,7 +145,7 @@ RSpec.configure do |config|
 end
 
 module FactoryGirl
-  def self.find_or_create(handle, by=:email)
+  def self.find_or_create(handle, by = :email)
     tmpl = FactoryGirl.build(handle)
     tmpl.class.send("find_by_#{by}".to_sym, tmpl.send(by)) || FactoryGirl.create(handle)
   end
