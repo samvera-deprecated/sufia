@@ -48,7 +48,7 @@ module Sufia
           plugins: [
             {
               name: "sufia",
-              parameters: { user_token: @user.arkivo_token }
+              options: { token: @user.arkivo_token }
             }
           ]
         }.to_json
