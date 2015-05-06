@@ -47,7 +47,7 @@ describe CurationConcern::GenericWorksController do
     it "should create a work" do
       expect {
         post :create, generic_work: { title: ["a title"] }
-      }.to change { Sufia::Works::GenericWork.count }.by(1)
+      }.to change { GenericWork.count }.by(1)
       expect(response).to redirect_to Sufia::Engine.routes.url_helpers.generic_work_path(assigns[:curation_concern])
     end
   end
