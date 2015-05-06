@@ -4,7 +4,7 @@ describe GenericWork do
 
   describe ".properties" do
     subject { described_class.properties.keys }
-    it { is_expected.to eq ["has_model", "create_date", "modified_date"] }
+    it { is_expected.to include("has_model", "create_date", "modified_date") }
   end
 
   describe "basic metadata" do
