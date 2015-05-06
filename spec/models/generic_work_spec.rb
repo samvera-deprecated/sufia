@@ -1,6 +1,12 @@
 require 'spec_helper'
 
 describe GenericWork do
+
+  describe ".properties" do
+    subject { described_class.properties.keys }
+    it { is_expected.to eq ["has_model", "create_date", "modified_date"] }
+  end
+
   describe "basic metadata" do
     it "should have dc properties" do
       subject.title = ['foo', 'bar']
