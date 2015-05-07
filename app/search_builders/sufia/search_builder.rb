@@ -51,7 +51,7 @@ module Sufia::SearchBuilder
   # @param user_parameters the current user-submitted parameters
   def only_works_and_collections(solr_parameters)
     solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << "#{Solrizer.solr_name("has_model", :symbol)}:(\"Sufia::Works::GenericWork\" \"Collection\")"
+    solr_parameters[:fq] << "#{Solrizer.solr_name("has_model", :symbol)}:(\"GenericWork\" \"Collection\")"
   end
 
 end
