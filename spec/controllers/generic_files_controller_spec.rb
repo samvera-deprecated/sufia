@@ -104,7 +104,7 @@ describe GenericFilesController do
       end
 
       context "when a work id is passed" do
-        let (:work) { Sufia::Works::GenericWork.new {|w| w.apply_depositor_metadata(user); w.save! } }
+        let (:work) { GenericWork.new {|w| w.apply_depositor_metadata(user); w.save! } }
         it "records the work" do
           xhr :post, :create, files: [file], Filename: 'The world', batch_id: batch_id, work_id: work.id, terms_of_service: '1'
           expect(response).to be_success
