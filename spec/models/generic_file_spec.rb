@@ -365,24 +365,7 @@ describe GenericFile, :type => :model do
       end
     end
   end
-  describe "trophies" do
-    before do
-      u = FactoryGirl.find_or_create(:jill)
-      @f = GenericFile.new.tap do |gf|
-        gf.apply_depositor_metadata(u)
-        gf.save!
-      end
-      @t = Trophy.create(user_id: u.id, generic_file_id: @f.id)
-    end
-    it "should have a trophy" do
-      expect(Trophy.where(generic_file_id: @f.id).count).to eq 1
-    end
-    it "should remove all trophies when file is deleted" do
-      @f.destroy
-      expect(Trophy.where(generic_file_id: @f.id).count).to eq 0
-    end
-  end
-
+  
   describe "#related_files" do
     let!(:f1) do
       GenericFile.new.tap do |f|
@@ -634,4 +617,13 @@ describe GenericFile, :type => :model do
       it { is_expected.not_to be_public }
     end
   end
+
+    describe " work associations" do
+      let(:work) { Sufia::Works::GenericWork.new }
+      subject { GenericFile.new(work: work) }
+
+      it "should belong to works" do
+        expect(subject.work).to eq work
+      end
+    end
 end
