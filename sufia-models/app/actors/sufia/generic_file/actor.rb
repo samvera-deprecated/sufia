@@ -35,7 +35,7 @@ module Sufia::GenericFile
       else
         work = GenericWork.find(work_id)
       end
-      generic_file.work = work
+      generic_file.generic_work = work
       yield(generic_file) if block_given?
     end
 
