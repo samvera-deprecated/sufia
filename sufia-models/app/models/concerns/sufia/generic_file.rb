@@ -10,7 +10,6 @@ module Sufia
     include Sufia::GenericFile::Characterization
     include Sufia::GenericFile::Permissions
     include Sufia::GenericFile::Derivatives
-    include Sufia::GenericFile::Trophies
     include Sufia::GenericFile::Featured
     include Sufia::GenericFile::Metadata
     include Sufia::GenericFile::Content
@@ -21,5 +20,6 @@ module Sufia
     include Hydra::Collections::Collectible
     include Sufia::GenericFile::Batches
     include Sufia::GenericFile::Indexing
+    include Sufia::GenericFile::Works
   end
 end

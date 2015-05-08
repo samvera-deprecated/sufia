@@ -31,8 +31,13 @@ module Sufia
     # example:
     #   config.index.thumbnail_method = :sufia_thumbnail_tag
     def sufia_thumbnail_tag(document, options)
+
       # collection
       if (document.collection?)
+        content_tag(:span, "", class: "glyphicon glyphicon-th collection-icon-search")
+
+      # generic work TODO: what should be the icon here...
+      elsif (document.generic_work?)
         content_tag(:span, "", class: "glyphicon glyphicon-th collection-icon-search")
 
       # file
