@@ -146,6 +146,9 @@ en:
         label: "Zotero Profile"
         connected: "Connected!"
         unlinked: "Link with Zotero"
+      tab_highlighted: "Highlighted"
+      tab_profile: "Profile"
+      tab_activity: "Activity"
     batch:
       help:
         title: "Filename will be the default title. Please provide a more meaningful title, and filenames will still be preserved by the system."
