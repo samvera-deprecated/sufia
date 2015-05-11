@@ -40,6 +40,8 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'breadcrumbs_on_rails', '~> 2.3.0'
   gem.add_dependency 'select2-rails', '~> 3.5.9'
   gem.add_dependency "devise", "~> 3.0"
+  gem.add_dependency 'json-schema'
+  gem.add_dependency 'oauth'
 
   gem.add_development_dependency 'engine_cart', '~> 0.5'
   gem.add_development_dependency 'mida', '~> 0.3'

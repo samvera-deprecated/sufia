@@ -17,7 +17,7 @@ This generator makes the following changes to your application:
 10. Runs user stats generator
        """
   def banner
-    say_status("warning", "GENERATING SUFIA MODELS", :yellow)
+    say_status("info", "GENERATING SUFIA MODELS", :blue)
   end
 
   # Setup the database migrations

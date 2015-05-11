@@ -10,11 +10,9 @@ matrix:
 env:
   global:
     - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
-
   matrix:
     - "RAILS_VERSION=4.1.10"
     - "RAILS_VERSION=4.2.1"
-
 notifications:
   email:
     recipients:

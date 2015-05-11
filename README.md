@@ -31,6 +31,7 @@
     * [Analytics and usage statistics](#analytics-and-usage-statistics)
       * [Capturing usage](#capturing-usage)
       * [Displaying usage in the UI](#displaying-usage-in-the-ui)
+    * [Zotero integration](#zotero-integration)
     * [Tag Cloud](#tag-cloud)
     * [Customizing metadata](#customizing-metadata)
     * [Proxies and Transfers (Sufia 4.x only)](#proxies-and-transfers-sufia-4x-only)
@@ -78,6 +79,7 @@ Sufia has the following features:
 * Responsive, fluid, Bootstrap 3-based UI
 * Dynamically configurable featured works and researchers on homepage
 * Proxy deposit and transfers of ownership
+* Integration with Zotero for automatic population of user content
 
 # Help
 
@@ -273,6 +275,36 @@ Lastly, you will need to set `config.analytics = true` and `config.analytic_star
 has the proper access within your Google Analyics account.  To do so, go to the _Admin_ tab for your Google Analytics account.
 Click on _User Management_, in the _Account_ column, and add "Read & Analyze" permissions for the OAuth client email address.
 
+## Zotero integration
+
+Integration with Zotero-managed publications is possible using [Arkivo](https://github.com/inukshuk/arkivo). Arkivo is a Node-based Zotero subscription service that monitors Zotero for changes and will feed those changes to your Sufia-based app. [Read more about this work.](https://www.zotero.org/blog/feeds-and-institutional-repositories-coming-to-zotero/)
+
+To enable Zotero integration, first [register an OAuth client with Zotero](https://www.zotero.org/oauth/apps), then [install and start Arkivo-Sufia](https://github.com/inukshuk/arkivo-sufia) and then generate the Arkivo API in your Sufia-based application:
+
+```
+rails g sufia:models:arkivo_api
+```
+
+The generator does the following:
+
+* Enables the API in the Sufia initializer
+* Adds a database migration
+* Creates a routing constraint that allows you to control what clients can access the API
+* Copies a config file that allows you to specify the host and port Arkivo is running on
+* Copies a config file for your Zotero OAuth client credentials
+
+Update your database schema with `rake db:migrate`.
+
+Add unique Arkivo tokens for each of your existing user accounts with `rake sufia:user:tokens`. (New users will have tokens created as part of the account creation process.)
+
+Edit the routing constraint in `config/initializers/arkivo_constraint.rb` so that your Sufia-based app will allow connections from Arkivo. **Make sure this is restrictive as you are allowing access to an API that allows creates, updates and deletes.**
+
+Tweak `config/arkivo.yml` to point at the host and port your instance of Arkivo is running on.
+
+Tweak `config/zotero.yml` to hold your Zotero OAuth client key and secret. Alternatively, if you'd rather not paste these into a file, you may use the environment variables `ZOTERO_CLIENT_KEY` and `ZOTERO_CLIENT_SECRET`.
+
+Restart your app and it should now be able to pull in Zotero-managed publications on behalf of your users.  Each user will need to link their Sufia app account with their Zotero accounts, which can be done in the "Edit Profile" page. After the accounts are linked, Arkivo will create a subscription to that user's Zotero-hosted "My Publications" collection. When users add items to their "My Publications" collection via the Zotero client, they will automatically be pushed into the Sufia-based repository application. Updates to these items will trigger updates to item metadata in your app, and deletes will delete the files from your app.
+
 ## Tag Cloud
 
 Sufia provides a tag cloud on the home page.  To change which field is displayed in that cloud, change the value of `config.tag_cloud_field_name` in the `blacklight_config` section of your CatalogController.  For example:
@@ -309,7 +341,7 @@ Add the following gem to Sufia installed app's Gemfile
 ```
 gem "hydra-role-management"
 ```
- 
+
 ### Adding an admin user
 
 In rails console, run the following commands to create the admin role.
@@ -322,7 +354,7 @@ Add a user as the admin.
 r.users << User.find_by_user_key( "your_admin_users_email@fake.email.org" )
 r.save
 ```
- 
+
 Confirm user was made an admin.
 ```
 u = User.find_by_user_key( "your_admin_users_email@fake.email.org" )
@@ -332,7 +364,7 @@ u.admin?
 
 if u.admin? == true then SUCCESS
 ```
- 
+
 Confirm in browser
 
 * go to your Sufia install

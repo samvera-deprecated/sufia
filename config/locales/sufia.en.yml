@@ -138,6 +138,11 @@ en:
       orcid:
         alt: "ORCID icon"
         label: "ORCID Profile"
+      zotero:
+        alt: "Zotero icon"
+        label: "Zotero Profile"
+        connected: "Connected!"
+        unlinked: "Link with Zotero"
     batch:
       help:
         title: "Filename will be the default title. Please provide a more meaningful title, and filenames will still be preserved by the system."
@@ -206,4 +211,3 @@ en:
         description: "Usage information for abstract or summary"
         tag: "Usage information for keyword"
         rights: "Usage information for rights"
-
