@@ -65,6 +65,7 @@ This generator makes the following changes to your application:
     copy_file 'config/redis_config.rb', 'config/initializers/redis_config.rb'
     copy_file 'config/resque_admin.rb', 'config/initializers/resque_admin.rb'
     copy_file 'config/resque_config.rb', 'config/initializers/resque_config.rb'
+    copy_file 'config/resque.rake', 'lib/tasks/resque.rake'
   end
 
   def create_collection
