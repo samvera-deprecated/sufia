@@ -5,11 +5,7 @@ module Sufia::Works
 
     include Sufia::Works::Work
     include Sufia::Works::CurationConcern::WithBasicMetadata
-    # TODO: Remove these items once the collection size(#1120) and 
-    # processing tickets(#1122) are closed.
-    include Sufia::GenericFile::Batches
-    include Sufia::GenericFile::Content
-    include Sufia::GenericFile::Metadata
+    include Sufia::Works::GenericWork::Metadata
     include Sufia::GenericFile::Permissions
   end
 end
