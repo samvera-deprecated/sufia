@@ -1,30 +1,13 @@
-# Basic metadata for all Works
-# Required fields:
-#   dc:title
-#   dc:rights
-#   dc:relation (tag/ key term)
-#   dc:creator
-#
-#
-# Optional fields:
-#   dc:contributor
-#   dc:coverage
-#   dc:date
-#   dc:description
-#   dc:format
-#   dc:identifier
-#   dc:language
-#   dc:publisher
-#   dc:source
-#   dc:subject
-#   dc:type
+# TODO: This is module is here while we introduce works into Sufia.
+#       It should be removed once we update the rest of the system 
+#       to provide this functionality.  
 module Sufia::Works
   module CurationConcern
     module WithBasicMetadata
       extend ActiveSupport::Concern
 
-      included do
-        include GenericWorkRdfProperties
+      included do 
+        property :relative_path, predicate: ::RDF::URI.new('http://scholarsphere.psu.edu/ns#relativePath'), multiple: false
       end
 
       def collection?
@@ -34,7 +17,6 @@ module Sufia::Works
       def generic_work?
         true
       end
-
     end
   end
 end
