@@ -30,6 +30,7 @@ module Sufia
       config.max_notifications_for_dashboard = 5
       config.activity_to_show_default_seconds_since_now = 24*60*60
       config.arkivo_api = false
+      config.retry_unless_sleep = 0.0
 
       # Defaulting analytic start date to whenever the file was uploaded by leaving it blank
       config.analytic_start_date = nil
