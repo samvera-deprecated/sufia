@@ -524,6 +524,7 @@ describe GenericFilesController do
 
     describe "#show" do
       it "should show me the file and set breadcrumbs" do
+        expect(GenericFile).not_to receive(:find)
         expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.title'), Sufia::Engine.routes.url_helpers.dashboard_index_path)
         get :show, id: generic_file
         expect(response).to be_successful

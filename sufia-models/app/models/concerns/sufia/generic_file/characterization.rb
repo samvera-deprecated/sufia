@@ -100,7 +100,7 @@ module Sufia
 
       def characterization_terms
         h = {}
-        self.characterization.class.terminology.terms.each_pair do |k, v|
+        FitsDatastream.terminology.terms.each_pair do |k, v|
           next unless v.respond_to? :proxied_term
           term = v.proxied_term
           begin
