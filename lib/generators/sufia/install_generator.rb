@@ -110,5 +110,9 @@ module Sufia
       generate "blacklight_gallery:install"
     end
 
+    def install_admin_stats
+      generate "sufia:admin_stat"
+    end
+
   end
 end
