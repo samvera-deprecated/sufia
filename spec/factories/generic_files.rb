@@ -11,6 +11,10 @@ FactoryGirl.define do
       read_groups ["public"]
     end
 
+    factory :registered_file do
+      read_groups ["registered"]
+    end
+
     factory :fixture do
       factory :public_pdf do
         transient do
