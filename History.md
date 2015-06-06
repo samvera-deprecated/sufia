@@ -2,6 +2,7 @@
 
 ## 5.0.0
 
+* Prevent Sufia from picking up Blacklight version 5.10 [Hector Correa]
 * Update README to be more specific about dependency versions [Michael J. Giarlo]
 * Pulled in code from curate to manage add/remove fields on edit forms.  Also story #3978 [Carolyn Cole]
 * Changing the file query to be a solr query for loading the file id, so we do not wait large file content to load.  This speed up the runs significantly on systems with large file. [Carolyn Cole]
