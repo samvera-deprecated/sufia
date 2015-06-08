@@ -45,6 +45,17 @@ module Sufia
       end
 
       def audit_stat
+        # Only access version if we can (file was loaded from fedora)
+        if generic_file.content.respond_to? :has_versions?
+          audit_stat_by_version
+
+        # file loaded from solr
+        else
+          audit_stat_by_id
+        end
+      end
+
+      def audit_stat_by_version
         audit_results = audit.collect { |result| result["pass"] }
 
         # check how many non runs we had
@@ -54,6 +65,19 @@ module Sufia
         elsif non_runs < audit_results.length
           result = audit_results.reduce(true) { |sum, value| value == NO_RUNS ? sum : sum && value }
           "Some audits have not been run, but the ones run were #{result ? 'passing' : 'failing'}."
+        else
+          'Audits have not yet been run on this file.'
+        end
+      end
+
+      # Check the file by only what is in the audit log.
+      # Do not try to access the versions if we do not have access to them.
+      # This occurs when a file is loaded from solr instead of fedora
+      def audit_stat_by_id
+        audit_results = ChecksumAuditLog.logs_for(generic_file.id, "content").collect { |result| result["pass"] }
+
+        if audit_results.length >  0
+          audit_results.reduce(true) { |sum, value| sum && value }
         else
           'Audits have not yet been run on this file.'
         end

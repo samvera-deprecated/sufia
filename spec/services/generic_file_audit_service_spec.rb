@@ -44,19 +44,55 @@ describe Sufia::GenericFileAuditService do
 
   describe "#audit_stat" do
     subject { service.send(:audit_stat) }
-    context "when no audits have been run" do
-      it "should report that audits have not been run" do
-        expect(subject).to eq "Audits have not yet been run on this file."
+
+    describe "file loaded from fedora" do
+      context "when no audits have been run" do
+        it "should report that audits have not been run" do
+          expect(subject).to eq "Audits have not yet been run on this file."
+        end
+      end
+
+      context "when no audit is passing" do
+        before do
+         ChecksumAuditLog.create!(pass: 1, generic_file_id: f.id, version: f.content.versions.first.label, dsid: 'content')
+        end
+
+        it "should report that audit result" do
+          expect(subject).to eq 1
+        end
       end
     end
 
-    context "when no audit is pasing" do
-      before do
-       ChecksumAuditLog.create!(pass: 1, generic_file_id: f.id, version: f.content.versions.first.label, dsid: 'content')
+    describe "file loaded from solr" do
+      let(:solr_file) { GenericFile.load_instance_from_solr(f.id) }
+      let(:service) { Sufia::GenericFileAuditService.new(solr_file) }
+
+      it "should not audit by version" do
+        expect(service).not_to receive(:audit_stat_by_version)
+        expect(subject).to eq "Audits have not yet been run on this file."
       end
 
-      it "should report that audits have not been run" do
-        expect(subject).to eq 1
+      context "when no audit is passing" do
+        before do
+          ChecksumAuditLog.create!(pass: 1, generic_file_id: f.id, version: f.content.versions.first.label, dsid: 'content')
+        end
+
+        it "should report that audit result" do
+          expect(service).not_to receive(:audit_stat_by_version)
+          expect(subject).to eq 1
+        end
+      end
+
+      context "when one audit is passing" do
+        before do
+          ChecksumAuditLog.create!(pass: 0, generic_file_id: f.id, version: f.content.versions.first.label, dsid: 'content')
+          ChecksumAuditLog.create!(pass: 1, generic_file_id: f.id, version: f.content.versions.first.label, dsid: 'content')
+        end
+
+        it "should report that audit result" do
+          expect(service).not_to receive(:audit_stat_by_version)
+          expect(subject).to eq 0
+        end
       end
     end
   end

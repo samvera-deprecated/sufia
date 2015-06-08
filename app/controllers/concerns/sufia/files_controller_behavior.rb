@@ -39,11 +39,22 @@ module Sufia
       before_filter :has_access?, except: [:show]
       before_filter :build_breadcrumbs, only: [:show, :edit, :stats]
       load_resource only: [:audit]
-      load_and_authorize_resource except: [:index, :audit]
+      load_and_authorize_resource except: [:index, :audit, :show]
+
+      # since we are only displaying data we are makingthe show action fast by loading the information from solr
+      # these two steps replace load_and_authorize_resource for the show action
+      before_filter :load_resource_from_solr, only: [:show]
+      authorize_resource only: [:show]
 
       class_attribute :edit_form_class, :presenter_class
       self.edit_form_class = Sufia::Forms::GenericFileEditForm
       self.presenter_class = Sufia::GenericFilePresenter
+    end
+
+    # Load the GenericFile from solr instead of fedora
+    # this replaces the load_resource from CanCan that is usually called by load_and_authorize_resource
+    def load_resource_from_solr
+      @generic_file = ::GenericFile.load_instance_from_solr(params[:id])
     end
 
     # routed to /files/new
