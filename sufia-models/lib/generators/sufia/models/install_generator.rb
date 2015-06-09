@@ -104,4 +104,9 @@ This generator makes the following changes to your application:
   def user_stats
     generate 'sufia:models:user_stats'
   end
+
+  # Adds clamav initializtion
+  def clamav
+    generate 'sufia:models:clamav'
+  end
 end
