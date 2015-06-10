@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe DepositorsController, :type => :controller do
-  let (:user) { FactoryGirl.find_or_create(:jill) }
-  let (:grantee) { FactoryGirl.find_or_create(:archivist) }
+  let(:user) { FactoryGirl.find_or_create(:jill) }
+  let(:grantee) { FactoryGirl.find_or_create(:archivist) }
 
   describe "as a logged in user" do
     before do

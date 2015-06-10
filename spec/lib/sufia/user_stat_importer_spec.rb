@@ -218,7 +218,7 @@ describe Sufia::UserStatImporter do
     end
 
     context "a user is already up to date" do
-      let (:importer) {Sufia::UserStatImporter.new}
+      let(:importer) {Sufia::UserStatImporter.new}
       before do
         allow(importer).to receive(:sorted_users).and_return([gollum, frodo, bilbo])
         UserStat.create!(user_id: bilbo.id, date: dates[3], file_views: 999, file_downloads: 555)

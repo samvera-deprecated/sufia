@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 RSpec.describe FileViewStat, :type => :model do
-  let (:file_id) {"99"}
-  let (:user_id) {123}
-  let (:date) {DateTime.new}
-  let (:file_stat) {FileViewStat.create(views:"25", date: date, file_id: file_id, user_id: user_id)}
+  let(:file_id) {"99"}
+  let(:user_id) {123}
+  let(:date) {DateTime.new}
+  let(:file_stat) {FileViewStat.create(views:"25", date: date, file_id: file_id, user_id: user_id)}
 
   it "has attributes" do
     expect(file_stat).to respond_to(:views)
@@ -46,7 +46,7 @@ RSpec.describe FileViewStat, :type => :model do
       ]
     }
     describe "cache empty" do
-      let (:stats) {
+      let(:stats) {
         expect(FileViewStat).to receive(:ga_statistics).and_return(sample_pageview_statistics)
         FileViewStat.statistics(file_id, Date.today-4.day, user_id)
       }
@@ -72,7 +72,7 @@ RSpec.describe FileViewStat, :type => :model do
 
       let!(:file_view_stat) { FileViewStat.create(date: (Date.today-5.day).to_datetime, file_id: file_id, views:"25")}
 
-      let (:stats) {
+      let(:stats) {
         expect(FileViewStat).to receive(:ga_statistics).and_return(sample_pageview_statistics)
         FileViewStat.statistics(file_id,Date.today-5.day)
       }

@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 RSpec.describe FileDownloadStat, :type => :model do
-  let (:file_id) {"99"}
-  let (:date) {DateTime.new}
-  let (:file_stat) {FileDownloadStat.create(downloads:"2", date: date, file_id: file_id)}
+  let(:file_id) {"99"}
+  let(:date) {DateTime.new}
+  let(:file_stat) {FileDownloadStat.create(downloads:"2", date: date, file_id: file_id)}
 
   it "has attributes" do
     expect(file_stat).to respond_to(:downloads)
@@ -46,7 +46,7 @@ RSpec.describe FileDownloadStat, :type => :model do
     }
 
     describe "cache empty" do
-      let (:stats) {
+      let(:stats) {
         expect(FileDownloadStat).to receive(:ga_statistics).and_return(sample_download_statistics)
         FileDownloadStat.statistics(file_id,Date.today-4.day)
       }
@@ -71,7 +71,7 @@ RSpec.describe FileDownloadStat, :type => :model do
 
       let!(:file_download_stat) { FileDownloadStat.create(date: (Date.today-5.day).to_datetime, file_id: file_id, downloads:"25")}
 
-      let (:stats) {
+      let(:stats) {
         expect(FileDownloadStat).to receive(:ga_statistics).and_return(sample_download_statistics)
         FileDownloadStat.statistics(file_id,Date.today-5.day)
       }

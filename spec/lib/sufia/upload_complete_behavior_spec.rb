@@ -16,7 +16,7 @@ class UploadThingRedefine
 end
 
 describe Sufia::FilesController::UploadCompleteBehavior do
-  let (:test_id) {"123abc"}
+  let(:test_id) {"123abc"}
   context "Not overridden" do
     it "respond with the batch edit path" do
       expect(UploadThing.upload_complete_path(test_id)).to eq(Sufia::Engine.routes.url_helpers.batch_edit_path(test_id))
