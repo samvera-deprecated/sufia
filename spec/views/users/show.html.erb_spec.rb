@@ -26,7 +26,7 @@ describe 'users/show.html.erb', :type => :view do
 
   it "should have the vitals" do
     render
-    expect(rendered).to match /Joined on #{join_date.strftime("%b %d, %Y")}/
+    expect(rendered).to match(/Joined on #{join_date.strftime("%b %d, %Y")}/)
   end
 
   context "with trophy" do

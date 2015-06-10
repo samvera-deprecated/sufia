@@ -88,7 +88,7 @@ describe "dashboard/index.html.erb", :type => :view do
     end
 
     it "should show the statistics before the profile" do
-      expect(@sidebar).to match /Your Statistics.*Charles Francis Xavier/m
+      expect(@sidebar).to match(/Your Statistics.*Charles Francis Xavier/m)
     end
   end
 
