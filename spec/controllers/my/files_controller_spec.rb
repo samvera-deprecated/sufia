@@ -58,9 +58,9 @@ describe My::FilesController, :type => :controller do
 
   describe "batch processing" do
     include Sufia::Messages
-    let (:batch_id) {"batch_id"}
-    let (:batch_id2) {"batch_id2"}
-    let (:batch) {double}
+    let(:batch_id) {"batch_id"}
+    let(:batch_id2) {"batch_id2"}
+    let(:batch) {double}
 
     before do
       allow(batch).to receive(:id).and_return(batch_id)

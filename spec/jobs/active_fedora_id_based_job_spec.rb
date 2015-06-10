@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe ActiveFedoraIdBasedJob do
-  let (:user) {FactoryGirl.find_or_create(:jill)}
-  let (:file) {GenericFile.new.tap do |gf|
+  let(:user) {FactoryGirl.find_or_create(:jill)}
+  let(:file) {GenericFile.new.tap do |gf|
                   gf.apply_depositor_metadata(user)
                   gf.save!
                 end}
