@@ -66,7 +66,7 @@ describe DashboardController, :type => :controller do
           expect(assigns[:outgoing].first).to be_kind_of ProxyDepositRequest
           expect(assigns[:outgoing].first.generic_file_id).to eq(outgoing_file.id)
         end
-     end
+      end
     end
 
     context "with activities" do

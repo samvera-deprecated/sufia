@@ -1,4 +1,4 @@
- namespace :sufia do
+namespace :sufia do
   namespace :migrate do
 
     desc "Migrate proxy deposits"

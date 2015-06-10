@@ -14,27 +14,31 @@ describe My::SharesController, :type => :controller do
       let!(:my_file) { FactoryGirl.create(:generic_file, depositor: user) }
       let!(:unshared_file) { FactoryGirl.create(:generic_file, depositor: other_user) }
 
-      let!(:shared_with_me) { FactoryGirl.create(:generic_file).tap do |r|
+      let!(:shared_with_me) {
+        FactoryGirl.create(:generic_file).tap do |r|
           r.apply_depositor_metadata other_user
           r.edit_users += [user.user_key]
           r.save!
         end
       }
 
-      let!(:read_shared_with_me) { FactoryGirl.create(:generic_file, depositor: other_user).tap do |r|
-        r.read_users += [user.user_key]
-        r.save!
-      end
+      let!(:read_shared_with_me) {
+        FactoryGirl.create(:generic_file, depositor: other_user).tap do |r|
+          r.read_users += [user.user_key]
+          r.save!
+        end
       }
 
-      let!(:shared_with_someone_else) { FactoryGirl.create(:generic_file).tap do |r|
+      let!(:shared_with_someone_else) {
+        FactoryGirl.create(:generic_file).tap do |r|
           r.apply_depositor_metadata user
           r.edit_users += [other_user.user_key]
           r.save!
         end
       }
 
-      let!(:my_collection) { Collection.new(title: "My collection").tap do |c|
+      let!(:my_collection) {
+        Collection.new(title: "My collection").tap do |c|
           c.apply_depositor_metadata(user.user_key)
           c.save!
         end
