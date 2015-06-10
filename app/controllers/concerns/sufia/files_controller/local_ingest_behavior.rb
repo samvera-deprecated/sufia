@@ -54,7 +54,7 @@ module Sufia
     def ingest_one(filename, unarranged)
       basename = File.basename(filename)
       # do not remove ::
-      generic_file = ::GenericFile.new(label: basename).tap do |gf|
+      ::GenericFile.new(label: basename) do |gf|
         gf.relative_path = filename if filename != basename
         actor = Sufia::GenericFile::Actor.new(gf, current_user)
         actor.create_metadata(params[:batch_id])

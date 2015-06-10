@@ -26,7 +26,7 @@ class Batch < ActiveFedora::Base
     def self.safe_create(id)
       begin      
         Batch.create(id: id)
-      rescue ActiveFedora::IllegalOperation => ex
+      rescue ActiveFedora::IllegalOperation
         # This is the exception thrown by LDP when we attempt to 
         # create a duplicate object. If we can find the object
         # then we are good to go.

@@ -111,7 +111,7 @@ describe CollectionsController do
         expect(asset_results["response"]["numFound"]).to eq 1
         doc = asset_results["response"]["docs"].first
         expect(doc["id"]).to eq @asset2.id
-        afterupdate = GenericFile.find(@asset2.id)
+        GenericFile.find(@asset2.id)
         expect(doc[Solrizer.solr_name(:collection)]).to be_nil
       end
     end

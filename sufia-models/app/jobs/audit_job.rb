@@ -20,7 +20,6 @@ class AuditJob < ActiveFedoraIdBasedJob
   end
 
   def run
-    fixity_ok = false
     log = run_audit
     fixity_ok = (log.pass == 1)
     unless fixity_ok

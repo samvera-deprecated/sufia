@@ -35,7 +35,6 @@ describe 'proxy', :type => :feature do
       test_file_path = File.expand_path('../../fixtures/small_file.txt', __FILE__)
       page.execute_script(%Q{$("input[type=file]").first().css("opacity", "1").css("-moz-transform", "none");$("input[type=file]").first().attr('id',"fileselect");})
       attach_file("fileselect", test_file_path)
-      redirect_url = find("#redirect-loc", visible: false).text
       click_button('Start upload')
       expect(page).to have_content('Apply Metadata')
       fill_in('generic_file_title', with: 'MY Title for the World')
