@@ -10,7 +10,7 @@ describe 'SelectWithHelpInput', type: :input do
 
   it "should not be required by default" do
       expect(subject).to have_selector 'select'
-      expect(subject).not_to match /required/
+      expect(subject).not_to match(/required/)
   end
 end
 
@@ -26,6 +26,6 @@ describe 'SelectWithHelpInput File Edit', type: :input do
 
   it "should not be required by default" do
       expect(subject).to have_selector 'select'
-      expect(subject).not_to match /required/
+      expect(subject).not_to match(/required/)
   end
 end

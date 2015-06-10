@@ -58,7 +58,7 @@ module Sufia::UsersControllerBehavior
     end
     # TODO this should be moved to TrophiesController
     params.keys.select {|k, v| k.starts_with? 'remove_trophy_' }.each do |smash_trophy|
-      smash_trophy = smash_trophy.sub /^remove_trophy_/, ''
+      smash_trophy = smash_trophy.sub(/^remove_trophy_/, '')
       current_user.trophies.where(generic_file_id: smash_trophy).destroy_all
     end
     Sufia.queue.push(UserEditProfileEventJob.new(@user.user_key))
