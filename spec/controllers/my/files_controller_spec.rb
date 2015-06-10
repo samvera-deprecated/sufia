@@ -64,8 +64,8 @@ describe My::FilesController, :type => :controller do
 
     before do
       allow(batch).to receive(:id).and_return(batch_id)
-      User.batchuser().send_message(user, single_success(batch_id, batch), success_subject, sanitize_text = false)
-      User.batchuser().send_message(user, multiple_success(batch_id2, [batch]), success_subject, sanitize_text = false)
+      User.batchuser().send_message(user, single_success(batch_id, batch), success_subject, false)
+      User.batchuser().send_message(user, multiple_success(batch_id2, [batch]), success_subject, false)
       get :index
     end
     it "gets batches that are complete" do
