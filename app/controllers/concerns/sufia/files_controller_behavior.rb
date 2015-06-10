@@ -129,15 +129,16 @@ module Sufia
 
     # routed to /files/:id (PUT)
     def update
-      success = if wants_to_revert?
-        update_version
-      elsif wants_to_upload_new_version?
-        update_file
-      elsif params.has_key? :generic_file
-        update_metadata
-      elsif params.has_key? :visibility
-        update_visibility
-      end
+      success =
+        if wants_to_revert?
+          update_version
+        elsif wants_to_upload_new_version?
+          update_file
+        elsif params.has_key? :generic_file
+          update_metadata
+        elsif params.has_key? :visibility
+          update_visibility
+        end
 
       if success
         redirect_to sufia.edit_generic_file_path(tab: params[:redirect_tab]), notice:

@@ -18,10 +18,10 @@ module Sufia
         content_tag(:div, class: 'alert alert-block alert-error validation-errors') do
           content_tag(:h4, I18n.t('sufia.errors.header', model: object.class.model_name.human.downcase), class: 'alert-heading') +
             content_tag(:ul) do
-            object.errors.full_messages.map do |message|
-              content_tag(:li, message)
-            end.join('').html_safe
-          end
+              object.errors.full_messages.map do |message|
+                content_tag(:li, message)
+              end.join('').html_safe
+            end
         end
       else
         '' # return empty string
@@ -46,13 +46,14 @@ module Sufia
 
       # file
       else
-        path = if document.image? || document.pdf? || document.video? || document.office_document?
-          sufia.download_path document, file: 'thumbnail'
-        elsif document.audio?
-          "audio.png"
-        else
-          "default.png"
-        end
+        path =
+          if document.image? || document.pdf? || document.video? || document.office_document?
+            sufia.download_path document, file: 'thumbnail'
+          elsif document.audio?
+            "audio.png"
+          else
+            "default.png"
+          end
         image_tag path, options
       end
     end
@@ -119,11 +120,12 @@ module Sufia
       user = ::User.find_by_user_key(login)
       return login if user.nil?
 
-      text = if user.respond_to? :name
-        user.name
-      else
-        login
-      end
+      text =
+        if user.respond_to? :name
+          user.name
+        else
+          login
+        end
 
       link_to text, Sufia::Engine.routes.url_helpers.profile_path(user)
     end

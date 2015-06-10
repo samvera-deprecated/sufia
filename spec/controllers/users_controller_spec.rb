@@ -297,21 +297,21 @@ describe UsersController, :type => :controller do
   end
 
   describe "#toggle_trophy" do
-     let(:file) { GenericFile.create { |f| f.apply_depositor_metadata(user) } }
-     let(:file_id) { file.id }
-     let(:another_user) { FactoryGirl.create(:user) }
+    let(:file) { GenericFile.create { |f| f.apply_depositor_metadata(user) } }
+    let(:file_id) { file.id }
+    let(:another_user) { FactoryGirl.create(:user) }
 
-     it "should trophy a file" do
+    it "should trophy a file" do
       post :toggle_trophy, {id: user.user_key, file_id: file_id}
       json = JSON.parse(response.body)
       expect(json['user_id']).to eq user.id
       expect(json['generic_file_id']).to eq file_id
     end
-     it "should not trophy a file for a different user" do
+    it "should not trophy a file for a different user" do
       post :toggle_trophy, {id: another_user.user_key, file_id: file_id}
       expect(response).to_not be_success
     end
-     it "should not trophy a file with no edit privs" do
+    it "should not trophy a file with no edit privs" do
       sign_in another_user
       post :toggle_trophy, {id: another_user.user_key, file_id: file_id}
       expect(response).to_not be_success
