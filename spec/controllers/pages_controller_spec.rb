@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe PagesController, :type => :controller do
-  let (:page_name) {"about_page"}
+  let(:page_name) {"about_page"}
   context "content exists" do
     describe "GET #show" do
       let(:page) { ContentBlock.create!(name: page_name, value: "foo bar") }
