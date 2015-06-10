@@ -24,7 +24,7 @@ module Sufia::FilesController
       # Generic utility for creating GenericFile from a URL
       # Used in to import files using URLs from a file picker like browse_everything 
       def create_file_from_url(url, file_name)
-        generic_file = ::GenericFile.new(import_url: url, label: file_name).tap do |gf|
+        ::GenericFile.new(import_url: url, label: file_name) do |gf|
           actor = Sufia::GenericFile::Actor.new(gf, current_user)
           actor.create_metadata(params[:batch_id])
           gf.save!

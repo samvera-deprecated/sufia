@@ -24,7 +24,6 @@ describe 'catalog/_sort_and_per_page.html.erb', :type => :view do
   
   it 'displays the relevance option for sorting' do
     render
-    page = Capybara::Node::Simple.new(rendered)
     expect(rendered).to include("<li><a href=\"/catalog?sort=score+desc%2C+date_uploaded_dtsi+desc\">relevance</a></li>")
   end
 

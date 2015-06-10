@@ -51,10 +51,8 @@ describe ImportUrlJob do
 
   context "when the file has a virus" do
     before do
-      s1 = double('content deposit event')
       allow(ContentDepositEventJob).to receive(:new).with(generic_file.id, 'jilluser@example.com').never
 
-      s2 = double('characterize')
       allow(CharacterizeJob).to receive(:new).with(generic_file.id).never
     end
     it "should abort if virus check fails" do

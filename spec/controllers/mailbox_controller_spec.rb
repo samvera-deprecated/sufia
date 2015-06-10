@@ -40,8 +40,8 @@ describe MailboxController, :type => :controller do
   end
   describe "#delete_all" do
     it "should delete message" do
-      rec1 = @another_user.send_message(@user, 'message 2', 'subject 2')
-      rec2 = @another_user.send_message(@user, 'message 3', 'subject 3')
+      @another_user.send_message(@user, 'message 2', 'subject 2')
+      @another_user.send_message(@user, 'message 3', 'subject 3')
       expect(@user.mailbox.inbox.count).to eq(3)
       get :delete_all
       expect(@user.mailbox.inbox.count).to eq(0)

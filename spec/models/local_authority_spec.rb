@@ -90,7 +90,7 @@ describe LocalAuthority, :type => :model do
       it "should return entries by term" do
         term = DomainTerm.where(model: "my_tests", term: "genre").first
         authorities = term.local_authorities.collect(&:id).uniq
-        hits = LocalAuthorityEntry.where("local_authority_id in (?)", authorities).where("label like ?", "A%").select("label, uri").limit(25)
+        LocalAuthorityEntry.where("local_authority_id in (?)", authorities).where("label like ?", "A%").select("label, uri").limit(25)
         expect(LocalAuthority.entries_by_term("my_tests", "genre", "A").count).to eq(6)
       end
     end
