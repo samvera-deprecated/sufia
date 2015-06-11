@@ -53,5 +53,4 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "poltergeist", "~> 1.5"
   gem.add_development_dependency "factory_girl_rails", '~> 4.4'
   gem.add_development_dependency "equivalent-xml", '~> 0.5'
-  gem.add_development_dependency "jasmine", '~> 2.3'
 end
