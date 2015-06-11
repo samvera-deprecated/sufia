@@ -21,12 +21,6 @@ describe My::SharesController, :type => :controller do
         end
       }
 
-      let!(:read_shared_with_me) { FactoryGirl.create(:generic_file, depositor: other_user).tap do |r|
-        r.read_users += [user.user_key]
-        r.save!
-      end
-      }
-
       let!(:shared_with_someone_else) { FactoryGirl.create(:generic_file).tap do |r|
           r.apply_depositor_metadata user
           r.edit_users += [other_user.user_key]
@@ -74,8 +68,6 @@ describe My::SharesController, :type => :controller do
         expect(assigns[:document_list].map(&:id)).to_not include(shared_with_someone_else.id)
         # doesn't show my collections
         expect(assigns[:document_list].map(&:id)).to_not include my_collection.id
-        # doesn't show files I can see but have no edit access
-        expect(assigns[:document_list].map(&:id)).to_not include read_shared_with_me.id
       end
     end
   end
