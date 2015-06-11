@@ -57,7 +57,7 @@ describe API::ItemsController, type: :controller do
 
       it { is_expected.to have_http_status(401) }
 
-       it 'loads the file' do
+      it 'loads the file' do
         expect(assigns[:file]).to eq deposited_file
       end
 
@@ -81,7 +81,7 @@ describe API::ItemsController, type: :controller do
       end
     end
 
-   context 'with a resource not found in the repository' do
+    context 'with a resource not found in the repository' do
       before do
         allow(GenericFile).to receive(:find).with(deposited_file.id).and_raise(ActiveFedora::ObjectNotFoundError)
         get :show, format: :json, id: deposited_file.id, token: token
@@ -306,7 +306,7 @@ describe API::ItemsController, type: :controller do
       it 'provides a reason for refusing to act' do
         expect(subject.body).to include("id '#{post_deposited_file.id}' not found")
       end
-   end
+    end
 
     context 'with a valid item, matching token, and unauthorized resource' do
       before do
@@ -444,7 +444,7 @@ describe API::ItemsController, type: :controller do
       end
     end
 
-   context 'with a resource not found in the repository' do
+    context 'with a resource not found in the repository' do
       before do
         allow(GenericFile).to receive(:find).with(deposited_file.id).and_raise(ActiveFedora::ObjectNotFoundError)
         delete :destroy, format: :json, id: deposited_file.id, token: token

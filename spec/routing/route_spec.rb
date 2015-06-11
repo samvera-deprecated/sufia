@@ -72,7 +72,7 @@ describe 'Routes', :type => :routing do
       expect({ get: '/dashboard' }).to route_to(controller: 'dashboard', action: 'index')
     end
 
-      it "should route to dashboard activity" do
+    it "should route to dashboard activity" do
       expect({ get: '/dashboard/activity' }).to route_to(controller: 'dashboard', action: 'activity')
     end
 

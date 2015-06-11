@@ -1,4 +1,4 @@
-  module Sufia
+module Sufia
   module Breadcrumbs
     extend ActiveSupport::Concern
 

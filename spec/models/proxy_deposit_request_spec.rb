@@ -62,7 +62,7 @@ describe ProxyDepositRequest, type: :model do
 
     its(:status) { is_expected.to eq 'canceled' }
     its(:fulfillment_date) { is_expected.not_to be_nil }
-   end
+  end
 
   describe 'transfer' do
     context 'when the transfer_to user is not found' do

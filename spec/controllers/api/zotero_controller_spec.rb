@@ -67,7 +67,7 @@ describe API::ZoteroController, type: :controller do
           request_token_path: '/oauth/request',
           access_token_path: '/oauth/access',
           authorize_path: '/oauth/authorize'})
-    end
+      end
 
       subject { response }
 
