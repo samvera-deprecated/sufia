@@ -11,6 +11,7 @@ module Sufia
       include Blacklight::Configurable
 
       self.copy_blacklight_config_from(CatalogController)
+      self.blacklight_config.search_builder_class = Sufia::MySearchBuilder
       
       before_filter :authenticate_user!
       before_filter :enforce_show_permissions, only: :show
@@ -52,13 +53,6 @@ module Sufia
         format.rss  { render layout: false }
         format.atom { render layout: false }
       end
-    end
-
-    protected
-
-    # show only files with edit permissions in lib/hydra/access_controls_enforcement.rb apply_gated_discovery
-    def discovery_permissions
-      ["edit"]
     end
 
   end
