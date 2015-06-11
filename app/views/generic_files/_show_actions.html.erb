@@ -19,7 +19,7 @@
           <%= link_to "Feature", sufia.featured_work_path(@generic_file, format: :json), data: {behavior: 'feature'} %>
         <% elsif @generic_file.featured? %>
           &nbsp;|&nbsp;
-          Featured
+          <%= link_to "Unfeature", sufia.featured_work_path(@generic_file, format: :json), data: {behavior: 'unfeature'} %>
         <% end %>
       <% end %>
     </p>

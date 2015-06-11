@@ -7,6 +7,7 @@ class FeaturedWorksController < ApplicationController
     respond_to do |format|
       if @featured_work.save
         format.json { render json: @featured_work, status: :created }
+        format.html { render '<h1>Hello</h1>' }
       else
         format.json { render json: @featured_work.errors, status: :unprocessable_entity }
       end        

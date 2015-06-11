@@ -38,13 +38,30 @@ Blacklight.onLoad(function() {
        url: anchor.attr('href'),
        type: "post",
        success: function(data) {
-         anchor.before("Featured");
+         anchor.before('<a data-method="post" data-behavior="unfeature" href="'+anchor.attr('href')+'">Unfeature</a>');
          anchor.remove();
        }
     });
   });
 
   $('a[data-behavior="unfeature"]').on('click', function(evt) {
+    evt.preventDefault();
+    anchor = $(this);
+    $.ajax({
+       url: anchor.attr('href'),
+       type: "post",
+       data: {"_method":"delete"}, 
+       success: function(data) {
+         item = anchor.attr('href').replace('.json','');
+         anchor.before('<a data-method="post" data-behavior="feature" href="'+item+'">Feature</a>');
+         anchor.remove();
+       }
+    });
+  });
+
+
+
+  $('a[data-behavior="unfeature-home"]').on('click', function(evt) {
     evt.preventDefault();
     anchor = $(this);
     $.ajax({
