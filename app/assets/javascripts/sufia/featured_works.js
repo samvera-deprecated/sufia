@@ -31,37 +31,37 @@ function dragAndDrop(selector) {
 }
 
 Blacklight.onLoad(function() {
-  $('a[data-behavior="feature"]').on('click', function(evt) {
+  $('#content-wrapper').on('click', 'a[data-behavior="feature"]', function(evt) {
     evt.preventDefault();
+    evt.stopPropagation();
     anchor = $(this);
     $.ajax({
        url: anchor.attr('href'),
        type: "post",
        success: function(data) {
-         anchor.before('<a data-method="post" data-behavior="unfeature" href="'+anchor.attr('href')+'">Unfeature</a>');
+         anchor.before('<a data-method="post" data-behavior="unfeature-page" href="'+anchor.attr('href')+'">Unfeature</a>');
          anchor.remove();
        }
     });
   });
 
-  $('a[data-behavior="unfeature"]').on('click', function(evt) {
+  $('#content-wrapper').on('click', 'a[data-behavior="unfeature-page"]', function(evt) {
     evt.preventDefault();
+    evt.stopPropagation();
     anchor = $(this);
     $.ajax({
        url: anchor.attr('href'),
        type: "post",
        data: {"_method":"delete"}, 
        success: function(data) {
-         item = anchor.attr('href').replace('.json','');
-         anchor.before('<a data-method="post" data-behavior="feature" href="'+item+'">Feature</a>');
+         anchor.before('<a data-method="post" data-behavior="feature" href="'+anchor.attr('href')+'">Feature</a>');
          anchor.remove();
        }
     });
   });
 
 
-
-  $('a[data-behavior="unfeature-home"]').on('click', function(evt) {
+  $('#content-wrapper').on('click', 'a[data-behavior="unfeature"]', function(evt) {
     evt.preventDefault();
     anchor = $(this);
     $.ajax({
