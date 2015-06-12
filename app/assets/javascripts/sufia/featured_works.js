@@ -31,7 +31,7 @@ function dragAndDrop(selector) {
 }
 
 Blacklight.onLoad(function() {
-  $('#content-wrapper').on('click', 'a[data-behavior="feature"]', function(evt) {
+  $('#show_actions').on('click', 'a[data-behavior="feature"]', function(evt) {
     evt.preventDefault();
     evt.stopPropagation();
     anchor = $(this);
@@ -45,7 +45,7 @@ Blacklight.onLoad(function() {
     });
   });
 
-  $('#content-wrapper').on('click', 'a[data-behavior="unfeature-page"]', function(evt) {
+  $('#show_actions').on('click', 'a[data-behavior="unfeature-page"]', function(evt) {
     evt.preventDefault();
     evt.stopPropagation();
     anchor = $(this);
@@ -61,7 +61,7 @@ Blacklight.onLoad(function() {
   });
 
 
-  $('#content-wrapper').on('click', 'a[data-behavior="unfeature"]', function(evt) {
+  $('#featured_works').on('click', 'a[data-behavior="unfeature"]', function(evt) {
     evt.preventDefault();
     anchor = $(this);
     $.ajax({
