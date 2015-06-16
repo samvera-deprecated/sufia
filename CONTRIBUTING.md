@@ -81,16 +81,16 @@ You should also add yourself to the `CONTRIBUTORS.md` file in the root of the pr
 [Detailed Walkthrough of One Pull Request per Commit](http://ndlib.github.io/practices/one-commit-per-pull-request/)
 
 * Read the article ["Using Pull Requests"](https://help.github.com/articles/using-pull-requests) on GitHub.
+* Squash the commits for your branch into one commit
+  * `git rebase --interactive HEAD~<number-of-commits>` ([See Github help](https://help.github.com/articles/interactive-rebase))
+  * To determine the number of commits on your branch: `git log master..<your-branch> --oneline | wc -l`
+  * Squashing your branch's changes into one commit is "good form" and helps the person merging your request to see everything that is going on.
 * Make sure your branch is up to date with its parent branch (i.e. master)
   * `git checkout master`
   * `git pull --rebase`
   * `git checkout <your-branch>`
   * `git rebase master`
   * It is likely a good idea to run your tests again.
-* Squash the commits for your branch into one commit
-  * `git rebase --interactive HEAD~<number-of-commits>` ([See Github help](https://help.github.com/articles/interactive-rebase))
-  * To determine the number of commits on your branch: `git log master..<your-branch> --oneline | wc -l`
-  * Squashing your branch's changes into one commit is "good form" and helps the person merging your request to see everything that is going on.
 * Push your changes to a topic branch in your fork of the repository.
 * Submit a pull request from your fork to the project.
 
