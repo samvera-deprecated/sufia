@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe "featuring items" do
+describe "featuring items" do
   context "when viewing a featured item" do
     let(:user) do
       u = FactoryGirl.build(:user)
