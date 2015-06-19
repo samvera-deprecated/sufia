@@ -6,7 +6,6 @@ require File.expand_path('../proxies', __FILE__)
 require File.expand_path('../locations', __FILE__)
 require File.expand_path('../cleaner', __FILE__)
 require File.expand_path('../statistic_helper', __FILE__)
-require File.expand_path('../rake_output', __FILE__)
 
 RSpec.configure do |config|
   config.include Features::SessionHelpers, type: :feature
