@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Collection, :type => :model do
   before do
     @user = FactoryGirl.create(:user)
-    @collection = Collection.new(title: "test collection").tap do |c|
+    @collection = Collection.new(id: 'mock-collection-with-members', title: "test collection") do |c|
       c.apply_depositor_metadata(@user.user_key)
     end
   end
@@ -25,11 +25,26 @@ describe Collection, :type => :model do
       it { is_expected.to eq 0 }
     end
 
-    context "with two 50 byte files" do
-      let(:bitstream) { double("content", size: "50")}
+    context "with three 33 byte files" do
+      let(:bitstream) { double("content", size: "33")}
       let(:file) { mock_model GenericFile, content: bitstream }
-      before { allow(@collection).to receive(:members).and_return([file, file]) }
-      it { is_expected.to eq 100 }
+      let(:documents) do
+        [{ 'id' => 'file-1', 'file_size_is' => 33 }, 
+         { 'id' => 'file-2', 'file_size_is' => 33 }, 
+         { 'id' => 'file-3', 'file_size_is' => 33 }]
+      end
+      let(:query) { ActiveFedora::SolrQueryBuilder.construct_query_for_rel(has_model: ::GenericFile.to_class_uri) }
+      let(:args) do
+        { fq: "{!join from=hasCollectionMember_ssim to=id}id:#{@collection.id}",
+        fl: "id, file_size_is",
+        rows: 3 }
+      end
+
+      before do
+        allow(@collection).to receive(:members).and_return([file, file, file])
+        allow(ActiveFedora::SolrService).to receive(:query).with(query, args).and_return(documents)
+      end
+      it { is_expected.to eq 99 }
     end
 
   end
