@@ -27,7 +27,6 @@ describe My::CollectionsController, :type => :controller do
       end
 
       it "should paginate" do          
-        other_user = FactoryGirl.create(:user)
         Collection.new(title: "test collection").tap do |c|
           c.apply_depositor_metadata(@user.user_key)
           c.save!

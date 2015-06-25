@@ -7,9 +7,7 @@ describe 'generic_files/show.html.erb', :type => :view do
       twitter_handle: 'bot4lib')
   }
 
-  let(:content) do
-    content = double('content', versions: [], mimeType: 'application/pdf')
-  end
+  let(:content){ double('content', versions: [], mimeType: 'application/pdf') }
 
   let(:generic_file) do
     stub_model(GenericFile, id: '123',

@@ -42,7 +42,7 @@ module Sufia
       file_path = "app/controllers/application_controller.rb"
       if File.exists?(file_path)
         insert_into_file file_path, after: 'include Blacklight::Controller' do
-          "  \n# Adds Sufia behaviors into the application controller \n" +
+          "  \n# Adds Sufia behaviors into the application controller (#{controller_name}) \n" +
           "  include Sufia::Controller\n"
         end
         gsub_file file_path, "layout 'blacklight'", "layout 'sufia-one-column'"

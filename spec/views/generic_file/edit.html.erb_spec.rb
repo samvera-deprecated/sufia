@@ -33,7 +33,7 @@ describe 'generic_files/edit.html.erb', :no_clean do
 
     let(:page) do
       render
-      page = Capybara::Node::Simple.new(rendered)
+      Capybara::Node::Simple.new(rendered)
     end
 
     it "should only draw one resource_type multiselect" do
