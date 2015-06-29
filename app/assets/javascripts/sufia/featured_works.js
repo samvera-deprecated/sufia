@@ -31,20 +31,37 @@ function dragAndDrop(selector) {
 }
 
 Blacklight.onLoad(function() {
-  $('a[data-behavior="feature"]').on('click', function(evt) {
+  $('#show_actions').on('click', 'a[data-behavior="feature"]', function(evt) {
     evt.preventDefault();
+    evt.stopPropagation();
     anchor = $(this);
     $.ajax({
        url: anchor.attr('href'),
        type: "post",
        success: function(data) {
-         anchor.before("Featured");
+         anchor.before('<a data-method="post" data-behavior="unfeature-page" href="'+anchor.attr('href')+'">Unfeature</a>');
          anchor.remove();
        }
     });
   });
 
-  $('a[data-behavior="unfeature"]').on('click', function(evt) {
+  $('#show_actions').on('click', 'a[data-behavior="unfeature-page"]', function(evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    anchor = $(this);
+    $.ajax({
+       url: anchor.attr('href'),
+       type: "post",
+       data: {"_method":"delete"}, 
+       success: function(data) {
+         anchor.before('<a data-method="post" data-behavior="feature" href="'+anchor.attr('href')+'">Feature</a>');
+         anchor.remove();
+       }
+    });
+  });
+
+
+  $('#featured_works').on('click', 'a[data-behavior="unfeature"]', function(evt) {
     evt.preventDefault();
     anchor = $(this);
     $.ajax({

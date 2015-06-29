@@ -1,4 +1,5 @@
-    <h2 class="non lower">Actions</h2>
+<div id="show_actions">
+<h2 class="non lower">Actions</h2>
     <p>
       <%= render_download_link %>
       <% if Sufia.config.analytics %>
@@ -19,7 +20,7 @@
           <%= link_to "Feature", sufia.featured_work_path(@generic_file, format: :json), data: {behavior: 'feature'} %>
         <% elsif @generic_file.featured? %>
           &nbsp;|&nbsp;
-          Featured
+          <%= link_to "Unfeature", sufia.featured_work_path(@generic_file, format: :json), data: {behavior: 'unfeature-page'} %>
         <% end %>
       <% end %>
     </p>
@@ -43,3 +44,4 @@
 
     <!-- COinS hook for Zotero -->
     <span class="Z3988" title="<%= @generic_file.export_as_openurl_ctx_kev %>"></span>
+</div>
