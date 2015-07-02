@@ -1,11 +1,6 @@
 module Sufia
   module FileContent
     module Versions
-      extend ActiveSupport::Concern
-
-      included do
-        has_many_versions
-      end
 
       def latest_version
         versions.last unless versions.empty?
