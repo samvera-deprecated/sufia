@@ -21,8 +21,10 @@ describe Collection, :type => :model do
   describe "::bytes" do
     subject { @collection.bytes }
     context "with no items" do
-      before { @collection.save }
-      it { is_expected.to eq 0 }
+      it "gets zero without querying solr" do
+        expect(ActiveFedora::SolrService).not_to receive(:query)
+        is_expected.to eq 0
+      end
     end
 
     context "with three 33 byte files" do
@@ -44,7 +46,19 @@ describe Collection, :type => :model do
         allow(@collection).to receive(:members).and_return([file, file, file])
         allow(ActiveFedora::SolrService).to receive(:query).with(query, args).and_return(documents)
       end
-      it { is_expected.to eq 99 }
+
+      context "when saved" do
+        before do
+          allow(@collection).to receive(:new_record?).and_return(false)
+        end
+        it { is_expected.to eq 99 }
+      end
+
+      context "when not saved" do
+        it "raises an error" do
+          expect { subject }.to raise_error "Collection must be saved to query for bytes"
+        end
+      end
     end
 
   end

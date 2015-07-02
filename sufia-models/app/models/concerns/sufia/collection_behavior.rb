@@ -18,13 +18,19 @@ module Sufia
     # Compute the sum of each file in the collection using Solr to
     # avoid having to hit Fedora 
     #
-    # Returns an integer 
+    # @return [Fixnum] size of collection in bytes
+    # @raise [RuntimeError] unsaved record does not exist in solr
     def bytes
+      rows = members.count
+      return 0 if rows == 0
+
+      raise "Collection must be saved to query for bytes" if new_record?
+
       query = ActiveFedora::SolrQueryBuilder.construct_query_for_rel(has_model: file_model)
       args = {
         fq: "{!join from=hasCollectionMember_ssim to=id}id:#{id}",
         fl: "id, #{file_size_field}",
-        rows: members.count
+        rows: rows
       }
 
       files = ActiveFedora::SolrService.query(query, args)
