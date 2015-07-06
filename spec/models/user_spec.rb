@@ -172,4 +172,31 @@ describe User, :type => :model do
       expect(another_user.can_receive_deposits_from.to_a).to eq [@subject]
     end
   end
+  describe "class methods" do
+    describe "recent_users" do
+      let(:new_users) { User.all.order(created_at: :desc) }
+
+      before do
+        (1..3).each {|i| User.create(email: "abc#{i}@blah.frg", password: "blarg1234", created_at:DateTime.now - i.days) }
+      end
+
+      context "when has a start date" do
+        subject { User.recent_users(Date.today - 2.days) }
+        it "returns valid data" do
+          expect(subject.count).to eq 2
+          is_expected.to include(new_users[0],new_users[1])
+          is_expected.not_to include(new_users[2])
+        end
+      end
+
+      context "when has start and end date" do
+        subject { User.recent_users(Date.today - 2.days, Date.today - 1.days) }
+        it "returns valid data" do
+          expect(subject.count).to eq 1
+          is_expected.to include(new_users[1])
+          is_expected.not_to include(new_users[2], new_users[0])
+        end
+      end
+    end
+  end
 end
