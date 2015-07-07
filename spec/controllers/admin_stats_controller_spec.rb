@@ -61,21 +61,40 @@ describe Admin::StatsController, type: :controller do
     end
 
     describe "counts" do
-      before do
-        FactoryGirl.create(:generic_file, depositor: user1)
-        FactoryGirl.create(:public_file, depositor: user1)
-        FactoryGirl.create(:registered_file, depositor: user1)
-        Collection.create(title: "test").tap do |c|
-          c.apply_depositor_metadata(user1.user_key)
+      context "when date range not set" do
+        before do
+          FactoryGirl.create(:generic_file, depositor: user1)
+          FactoryGirl.create(:public_file, depositor: user1)
+          FactoryGirl.create(:registered_file, depositor: user1)
+          Collection.create(title: "test") do |c|
+            c.apply_depositor_metadata(user1.user_key)
+          end
+        end
+        it "includes files but not collections" do
+          get :index
+          expect(assigns[:files_count][:total]).to eq(3)
+          expect(assigns[:files_count][:public]).to eq(1)
+          expect(assigns[:files_count][:registered]).to eq(1)
+          expect(assigns[:files_count][:private]).to eq(1)
         end
       end
 
-      it "includes files but not collections" do
-        get :index
-        expect(assigns[:files_count][:total]).to eq(3)
-        expect(assigns[:files_count][:public]).to eq(1)
-        expect(assigns[:files_count][:registered]).to eq(1)
-        expect(assigns[:files_count][:private]).to eq(1)
+      context "when start date set" do
+        it "queries by start date" do
+          expect(GenericFile).to receive(:find_by_date_created).exactly(3).times.with(1.days.ago.to_datetime, nil).and_call_original
+          expect(GenericFile).to receive(:where_public).and_call_original
+          expect(GenericFile).to receive(:where_registered).and_call_original
+          get :index, users_stats: { file_start_date: 1.days.ago.strftime("%Y-%m-%d") }
+        end
+      end
+
+      context "when date range set" do
+        it "queries by start and date" do
+          expect(GenericFile).to receive(:find_by_date_created).exactly(3).times.with(1.days.ago.to_datetime, 0.days.ago.to_datetime.end_of_day).and_call_original
+          expect(GenericFile).to receive(:where_public).and_call_original
+          expect(GenericFile).to receive(:where_registered).and_call_original
+          get :index, users_stats: { file_start_date: 1.days.ago.strftime("%Y-%m-%d"), file_end_date: 0.days.ago.strftime("%Y-%m-%d") }
+        end
       end
     end
 
