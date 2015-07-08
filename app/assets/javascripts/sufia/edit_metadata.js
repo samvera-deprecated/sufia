@@ -45,7 +45,7 @@ Blacklight.onLoad(function() {
     },
     minLength: 2
   };
-  $("#generic_file_based_near").autocomplete(get_autocomplete_opts("location"));
+  $("input.generic_file_based_near").autocomplete(get_autocomplete_opts("location"));
 
   var autocomplete_vocab = new Object();
 
@@ -57,7 +57,7 @@ Blacklight.onLoad(function() {
   for (var i=0; i < autocomplete_vocab.url_var.length; i++) {
     autocomplete_vocab.field_name.push('generic_file_' + autocomplete_vocab.url_var[i]);
     // autocompletes
-    $("#" + autocomplete_vocab.field_name[i])
+    $("input." + autocomplete_vocab.field_name[i])
         // don't navigate away from the field on tab when selecting an item
         .bind( "keydown", function( event ) {
             if ( event.keyCode === $.ui.keyCode.TAB &&
