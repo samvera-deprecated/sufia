@@ -634,4 +634,104 @@ describe GenericFile, :type => :model do
       it { is_expected.not_to be_public }
     end
   end
+
+  describe "find_by_date_created" do
+    subject { GenericFile.find_by_date_created(start_date, end_date) }
+
+    context "with no start date" do
+      let(:start_date) { nil }
+      let(:end_date) { nil }
+      it { is_expected.to eq [] }
+    end
+
+    context "with no end date" do
+      let(:start_date) {1.days.ago}
+      let(:end_date) {nil}
+      before do
+        @file.save
+      end
+      it { is_expected.to eq [@file] }
+    end
+
+    context "with an end date" do
+      let(:start_date) { 1.days.ago }
+      let(:end_date) { DateTime.now }
+      before do
+        @file.save
+      end
+      it { is_expected.to eq [@file] }
+    end
+  end
+
+  describe "where_access_is" do
+    subject { GenericFile.where_access_is access_level }
+    before do
+      @file.read_groups = read_groups
+      @file.save
+    end
+
+    context "when file is private" do
+      let(:read_groups) { ["private"] }
+      context "when access level is private" do
+        let(:access_level) { 'private' }
+        it { is_expected.to eq [@file]}
+      end
+      context "when access level is public" do
+        let(:access_level) { 'public' }
+        it { is_expected.to eq []}
+      end
+      context "when access level is registered" do
+        let(:access_level) { 'registered' }
+        it { is_expected.to eq []}
+      end
+    end
+    context "when file is public" do
+      let(:read_groups) { ["public"] }
+      context "when access level is private" do
+        let(:access_level) { 'private' }
+        it { is_expected.to eq []}
+      end
+      context "when access level is public" do
+        let(:access_level) { 'public' }
+        it { is_expected.to eq [@file]}
+      end
+      context "when access level is registered" do
+        let(:access_level) { 'registered' }
+        it { is_expected.to eq []}
+      end
+    end
+    context "when file is registered" do
+      let(:read_groups) { ["registered"] }
+      context "when access level is private" do
+        let(:access_level) { 'private' }
+        it { is_expected.to eq []}
+      end
+      context "when access level is public" do
+        let(:access_level) {'public'}
+        it { is_expected.to eq []}
+      end
+      context "when access level is registered" do
+        let(:access_level) { 'registered' }
+        it { is_expected.to eq [@file]}
+      end
+    end
+  end
+  describe "where_private" do
+    it "calls where_access_is with private" do
+      expect(GenericFile).to receive(:where_access_is).with('private')
+      GenericFile.where_private
+    end
+  end
+  describe "where_registered" do
+    it "calls where_access_is with registered" do
+      expect(GenericFile).to receive(:where_access_is).with('registered')
+      GenericFile.where_registered
+    end
+  end
+  describe "where_public" do
+    it "calls where_access_is with public" do
+      expect(GenericFile).to receive(:where_access_is).with('public')
+      GenericFile.where_public
+    end
+  end
 end
