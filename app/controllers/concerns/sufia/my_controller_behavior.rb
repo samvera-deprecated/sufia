@@ -6,17 +6,17 @@ module Sufia
     include Hydra::Catalog
     include Hydra::BatchEditBehavior
     include Hydra::Collections::SelectsCollections
-  
+
     included do
       include Blacklight::Configurable
 
       self.copy_blacklight_config_from(CatalogController)
       self.blacklight_config.search_builder_class = Sufia::MySearchBuilder
-      
+
       before_filter :authenticate_user!
       before_filter :enforce_show_permissions, only: :show
       before_filter :enforce_viewing_context_for_show_requests, only: :show
-      before_filter :find_collections, only: :index
+      before_filter :find_collections_with_edit_access, only: :index
 
       self.search_params_logic += [:add_access_controls_to_solr_params, :add_advanced_parse_q_to_solr]
 
