@@ -3,9 +3,14 @@ require 'spec_helper'
 describe My::FilesController, :type => :controller do
 
   let(:my_collection) do
-    Collection.new(title: 'test collection').tap do |c|
+    Collection.create(title: 'test collection') do |c|
       c.apply_depositor_metadata(user.user_key)
-      c.save!
+    end
+  end
+
+  let(:other_collection) do
+    Collection.create(title: 'other test collection') do |c|
+      c.apply_depositor_metadata(another_user.user_key)
     end
   end
 
@@ -19,10 +24,13 @@ describe My::FilesController, :type => :controller do
 
   let(:user) { FactoryGirl.find_or_create(:archivist) }
 
+  let(:another_user) { FactoryGirl.find_or_create(:jill) }
+
   before do
     sign_in user
     @my_file = FactoryGirl.create(:generic_file, depositor: user)
     @my_collection = my_collection
+    @other_collection = other_collection
     @shared_file = shared_file
     @unrelated_file = FactoryGirl.create(:generic_file, depositor: FactoryGirl.create(:user))
     @wrong_type = Batch.create
@@ -54,6 +62,12 @@ describe My::FilesController, :type => :controller do
     expect(assigns[:document_list].map(&:id)).to_not include(@unrelated_file.id)
     # doesn't show non-generic files
     expect(assigns[:document_list].map(&:id)).to_not include(@wrong_type.id)
+  end
+
+  it "has the correct collections" do
+    get :index
+    expect(assigns[:user_collections].map(&:id)).to include(@my_collection.id)
+    expect(assigns[:user_collections].map(&:id)).to_not include(@other_collection.id)
   end
 
   describe "batch processing" do
