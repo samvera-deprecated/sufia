@@ -1,5 +1,16 @@
 # History of Sufia releases
 
+## 6.2.0
+
+* Check to make sure Zotero integration is enabled before asking user instances if they have a Zotero user ID. Fixes #1235 [Michael J. Giarlo]
+* Make my controller retrieve only user's own collections. [Olli Lyytinen]
+* Adding date range queries for deposited files. fixes #1189 [Carolyn Cole]
+* Allowing the second input to also auto complete.  fixes #1222 [Carolyn Cole]
+* Removing any calls to the sort! method [Carolyn Cole]
+* Adding recent users query end date so a range can be queried. fixes #1187 [Carolyn Cole]
+* Don't calculate coverage of code found in spec/ directory [Michael J. Giarlo]
+* Refactoring feature test to make it more efficient [Carolyn Cole]
+
 ## 6.1.0
 
  * Making the image thumbnail alt tag empty for better accessibility, since there is more information about title and description in the result. [Michael Tribone]
@@ -67,7 +78,6 @@
  * Download full-text jars via HTTPS, else the task winds up downloading a bunch of 161-byte HTML files with 302 FOUND in them [Michael J. Giarlo]
  * Noid service extracted out into its own gem [Michael J. Giarlo]
  * Correct version of Sufia in README [Michael J. Giarlo]
-
 
 ## 6.0.0
 
