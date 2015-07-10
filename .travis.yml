@@ -6,18 +6,13 @@ rvm:
 matrix:
   include:
     - rvm: 2.1
-      env: "RAILS_VERSION=4.2.1"
+      env: "RAILS_VERSION=4.2.3"
 env:
   global:
     - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
   matrix:
-    - "RAILS_VERSION=4.2.2"
+    - "RAILS_VERSION=4.2.3"
 notifications:
-  email:
-    recipients:
-      - "ul-dlt-hydra@lists.psu.edu"
-    on_success: "change"
-    on_failure: "always"
   irc:
     channels:
       - "irc.freenode.org#scholarsphere"
@@ -26,3 +21,5 @@ notifications:
       - "%{repository}//%{branch}@%{commit} by %{author}: %{message} - %{build_url}"
 services:
   - redis-server
+before_script:
+  - jdk_switcher use oraclejdk8
