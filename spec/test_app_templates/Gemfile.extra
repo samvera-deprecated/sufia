@@ -1,4 +1,4 @@
-gem 'curation_concerns', github:'projecthydra-labs/curation_concerns', ref:'8f4638f'
+gem 'curation_concerns', github:'projecthydra-labs/curation_concerns', ref:'9e88e3ab99b496e5579ce91025ec355c2a5228e0' # DANGER: pinned to a PR branch
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'
 ### from curation_concerns Gemfile.extra
 gem 'hydra-derivatives', github: 'projecthydra/hydra-derivatives', ref: '13df67f'
