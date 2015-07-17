@@ -131,70 +131,101 @@ describe GenericFilesController do
       let(:batch) { Batch.create }
       let(:batch_id) { batch.id }
 
-      before do
-        Sufia.config.enable_local_ingest = true
-        FileUtils.mkdir_p([File.join(mock_upload_directory, "import/files"), File.join(mock_upload_directory, "import/metadata")])
-        FileUtils.copy(File.expand_path('../../fixtures/world.png', __FILE__), mock_upload_directory)
-        FileUtils.copy(File.expand_path('../../fixtures/image.jpg', __FILE__), mock_upload_directory)
-        FileUtils.copy(File.expand_path('../../fixtures/dublin_core_rdf_descMetadata.nt', __FILE__), File.join(mock_upload_directory, "import/metadata"))
-        FileUtils.copy(File.expand_path('../../fixtures/icons.zip', __FILE__), File.join(mock_upload_directory, "import/files"))
-        FileUtils.copy(File.expand_path('../../fixtures/Example.ogg', __FILE__), File.join(mock_upload_directory, "import/files"))
-      end
-
-      after do
-        Sufia.config.enable_local_ingest = false
-        allow_any_instance_of(FileContentDatastream).to receive(:live?).and_return(true)
-      end
-
       context "when User model defines a directory path" do
+
         before do
+          Sufia.config.enable_local_ingest = true
+          FileUtils.mkdir_p([File.join(mock_upload_directory, "import/files"), File.join(mock_upload_directory, "import/metadata")])
+          FileUtils.copy(File.expand_path('../../fixtures/world.png', __FILE__), mock_upload_directory)
+          FileUtils.copy(File.expand_path('../../fixtures/image.jpg', __FILE__), mock_upload_directory)
+          FileUtils.copy(File.expand_path('../../fixtures/dublin_core_rdf_descMetadata.nt', __FILE__), File.join(mock_upload_directory, "import/metadata"))
+          FileUtils.copy(File.expand_path('../../fixtures/icons.zip', __FILE__), File.join(mock_upload_directory, "import/files"))
+          FileUtils.copy(File.expand_path('../../fixtures/Example.ogg', __FILE__), File.join(mock_upload_directory, "import/files"))
+
           allow_any_instance_of(User).to receive(:directory).and_return(mock_upload_directory)
         end
 
+        after do
+          Sufia.config.enable_local_ingest = false
+          allow_any_instance_of(FileContentDatastream).to receive(:live?).and_return(true)
+          FileUtils.remove_dir(File.join(mock_upload_directory, "import/files"), true)
+          FileUtils.remove_dir(File.join(mock_upload_directory, "import/metadata"), true)
+        end
+
+        let!(:actor) { Sufia::GenericFile::Actor.new(nil, nil ) }
+
         it "should ingest files from the filesystem" do
-          expect {
-            post :create, local_file: ["world.png", "image.jpg"], batch_id: batch_id
-          }.to change(GenericFile, :count).by(2)
+          # no need to save the files to fedora we justwant to know they were created
+          allow_any_instance_of(GenericFile).to receive(:save!).and_return(true)
+
+          #allow random GenericFiles to be created
+          allow(GenericFile).to receive(:new).with({}).and_call_original
+
+          # expect each file to be created
+          expect(GenericFile).to receive(:new).with(label: "world.png").and_call_original
+          expect(GenericFile).to receive(:new).with(label: "image.jpg").and_call_original
+
+          # expect metadata to be appplied to each file
+          expect(Sufia::GenericFile::Actor).to receive(:new).exactly(2).times.and_return(actor)
+          expect(actor).to receive(:create_metadata).exactly(2).times
+
+          # expect each file to be ingested
+          expect(IngestLocalFileJob).to receive(:new).with(nil, "spec/mock_upload_directory", "world.png", user.user_key)
+          expect(IngestLocalFileJob).to receive(:new).with(nil, "spec/mock_upload_directory", "image.jpg", user.user_key)
+          expect(Sufia.queue).to receive(:push).exactly(2).times
+
+          post :create, local_file: ["world.png", "image.jpg"], batch_id: batch_id
+
           expect(response).to redirect_to Sufia::Engine.routes.url_helpers.batch_edit_path(batch_id)
-          # These files should have been moved out of the upload directory
-          expect(File).not_to exist("#{mock_upload_directory}/image.jpg")
-          expect(File).not_to exist("#{mock_upload_directory}/world.png")
-          # And into the storage directory
-          files = Batch.find(batch_id).generic_files
-          expect(files.first.label).to eq('world.png')
-          expect(files.to_a.map(&:label)).to eq ['world.png', 'image.jpg']
         end
 
         it "should ingest redirect to another location" do
+          # no need to save the files to fedora we justwant to know they were created
+          allow_any_instance_of(GenericFile).to receive(:save!).and_return(true)
+
+          #allow random GenericFiles to be created
+          allow(GenericFile).to receive(:new).with({}).and_call_original
+
+          # expect each file to be created
+          expect(GenericFile).to receive(:new).with(label: "world.png").and_call_original
+
+          # expect metadata to be appplied to each file
+          expect(Sufia::GenericFile::Actor).to receive(:new).exactly(1).times.and_return(actor)
+          expect(actor).to receive(:create_metadata).exactly(1).times
+
+          # expect each file to be ingested
+          expect(IngestLocalFileJob).to receive(:new).with(nil, "spec/mock_upload_directory", "world.png", user.user_key)
+          expect(Sufia.queue).to receive(:push).exactly(1).times
           expect(GenericFilesController).to receive(:upload_complete_path).and_return(mock_url)
-          expect {
-            post :create, local_file: ["world.png"], batch_id: batch_id
-          }.to change(GenericFile, :count).by(1)
+
+          post :create, local_file: ["world.png"], batch_id: batch_id
           expect(response).to redirect_to mock_url
-          # These files should have been moved out of the upload directory
-          expect(File).not_to exist("#{mock_upload_directory}/world.png")
-          # And into the storage directory
-          files = Batch.find(batch_id).generic_files
-          expect(files.first.label).to eq 'world.png'
         end
 
         it "should ingest directories from the filesystem" do
-          expect {
-            post :create, local_file: ["world.png", "import"], batch_id: batch_id
-          }.to change(GenericFile, :count).by(4)
-          expect(response).to redirect_to Sufia::Engine.routes.url_helpers.batch_edit_path(batch_id)
-          # These files should have been moved out of the upload directory
-          expect(File).not_to exist("#{mock_upload_directory}/import/files/icons.zip")
-          expect(File).not_to exist("#{mock_upload_directory}/import/metadata/dublin_core_rdf_descMetadata.nt")
-          expect(File).not_to exist("#{mock_upload_directory}/world.png")
-          # And into the storage directory
-          files = Batch.find(batch_id).generic_files
-          expect(files.first.label).to eq 'world.png'
-          # TODO: use files.select once projecthydra/active_fedora#609 is fixed
-          ['icons.zip', 'Example.ogg'].each do |filename|
-            expect(files.map { |f| f.relative_path if f.label.match(filename) }.compact.first).to eq "import/files/#{filename}"
-          end
-          expect(files.map { |f| f.relative_path if f.label.match("dublin_core_rdf_descMetadata.nt") }.compact.first).to eq 'import/metadata/dublin_core_rdf_descMetadata.nt'
+          # no need to save the files to fedora we justwant to know they were created
+          allow_any_instance_of(GenericFile).to receive(:save!).and_return(true)
+
+          #allow random GenericFiles to be created
+          allow(GenericFile).to receive(:new).with({}).and_call_original
+
+          # expect each file to be created
+          expect(GenericFile).to receive(:new).with(label: "world.png").and_call_original
+          expect(GenericFile).to receive(:new).with(label: "icons.zip").and_call_original
+          expect(GenericFile).to receive(:new).with(label: "Example.ogg").and_call_original
+          expect(GenericFile).to receive(:new).with(label: "dublin_core_rdf_descMetadata.nt").and_call_original
+
+          # expect metadata to be appplied to each file
+          expect(Sufia::GenericFile::Actor).to receive(:new).exactly(4).times.and_return(actor)
+          expect(actor).to receive(:create_metadata).exactly(4).times
+
+          # expect each file to be ingested
+          expect(IngestLocalFileJob).to receive(:new).with(nil, "spec/mock_upload_directory", "world.png", user.user_key)
+          expect(IngestLocalFileJob).to receive(:new).with(nil, "spec/mock_upload_directory", "import/files/icons.zip", user.user_key)
+          expect(IngestLocalFileJob).to receive(:new).with(nil, "spec/mock_upload_directory", "import/files/Example.ogg", user.user_key)
+          expect(IngestLocalFileJob).to receive(:new).with(nil, "spec/mock_upload_directory", "import/metadata/dublin_core_rdf_descMetadata.nt", user.user_key)
+          expect(Sufia.queue).to receive(:push).exactly(4).times
+          post :create, local_file: ["world.png", "import"], batch_id: batch_id
         end
       end
 
