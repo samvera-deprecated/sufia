@@ -13,6 +13,10 @@ class ImportUrlJob < ActiveFedoraIdBasedJob
 
     Tempfile.open(id.gsub('/', '_')) do |f|
       path, mime_type = copy_remote_file(generic_file.import_url, f)
+
+      # reload the generic file once the data is copied since this is a long running task
+      generic_file.reload
+
       # attach downloaded file to generic file stubbed out
       if Sufia::GenericFile::Actor.new(generic_file, user).create_content(f, path, 'content', mime_type)
         # add message to user for downloaded file
