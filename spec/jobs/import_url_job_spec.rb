@@ -61,4 +61,36 @@ describe ImportUrlJob do
       expect(user.mailbox.inbox.first.subject).to eq("File Import Error")
     end
   end
+
+  context "when a batch update job is running too" do
+
+    let(:title) { { generic_file.id => ['File One'] }}
+    let(:metadata) { {} }
+    let(:visibility) { nil }
+
+    let(:batch) { Batch.create }
+    let(:batch_job) { BatchUpdateJob.new(user.user_key, batch.id, title, metadata, visibility) }
+
+    before do
+      generic_file.batch = batch
+      generic_file.save
+      allow_any_instance_of(Ability).to receive(:can?).and_return(true)
+      expect_any_instance_of(Net::HTTP).to receive(:request_get).with(file_hash).and_yield(mock_response)
+    end
+
+    it "does not kill all the metadata set by other jobs" do
+      # load the object before running the batch job
+      gf = job.object
+
+      # runthe batch job to set the title
+      batch_job.run
+
+      # run the import job
+      job.run
+
+      # import job should not override the title set by the batch job
+      file = GenericFile.find(gf.id)
+      expect(file.title).to eq(['File One'])
+    end
+  end
 end
