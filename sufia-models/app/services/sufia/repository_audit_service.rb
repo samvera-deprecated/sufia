@@ -2,7 +2,7 @@ module Sufia
   class RepositoryAuditService
     def self.audit_everything
       ::GenericFile.find_each do |gf|
-        gf.audit
+        Sufia::GenericFileAuditService.new(gf).audit
       end
     end
   end
