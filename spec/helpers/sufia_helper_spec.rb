@@ -27,6 +27,14 @@ describe SufiaHelper, :type => :helper do
     end
   end
 
+  describe "#link_to_field" do
+      it "should return a link to the proper field" do
+        document = build(:generic_file, contributor: ["Joe"])
+        field_link = catalog_index_path document, :contributor => "\"Joe\"", :search_field => "advanced"
+        expect(helper.link_to_field("contributor", document.contributor.first)).to eq("<a href=\"#{ERB::Util.html_escape(field_link)}\">Joe</a>")
+      end
+  end
+
   describe "has_collection_search_parameters?" do
     subject { helper }
     context "when cq is set" do

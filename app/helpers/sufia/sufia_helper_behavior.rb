@@ -105,7 +105,7 @@ module Sufia
     end
 
     def link_to_field(fieldname, fieldvalue, displayvalue = nil)
-      p = { search_field: 'advanced', fieldname => '"'+fieldvalue+'"' }
+      p = { search_field: 'advanced', fieldname => '"'+fieldvalue.to_s+'"' }
       link_url = catalog_index_path(p)
       display = displayvalue.blank? ? fieldvalue : displayvalue
       link_to(display, link_url)
