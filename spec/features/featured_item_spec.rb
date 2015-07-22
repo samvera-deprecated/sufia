@@ -8,7 +8,7 @@ describe "featuring items" do
       u.save
       u
     end
-    it "should have a working unfeature link", :js => true do
+    it "has a working unfeature link", js: true do
       sign_in user
       file = create(:public_file)
       create(:featured_work, generic_file_id: file.id)

@@ -52,10 +52,10 @@ if $in_travis
         def extract_metadata
           return unless has_content?
           Hydra::FileCharacterization.characterize(content, filename_for_characterization, :fits) do |config|
-            config[:fits] = lambda { |filename|
+            config[:fits] = lambda do |filename|
               filename = File.expand_path("../fixtures/pdf_fits.xml", __FILE__)
               File.read(filename)
-            }
+            end
           end
         end
       end
@@ -68,9 +68,10 @@ if defined?(ClamAV)
 else
   class ClamAV
     include Singleton
-    def scanfile(f)
+    def scanfile(_f)
       0
     end
+
     def loaddb
       nil
     end
@@ -116,7 +117,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = false
 
   config.before :each do |example|
-    unless (example.metadata[:type] == :view || example.metadata[:no_clean])
+    unless example.metadata[:type] == :view || example.metadata[:no_clean]
       ActiveFedora::Cleaner.clean!
     end
   end

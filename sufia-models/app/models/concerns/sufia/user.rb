@@ -43,7 +43,7 @@ module Sufia::User
   end
 
   def zotero_token
-    self[:zotero_token].blank? ? nil : Marshal::load(self[:zotero_token])
+    self[:zotero_token].blank? ? nil : Marshal.load(self[:zotero_token])
   end
 
   def zotero_token=(value)
@@ -51,7 +51,7 @@ module Sufia::User
       # Resetting the token
       self[:zotero_token] = value
     else
-      self[:zotero_token] = Marshal::dump(value)
+      self[:zotero_token] = Marshal.dump(value)
     end
   end
 
@@ -72,14 +72,14 @@ module Sufia::User
     #   1. validation has already flagged the ORCID as invalid
     #   2. the orcid field is blank
     #   3. the orcid is already in its normalized form
-    return if self.errors[:orcid].first.present? || self.orcid.blank? || self.orcid.starts_with?('http://orcid.org/')
-    bare_orcid = Sufia::OrcidValidator.match(self.orcid).string
+    return if errors[:orcid].first.present? || orcid.blank? || orcid.starts_with?('http://orcid.org/')
+    bare_orcid = Sufia::OrcidValidator.match(orcid).string
     self.orcid = "http://orcid.org/#{bare_orcid}"
   end
 
   # Format the json for select2 which requires just an id and a field called text.
   # If we need an alternate format we should probably look at a json template gem
-  def as_json(opts = nil)
+  def as_json(_opts = nil)
     { id: user_key, text: display_name ? "#{display_name} (#{user_key})" : user_key }
   end
 
@@ -89,18 +89,18 @@ module Sufia::User
   end
 
   def email_address
-    self.email
+    email
   end
 
   def name
-    self.display_name.titleize || raise
+    display_name.titleize || raise
   rescue
-    self.user_key
+    user_key
   end
 
   # Redefine this for more intuitive keys in Redis
   def to_param
-    # hack because rails doesn't like periods in urls.
+    # HACK: because rails doesn't like periods in urls.
     user_key.gsub(/\./, '-dot-')
   end
 
@@ -116,20 +116,20 @@ module Sufia::User
   end
 
   # method needed for messaging
-  def mailboxer_email(obj=nil)
+  def mailboxer_email(_obj = nil)
     nil
   end
 
   # The basic groups method, override or will fallback to Sufia::Ldap::User
   def groups
-    @groups ||= self.group_list ? self.group_list.split(";?;") : []
+    @groups ||= group_list ? group_list.split(";?;") : []
   end
 
   def ability
     @ability ||= ::Ability.new(self)
   end
 
-  def get_all_user_activity( since = DateTime.now.to_i - 8640)
+  def all_user_activity(since = DateTime.now.to_i - 8640)
     events = self.events.reverse.collect { |event| event if event[:timestamp].to_i > since }.compact
     profile_events = self.profile_events.reverse.collect { |event| event if event[:timestamp].to_i > since }.compact
     events.concat(profile_events).sort { |a, b| b[:timestamp].to_i <=> a[:timestamp].to_i }
@@ -146,7 +146,7 @@ module Sufia::User
 
     # Override this method if you aren't using email/password
     def audituser
-      User.find_by_user_key(audituser_key) || User.create!(Devise.authentication_keys.first => audituser_key, password: Devise.friendly_token[0,20])
+      User.find_by_user_key(audituser_key) || User.create!(Devise.authentication_keys.first => audituser_key, password: Devise.friendly_token[0, 20])
     end
 
     # Override this method if you aren't using email as the userkey
@@ -156,7 +156,7 @@ module Sufia::User
 
     # Override this method if you aren't using email/password
     def batchuser
-      User.find_by_user_key(batchuser_key) || User.create!(Devise.authentication_keys.first => batchuser_key, password: Devise.friendly_token[0,20])
+      User.find_by_user_key(batchuser_key) || User.create!(Devise.authentication_keys.first => batchuser_key, password: Devise.friendly_token[0, 20])
     end
 
     # Override this method if you aren't using email as the userkey
@@ -170,7 +170,7 @@ module Sufia::User
 
     def recent_users(start_date, end_date = nil)
       end_date ||= DateTime.now # doing or eq here so that if the user passes nil we still get now
-      return User.where(created_at: start_date..end_date)
+      User.where(created_at: start_date..end_date)
     end
   end
 end

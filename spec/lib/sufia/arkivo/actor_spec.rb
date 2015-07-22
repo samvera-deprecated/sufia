@@ -100,9 +100,9 @@ describe Sufia::Arkivo::Actor do
     end
 
     it 'changes the arkivo checksum' do
-      expect {
+      expect do
         subject.update_file_from_item(gf)
-      }.to change { gf.arkivo_checksum }.from(checksum).to(item['file']['md5'])
+      end.to change { gf.arkivo_checksum }.from(checksum).to(item['file']['md5'])
     end
 
     it 'calls update_content' do
@@ -111,9 +111,9 @@ describe Sufia::Arkivo::Actor do
     end
 
     it 'extracts a file from the item' do
-      expect {
+      expect do
         subject.update_file_from_item(gf)
-      }.to change { gf.content.content }.to("# HEADER\n\nThis is a paragraph!\n")
+      end.to change { gf.content.content }.to("# HEADER\n\nThis is a paragraph!\n")
     end
 
     it 'returns a GF instance' do
@@ -131,9 +131,9 @@ describe Sufia::Arkivo::Actor do
     it { is_expected.to respond_to(:destroy_file) }
 
     it 'deletes the file' do
-      expect {
+      expect do
         subject.destroy_file(gf)
-      }.to change { gf.destroyed? }.from(nil).to(true)
+      end.to change { gf.destroyed? }.from(nil).to(true)
     end
   end
 end

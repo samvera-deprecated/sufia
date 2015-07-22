@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'collection', :type => :feature do
+describe 'collection', type: :feature do
   def create_collection(title, description)
     visit '/dashboard'
     first('#hydra-collection-add').click
@@ -20,10 +20,10 @@ describe 'collection', :type => :feature do
     expect(page).to have_content description
   end
 
-  let(:title1) {"Test Collection 1"}
-  let(:description1) {"Description for collection 1 we are testing."}
-  let(:title2) {"Test Collection 2"}
-  let(:description2) {"Description for collection 2 we are testing."}
+  let(:title1) { "Test Collection 1" }
+  let(:description1) { "Description for collection 1 we are testing." }
+  let(:title2) { "Test Collection 2" }
+  let(:description2) { "Description for collection 2 we are testing." }
 
   let(:user) { FactoryGirl.create(:user) }
 
@@ -47,7 +47,7 @@ describe 'collection', :type => :feature do
       create_collection(title2, description2)
     end
 
-    it "should create collection from the dashboard and include files", js: true do
+    it "creates collection from the dashboard and include files", js: true do
       visit '/dashboard/files'
       first('input#check_all').click
       click_button "Add to Collection" # opens the modal
@@ -63,7 +63,7 @@ describe 'collection', :type => :feature do
 
   describe 'delete collection' do
     let!(:collection) do
-      Collection.create( title: 'collection title', description: 'collection description') do |c|
+      Collection.create(title: 'collection title', description: 'collection description') do |c|
         c.apply_depositor_metadata(user.user_key)
       end
     end
@@ -72,9 +72,9 @@ describe 'collection', :type => :feature do
       visit '/dashboard/collections'
     end
 
-    it "should delete a collection" do
+    it "deletes a collection" do
       expect(page).to have_content(collection.title)
-      within('#document_'+collection.id) do
+      within('#document_' + collection.id) do
         first('button.dropdown-toggle').click
         first(".itemtrash").click
       end
@@ -84,7 +84,7 @@ describe 'collection', :type => :feature do
 
   describe 'show collection' do
     let!(:collection) do
-      Collection.create( title: 'collection title', description: 'collection description',
+      Collection.create(title: 'collection title', description: 'collection description',
                         members: [gf1, gf2]) do |c|
         c.apply_depositor_metadata(user.user_key)
       end
@@ -94,9 +94,9 @@ describe 'collection', :type => :feature do
       visit '/dashboard/collections'
     end
 
-    it "should show a collection with a listing of Descriptive Metadata and catalog-style search results" do
+    it "shows a collection with a listing of Descriptive Metadata and catalog-style search results" do
       expect(page).to have_content(collection.title)
-      within('#document_'+collection.id) do
+      within('#document_' + collection.id) do
         click_link("Display all details of collection title")
       end
       expect(page).to have_content(collection.title)
@@ -116,7 +116,7 @@ describe 'collection', :type => :feature do
       expect(page).to have_content(gf2.title.first)
     end
 
-    it "should hide collection descriptive metadata when searching a collection" do
+    it "hides collection descriptive metadata when searching a collection" do
       # URL: /dashboard/collections
       expect(page).to have_content(collection.title)
       within("#document_#{collection.id}") do
@@ -143,7 +143,7 @@ describe 'collection', :type => :feature do
   describe 'edit collection' do
     let!(:collection) do
       Collection.create(title: 'collection title', description: 'collection description',
-                     members: [gf1, gf2]) { |c| c.apply_depositor_metadata(user.user_key) }
+                        members: [gf1, gf2]) { |c| c.apply_depositor_metadata(user.user_key) }
     end
 
     before do
@@ -151,7 +151,7 @@ describe 'collection', :type => :feature do
       visit '/dashboard/collections'
     end
 
-    it "should edit and update collection metadata" do
+    it "edits and update collection metadata" do
       # URL: /dashboard/collections
       expect(page).to have_content(collection.title)
       within("#document_#{collection.id}") do
@@ -179,7 +179,7 @@ describe 'collection', :type => :feature do
       expect(page).to have_content(creators.first)
     end
 
-    it "should remove a file from a collection" do
+    it "removes a file from a collection" do
       expect(page).to have_content(collection.title)
       within("#document_#{collection.id}") do
         first('button.dropdown-toggle').click
@@ -199,9 +199,9 @@ describe 'collection', :type => :feature do
       expect(page).to have_content(gf2.title.first)
     end
 
-    it "should remove all files from a collection", js: true do
+    it "removes all files from a collection", js: true do
       expect(page).to have_content(collection.title)
-      within('#document_'+collection.id) do
+      within('#document_' + collection.id) do
         first('button.dropdown-toggle').click
         click_link('Edit Collection')
       end
@@ -231,13 +231,13 @@ describe 'collection', :type => :feature do
 
     let!(:collection) do
       Collection.create(title: 'collection title', description: 'collection description',
-                     members: gfs) { |c| c.apply_depositor_metadata(user.user_key) }
+                        members: gfs) { |c| c.apply_depositor_metadata(user.user_key) }
     end
 
-    it "should show a collection with a listing of Descriptive Metadata and catalog-style search results" do
+    it "shows a collection with a listing of Descriptive Metadata and catalog-style search results" do
       visit '/dashboard/collections'
       expect(page).to have_content(collection.title)
-      within('#document_'+collection.id) do
+      within('#document_' + collection.id) do
         click_link("Display all details of collection title")
       end
       expect(page).to have_css(".pager")

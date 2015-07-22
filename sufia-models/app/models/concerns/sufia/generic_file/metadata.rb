@@ -4,7 +4,6 @@ module Sufia
       extend ActiveSupport::Concern
 
       included do
-
         property :label, predicate: ActiveFedora::RDF::Fcrepo::Model.downloadFilename, multiple: false
 
         property :depositor, predicate: ::RDF::URI.new("http://id.loc.gov/vocabulary/relators/dpt"), multiple: false do |index|
@@ -95,7 +94,6 @@ module Sufia
         end
         type ::RDF::URI.new('http://pcdm.org/models#Object')
       end
-
     end
   end
 end

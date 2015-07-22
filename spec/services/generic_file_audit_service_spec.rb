@@ -8,7 +8,7 @@ describe Sufia::GenericFileAuditService do
     end
   end
 
-  let(:service) { Sufia::GenericFileAuditService.new(f) }
+  let(:service) { described_class.new(f) }
 
   describe "#audit" do
     before do
@@ -47,17 +47,17 @@ describe Sufia::GenericFileAuditService do
 
     describe "file loaded from fedora" do
       context "when no audits have been run" do
-        it "should report that audits have not been run" do
+        it "reports that audits have not been run" do
           expect(subject).to eq "Audits have not yet been run on this file."
         end
       end
 
       context "when no audit is passing" do
         before do
-         ChecksumAuditLog.create!(pass: 1, generic_file_id: f.id, version: f.content.versions.first.label, dsid: 'content')
+          ChecksumAuditLog.create!(pass: 1, generic_file_id: f.id, version: f.content.versions.first.label, dsid: 'content')
         end
 
-        it "should report that audit result" do
+        it "reports that audit result" do
           expect(subject).to eq 1
         end
       end
@@ -65,9 +65,9 @@ describe Sufia::GenericFileAuditService do
 
     describe "file loaded from solr" do
       let(:solr_file) { GenericFile.load_instance_from_solr(f.id) }
-      let(:service) { Sufia::GenericFileAuditService.new(solr_file) }
+      let(:service) { described_class.new(solr_file) }
 
-      it "should not audit by version" do
+      it "does not audit by version" do
         expect(service).not_to receive(:audit_stat_by_version)
         expect(subject).to eq "Audits have not yet been run on this file."
       end
@@ -77,7 +77,7 @@ describe Sufia::GenericFileAuditService do
           ChecksumAuditLog.create!(pass: 1, generic_file_id: f.id, version: f.content.versions.first.label, dsid: 'content')
         end
 
-        it "should report that audit result" do
+        it "reports that audit result" do
           expect(service).not_to receive(:audit_stat_by_version)
           expect(subject).to eq 1
         end
@@ -89,7 +89,7 @@ describe Sufia::GenericFileAuditService do
           ChecksumAuditLog.create!(pass: 1, generic_file_id: f.id, version: f.content.versions.first.label, dsid: 'content')
         end
 
-        it "should report that audit result" do
+        it "reports that audit result" do
           expect(service).not_to receive(:audit_stat_by_version)
           expect(subject).to eq 0
         end

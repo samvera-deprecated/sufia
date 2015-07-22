@@ -7,7 +7,6 @@ module Sufia
         contains "content", class_name: 'FileContentDatastream'
         contains "thumbnail"
       end
-
     end
   end
 end

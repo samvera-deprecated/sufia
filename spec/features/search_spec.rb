@@ -4,7 +4,7 @@ describe 'searching' do
   let!(:file) { FactoryGirl.create(:public_file, title: ["Toothbrush"]) }
 
   context "as a public user" do
-    it "should find the file and have a gallery" do
+    it "finds the file and have a gallery" do
       visit '/'
       fill_in "search-field-header", with: "Toothbrush"
       click_button "search-submit-header"
@@ -12,7 +12,7 @@ describe 'searching' do
       within "#search-results" do
         expect(page).to have_content "Toothbrush"
       end
-      
+
       click_link "Gallery"
       expect(page).to have_content "You searched for: Toothbrush"
       within "#documents" do
@@ -20,7 +20,7 @@ describe 'searching' do
       end
     end
 
-    it "should not display search options for dashboard files" do
+    it "does not display search options for dashboard files" do
       visit "/"
       within(".input-group-btn") do
         expect(page).to_not have_content("My Files")
@@ -28,6 +28,5 @@ describe 'searching' do
         expect(page).to_not have_content("My Shares")
       end
     end
-
   end
 end

@@ -11,7 +11,7 @@ describe CharacterizeJob do
     end
   end
 
-  subject { CharacterizeJob.new(@generic_file.id)}
+  subject { described_class.new(@generic_file.id) }
 
   it 'spawns a CreateDerivatives job' do
     expect(CreateDerivativesJob).to receive(:new).with(@generic_file.id).once.and_call_original

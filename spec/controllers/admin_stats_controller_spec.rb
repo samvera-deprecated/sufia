@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Admin::StatsController, type: :controller do
   let(:user1) { FactoryGirl.find_or_create(:user) }
   let(:user2) { FactoryGirl.find_or_create(:archivist) }
-  
+
   before do
     allow(user1).to receive(:groups).and_return(['admin'])
     allow(user2).to receive(:groups).and_return(['not-admin'])
@@ -54,7 +54,7 @@ describe Admin::StatsController, type: :controller do
         ActiveFedora::SolrService.instance.conn.delete_by_id(poltergeist.id)
         original_files_count
       end
-      it "should provide accurate files_count, ensuring that solr deletes have been expunged first" do
+      it "provides accurate files_count, ensuring that solr deletes have been expunged first" do
         get :index
         expect(assigns[:files_count][:total]).to eq(original_files_count - 1)
       end
@@ -121,12 +121,12 @@ describe Admin::StatsController, type: :controller do
 
       it "gathers user deposits" do
         get :index
-        expect(assigns[:depositors]).to include({ key: user1.user_key, deposits: 2, user: user1 }, { key: user2.user_key, deposits: 1, user: user2 })
+        expect(assigns[:depositors]).to include({ key: user1.user_key, deposits: 2, user: user1 }, key: user2.user_key, deposits: 1, user: user2)
       end
 
       it "gathers user deposits during a date range" do
-        get :index, deposit_stats: {start_date: 1.days.ago.strftime("%Y-%m-%d"), end_date: 0.days.ago.strftime("%Y-%m-%d")}
-        expect(assigns[:depositors]).to include({ key: user1.user_key, deposits: 1, user: user1}, { key: user2.user_key, deposits: 1, user: user2 })
+        get :index, deposit_stats: { start_date: 1.days.ago.strftime("%Y-%m-%d"), end_date: 0.days.ago.strftime("%Y-%m-%d") }
+        expect(assigns[:depositors]).to include({ key: user1.user_key, deposits: 1, user: user1 }, key: user2.user_key, deposits: 1, user: user2)
       end
 
       context "more than 10 users" do
@@ -144,8 +144,8 @@ describe Admin::StatsController, type: :controller do
 
         it "gathers user deposits" do
           get :index
-          expect(assigns[:depositors]).to include({ key: user1.user_key, deposits: 2, user: user1 }, { key: user2.user_key, deposits: 1, user: user2 })
-          users.each { |user| expect(assigns[:depositors]).to include({key: user.user_key, deposits:1, user: user}) }
+          expect(assigns[:depositors]).to include({ key: user1.user_key, deposits: 2, user: user1 }, key: user2.user_key, deposits: 1, user: user2)
+          users.each { |user| expect(assigns[:depositors]).to include(key: user.user_key, deposits: 1, user: user) }
         end
       end
     end

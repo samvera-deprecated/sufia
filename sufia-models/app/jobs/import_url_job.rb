@@ -3,7 +3,6 @@ require 'uri'
 require 'tempfile'
 
 class ImportUrlJob < ActiveFedoraIdBasedJob
-
   def queue_name
     :import_url
   end
@@ -28,7 +27,7 @@ class ImportUrlJob < ActiveFedoraIdBasedJob
     end
   end
 
-  def copy_remote_file(import_url, f)
+  def copy_remote_file(_import_url, f)
     f.binmode
     # download file from url
     uri = URI(generic_file.import_url)
@@ -47,7 +46,7 @@ class ImportUrlJob < ActiveFedoraIdBasedJob
     end
 
     f.rewind
-    return uri.path, mime_type
+    [uri.path, mime_type]
   end
 
   def job_user

@@ -15,7 +15,6 @@ module Sufia
     end
 
     module ClassMethods
-
       # retry the block if the conditional call is true unless we hit the maximum tries
       #
       # @param number_of_tries [enumerator] maximum number of times to retry the block
@@ -32,7 +31,7 @@ module Sufia
           return result unless condition.call
           sleep(Sufia.config.retry_unless_sleep) if Sufia.config.retry_unless_sleep > 0
         end
-        raise RuntimeError, "retry_unless could not complete successfully. Try upping the # of tries?"
+        raise "retry_unless could not complete successfully. Try upping the # of tries?"
       end
     end
   end

@@ -1,12 +1,11 @@
 require 'spec_helper'
 
 describe SolrDocument, type: :model do
-
   describe "date_uploaded" do
     before do
       subject['date_uploaded_dtsi'] = '2013-03-14T00:00:00Z'
     end
-    it "should be a date" do
+    it "is a date" do
       expect(subject.date_uploaded).to eq '03/14/2013'
     end
   end
@@ -29,7 +28,7 @@ describe SolrDocument, type: :model do
     end
 
     context "when mime-type is 'office'" do
-      it "should be office document" do
+      it "is office document" do
         Mimes.office_document_mime_types.each do |type|
           subject['mime_type_tesim'] = [type]
           expect(subject).to be_office_document
@@ -38,14 +37,12 @@ describe SolrDocument, type: :model do
     end
 
     describe "when mime-type is 'video'" do
-      it "should be office" do
+      it "is office" do
         Mimes.video_mime_types.each do |type|
           subject['mime_type_tesim'] = [type]
           expect(subject).to be_video
         end
       end
     end
-
   end
-
 end

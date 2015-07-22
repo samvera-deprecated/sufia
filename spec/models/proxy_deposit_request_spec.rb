@@ -13,8 +13,8 @@ describe ProxyDepositRequest, type: :model do
   end
 
   subject do
-    ProxyDepositRequest.new(generic_file_id: file.id, sending_user: sender,
-      receiving_user: receiver, sender_comment: "please take this")
+    described_class.new(generic_file_id: file.id, sending_user: sender,
+                        receiving_user: receiver, sender_comment: "please take this")
   end
 
   its(:status) { is_expected.to eq 'pending' }
@@ -92,7 +92,7 @@ describe ProxyDepositRequest, type: :model do
     end
 
     context 'when the file is already being transferred' do
-      let(:subject2) {ProxyDepositRequest.new(generic_file_id: file.id, sending_user: sender, receiving_user: receiver2, sender_comment: 'please take this')}
+      let(:subject2) { described_class.new(generic_file_id: file.id, sending_user: sender, receiving_user: receiver2, sender_comment: 'please take this') }
 
       it 'raises an error' do
         subject.save!

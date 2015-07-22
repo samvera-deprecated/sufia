@@ -16,7 +16,7 @@ module Sufia
     end
 
     # Compute the sum of each file in the collection using Solr to
-    # avoid having to hit Fedora 
+    # avoid having to hit Fedora
     #
     # @return [Fixnum] size of collection in bytes
     # @raise [RuntimeError] unsaved record does not exist in solr
@@ -34,10 +34,11 @@ module Sufia
       }
 
       files = ActiveFedora::SolrService.query(query, args)
-      files.reduce(0) { |sum, f| sum += f[file_size_field].to_i }
+      files.reduce(0) { |sum, f| sum + f[file_size_field].to_i }
     end
 
     protected
+
       # Field to look up when locating the size of each file in Solr.
       # Override for your own installation if using something different
       def file_size_field

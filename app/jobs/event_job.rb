@@ -15,5 +15,4 @@ class EventJob
     self.generic_file_id = generic_file_id
     self.depositor_id = depositor_id
   end
-
 end

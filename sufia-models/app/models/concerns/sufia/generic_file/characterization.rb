@@ -50,7 +50,6 @@ module Sufia
         property :data_format,       delegate_to: 'characterization'
         property :offset,            delegate_to: 'characterization'
         property :frame_rate,        delegate_to: 'characterization'
-
       end
 
       def width
@@ -80,19 +79,16 @@ module Sufia
 
       # Populate GenericFile's properties with fields from FITS (e.g. Author from pdfs)
       def append_metadata
-        terms = self.characterization_terms
+        terms = characterization_terms
         Sufia.config.fits_to_desc_mapping.each_pair do |k, v|
-          if terms.has_key?(k)
-            # coerce to array to remove a conditional
-            terms[k] = [terms[k]] unless terms[k].is_a? Array
-            terms[k].each do |term_value|
-              proxy_term = self.send(v)
-              if proxy_term.kind_of?(Array)
-                proxy_term << term_value unless proxy_term.include?(term_value)
-              else
-                # these are single-valued terms which cannot be appended to
-                self.send("#{v}=", term_value)
-              end
+          next unless terms.key?(k)
+          Array.wrap(terms[k]).each do |term_value|
+            proxy_term = send(v)
+            if proxy_term.is_a?(Array)
+              proxy_term << term_value unless proxy_term.include?(term_value)
+            else
+              # these are single-valued terms which cannot be appended to
+              send("#{v}=", term_value)
             end
           end
         end
@@ -100,11 +96,11 @@ module Sufia
 
       def characterization_terms
         h = {}
-        FitsDatastream.terminology.terms.each_pair do |k, v|
+        FitsDatastream.terminology.terms.each_pair do |_k, v|
           next unless v.respond_to? :proxied_term
           term = v.proxied_term
           begin
-            value = self.send(term.name)
+            value = send(term.name)
             h[term.name] = value unless value.empty?
           rescue NoMethodError
             next
@@ -112,7 +108,6 @@ module Sufia
         end
         h
       end
-
     end
   end
 end

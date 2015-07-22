@@ -68,7 +68,7 @@ module Sufia
     end
 
     def file_format
-       Array(self[Solrizer.solr_name('file_format')]).first
+      Array(self[Solrizer.solr_name('file_format')]).first
     end
 
     def creator
@@ -102,6 +102,5 @@ module Sufia
     def collection?
       hydra_model == 'Collection'
     end
-
   end
 end

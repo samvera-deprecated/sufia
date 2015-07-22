@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe GenericFile, :type => :model do
+describe GenericFile, type: :model do
   let(:user) { FactoryGirl.find_or_create(:jill) }
 
   before(:each) do
-    @file = GenericFile.new
+    @file = described_class.new
     @file.apply_depositor_metadata(user.user_key)
   end
 
@@ -15,7 +15,7 @@ describe GenericFile, :type => :model do
 
   context "when it is initialized" do
     it "has empty arrays for all the properties" do
-      subject.attributes.each do |k,v|
+      subject.attributes.each do |_k, v|
         expect(Array(v)).to eq([])
       end
     end
@@ -39,7 +39,7 @@ describe GenericFile, :type => :model do
     before do
       @file.proxy_depositor = "sally@example.com"
     end
-    it "should include proxies" do
+    it "includes proxies" do
       expect(@file).to respond_to(:relative_path)
       expect(@file).to respond_to(:depositor)
       expect(@file.proxy_depositor).to eq 'sally@example.com'
@@ -162,55 +162,54 @@ describe GenericFile, :type => :model do
   end
 
   describe "visibility" do
-    it "should not be changed when it's new" do
+    it "is not changed when it's new" do
       expect(subject).not_to be_visibility_changed
     end
-    it "should be changed when it has been changed" do
-      subject.visibility= 'open'
+    it "is changed when it has been changed" do
+      subject.visibility = 'open'
       expect(subject).to be_visibility_changed
     end
 
-    it "should not be changed when it's set to its previous value" do
-      subject.visibility= 'restricted'
+    it "is not changed when it's set to its previous value" do
+      subject.visibility = 'restricted'
       expect(subject).not_to be_visibility_changed
     end
-
   end
 
   describe "#apply_depositor_metadata" do
     before { subject.apply_depositor_metadata('jcoyne') }
 
-    it "should grant edit access and record the depositor" do
+    it "grants edit access and record the depositor" do
       expect(subject.edit_users).to eq ['jcoyne']
       expect(subject.depositor).to eq 'jcoyne'
     end
   end
 
   describe "attributes" do
-    it "should have a set of permissions" do
-      subject.read_groups=['group1', 'group2']
-      subject.edit_users=['user1']
-      subject.read_users=['user2', 'user3']
+    it "has a set of permissions" do
+      subject.read_groups = ['group1', 'group2']
+      subject.edit_users = ['user1']
+      subject.read_users = ['user2', 'user3']
       expect(subject.permissions.map(&:to_hash)).to match_array [
-          {type: "group", access: "read", name: "group1"},
-          {type: "group", access: "read", name: "group2"},
-          {type: "person", access: "read", name: "user2"},
-          {type: "person", access: "read", name: "user3"},
-          {type: "person", access: "edit", name: "user1"}]
+        { type: "group", access: "read", name: "group1" },
+        { type: "group", access: "read", name: "group2" },
+        { type: "person", access: "read", name: "user2" },
+        { type: "person", access: "read", name: "user3" },
+        { type: "person", access: "edit", name: "user1" }]
     end
 
-    it "should have a characterization datastream" do
+    it "has a characterization datastream" do
       expect(subject.characterization).to be_kind_of FitsDatastream
     end
 
-    it "should have content datastream" do
+    it "has content datastream" do
       subject.add_file(File.open(fixture_path + '/world.png'), path: 'content', original_name: 'world.png')
       expect(subject.content).to be_kind_of FileContentDatastream
     end
   end
 
   describe "metadata" do
-    it "should have descriptive metadata" do
+    it "has descriptive metadata" do
       expect(subject).to respond_to(:relative_path)
       expect(subject).to respond_to(:depositor)
       expect(subject).to respond_to(:related_url)
@@ -230,7 +229,7 @@ describe GenericFile, :type => :model do
       expect(subject).to respond_to(:resource_type)
       expect(subject).to respond_to(:identifier)
     end
-    it "should delegate methods to characterization metadata" do
+    it "delegates methods to characterization metadata" do
       expect(subject).to respond_to(:format_label)
       expect(subject).to respond_to(:mime_type)
       expect(subject).to respond_to(:file_size)
@@ -242,14 +241,14 @@ describe GenericFile, :type => :model do
       expect(subject).to respond_to(:file_author)
       expect(subject).to respond_to(:page_count)
     end
-    it "should redefine to_param to make redis keys more recognizable" do
+    it "redefines to_param to make redis keys more recognizable" do
       expect(subject.to_param).to eq subject.id
     end
 
     describe "that have been saved" do
       before { subject.apply_depositor_metadata('jcoyne') }
 
-      it "should have activity stream-related methods defined" do
+      it "has activity stream-related methods defined" do
         subject.save!
         f = subject.reload
         expect(f).to respond_to(:stream)
@@ -258,7 +257,7 @@ describe GenericFile, :type => :model do
         expect(f).to respond_to(:log_event)
       end
 
-      it "should be able to set values via delegated methods" do
+      it "is able to set values via delegated methods" do
         subject.related_url = ["http://example.org/"]
         subject.creator = ["John Doe"]
         subject.title = ["New work"]
@@ -269,7 +268,7 @@ describe GenericFile, :type => :model do
         expect(f.title).to eq ["New work"]
       end
 
-      it "should be able to be added to w/o unexpected graph behavior" do
+      it "is able to be added to w/o unexpected graph behavior" do
         subject.creator = ["John Doe"]
         subject.title = ["New work"]
         subject.save!
@@ -338,27 +337,27 @@ describe GenericFile, :type => :model do
       expect(local['all_text_timv']).to eq('abcxyz')
     end
   end
-  it "should support multi-valued fields in solr" do
+  it "supports multi-valued fields in solr" do
     subject.tag = ["tag1", "tag2"]
     expect { subject.save }.not_to raise_error
     subject.delete
   end
-  it "should support setting and getting the relative_path value" do
+  it "supports setting and getting the relative_path value" do
     subject.relative_path = "documents/research/NSF/2010"
     expect(subject.relative_path).to eq "documents/research/NSF/2010"
   end
   describe "create_thumbnail" do
     before do
-      @f = GenericFile.new
+      @f = described_class.new
       @f.apply_depositor_metadata('mjg36')
     end
     describe "with a video", if: Sufia.config.enable_ffmpeg do
       before do
-        allow(@f).to receive(mime_type: 'video/quicktime')  #Would get set by the characterization job
+        allow(@f).to receive(mime_type: 'video/quicktime')  # Would get set by the characterization job
         @f.add_file(File.open("#{fixture_path}/countdown.avi", 'rb'), path: 'content', original_name: 'countdown.avi')
         @f.save
       end
-      it "should make a png thumbnail" do
+      it "makes a png thumbnail" do
         @f.create_thumbnail
         expect(@f.thumbnail.content.size).to eq 4768 # this is a bad test. I just want to show that it did something.
         expect(@f.thumbnail.mime_type).to eq 'image/png'
@@ -368,16 +367,16 @@ describe GenericFile, :type => :model do
   describe "trophies" do
     before do
       u = FactoryGirl.find_or_create(:jill)
-      @f = GenericFile.new.tap do |gf|
+      @f = described_class.new.tap do |gf|
         gf.apply_depositor_metadata(u)
         gf.save!
       end
       @t = Trophy.create(user_id: u.id, generic_file_id: @f.id)
     end
-    it "should have a trophy" do
+    it "has a trophy" do
       expect(Trophy.where(generic_file_id: @f.id).count).to eq 1
     end
-    it "should remove all trophies when file is deleted" do
+    it "removes all trophies when file is deleted" do
       @f.destroy
       expect(Trophy.where(generic_file_id: @f.id).count).to eq 0
     end
@@ -385,21 +384,21 @@ describe GenericFile, :type => :model do
 
   describe "#related_files" do
     let!(:f1) do
-      GenericFile.new.tap do |f|
+      described_class.new.tap do |f|
         f.apply_depositor_metadata('mjg36')
         f.batch_id = batch_id
         f.save
       end
     end
     let!(:f2) do
-      GenericFile.new.tap do |f|
+      described_class.new.tap do |f|
         f.apply_depositor_metadata('mjg36')
         f.batch_id = batch_id
         f.save
       end
     end
     let!(:f3) do
-      GenericFile.new.tap do |f|
+      described_class.new.tap do |f|
         f.apply_depositor_metadata('mjg36')
         f.batch_id = batch_id
         f.save
@@ -410,7 +409,7 @@ describe GenericFile, :type => :model do
       let(:batch) { Batch.create }
       let(:batch_id) { batch.id }
 
-      it "shouldn't return itself from the related_files method" do
+      it "does not return itself from the related_files method" do
         expect(f1.related_files).to match_array [f2, f3]
         expect(f2.related_files).to match_array [f1, f3]
         expect(f3.related_files).to match_array [f1, f2]
@@ -420,7 +419,7 @@ describe GenericFile, :type => :model do
     context "when there are no related files" do
       let(:batch_id) { nil }
 
-      it "should return an empty array when there are no related files" do
+      it "returns an empty array when there are no related files" do
         expect(f1.related_files).to eq []
       end
     end
@@ -434,12 +433,12 @@ describe GenericFile, :type => :model do
     let(:noid) { 'wd3763094' }
 
     subject do
-      GenericFile.create { |f| f.apply_depositor_metadata('mjg36') }
+      described_class.create { |f| f.apply_depositor_metadata('mjg36') }
     end
 
     it "runs the overridden #assign_id method" do
       expect_any_instance_of(ActiveFedora::Noid::Service).to receive(:mint).once
-      GenericFile.create { |f| f.apply_depositor_metadata('mjg36') }
+      described_class.create { |f| f.apply_depositor_metadata('mjg36') }
     end
 
     it "returns the expected identifier" do
@@ -454,37 +453,37 @@ describe GenericFile, :type => :model do
       let(:url) { 'http://localhost:8983/fedora/rest/test/wd/37/63/09/wd3763094' }
 
       it "transforms the url into an id" do
-        expect(GenericFile.uri_to_id(url)).to eq 'wd3763094'
+        expect(described_class.uri_to_id(url)).to eq 'wd3763094'
       end
     end
   end
 
   context "with access control metadata" do
     subject do
-      GenericFile.new do |m|
+      described_class.new do |m|
         m.apply_depositor_metadata('jcoyne')
-        m.permissions_attributes = [{type: 'person', access: 'read', name: "person1"},
-                                    {type: 'person', access: 'read', name: "person2"},
-                                    {type: 'group', access: 'read', name: "group-6"},
-                                    {type: 'group', access: 'read', name: "group-7"},
-                                    {type: 'group', access: 'edit', name: "group-8"}]
+        m.permissions_attributes = [{ type: 'person', access: 'read', name: "person1" },
+                                    { type: 'person', access: 'read', name: "person2" },
+                                    { type: 'group', access: 'read', name: "group-6" },
+                                    { type: 'group', access: 'read', name: "group-7" },
+                                    { type: 'group', access: 'edit', name: "group-8" }]
       end
     end
 
-    it "should have read groups accessor" do
+    it "has read groups accessor" do
       expect(subject.read_groups).to eq ['group-6', 'group-7']
     end
 
-    it "should have read groups string accessor" do
+    it "has read groups string accessor" do
       expect(subject.read_groups_string).to eq 'group-6, group-7'
     end
 
-    it "should have read groups writer" do
+    it "has read groups writer" do
       subject.read_groups = ['group-2', 'group-3']
       expect(subject.read_groups).to eq ['group-2', 'group-3']
     end
 
-    it "should have read groups string writer" do
+    it "has read groups string writer" do
       subject.read_groups_string = 'umg/up.dlt.staff, group-3'
       expect(subject.read_groups).to eq ['umg/up.dlt.staff', 'group-3']
       expect(subject.edit_groups).to eq ['group-8']
@@ -492,7 +491,7 @@ describe GenericFile, :type => :model do
       expect(subject.edit_users).to eq ['jcoyne']
     end
 
-    it "should only revoke eligible groups" do
+    it "onlies revoke eligible groups" do
       subject.set_read_groups(['group-2', 'group-3'], ['group-6'])
       # 'group-7' is not eligible to be revoked
       expect(subject.read_groups).to match_array ['group-2', 'group-3', 'group-7']
@@ -520,7 +519,7 @@ describe GenericFile, :type => :model do
       end
       context "when public has edit access" do
         before { asset.edit_groups = ['public'] }
-        it "should be valid" do
+        it "is valid" do
           expect(asset).to be_valid
         end
       end
@@ -528,9 +527,9 @@ describe GenericFile, :type => :model do
 
     context "when the depositor does not have edit access" do
       before do
-        subject.permissions = [ Hydra::AccessControls::Permission.new(type: 'person', name: 'mjg36', access: 'read')]
+        subject.permissions = [Hydra::AccessControls::Permission.new(type: 'person', name: 'mjg36', access: 'read')]
       end
-      it "should be invalid" do
+      it "is invalid" do
         expect(subject).to_not be_valid
         expect(subject.errors[:edit_users]).to include('Depositor must have edit access')
       end
@@ -539,7 +538,7 @@ describe GenericFile, :type => :model do
     context "when the public has edit access" do
       before { subject.edit_groups = ['public'] }
 
-      it "should be invalid" do
+      it "is invalid" do
         expect(subject).to_not be_valid
         expect(subject.errors[:edit_groups]).to include('Public cannot have edit access')
       end
@@ -548,14 +547,14 @@ describe GenericFile, :type => :model do
     context "when registered has edit access" do
       before { subject.edit_groups = ['registered'] }
 
-      it "should be invalid" do
+      it "is invalid" do
         expect(subject).to_not be_valid
         expect(subject.errors[:edit_groups]).to include('Registered cannot have edit access')
       end
     end
 
     context "everything is copacetic" do
-      it "should be valid" do
+      it "is valid" do
         expect(subject).to be_valid
       end
     end
@@ -580,7 +579,7 @@ describe GenericFile, :type => :model do
       it "does not save a new version of a GenericFile" do
         subject.save!
         allow(Sufia::GenericFile::Actor).to receive(:virus_check).and_raise(Sufia::VirusFoundError)
-        subject.add_file(File.new(fixture_path + '/sufia_generic_stub.txt') , path: 'content', original_name: 'sufia_generic_stub.txt')
+        subject.add_file(File.new(fixture_path + '/sufia_generic_stub.txt'), path: 'content', original_name: 'sufia_generic_stub.txt')
         subject.save
         expect(subject.reload.content.content).to eq "small\n"
       end
@@ -590,7 +589,7 @@ describe GenericFile, :type => :model do
   describe "to_solr record" do
     let(:depositor) { 'jcoyne' }
     subject do
-      GenericFile.new.tap do |f|
+      described_class.new.tap do |f|
         f.apply_depositor_metadata(depositor)
         f.save
       end
@@ -598,13 +597,13 @@ describe GenericFile, :type => :model do
     let(:depositor_key) { Solrizer.solr_name("depositor") }
     let(:title_key) { Solrizer.solr_name("title", :stored_searchable, type: :string) }
     let(:title) { ["abc123"] }
-    let(:no_terms) { GenericFile.find(subject.id).to_solr }
-    let(:terms) {
-      file = GenericFile.find(subject.id)
+    let(:no_terms) { described_class.find(subject.id).to_solr }
+    let(:terms) do
+      file = described_class.find(subject.id)
       file.title = title
       file.save
       file.to_solr
-    }
+    end
 
     context "without terms" do
       specify "title is nil" do
@@ -620,7 +619,6 @@ describe GenericFile, :type => :model do
         expect(terms[title_key]).to eql(title)
       end
     end
-
   end
 
   describe "public?" do
@@ -636,7 +634,7 @@ describe GenericFile, :type => :model do
   end
 
   describe "find_by_date_created" do
-    subject { GenericFile.find_by_date_created(start_date, end_date) }
+    subject { described_class.find_by_date_created(start_date, end_date) }
 
     context "with no start date" do
       let(:start_date) { nil }
@@ -645,8 +643,8 @@ describe GenericFile, :type => :model do
     end
 
     context "with no end date" do
-      let(:start_date) {1.days.ago}
-      let(:end_date) {nil}
+      let(:start_date) { 1.days.ago }
+      let(:end_date) { nil }
       before do
         @file.save
       end
@@ -664,7 +662,7 @@ describe GenericFile, :type => :model do
   end
 
   describe "where_access_is" do
-    subject { GenericFile.where_access_is access_level }
+    subject { described_class.where_access_is access_level }
     before do
       @file.read_groups = read_groups
       @file.save
@@ -674,64 +672,64 @@ describe GenericFile, :type => :model do
       let(:read_groups) { ["private"] }
       context "when access level is private" do
         let(:access_level) { 'private' }
-        it { is_expected.to eq [@file]}
+        it { is_expected.to eq [@file] }
       end
       context "when access level is public" do
         let(:access_level) { 'public' }
-        it { is_expected.to eq []}
+        it { is_expected.to eq [] }
       end
       context "when access level is registered" do
         let(:access_level) { 'registered' }
-        it { is_expected.to eq []}
+        it { is_expected.to eq [] }
       end
     end
     context "when file is public" do
       let(:read_groups) { ["public"] }
       context "when access level is private" do
         let(:access_level) { 'private' }
-        it { is_expected.to eq []}
+        it { is_expected.to eq [] }
       end
       context "when access level is public" do
         let(:access_level) { 'public' }
-        it { is_expected.to eq [@file]}
+        it { is_expected.to eq [@file] }
       end
       context "when access level is registered" do
         let(:access_level) { 'registered' }
-        it { is_expected.to eq []}
+        it { is_expected.to eq [] }
       end
     end
     context "when file is registered" do
       let(:read_groups) { ["registered"] }
       context "when access level is private" do
         let(:access_level) { 'private' }
-        it { is_expected.to eq []}
+        it { is_expected.to eq [] }
       end
       context "when access level is public" do
-        let(:access_level) {'public'}
-        it { is_expected.to eq []}
+        let(:access_level) { 'public' }
+        it { is_expected.to eq [] }
       end
       context "when access level is registered" do
         let(:access_level) { 'registered' }
-        it { is_expected.to eq [@file]}
+        it { is_expected.to eq [@file] }
       end
     end
   end
   describe "where_private" do
     it "calls where_access_is with private" do
-      expect(GenericFile).to receive(:where_access_is).with('private')
-      GenericFile.where_private
+      expect(described_class).to receive(:where_access_is).with('private')
+      described_class.where_private
     end
   end
   describe "where_registered" do
     it "calls where_access_is with registered" do
-      expect(GenericFile).to receive(:where_access_is).with('registered')
-      GenericFile.where_registered
+      expect(described_class).to receive(:where_access_is).with('registered')
+      described_class.where_registered
     end
   end
   describe "where_public" do
     it "calls where_access_is with public" do
-      expect(GenericFile).to receive(:where_access_is).with('public')
-      GenericFile.where_public
+      expect(described_class).to receive(:where_access_is).with('public')
+      described_class.where_public
     end
   end
 end

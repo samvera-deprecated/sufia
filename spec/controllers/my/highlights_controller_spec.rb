@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe My::HighlightsController, :type => :controller do
+describe My::HighlightsController, type: :controller do
   describe "logged in user" do
-    before (:each) do
+    before do
       @user = FactoryGirl.find_or_create(:archivist)
       sign_in @user
     end
@@ -23,12 +23,12 @@ describe My::HighlightsController, :type => :controller do
         other_user.trophies.create(generic_file_id: @unrelated_highlighted_file.id)
       end
 
-      it "should respond with success" do
+      it "responds with success" do
         get :index
         expect(response).to be_successful
       end
 
-      it "should paginate" do          
+      it "paginates" do
         @user.trophies.create(generic_file_id: FactoryGirl.create(:generic_file, depositor: @user).id)
         @user.trophies.create(generic_file_id: FactoryGirl.create(:generic_file, depositor: @user).id)
         get :index, per_page: 2
@@ -48,5 +48,4 @@ describe My::HighlightsController, :type => :controller do
       end
     end
   end
-
 end

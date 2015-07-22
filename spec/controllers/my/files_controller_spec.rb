@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-describe My::FilesController, :type => :controller do
-
+describe My::FilesController, type: :controller do
   let(:my_collection) do
     Collection.create(title: 'test collection') do |c|
       c.apply_depositor_metadata(user.user_key)
@@ -36,12 +35,12 @@ describe My::FilesController, :type => :controller do
     @wrong_type = Batch.create
   end
 
-  it "should respond with success" do
+  it "responds with success" do
     get :index
     expect(response).to be_successful
   end
 
-  it "should paginate" do
+  it "paginates" do
     FactoryGirl.create(:generic_file)
     FactoryGirl.create(:generic_file)
     get :index, per_page: 2
@@ -72,20 +71,20 @@ describe My::FilesController, :type => :controller do
 
   describe "batch processing" do
     include Sufia::Messages
-    let(:batch_id) {"batch_id"}
-    let(:batch_id2) {"batch_id2"}
-    let(:batch) {double}
+    let(:batch_id) { "batch_id" }
+    let(:batch_id2) { "batch_id2" }
+    let(:batch) { double }
 
     before do
       allow(batch).to receive(:id).and_return(batch_id)
-      User.batchuser().send_message(user, single_success(batch_id, batch), success_subject, false)
-      User.batchuser().send_message(user, multiple_success(batch_id2, [batch]), success_subject, false)
+      User.batchuser.send_message(user, single_success(batch_id, batch), success_subject, false)
+      User.batchuser.send_message(user, multiple_success(batch_id2, [batch]), success_subject, false)
       get :index
     end
     it "gets batches that are complete" do
       expect(assigns(:batches).count).to eq(2)
-      expect(assigns(:batches)).to include("ss-"+batch_id)
-      expect(assigns(:batches)).to include("ss-"+batch_id2)
+      expect(assigns(:batches)).to include("ss-" + batch_id)
+      expect(assigns(:batches)).to include("ss-" + batch_id2)
     end
   end
 end

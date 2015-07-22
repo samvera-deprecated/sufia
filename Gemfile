@@ -12,6 +12,8 @@ group :development, :test do
   gem "simplecov", require: false
   gem 'byebug' unless ENV['CI']
   gem 'coveralls', require: false
+  gem 'rubocop', require: false
+  gem 'rubocop-rspec', require: false
 end
 
 file = File.expand_path("Gemfile", ENV['ENGINE_CART_DESTINATION'] || ENV['RAILS_ROOT'] || File.expand_path("../spec/internal", __FILE__))

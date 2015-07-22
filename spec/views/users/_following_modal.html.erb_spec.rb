@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-describe 'users/_following_modal.html.erb', :type => :view do
-
+describe 'users/_following_modal.html.erb', type: :view do
   before do
     assign :following, following
     assign :user, view_user
@@ -14,7 +13,7 @@ describe 'users/_following_modal.html.erb', :type => :view do
   context "when following users" do
     let(:following) { [frank] }
     let(:current_user) { frank }
-    let(:view_user) { }
+    let(:view_user) {}
 
     it "draws user list" do
       expect(page).to have_link "Frank", href: "/users/#{frank.to_param}"
@@ -49,7 +48,7 @@ describe 'users/_following_modal.html.erb', :type => :view do
     end
 
     context "when not logged in" do
-      let(:current_user) { }
+      let(:current_user) {}
       let(:view_user) { frank }
 
       it "indicates the user is not following anyone" do

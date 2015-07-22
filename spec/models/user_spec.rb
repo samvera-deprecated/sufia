@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe User, :type => :model do
+describe User, type: :model do
   let(:user) { FactoryGirl.build(:user) }
   let(:another_user) { FactoryGirl.build(:user) }
 
-  it "should have an email" do
+  it "has an email" do
     expect(user.user_key).to be_kind_of String
   end
-  it "should have activity stream-related methods defined" do
+  it "has activity stream-related methods defined" do
     expect(user).to respond_to(:stream)
     expect(user).to respond_to(:events)
     expect(user).to respond_to(:profile_events)
@@ -15,7 +15,7 @@ describe User, :type => :model do
     expect(user).to respond_to(:log_event)
     expect(user).to respond_to(:log_profile_event)
   end
-  it "should have social attributes" do
+  it "has social attributes" do
     expect(user).to respond_to(:twitter_handle)
     expect(user).to respond_to(:facebook_handle)
     expect(user).to respond_to(:googleplus_handle)
@@ -25,7 +25,7 @@ describe User, :type => :model do
 
   describe 'Arkivo and Zotero integration' do
     it 'sets an Arkivo token after_initialize if API is enabled' do
-      expect(User.new).to respond_to(:arkivo_token)
+      expect(described_class.new).to respond_to(:arkivo_token)
     end
 
     describe 'Arkivo token generation' do
@@ -37,9 +37,9 @@ describe User, :type => :model do
       let(:token2) { 'token2' }
 
       it 'generates a new token if a user is found with the existing token' do
-        user1 = User.create(email: 'foo@example.org', password: 'foobarbaz')
+        user1 = described_class.create(email: 'foo@example.org', password: 'foobarbaz')
         expect(user1.arkivo_token).to eq token1
-        user2 = User.create(email: 'bar@example.org', password: 'bazquuxquuux')
+        user2 = described_class.create(email: 'bar@example.org', password: 'bazquuxquuux')
         expect(user2.arkivo_token).to eq token2
       end
     end
@@ -49,7 +49,7 @@ describe User, :type => :model do
 
       it 'has a custom getter/setter for Zotero request tokens' do
         user.zotero_token = token
-        expect(user.read_attribute(:zotero_token)).to eq Marshal::dump(token)
+        expect(user.read_attribute(:zotero_token)).to eq Marshal.dump(token)
         expect(user.zotero_token).to eq token
       end
     end
@@ -84,17 +84,17 @@ describe User, :type => :model do
   end
 
   describe "#to_param" do
-    let(:user) { User.new(email: 'jilluser@example.com') }
+    let(:user) { described_class.new(email: 'jilluser@example.com') }
 
-    it "should override to_param to make keys more recognizable in redis (and useable within Rails URLs)" do
+    it "overrides to_param to make keys more recognizable in redis (and useable within Rails URLs)" do
       expect(user.to_param).to eq("jilluser@example-dot-com")
     end
   end
 
-  it "should have a cancan ability defined" do
+  it "has a cancan ability defined" do
     expect(user).to respond_to(:can?)
   end
-  it "should not have any followers" do
+  it "does not have any followers" do
     expect(user.followers_count).to eq(0)
     expect(another_user.follow_count).to eq(0)
   end
@@ -105,13 +105,13 @@ describe User, :type => :model do
       user.follow(another_user)
     end
 
-    it "should be able to follow another user" do
+    it "is able to follow another user" do
       expect(user).to be_following(another_user)
       expect(another_user).to_not be_following(user)
       expect(another_user).to be_followed_by(user)
       expect(user).to_not be_followed_by(another_user)
     end
-    it "should be able to unfollow another user" do
+    it "is able to unfollow another user" do
       user.stop_following(another_user)
       expect(user).to_not be_following(another_user)
       expect(another_user).to_not be_followed_by(user)
@@ -127,21 +127,20 @@ describe User, :type => :model do
     let!(:trophy2) { user.trophies.create!(generic_file_id: file2.id) }
     let!(:trophy3) { user.trophies.create!(generic_file_id: file3.id) }
 
-    it "should return a list of generic files" do
+    it "returns a list of generic files" do
       expect(user.trophy_files).to eq [file1, file2, file3]
     end
-
   end
 
   describe "activity streams" do
     let(:now) { DateTime.now.to_i }
-    let(:activities) {
-        [{ action: 'so and so edited their profile', timestamp: now },
-        { action: 'so and so uploaded a file', timestamp: (now - 360 ) }]
-    }
-    let(:file_activities) {
+    let(:activities) do
+      [{ action: 'so and so edited their profile', timestamp: now },
+       { action: 'so and so uploaded a file', timestamp: (now - 360) }]
+    end
+    let(:file_activities) do
       [{ action: 'uploaded a file', timestamp: now + 1 }]
-    }
+    end
 
     before do
       allow(user).to receive(:events).and_return(activities)
@@ -149,11 +148,11 @@ describe User, :type => :model do
     end
 
     it "gathers the user's recent activity within the default amount of time" do
-      expect(user.get_all_user_activity).to eq(file_activities.concat(activities))
+      expect(user.all_user_activity).to eq(file_activities.concat(activities))
     end
 
     it "gathers the user's recent activity within a given timestamp" do
-      expect(user.get_all_user_activity(now-60)).to eq(file_activities.concat([activities.first]))
+      expect(user.all_user_activity(now - 60)).to eq(file_activities.concat([activities.first]))
     end
   end
   describe "proxy_deposit_rights" do
@@ -174,23 +173,23 @@ describe User, :type => :model do
   end
   describe "class methods" do
     describe "recent_users" do
-      let(:new_users) { User.all.order(created_at: :desc) }
+      let(:new_users) { described_class.all.order(created_at: :desc) }
 
       before do
-        (1..3).each {|i| User.create(email: "abc#{i}@blah.frg", password: "blarg1234", created_at:DateTime.now - i.days) }
+        (1..3).each { |i| described_class.create(email: "abc#{i}@blah.frg", password: "blarg1234", created_at: DateTime.now - i.days) }
       end
 
       context "when has a start date" do
-        subject { User.recent_users(Date.today - 2.days) }
+        subject { described_class.recent_users(Date.today - 2.days) }
         it "returns valid data" do
           expect(subject.count).to eq 2
-          is_expected.to include(new_users[0],new_users[1])
+          is_expected.to include(new_users[0], new_users[1])
           is_expected.not_to include(new_users[2])
         end
       end
 
       context "when has start and end date" do
-        subject { User.recent_users(Date.today - 2.days, Date.today - 1.days) }
+        subject { described_class.recent_users(Date.today - 2.days, Date.today - 1.days) }
         it "returns valid data" do
           expect(subject.count).to eq 1
           is_expected.to include(new_users[1])

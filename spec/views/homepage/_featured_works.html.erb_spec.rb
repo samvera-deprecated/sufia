@@ -7,10 +7,8 @@ describe "homepage/_featured_works.html.erb" do
 
   context "without featured works" do
     before { render }
-    it {
-      is_expected.to have_content 'No works have been featured'
-      is_expected.not_to have_selector('form')
-    }
+    it { is_expected.to have_content 'No works have been featured' }
+    it { is_expected.not_to have_selector('form') }
   end
 
   context "with featured works" do
@@ -20,10 +18,8 @@ describe "homepage/_featured_works.html.erb" do
       render
     end
 
-    it {
-      is_expected.not_to have_content 'No works have been featured'
-      is_expected.not_to have_selector('form')
-      is_expected.to have_selector('ol#featured_works')
-    }
+    it { is_expected.not_to have_content 'No works have been featured' }
+    it { is_expected.not_to have_selector('form') }
+    it { is_expected.to have_selector('ol#featured_works') }
   end
 end

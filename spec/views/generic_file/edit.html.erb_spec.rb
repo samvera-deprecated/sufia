@@ -13,15 +13,15 @@ describe 'generic_files/edit.html.erb', :no_clean do
     let(:versions_graph) { double(all: [version1]) }
     let(:content) { double('content', mimeType: 'application/pdf') }
 
-    let(:generic_file) {
+    let(:generic_file) do
       stub_model(GenericFile, id: '123',
-        depositor: 'bob',
-        resource_type: ['Book', 'Dataset'])
-    }
+                              depositor: 'bob',
+                              resource_type: ['Book', 'Dataset'])
+    end
 
-    let(:form) {
+    let(:form) do
       Sufia::Forms::GenericFileEditForm.new(generic_file)
-    }
+    end
 
     before do
       allow(generic_file).to receive(:content).and_return(content)
@@ -36,7 +36,7 @@ describe 'generic_files/edit.html.erb', :no_clean do
       Capybara::Node::Simple.new(rendered)
     end
 
-    it "should only draw one resource_type multiselect" do
+    it "onlies draw one resource_type multiselect" do
       expect(page).to have_selector("select#generic_file_resource_type", count: 1)
     end
   end

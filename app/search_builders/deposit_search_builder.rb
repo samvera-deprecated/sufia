@@ -8,7 +8,7 @@ class DepositSearchBuilder < Blacklight::Solr::SearchBuilder
     solr_parameters[:"facet.field"].concat([Solrizer.solr_name("depositor", :symbol)])
 
     # defualt facet limit is 10, which will only show the top 10 users not all users deposits
-    solr_parameters[:"facet.limit"]= ::User.count
+    solr_parameters[:"facet.limit"] = ::User.count
 
     # only get file information
     solr_parameters[:fq] = "has_model_ssim:GenericFile"
@@ -16,5 +16,4 @@ class DepositSearchBuilder < Blacklight::Solr::SearchBuilder
     # we only want the facte counts not the actual data
     solr_parameters[:rows] = 0
   end
-
 end

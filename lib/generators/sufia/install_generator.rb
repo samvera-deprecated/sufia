@@ -7,7 +7,7 @@ module Sufia
 
     source_root File.expand_path('../templates', __FILE__)
 
-    argument :model_name, type: :string , default: "user"
+    argument :model_name, type: :string, default: "user"
     desc """
   This generator makes the following changes to your application:
    1. Runs sufia-models:install
@@ -40,9 +40,9 @@ module Sufia
     def inject_sufia_controller_behavior
       controller_name = "ApplicationController"
       file_path = "app/controllers/application_controller.rb"
-      if File.exists?(file_path)
+      if File.exist?(file_path)
         insert_into_file file_path, after: 'include Blacklight::Controller' do
-          "  \n# Adds Sufia behaviors into the application controller (#{controller_name}) \n" +
+          "  \n# Adds Sufia behaviors into the application controller (#{controller_name}) \n" \
           "  include Sufia::Controller\n"
         end
         gsub_file file_path, "layout 'blacklight'", "layout 'sufia-one-column'"
@@ -80,21 +80,21 @@ module Sufia
     def inject_routes
       gsub_file 'config/routes.rb',  /root (:to =>|to:) "catalog#index"/, ''
 
-      routing_code = "\n  Hydra::BatchEdit.add_routes(self)\n" +
+      routing_code = "\n  Hydra::BatchEdit.add_routes(self)\n" \
         "  # This must be the very last route in the file because it has a catch-all route for 404 errors.
     # This behavior seems to show up only in production mode.
     mount Sufia::Engine => '/'\n  root to: 'homepage#index'\n"
 
       sentinel = /devise_for :users/
-      inject_into_file 'config/routes.rb', routing_code, { after: sentinel, verbose: false }
+      inject_into_file 'config/routes.rb', routing_code, after: sentinel, verbose: false
     end
 
     # Add behaviors to the SolrDocument model
     def inject_sufia_solr_document_behavior
       file_path = "app/models/solr_document.rb"
-      if File.exists?(file_path)
+      if File.exist?(file_path)
         inject_into_file file_path, after: /include Blacklight::Solr::Document.*$/ do
-          "\n  # Adds Sufia behaviors to the SolrDocument.\n" +
+          "\n  # Adds Sufia behaviors to the SolrDocument.\n" \
             "  include Sufia::SolrDocumentBehavior\n"
         end
       else
@@ -113,6 +113,5 @@ module Sufia
     def install_admin_stats
       generate "sufia:admin_stat"
     end
-
   end
 end

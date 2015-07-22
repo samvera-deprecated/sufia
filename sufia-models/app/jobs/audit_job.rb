@@ -27,7 +27,7 @@ class AuditJob < ActiveFedoraIdBasedJob
       login = generic_file.depositor
       user = User.find_by_user_key(login)
       logger.warn "User '#{login}' not found" unless user
-      job_user = User.audituser()
+      job_user = User.audituser
       file_title = generic_file.title.first
       message = "The audit run at #{log.created_at} for #{file_title} (#{uri}) failed."
       subject = FAIL

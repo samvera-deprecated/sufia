@@ -8,7 +8,7 @@ describe ContentDepositorChangeEventJob do
       gf.apply_depositor_metadata(@depositor.user_key)
       gf.save!
     end
-    ContentDepositorChangeEventJob.new(@file.id, @receiver.user_key).run
+    described_class.new(@file.id, @receiver.user_key).run
   end
 
   it "changes the depositor and records an original depositor" do

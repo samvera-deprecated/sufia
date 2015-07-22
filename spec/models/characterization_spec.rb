@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Sufia::GenericFile::Characterization, :type => :model do
+describe Sufia::GenericFile::Characterization, type: :model do
   before do
     class TestClass < ActiveFedora::Base
       include Sufia::GenericFile::Characterization
@@ -16,8 +16,7 @@ describe Sufia::GenericFile::Characterization, :type => :model do
 
   subject { TestClass.new }
 
-  it "should not depend on anything except a file datastream and some property accessors" do
+  it "does not depend on anything except a file datastream and some property accessors" do
     expect { subject.characterize }.to_not raise_error
   end
-
 end

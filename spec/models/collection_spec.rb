@@ -1,21 +1,21 @@
 require 'spec_helper'
 
-describe Collection, :type => :model do
+describe Collection, type: :model do
   before do
     @user = FactoryGirl.create(:user)
-    @collection = Collection.new(id: 'mock-collection-with-members', title: "test collection") do |c|
+    @collection = described_class.new(id: 'mock-collection-with-members', title: "test collection") do |c|
       c.apply_depositor_metadata(@user.user_key)
     end
   end
 
-  it "should have open visibility" do
+  it "has open visibility" do
     @collection.save
     expect(@collection.read_groups).to eq ['public']
   end
 
-  it "should not allow a collection to be saved without a title" do
-     @collection.title = nil
-     expect{ @collection.save! }.to raise_error(ActiveFedora::RecordInvalid)
+  it "does not allow a collection to be saved without a title" do
+    @collection.title = nil
+    expect { @collection.save! }.to raise_error(ActiveFedora::RecordInvalid)
   end
 
   describe "::bytes" do
@@ -28,18 +28,18 @@ describe Collection, :type => :model do
     end
 
     context "with three 33 byte files" do
-      let(:bitstream) { double("content", size: "33")}
+      let(:bitstream) { double("content", size: "33") }
       let(:file) { mock_model GenericFile, content: bitstream }
       let(:documents) do
-        [{ 'id' => 'file-1', 'file_size_is' => 33 }, 
-         { 'id' => 'file-2', 'file_size_is' => 33 }, 
+        [{ 'id' => 'file-1', 'file_size_is' => 33 },
+         { 'id' => 'file-2', 'file_size_is' => 33 },
          { 'id' => 'file-3', 'file_size_is' => 33 }]
       end
       let(:query) { ActiveFedora::SolrQueryBuilder.construct_query_for_rel(has_model: ::GenericFile.to_class_uri) }
       let(:args) do
         { fq: "{!join from=hasCollectionMember_ssim to=id}id:#{@collection.id}",
-        fl: "id, file_size_is",
-        rows: 3 }
+          fl: "id, file_size_is",
+          rows: 3 }
       end
 
       before do
@@ -60,6 +60,5 @@ describe Collection, :type => :model do
         end
       end
     end
-
   end
 end

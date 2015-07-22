@@ -24,7 +24,7 @@ module Sufia
 
     def committer
       vc = VersionCommitter.where(version_id: @version.uri)
-      return vc.empty? ? nil : vc.first.committer_login
+      vc.empty? ? nil : vc.first.committer_login
     end
   end
 end
