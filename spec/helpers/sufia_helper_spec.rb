@@ -28,11 +28,21 @@ describe SufiaHelper, :type => :helper do
   end
 
   describe "#link_to_field" do
+    context "when fieldvalue is a string" do
       it "should return a link to the proper field" do
         document = build(:generic_file, contributor: ["Joe"])
         field_link = catalog_index_path document, :contributor => "\"Joe\"", :search_field => "advanced"
         expect(helper.link_to_field("contributor", document.contributor.first)).to eq("<a href=\"#{ERB::Util.html_escape(field_link)}\">Joe</a>")
       end
+    end
+
+    context "when fieldvalue is an URI::RDF object" do
+      it "should return a link to the proper field" do
+        document = build(:generic_file, subject: [RDF::URI("http://id.loc.gov/authorities/subjects/sh88006360")])
+        field_link = catalog_index_path document, :subject => "\"" + document.subject.first.to_s + "\"", :search_field => "advanced"
+        expect(helper.link_to_field("subject", document.subject.first)).to eq("<a href=\"#{ERB::Util.html_escape(field_link)}\">#{ERB::Util.html_escape(document.subject.first.to_s)}</a>")
+      end
+    end
   end
 
   describe "has_collection_search_parameters?" do
