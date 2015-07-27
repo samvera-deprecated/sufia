@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-describe 'catalog searching', :type => :feature do
-
+describe 'catalog searching', type: :feature do
   before do
     @gf1 = GenericFile.new.tap do |f|
       f.title = ['title 1']
@@ -36,7 +35,7 @@ describe 'catalog searching', :type => :feature do
       end
     end
 
-    # TODO most of these tests could be controller tests.
+    # TODO: most of these tests could be controller tests.
     it "finds multiple files" do
       within('#masthead_controls') do
         fill_in('search-field-header', with: "tag2")
@@ -74,7 +73,7 @@ describe 'catalog searching', :type => :feature do
   context "many tags" do
     before do
       (1..25).each do |i|
-        @gf1.tag += ["tag#{sprintf('%02d', i)}"]
+        @gf1.tag += ["tag#{format('%02d', i)}"]
       end
       @gf1.save!
       within('#masthead_controls') do
@@ -92,6 +91,5 @@ describe 'catalog searching', :type => :feature do
       expect(page).to have_content "Download"
       expect(page).to_not have_content "Edit"
     end
-
   end
 end

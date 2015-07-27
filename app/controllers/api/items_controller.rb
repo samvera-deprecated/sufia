@@ -4,9 +4,9 @@ module API
   # Zotero parlance is mapped to a GenericFile in Sufia.
   class ItemsController < ApplicationController
     skip_before_action :verify_authenticity_token
-    before_filter :validate_item, only: [:create, :update]
-    before_filter :authorize_token
-    before_filter :my_load_and_authorize_resource, only: [:update, :destroy, :show]
+    before_action :validate_item, only: [:create, :update]
+    before_action :authorize_token
+    before_action :my_load_and_authorize_resource, only: [:update, :destroy, :show]
 
     attr_reader :item
 
@@ -66,9 +66,7 @@ module API
       end
 
       def authorize_token
-        unless valid_token?
-          return render plain: "invalid user token: #{token}", status: :unauthorized
-        end
+        render plain: "invalid user token: #{token}", status: :unauthorized unless valid_token?
       end
 
       def valid_token?

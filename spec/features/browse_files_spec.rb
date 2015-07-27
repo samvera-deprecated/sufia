@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-describe "Browse files", :type => :feature do
-
+describe "Browse files", type: :feature do
   before do
     allow(User).to receive(:find_by_user_key).and_return(stub_model(User, twitter_handle: 'bob'))
   end
@@ -25,14 +24,14 @@ describe "Browse files", :type => :feature do
   end
 
   describe "when not logged in" do
-    it "should let us browse some of the fixtures" do
+    it "lets us browse some of the fixtures" do
       click_link "13"
       expect(page).to have_content "Search Results"
       click_link @fixtures[0].title[0]
       expect(page).to have_content "Download"
       expect(page).not_to have_content "Edit"
     end
-    it "should allow you to click next" do
+    it "allows you to click next" do
       within('.bottom') do
         click_link 'Next »'
       end

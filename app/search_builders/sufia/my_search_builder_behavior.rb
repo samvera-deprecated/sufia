@@ -16,5 +16,4 @@ module Sufia::MySearchBuilderBehavior
   def discovery_permissions
     ["edit"]
   end
-
 end

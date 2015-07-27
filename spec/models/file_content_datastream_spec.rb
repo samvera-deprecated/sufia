@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe FileContentDatastream, :type => :model do
+describe FileContentDatastream, type: :model do
   describe "#latest_version" do
     let(:file) do
       GenericFile.create do |f|
@@ -25,14 +25,16 @@ describe FileContentDatastream, :type => :model do
   end
 
   describe "extract_metadata" do
-    let(:datastream) { FileContentDatastream.new('foo/content') }
-    let(:file) { ActionDispatch::Http::UploadedFile.new(tempfile: File.new(fixture_path + '/world.png'),
-                                                 filename: 'world.png') }
+    let(:datastream) { described_class.new('foo/content') }
+    let(:file) do
+      ActionDispatch::Http::UploadedFile.new(tempfile: File.new(fixture_path + '/world.png'),
+                                             filename: 'world.png')
+    end
     before { datastream.content = file }
     let(:document) { Nokogiri::XML.parse(datastream.extract_metadata).root }
-    let(:namespace) { { 'ns'=>'http://hul.harvard.edu/ois/xml/ns/fits/fits_output' } }
+    let(:namespace) { { 'ns' => 'http://hul.harvard.edu/ois/xml/ns/fits/fits_output' } }
 
-    it "should return an xml document", unless: $in_travis do
+    it "returns an xml document", unless: $in_travis do
       expect(document.xpath('//ns:identity/@mimetype', namespace).first.value).to eq 'image/png'
     end
   end
@@ -43,7 +45,7 @@ describe FileContentDatastream, :type => :model do
       @generic_file.apply_depositor_metadata('mjg36')
     end
 
-    it "should only return true when the datastream has actually changed" do
+    it "onlies return true when the datastream has actually changed" do
       @generic_file.add_file(File.open(fixture_path + '/world.png', 'rb'), path: 'content', original_name: 'world.png')
       expect(@generic_file.content).to be_changed
       @generic_file.save!

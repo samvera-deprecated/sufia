@@ -1,12 +1,12 @@
 module Sufia
   module SufiaHelperBehavior
-    def orcid_label(style_class='')
-      "#{image_tag 'orcid.png', { alt: t('sufia.user_profile.orcid.alt'), class: style_class }} #{t('sufia.user_profile.orcid.label')}".html_safe
+    def orcid_label(style_class = '')
+      "#{image_tag 'orcid.png', alt: t('sufia.user_profile.orcid.alt'), class: style_class} #{t('sufia.user_profile.orcid.label')}".html_safe
     end
 
-    def zotero_label(opts={})
+    def zotero_label(opts = {})
       html_class = opts[:html_class] || ''
-      "#{image_tag 'zotero.png', { alt: t('sufia.user_profile.zotero.alt'), class: html_class }} #{t('sufia.user_profile.zotero.label')}".html_safe
+      "#{image_tag 'zotero.png', alt: t('sufia.user_profile.zotero.alt'), class: html_class} #{t('sufia.user_profile.zotero.label')}".html_safe
     end
 
     def zotero_profile_url(zotero_user_id)
@@ -14,7 +14,7 @@ module Sufia
     end
 
     def error_messages_for(object)
-      if object.try(:errors) and object.errors.full_messages.any?
+      if object.try(:errors) && object.errors.full_messages.any?
         content_tag(:div, class: 'alert alert-block alert-error validation-errors') do
           content_tag(:h4, I18n.t('sufia.errors.header', model: object.class.model_name.human.downcase), class: 'alert-heading') +
             content_tag(:ul) do
@@ -41,7 +41,7 @@ module Sufia
     #   config.index.thumbnail_method = :sufia_thumbnail_tag
     def sufia_thumbnail_tag(document, options)
       # collection
-      if (document.collection?)
+      if document.collection?
         content_tag(:span, "", class: "glyphicon glyphicon-th collection-icon-search")
 
       # file
@@ -83,7 +83,9 @@ module Sufia
 
     def display_user_name(recent_document)
       return "no display name" unless recent_document.depositor
-      ::User.find_by_user_key(recent_document.depositor).name rescue recent_document.depositor
+      ::User.find_by_user_key(recent_document.depositor).name
+    rescue
+      recent_document.depositor
     end
 
     def number_of_deposits(user)
@@ -98,14 +100,14 @@ module Sufia
     # @param solr_field [String] The name of the solr field to link to without its suffix (:facetable)
     # @param empty_message [String] ('No value entered') The message to display if no values are passed in.
     # @param separator [String] (', ') The value to join with.
-    def link_to_facet_list(values, solr_field, empty_message="No value entered", separator=", ")
+    def link_to_facet_list(values, solr_field, empty_message = "No value entered", separator = ", ")
       return empty_message if values.blank?
       facet_field = Solrizer.solr_name(solr_field, :facetable)
-      safe_join(values.map{ |item| link_to_facet(item, facet_field) }, separator)
+      safe_join(values.map { |item| link_to_facet(item, facet_field) }, separator)
     end
 
     def link_to_field(fieldname, fieldvalue, displayvalue = nil)
-      p = { search_field: 'advanced', fieldname => '"'+fieldvalue+'"' }
+      p = { search_field: 'advanced', fieldname => '"' + fieldvalue + '"' }
       link_url = catalog_index_path(p)
       display = displayvalue.blank? ? fieldvalue : displayvalue
       link_to(display, link_url)
@@ -165,12 +167,12 @@ module Sufia
       end
     end
 
-    def render_visibility_link document
-      link_to render_visibility_label(document), sufia.edit_generic_file_path(document, {anchor: "permissions_display"}),
-        id: "permission_"+document.id, class: "visibility-link"
+    def render_visibility_link(document)
+      link_to render_visibility_label(document), sufia.edit_generic_file_path(document, anchor: "permissions_display"),
+              id: "permission_" + document.id, class: "visibility-link"
     end
 
-    def render_visibility_label document
+    def render_visibility_label(document)
       if document.registered?
         content_tag :span, t('sufia.institution_name'), class: "label label-info", title: t('sufia.institution_name')
       elsif document.public?
@@ -189,20 +191,19 @@ module Sufia
 
     private
 
-    def search_action_for_dashboard
-      case params[:controller]
-      when "my/files"
-        sufia.dashboard_files_path
-      when "my/collections"
-        sufia.dashboard_collections_path
-      when "my/shares"
-        sufia.dashboard_shares_path
-      when "my/highlights"
-        sufia.dashboard_highlights_path
-      else
-        sufia.dashboard_files_path
+      def search_action_for_dashboard
+        case params[:controller]
+        when "my/files"
+          sufia.dashboard_files_path
+        when "my/collections"
+          sufia.dashboard_collections_path
+        when "my/shares"
+          sufia.dashboard_shares_path
+        when "my/highlights"
+          sufia.dashboard_highlights_path
+        else
+          sufia.dashboard_files_path
+        end
       end
-    end
-
   end
 end

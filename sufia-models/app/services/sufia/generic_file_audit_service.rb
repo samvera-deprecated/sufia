@@ -11,12 +11,12 @@ module Sufia
     def human_readable_audit_status
       stat = audit_stat
       case stat
-        when 0
-          'failing'
-        when 1
-          'passing'
-        else
-          stat
+      when 0
+        'failing'
+      when 1
+        'passing'
+      else
+        stat
       end
     end
 
@@ -27,8 +27,8 @@ module Sufia
       audit_content([])
     end
 
-
     private
+
       def audit_content(log)
         if generic_file.content.has_versions?
           audit_file_versions("content", log)
@@ -37,7 +37,7 @@ module Sufia
         end
       end
 
-      def audit_file_versions file, log
+      def audit_file_versions(file, log)
         generic_file.attached_files[file].versions.all.each do |version|
           log << audit_file(file, version.uri,  version.label)
         end
@@ -59,7 +59,7 @@ module Sufia
         audit_results = audit.collect { |result| result["pass"] }
 
         # check how many non runs we had
-        non_runs = audit_results.reduce(0) { |sum, value| value == NO_RUNS ? sum += 1 : sum }
+        non_runs = audit_results.reduce(0) { |sum, value| value == NO_RUNS ? sum + 1 : sum }
         if non_runs == 0
           audit_results.reduce(true) { |sum, value| sum && value }
         elsif non_runs < audit_results.length
@@ -76,7 +76,7 @@ module Sufia
       def audit_stat_by_id
         audit_results = ChecksumAuditLog.logs_for(generic_file.id, "content").collect { |result| result["pass"] }
 
-        if audit_results.length >  0
+        if audit_results.length > 0
           audit_results.reduce(true) { |sum, value| sum && value }
         else
           'Audits have not yet been run on this file.'
@@ -102,6 +102,5 @@ module Sufia
       def days_since_last_audit(latest_audit)
         (DateTime.now - latest_audit.updated_at.to_date).to_i
       end
-
   end
 end

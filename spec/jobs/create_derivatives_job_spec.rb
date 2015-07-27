@@ -11,7 +11,7 @@ describe CreateDerivativesJob do
     Sufia.config.enable_ffmpeg = @ffmpeg_enabled
   end
 
-  subject { CreateDerivativesJob.new(@generic_file.id) }
+  subject { described_class.new(@generic_file.id) }
 
   describe 'thumbnail generation' do
     before do
@@ -134,8 +134,8 @@ describe CreateDerivativesJob do
       #   @generic_file.save!
       # end
 
-      #Need a way to do this in hydra-derivatives
-      it 'should copy the content to the mp3 datastream and transcode to ogg', skip: true do
+      # Need a way to do this in hydra-derivatives
+      it 'copies the content to the mp3 datastream and transcode to ogg', skip: true do
         subject.run
         reloaded = @generic_file.reload
         derivative = reloaded.attached_files['mp3']
@@ -155,8 +155,8 @@ describe CreateDerivativesJob do
       #   @generic_file.save!
       # end
 
-      #Need a way to do this in hydra-derivatives
-      it 'should copy the content to the ogg datastream and transcode to mp3', skip: true do
+      # Need a way to do this in hydra-derivatives
+      it 'copies the content to the ogg datastream and transcode to mp3', skip: true do
         subject.run
         reloaded = @generic_file.reload
         derivative = reloaded.attached_files['mp3']

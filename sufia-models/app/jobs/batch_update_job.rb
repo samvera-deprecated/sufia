@@ -19,8 +19,8 @@ class BatchUpdateJob
   end
 
   def run
-    batch = Batch.find_or_create(self.batch_id)
-    user = User.find_by_user_key(self.login)
+    batch = Batch.find_or_create(batch_id)
+    user = User.find_by_user_key(login)
 
     batch.generic_files.each do |gf|
       update_file(gf, user)
@@ -43,7 +43,7 @@ class BatchUpdateJob
     end
     gf.title = title[gf.id] if title[gf.id]
     gf.attributes = file_attributes
-    gf.visibility= visibility
+    gf.visibility = visibility
 
     save_tries = 0
     begin
@@ -52,7 +52,7 @@ class BatchUpdateJob
       save_tries += 1
       ActiveFedora::Base.logger.warn "BatchUpdateJob caught RSOLR error on #{gf.id}: #{error.inspect}"
       # fail for good if the tries is greater than 3
-      raise error if save_tries >=3
+      raise error if save_tries >= 3
       sleep 0.01
       retry
     end #
@@ -60,12 +60,12 @@ class BatchUpdateJob
     saved << gf
   end
 
-  def send_user_success_message user, batch
+  def send_user_success_message(user, batch)
     message = saved.count > 1 ? multiple_success(batch.id, saved) : single_success(batch.id, saved.first)
     User.batchuser.send_message(user, message, success_subject, false)
   end
 
-  def send_user_failure_message user, batch
+  def send_user_failure_message(user, batch)
     message = denied.count > 1 ? multiple_failure(batch.id, denied) : single_failure(batch.id, denied.first)
     User.batchuser.send_message(user, message, failure_subject, false)
   end

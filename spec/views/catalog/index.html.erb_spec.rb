@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'catalog/index.html.erb' do
-
   let(:collection) { stub_model(Collection, title: 'collection1', id: 'abc123') }
   let(:doc) { SolrDocument.new(collection.to_solr) }
 
@@ -17,7 +16,7 @@ describe 'catalog/index.html.erb' do
     params[:view] = 'gallery'
 
     resp = []
-    assign(:response, resp )
+    assign(:response, resp)
     allow(resp).to receive(:total_pages).and_return(1)
     allow(resp).to receive(:current_page).and_return(1)
     allow(resp).to receive(:limit_value).and_return(10)
@@ -34,5 +33,4 @@ describe 'catalog/index.html.erb' do
     page = Capybara::Node::Simple.new(rendered)
     expect(page).to have_selector("span.glyphicon.glyphicon-th.collection-icon-search")
   end
-
 end

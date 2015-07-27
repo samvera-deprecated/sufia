@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'users/_follower_modal.html.erb', :type => :view do
+describe 'users/_follower_modal.html.erb', type: :view do
   let(:frank) { FactoryGirl.create(:user, display_name: "Frank") }
   let(:page) { Capybara::Node::Simple.new(rendered) }
 
@@ -12,18 +12,17 @@ describe 'users/_follower_modal.html.erb', :type => :view do
   end
 
   context "when followers" do
-    let(:view_user) { }
-    let(:current_user) { }
-    let(:followers) { [frank]}
+    let(:view_user) {}
+    let(:current_user) {}
+    let(:followers) { [frank] }
 
     it "draws user list" do
       expect(page).to have_link "Frank", href: "/users/#{frank.to_param}"
     end
   end
 
-
   context "when no followers" do
-    let(:followers) { []}
+    let(:followers) { [] }
     let(:view_user) { frank }
 
     context "when logged in " do
@@ -45,7 +44,7 @@ describe 'users/_follower_modal.html.erb', :type => :view do
     end
 
     context "when not logged in" do
-      let(:current_user) { }
+      let(:current_user) {}
 
       it "indicates the lack of followers for this user" do
         expect(page).to have_text "No one is following this user."

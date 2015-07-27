@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe UsersController, :type => :controller do
+describe UsersController, type: :controller do
   let(:user) { FactoryGirl.create(:user) }
   before(:each) do
     sign_in user
@@ -18,7 +18,7 @@ describe UsersController, :type => :controller do
     it "redirects to root if user does not exist" do
       get :show, id: 'johndoe666'
       expect(response).to redirect_to(root_path)
-      expect(flash[:alert]).to include ("User 'johndoe666' does not exist")
+      expect(flash[:alert]).to include("User 'johndoe666' does not exist")
     end
 
     describe "when the user has trophies" do
@@ -35,7 +35,6 @@ describe UsersController, :type => :controller do
         expect(response).to be_success
         expect(assigns[:trophies]).to match_array([file1, file2, file3])
       end
-
     end
   end
   describe "#index" do
@@ -43,19 +42,19 @@ describe UsersController, :type => :controller do
     let!(:u2) { FactoryGirl.create(:user) }
 
     describe "requesting html" do
-      it "should test users" do
+      it "tests users" do
         get :index
         expect(assigns[:users]).to include(u1, u2)
         expect(response).to be_successful
       end
     end
     describe "requesting json" do
-      it "should display users" do
+      it "displays users" do
         get :index, format: :json
         expect(response).to be_successful
         json = JSON.parse(response.body)
-        expect(json.map{|u| u['id']}).to include(u1.email, u2.email)
-        expect(json.map{|u| u['text']}).to include(u1.email, u2.email)
+        expect(json.map { |u| u['id'] }).to include(u1.email, u2.email)
+        expect(json.map { |u| u['text'] }).to include(u1.email, u2.email)
       end
     end
 
@@ -138,21 +137,20 @@ describe UsersController, :type => :controller do
         expect(response).to be_success
         expect(assigns[:trophies]).to match_array([file1, file2, file3])
       end
-
     end
   end
 
   describe "#update" do
     context "the profile of another user" do
       let(:another_user) { FactoryGirl.create(:user) }
-      it "should not allow other users to update" do
+      it "does not allow other users to update" do
         post :update, id: another_user.user_key, user: { avatar: nil }
         expect(response).to redirect_to(@routes.url_helpers.profile_path(another_user.to_param))
         expect(flash[:alert]).to include("Permission denied: cannot access this page.")
       end
     end
 
-    it "should set an avatar and redirect to profile" do
+    it "sets an avatar and redirect to profile" do
       expect(user.avatar?).to be false
       s1 = double('one')
       expect(UserEditProfileEventJob).to receive(:new).with(user.user_key).and_return(s1)
@@ -163,14 +161,14 @@ describe UsersController, :type => :controller do
       expect(flash[:notice]).to include("Your profile has been updated")
       expect(User.find_by_user_key(user.user_key).avatar?).to be true
     end
-    it "should validate the content type of an avatar" do
+    it "validates the content type of an avatar" do
       expect(Sufia.queue).to receive(:push).never
       f = fixture_file_upload('/image.jp2', 'image/jp2')
       post :update, id: user.user_key, user: { avatar: f }
       expect(response).to redirect_to(@routes.url_helpers.edit_profile_path(user.to_param))
       expect(flash[:alert]).to include("Avatar You are not allowed to upload \"jp2\" files, allowed types: jpg, jpeg, png, gif, bmp, tif, tiff")
     end
-    it "should validate the size of an avatar" do
+    it "validates the size of an avatar" do
       f = fixture_file_upload('/4-20.png', 'image/png')
       expect(Sufia.queue).to receive(:push).never
       post :update, id: user.user_key, user: { avatar: f }
@@ -184,7 +182,7 @@ describe UsersController, :type => :controller do
         user.update(avatar: f)
       end
 
-      it "should delete an avatar" do
+      it "deletes an avatar" do
         s1 = double('one')
         expect(UserEditProfileEventJob).to receive(:new).with(user.user_key).and_return(s1)
         expect(Sufia.queue).to receive(:push).with(s1).once
@@ -195,7 +193,7 @@ describe UsersController, :type => :controller do
       end
     end
 
-    it "should refresh directory attributes" do
+    it "refreshes directory attributes" do
       s1 = double('one')
       expect(UserEditProfileEventJob).to receive(:new).with(user.user_key).and_return(s1)
       expect(Sufia.queue).to receive(:push).with(s1).once
@@ -205,13 +203,13 @@ describe UsersController, :type => :controller do
       expect(flash[:notice]).to include("Your profile has been updated")
     end
 
-    it "should set an social handles" do
+    it "sets an social handles" do
       expect(user.twitter_handle).to be_blank
       expect(user.facebook_handle).to be_blank
       expect(user.googleplus_handle).to be_blank
       expect(user.linkedin_handle).to be_blank
       expect(user.orcid).to be_blank
-      post :update, id: user.user_key, user: { twitter_handle: 'twit', facebook_handle: 'face', googleplus_handle: 'goo', linkedin_handle:"link", orcid: '0000-0000-1111-2222' }
+      post :update, id: user.user_key, user: { twitter_handle: 'twit', facebook_handle: 'face', googleplus_handle: 'goo', linkedin_handle: "link", orcid: '0000-0000-1111-2222' }
       expect(response).to redirect_to(@routes.url_helpers.profile_path(user.to_param))
       expect(flash[:notice]).to include("Your profile has been updated")
       u = User.find_by_user_key(user.user_key)
@@ -234,10 +232,10 @@ describe UsersController, :type => :controller do
       before do
         user.trophies.create!(generic_file_id: file.id)
       end
-      it "should remove a trophy" do
-        expect {
-          post :update, id: user.user_key, 'remove_trophy_'+file.id => 'yes'
-        }.to change { user.trophies.count }.by(-1)
+      it "removes a trophy" do
+        expect do
+          post :update, id: user.user_key, 'remove_trophy_' + file.id => 'yes'
+        end.to change { user.trophies.count }.by(-1)
         expect(response).to redirect_to(@routes.url_helpers.profile_path(user.to_param))
         expect(flash[:notice]).to include("Your profile has been updated")
       end
@@ -246,7 +244,7 @@ describe UsersController, :type => :controller do
 
   describe "#follow" do
     let(:another_user) { FactoryGirl.create(:user) }
-    it "should follow another user if not already following, and log an event" do
+    it "follows another user if not already following, and log an event" do
       expect(user.following?(another_user)).to be false
       s1 = double('one')
       expect(UserFollowEventJob).to receive(:new).with(user.user_key, another_user.user_key).and_return(s1)
@@ -255,14 +253,14 @@ describe UsersController, :type => :controller do
       expect(response).to redirect_to(@routes.url_helpers.profile_path(another_user.to_param))
       expect(flash[:notice]).to include("You are following #{another_user.user_key}")
     end
-    it "should redirect to profile if already following and not log an event" do
+    it "redirects to profile if already following and not log an event" do
       allow_any_instance_of(User).to receive(:following?).with(another_user).and_return(true)
       expect(Sufia.queue).to receive(:push).never
       post :follow, id: another_user.user_key
       expect(response).to redirect_to(@routes.url_helpers.profile_path(another_user.to_param))
       expect(flash[:notice]).to include("You are following #{another_user.user_key}")
     end
-    it "should redirect to profile if user attempts to self-follow and not log an event" do
+    it "redirects to profile if user attempts to self-follow and not log an event" do
       expect(Sufia.queue).to receive(:push).never
       post :follow, id: user.user_key
       expect(response).to redirect_to(@routes.url_helpers.profile_path(user.to_param))
@@ -272,7 +270,7 @@ describe UsersController, :type => :controller do
 
   describe "#unfollow" do
     let(:another_user) { FactoryGirl.create(:user) }
-    it "should unfollow another user if already following, and log an event" do
+    it "unfollows another user if already following, and log an event" do
       allow_any_instance_of(User).to receive(:following?).with(another_user).and_return(true)
       s1 = double('one')
       expect(UserUnfollowEventJob).to receive(:new).with(user.user_key, another_user.user_key).and_return(s1)
@@ -281,14 +279,14 @@ describe UsersController, :type => :controller do
       expect(response).to redirect_to(@routes.url_helpers.profile_path(another_user.to_param))
       expect(flash[:notice]).to include("You are no longer following #{another_user.user_key}")
     end
-    it "should redirect to profile if not following and not log an event" do
+    it "redirects to profile if not following and not log an event" do
       allow(user).to receive(:following?).with(another_user).and_return(false)
       expect(Sufia.queue).to receive(:push).never
       post :unfollow, id: another_user.user_key
       expect(response).to redirect_to(@routes.url_helpers.profile_path(another_user.to_param))
       expect(flash[:notice]).to include("You are no longer following #{another_user.user_key}")
     end
-    it "should redirect to profile if user attempts to self-follow and not log an event" do
+    it "redirects to profile if user attempts to self-follow and not log an event" do
       expect(Sufia.queue).to receive(:push).never
       post :unfollow, id: user.user_key
       expect(response).to redirect_to(@routes.url_helpers.profile_path(user.to_param))
@@ -301,19 +299,19 @@ describe UsersController, :type => :controller do
     let(:file_id) { file.id }
     let(:another_user) { FactoryGirl.create(:user) }
 
-    it "should trophy a file" do
-      post :toggle_trophy, {id: user.user_key, file_id: file_id}
+    it "trophies a file" do
+      post :toggle_trophy, id: user.user_key, file_id: file_id
       json = JSON.parse(response.body)
       expect(json['user_id']).to eq user.id
       expect(json['generic_file_id']).to eq file_id
     end
-    it "should not trophy a file for a different user" do
-      post :toggle_trophy, {id: another_user.user_key, file_id: file_id}
+    it "does not trophy a file for a different user" do
+      post :toggle_trophy, id: another_user.user_key, file_id: file_id
       expect(response).to_not be_success
     end
-    it "should not trophy a file with no edit privs" do
+    it "does not trophy a file with no edit privs" do
       sign_in another_user
-      post :toggle_trophy, {id: another_user.user_key, file_id: file_id}
+      post :toggle_trophy, id: another_user.user_key, file_id: file_id
       expect(response).to_not be_success
     end
   end

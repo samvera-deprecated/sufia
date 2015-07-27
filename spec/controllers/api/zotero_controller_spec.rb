@@ -60,13 +60,14 @@ describe API::ZoteroController, type: :controller do
 
       let(:token) { object_double(OAuth::RequestToken.new(client), authorize_url: 'https://www.zotero.org/oauth/authorize?identity=1&oauth_callback=http%3A%2F%2Ftest.host%2Fapi%2Fzotero%2Fcallback&oauth_token=bc2502f2750983c57224') }
       let(:client) do
-        OAuth::Consumer.new(Sufia::Zotero.config['client_key'], Sufia::Zotero.config['client_secret'], {
-          site: 'https://www.zotero.org',
-          scheme: :query_string,
-          http_method: :get,
-          request_token_path: '/oauth/request',
-          access_token_path: '/oauth/access',
-          authorize_path: '/oauth/authorize'})
+        OAuth::Consumer.new(Sufia::Zotero.config['client_key'],
+                            Sufia::Zotero.config['client_secret'],
+                            site: 'https://www.zotero.org',
+                            scheme: :query_string,
+                            http_method: :get,
+                            request_token_path: '/oauth/request',
+                            access_token_path: '/oauth/access',
+                            authorize_path: '/oauth/authorize')
       end
 
       subject { response }
@@ -151,8 +152,8 @@ describe API::ZoteroController, type: :controller do
       let(:pin) { '12345' }
       let(:user_token) do
         double('token',
-          params: { oauth_token: token_string },
-          get_access_token: access_token)
+               params: { oauth_token: token_string },
+               get_access_token: access_token)
       end
       let(:zuserid) { 'myzuser' }
       let(:access_token) do

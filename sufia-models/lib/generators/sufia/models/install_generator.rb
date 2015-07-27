@@ -2,7 +2,7 @@ require_relative 'abstract_migration_generator'
 
 class Sufia::Models::InstallGenerator < Sufia::Models::AbstractMigrationGenerator
   source_root File.expand_path('../templates', __FILE__)
-  argument     :model_name, type: :string , default: "user"
+  argument :model_name, type: :string, default: "user"
   desc """
 This generator makes the following changes to your application:
  1. Creates several database migrations if they do not exist in /db/migrate
@@ -46,7 +46,7 @@ This generator makes the following changes to your application:
   # Add behaviors to the user model
   def inject_sufia_user_behavior
     file_path = "app/models/#{model_name.underscore}.rb"
-    if File.exists?(file_path)
+    if File.exist?(file_path)
       inject_into_file file_path, after: /include Hydra\:\:User.*$/ do
         "# Connects this user object to Sufia behaviors. " +
           "\n include Sufia::User\n"
@@ -58,7 +58,7 @@ This generator makes the following changes to your application:
 
   def create_configuration_files
     append_file 'config/initializers/mime_types.rb',
-                     "\nMime::Type.register 'application/x-endnote-refer', :endnote", {verbose: false }
+                "\nMime::Type.register 'application/x-endnote-refer', :endnote", verbose: false
     copy_file 'config/sufia.rb', 'config/initializers/sufia.rb'
     copy_file 'config/redis.yml', 'config/redis.yml'
     copy_file 'config/resque-pool.yml', 'config/resque-pool.yml'

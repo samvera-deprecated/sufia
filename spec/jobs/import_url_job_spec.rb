@@ -4,7 +4,7 @@ describe ImportUrlJob do
   let(:user) { FactoryGirl.find_or_create(:jill) }
 
   let(:file_path) { '/world.png' }
-  let(:file_hash)  {'/673467823498723948237462429793840923582'}
+  let(:file_hash)  { '/673467823498723948237462429793840923582' }
 
   let(:generic_file) do
     GenericFile.create do |f|
@@ -22,9 +22,9 @@ describe ImportUrlJob do
     end
   end
 
-  subject(:job) { ImportUrlJob.new(generic_file.id) }
+  subject(:job) { described_class.new(generic_file.id) }
 
-  it "should have no content at the outset" do
+  it "has no content at the outset" do
     expect(generic_file.content.size).to be_nil
   end
 
@@ -41,7 +41,7 @@ describe ImportUrlJob do
       expect(Sufia::GenericFile::Actor).to receive(:virus_check).and_return(false)
     end
 
-    it "should create a content datastream" do
+    it "creates a content datastream" do
       expect_any_instance_of(Net::HTTP).to receive(:request_get).with(file_hash).and_yield(mock_response)
       job.run
       expect(generic_file.reload.content.size).to eq 4218
@@ -55,7 +55,7 @@ describe ImportUrlJob do
 
       allow(CharacterizeJob).to receive(:new).with(generic_file.id).never
     end
-    it "should abort if virus check fails" do
+    it "aborts if virus check fails" do
       allow(Sufia::GenericFile::Actor).to receive(:virus_check).and_raise(Sufia::VirusFoundError.new('A virus was found'))
       job.run
       expect(user.mailbox.inbox.first.subject).to eq("File Import Error")
@@ -63,8 +63,7 @@ describe ImportUrlJob do
   end
 
   context "when a batch update job is running too" do
-
-    let(:title) { { generic_file.id => ['File One'] }}
+    let(:title) { { generic_file.id => ['File One'] } }
     let(:metadata) { {} }
     let(:visibility) { nil }
 

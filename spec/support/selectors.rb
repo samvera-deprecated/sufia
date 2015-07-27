@@ -1,7 +1,5 @@
 module Selectors
-
   module Header
-
     def user_notifications_link
       within '#user_utility_links' do
         find '#notify_link'
@@ -16,8 +14,7 @@ module Selectors
   end
 
   module Dashboard
-
-    def db_item_actions_toggle item
+    def db_item_actions_toggle(item)
       within "#document_#{item.id}" do
         find '.dropdown-toggle'
       end
@@ -25,7 +22,6 @@ module Selectors
   end
 
   module NewTransfers
-
     def new_owner_dropdown
       find '#s2id_proxy_deposit_request_transfer_to'
     end
@@ -50,7 +46,6 @@ module Selectors
   end
 
   module Transfers
-
     def first_sent_cancel_button
       within '#outgoing-transfers' do
         find '.btn.btn-danger'

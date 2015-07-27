@@ -1,17 +1,16 @@
 require 'spec_helper'
 
 describe IngestLocalFileJob do
-
   context "with valid data to run" do
     let(:user) { FactoryGirl.find_or_create(:jill) }
 
     let(:generic_file) { create :generic_file, depositor: user }
 
-    let(:job) { IngestLocalFileJob.new(generic_file.id, mock_upload_directory, "world.png", user.user_key) }
+    let(:job) { described_class.new(generic_file.id, mock_upload_directory, "world.png", user.user_key) }
     let(:mock_upload_directory) { 'spec/mock_upload_directory' }
 
     before do
-      Dir.mkdir mock_upload_directory unless File.exists? mock_upload_directory
+      Dir.mkdir mock_upload_directory unless File.exist? mock_upload_directory
       FileUtils.copy(File.expand_path('../../fixtures/world.png', __FILE__), mock_upload_directory)
     end
 
@@ -26,7 +25,7 @@ describe IngestLocalFileJob do
         expect(Sufia::GenericFile::Actor).to receive(:virus_check).and_return(0)
         job.run
       end
-      it "should abort if virus check fails" do
+      it "aborts if virus check fails" do
         allow(Sufia::GenericFile::Actor).to receive(:virus_check).and_raise(Sufia::VirusFoundError.new('A virus was found'))
         job.run
         expect(user.mailbox.inbox.first.subject).to eq("Local file ingest error")
@@ -35,11 +34,10 @@ describe IngestLocalFileJob do
   end
 
   context "empty job" do
-    let(:job) { IngestLocalFileJob.new(nil, nil, nil, nil) }
+    let(:job) { described_class.new(nil, nil, nil, nil) }
 
     it "has the correct queue name" do
       expect(job.queue_name).to eq(:ingest)
     end
   end
-
 end

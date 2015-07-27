@@ -1,14 +1,14 @@
 require 'spec_helper'
 
-describe HomepageController, :type => :controller do
+describe HomepageController, type: :controller do
   routes { Rails.application.class.routes }
 
   describe "#index" do
     before do
-      @gf1 = GenericFile.new(title:['Test Document PDF'], filename:['test.pdf'], tag:['rocks'], read_groups:['public'])
+      @gf1 = GenericFile.new(title: ['Test Document PDF'], filename: ['test.pdf'], tag: ['rocks'], read_groups: ['public'])
       @gf1.apply_depositor_metadata('mjg36')
       @gf1.save
-      @gf2 = GenericFile.new(title:['Test Private Document'], filename:['test2.doc'], tag:['clouds'], contributor:['Contrib1'], read_groups:['private'])
+      @gf2 = GenericFile.new(title: ['Test Private Document'], filename: ['test2.doc'], tag: ['clouds'], contributor: ['Contrib1'], read_groups: ['private'])
       @gf2.apply_depositor_metadata('mjg36')
       @gf2.save
     end
@@ -30,7 +30,7 @@ describe HomepageController, :type => :controller do
     end
 
     context 'with no featured researcher' do
-      it "should set featured researcher" do
+      it "sets featured researcher" do
         get :index
         expect(response).to be_success
         assigns(:featured_researcher).tap do |researcher|
@@ -40,7 +40,7 @@ describe HomepageController, :type => :controller do
       end
     end
 
-    it "should set marketing text" do
+    it "sets marketing text" do
       get :index
       expect(response).to be_success
       assigns(:marketing_text).tap do |marketing|
@@ -49,23 +49,23 @@ describe HomepageController, :type => :controller do
       end
     end
 
-    it "should not include other user's private documents in recent documents" do
+    it "does not include other user's private documents in recent documents" do
       get :index
       expect(response).to be_success
-      titles = assigns(:recent_documents).map {|d| d['title_tesim'][0]}
+      titles = assigns(:recent_documents).map { |d| d['title_tesim'][0] }
       expect(titles).to_not include('Test Private Document')
     end
 
-    it "should include only GenericFile objects in recent documents" do
+    it "includes only GenericFile objects in recent documents" do
       get :index
       assigns(:recent_documents).each do |doc|
         expect(doc[Solrizer.solr_name("has_model", :symbol)]).to eql ["GenericFile"]
       end
-    end 
+    end
 
     context "with a document not created this second" do
       before do
-        gf3 = GenericFile.new(title:['Test 3 Document'], read_groups:['public'])
+        gf3 = GenericFile.new(title: ['Test 3 Document'], read_groups: ['public'])
         gf3.apply_depositor_metadata('mjg36')
         # stubbing to_solr so we know we have something that didn't create in the current second
         old_to_solr = gf3.method(:to_solr)
@@ -77,15 +77,13 @@ describe HomepageController, :type => :controller do
         gf3.save
       end
 
-      it "should set recent documents in the right order" do
+      it "sets recent documents in the right order" do
         get :index
         expect(response).to be_success
         expect(assigns(:recent_documents).length).to be <= 4
-        create_times = assigns(:recent_documents).map{|d| d['system_create_dtsi']}
+        create_times = assigns(:recent_documents).map { |d| d['system_create_dtsi'] }
         expect(create_times).to eq create_times.sort.reverse
       end
-
-
     end
 
     context "with featured works" do
@@ -93,7 +91,7 @@ describe HomepageController, :type => :controller do
         FeaturedWork.create!(generic_file_id: @gf1.id)
       end
 
-      it "should set featured works" do
+      it "sets featured works" do
         get :index
         expect(response).to be_success
         expect(assigns(:featured_work_list)).to be_kind_of FeaturedWorkList
@@ -108,6 +106,5 @@ describe HomepageController, :type => :controller do
         expect(announcement.name).to eq 'announcement_text'
       end
     end
-
   end
 end

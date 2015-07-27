@@ -1,7 +1,6 @@
 module Sufia
   module FileContent
     module Versions
-
       def latest_version
         versions.last unless versions.empty?
       end

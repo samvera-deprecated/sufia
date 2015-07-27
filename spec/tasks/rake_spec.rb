@@ -2,21 +2,20 @@ require 'spec_helper'
 require 'rake'
 
 describe "Rake tasks" do
-
   describe "sufia:empty_batches" do
     before do
       load_rake_environment [File.expand_path("../../../sufia-models/lib/tasks/batch_cleanup.rake", __FILE__)]
     end
     subject { run_task "sufia:empty_batches" }
-    
+
     context "without an empty batch" do
       it { is_expected.to eq "Output: \n Errors:" }
     end
-    
+
     context "with an empty batch" do
       before { Batch.create("empty-batch") }
       it { is_expected.to start_with("Output: empty-batch contains no files - to delete, rerun with the remove option") }
-      
+
       describe "removing the empty batch" do
         subject { run_task "sufia:empty_batches", "remove" }
         it { is_expected.to start_with("Output: empty-batch contains no files - deleted") }
@@ -75,5 +74,4 @@ describe "Rake tasks" do
       File.delete("abc123.txt")
     end
   end
-
 end

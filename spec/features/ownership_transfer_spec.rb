@@ -5,14 +5,14 @@ include Selectors::Dashboard
 include Selectors::NewTransfers
 include Selectors::Transfers
 
-describe 'Transferring file ownership:', :type => :feature do
+describe 'Transferring file ownership:', type: :feature do
   let(:original_owner) { FactoryGirl.create(:archivist, display_name: 'Original Owner') }
   let(:new_owner) { FactoryGirl.create(:jill, display_name: 'New Owner') }
   let!(:file) do
     GenericFile.new.tap do |f|
       f.title = ['little_file.txt']
       f.creator = ['little_file.txt_creator']
-      f.resource_type = ["stuff" ]
+      f.resource_type = ["stuff"]
       f.read_groups = ['public']
       f.apply_depositor_metadata(original_owner.user_key)
       f.save!

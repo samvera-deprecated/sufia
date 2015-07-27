@@ -1,7 +1,6 @@
 module Sufia::GenericFile
   # Actions are decoupled from controller logic so that they may be called from a controller or a background job.
   class Actor
-
     attr_reader :generic_file, :user
 
     def initialize(generic_file, user)
@@ -73,9 +72,7 @@ module Sufia::GenericFile
     def destroy
       generic_file.destroy
       FeaturedWork.where(generic_file_id: generic_file.id).destroy_all
-      if Sufia.config.respond_to?(:after_destroy)
-        Sufia.config.after_destroy.call(generic_file.id, user)
-      end
+      Sufia.config.after_destroy.call(generic_file.id, user) if Sufia.config.respond_to?(:after_destroy)
     end
 
     # Takes an optional block and executes the block if the save was successful.
@@ -93,9 +90,9 @@ module Sufia::GenericFile
         return false unless generic_file.save
       rescue RSolr::Error::Http => error
         ActiveFedora::Base.logger.warn "Sufia::GenericFile::Actor::save_and_record_committer Caught RSOLR error #{error.inspect}"
-        save_tries+=1
+        save_tries += 1
         # fail for good if the tries is greater than 3
-        raise error if save_tries >=3
+        raise error if save_tries >= 3
         sleep 0.01
         retry
       end
@@ -116,7 +113,7 @@ module Sufia::GenericFile
           return
         end
         scan_result = ClamAV.instance.scanfile(path)
-        raise Sufia::VirusFoundError.new("A virus was found in #{path}: #{scan_result}") unless scan_result == 0
+        raise Sufia::VirusFoundError, "A virus was found in #{path}: #{scan_result}" unless scan_result == 0
       end
     end
 

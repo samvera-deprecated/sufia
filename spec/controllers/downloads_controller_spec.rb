@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-describe DownloadsController, :type => :controller do
-
+describe DownloadsController, type: :controller do
   describe "with a file" do
     let(:depositor) { FactoryGirl.find_or_create(:archivist) }
     let(:file) do
@@ -26,9 +25,9 @@ describe DownloadsController, :type => :controller do
         let(:expected_datastream) { object.content }
         let(:expected_content) { expected_datastream.content }
 
-        it "should default to returning configured default download" do
-          expect(DownloadsController.default_file_path).to eq "content"
-          expect(controller).to receive(:send_file_headers!).with({filename: 'world.png', disposition: 'inline', type: 'image/png' })
+        it "defaults to returning configured default download" do
+          expect(described_class.default_file_path).to eq "content"
+          expect(controller).to receive(:send_file_headers!).with(filename: 'world.png', disposition: 'inline', type: 'image/png')
           get "show", id: file
           expect(response).to be_success
           expect(response.body).to eq expected_content
@@ -41,22 +40,22 @@ describe DownloadsController, :type => :controller do
             file.save!
           end
 
-          it "should return requested datastreams" do
+          it "returns requested datastreams" do
             get "show", id: file, file: "characterization"
             expect(response).to be_success
             expect(response.body).to eq expected_content
           end
         end
 
-        it "should support setting disposition to inline" do
-          expect(controller).to receive(:send_file_headers!).with({filename: 'world.png', disposition: 'inline', type: 'image/png' })
+        it "supports setting disposition to inline" do
+          expect(controller).to receive(:send_file_headers!).with(filename: 'world.png', disposition: 'inline', type: 'image/png')
           get "show", id: file, disposition: "inline"
           expect(response.body).to eq expected_content
           expect(response).to be_success
         end
 
-        it "should allow you to specify filename for download" do
-          expect(controller).to receive(:send_file_headers!).with({filename: 'my%20dog.png', disposition: 'inline', type: 'image/png' })
+        it "allows you to specify filename for download" do
+          expect(controller).to receive(:send_file_headers!).with(filename: 'my%20dog.png', disposition: 'inline', type: 'image/png')
           get "show", id: file, "filename" => "my%20dog.png"
           expect(response.body).to eq expected_content
           expect(response).to be_success
@@ -70,7 +69,7 @@ describe DownloadsController, :type => :controller do
       end
 
       describe "show" do
-        it "should deny access" do
+        it "denies access" do
           get "show", id: file
           expect(response).to redirect_to root_path
           expect(flash[:alert]).to eq 'You are not authorized to access this page.'

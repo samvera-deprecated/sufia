@@ -6,7 +6,7 @@ module Sufia::Admin::DepositorStats
   # we are using blacklight facet queries for some of our searches so we have to include them when we are included
   included do
     include Blacklight::Base
-    self.copy_blacklight_config_from(CatalogController)
+    copy_blacklight_config_from(CatalogController)
   end
 
   # Gather information about the depositors in the system
@@ -32,11 +32,10 @@ module Sufia::Admin::DepositorStats
     (0...facets.length).step(2).each do |i|
       depositor = {}
       depositor[:key] = facets[i]
-      depositor[:deposits] = facets[i+1]
+      depositor[:deposits] = facets[i + 1]
       depositor[:user] = User.find_by_user_key(depositor[:key])
       depositors << depositor
     end
     depositors
   end
-
 end

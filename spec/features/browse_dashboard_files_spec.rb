@@ -11,7 +11,7 @@ describe "Browse Dashboard", type: :feature do
   context "within dashboard" do
     let(:handles) { [:public_pdf] }
 
-    it "should search your files by default" do
+    it "searches your files by default" do
       visit "/dashboard"
       fill_in "q", with: "PDF"
       click_button "search-submit-header"
@@ -20,16 +20,15 @@ describe "Browse Dashboard", type: :feature do
   end
 
   context "within my files page" do
-
     before do
       visit "/dashboard/files"
     end
 
     context "no files" do
-      let(:handles) { [ ] }
+      let(:handles) { [] }
 
-      it "should link to my other tabs" do
-        # TODO this would make a good view test.
+      it "links to my other tabs" do
+        # TODO: this would make a good view test.
         ["My Collections", "My Highlights", "Files Shared with Me"].each do |tab|
           within("#my_nav") do
             click_link(tab)
@@ -40,10 +39,10 @@ describe "Browse Dashboard", type: :feature do
     end
 
     context "with one file" do
-      let(:handles) { [ :public_pdf ] }
+      let(:handles) { [:public_pdf] }
 
-      it "should display all the necessary information" do
-        # TODO this would make a good view test.
+      it "displays all the necessary information" do
+        # TODO: this would make a good view test.
         within("#document_#{fixtures.first.id}") do
           click_button("Select an action")
         end
@@ -62,9 +61,8 @@ describe "Browse Dashboard", type: :feature do
       let(:handles) { [:public_pdf, :public_mp3, :public_wav] }
 
       it "allows you to interact your own files" do
-
-      #refreshes the page of files
-        # TODO this would make a good view test.
+        # refreshes the page of files
+        # TODO: this would make a good view test.
         click_button "Refresh"
         within("#document_#{fixtures.first.id}") do
           click_button("Select an action")
@@ -72,7 +70,7 @@ describe "Browse Dashboard", type: :feature do
           expect(page).to have_content("Download File")
         end
 
-      # allows you to search your own files and remove constraints
+        # allows you to search your own files and remove constraints
         fill_in "q", with: "PDF"
         click_button "search-submit-header"
         expect(page).to have_content("Fake PDF Title")
@@ -83,7 +81,7 @@ describe "Browse Dashboard", type: :feature do
         end
         expect(page).to have_content("Fake Wav File")
 
-      # allows you to browse facets
+        # allows you to browse facets
         visit "/dashboard/files"
         click_link "Subject"
         click_link "more Subjects"
@@ -93,8 +91,8 @@ describe "Browse Dashboard", type: :feature do
         end
         expect(page).to have_content("File Details")
 
-      # allows me to edit files (from the fixtures)
-        # TODO this would make a good view test.
+        # allows me to edit files (from the fixtures)
+        # TODO: this would make a good view test.
         visit "/dashboard/files"
 
         fill_in "q", with: "Wav"
@@ -103,15 +101,13 @@ describe "Browse Dashboard", type: :feature do
         click_link "Edit File"
         expect(page).to have_content("Edit Fake Wav File.wav")
 
-      # allows me to edit files in batches"
+        # allows me to edit files in batches"
         visit "/dashboard/files"
 
         first('input#check_all').click
         click_button('Edit Selected')
         expect(page).to have_content('3 files')
-
       end
     end
   end
-
 end

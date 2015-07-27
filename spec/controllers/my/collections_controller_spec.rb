@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe My::CollectionsController, :type => :controller do
+describe My::CollectionsController, type: :controller do
   describe "logged in user" do
-    before (:each) do
+    before do
       @user = FactoryGirl.find_or_create(:archivist)
       sign_in @user
     end
@@ -21,12 +21,12 @@ describe My::CollectionsController, :type => :controller do
         end
       end
 
-      it "should respond with success" do
+      it "responds with success" do
         get :index
         expect(response).to be_successful
       end
 
-      it "should paginate" do          
+      it "paginates" do
         Collection.new(title: "test collection").tap do |c|
           c.apply_depositor_metadata(@user.user_key)
           c.save!
@@ -52,5 +52,4 @@ describe My::CollectionsController, :type => :controller do
       end
     end
   end
-
 end

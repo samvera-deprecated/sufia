@@ -8,7 +8,11 @@ class AuthoritiesController < ApplicationController
       if params[:term] == "location"
         GeoNamesResource.find_location(s)
       else
-        LocalAuthority.entries_by_term(params[:model], params[:term], s) rescue []
+        begin
+          LocalAuthority.entries_by_term(params[:model], params[:term], s)
+        rescue
+          []
+        end
       end
     render json: hits
   end

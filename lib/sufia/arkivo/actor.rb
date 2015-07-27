@@ -82,7 +82,7 @@ module Sufia
         def extract_file_from_item
           encoded = item['file']['base64']
           content = Base64.decode64(encoded)
-          tmp = Tempfile.new(item['file']['md5'], { encoding: Encoding::UTF_8 })
+          tmp = Tempfile.new(item['file']['md5'], encoding: Encoding::UTF_8)
           tmp.binmode
           tmp.original_filename = item['file']['filename']
           tmp.content_type = item['file']['contentType']

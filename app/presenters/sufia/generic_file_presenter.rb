@@ -4,7 +4,7 @@ module Sufia
     self.model_class = ::GenericFile
     # Terms is the list of fields displayed by app/views/generic_files/_show_descriptions.html.erb
     self.terms = [:resource_type, :title, :creator, :contributor, :description, :tag, :rights,
-       :publisher, :date_created, :subject, :language, :identifier, :based_near, :related_url]
+                  :publisher, :date_created, :subject, :language, :identifier, :based_near, :related_url]
 
     # Depositor and permissions are not displayed in app/views/generic_files/_show_descriptions.html.erb
     # so don't include them in `terms'.
@@ -22,7 +22,7 @@ module Sufia
     # Add a schema.org itemtype
     def itemtype
       # Look up the first non-empty resource type value in a hash from the config
-      Sufia.config.resource_types_to_schema[resource_type.to_a.reject { |type| type.empty? }.first] || 'http://schema.org/CreativeWork'
+      Sufia.config.resource_types_to_schema[resource_type.to_a.reject(&:empty?).first] || 'http://schema.org/CreativeWork'
     rescue
       'http://schema.org/CreativeWork'
     end

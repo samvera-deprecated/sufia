@@ -4,23 +4,23 @@ module Sufia
       extend ActiveSupport::Concern
 
       def pdf?
-        self.class.pdf_mime_types.include? self.mime_type
+        self.class.pdf_mime_types.include? mime_type
       end
 
       def image?
-        self.class.image_mime_types.include? self.mime_type
+        self.class.image_mime_types.include? mime_type
       end
 
       def video?
-        self.class.video_mime_types.include? self.mime_type
+        self.class.video_mime_types.include? mime_type
       end
 
       def audio?
-        self.class.audio_mime_types.include? self.mime_type
+        self.class.audio_mime_types.include? mime_type
       end
 
       def office_document?
-        self.class.office_document_mime_types.include? self.mime_type
+        self.class.office_document_mime_types.include? mime_type
       end
 
       def collection?
@@ -28,10 +28,10 @@ module Sufia
       end
 
       def file_format
-        return nil if self.mime_type.blank? and self.format_label.blank?
-        return self.mime_type.split('/')[1]+ " ("+self.format_label.join(", ")+")" unless self.mime_type.blank? or self.format_label.blank?
-        return self.mime_type.split('/')[1] unless self.mime_type.blank?
-        return self.format_label
+        return nil if mime_type.blank? && format_label.blank?
+        return mime_type.split('/')[1] + " (" + format_label.join(", ") + ")" unless mime_type.blank? || format_label.blank?
+        return mime_type.split('/')[1] unless mime_type.blank?
+        format_label
       end
 
       module ClassMethods

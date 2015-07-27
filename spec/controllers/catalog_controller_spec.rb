@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CatalogController, :type => :controller do
+describe CatalogController, type: :controller do
   routes { Rails.application.class.routes }
 
   let(:user) { FactoryGirl.find_or_create(:jill) }
@@ -40,7 +40,7 @@ describe CatalogController, :type => :controller do
     end
 
     describe "term search" do
-      it "should find records" do
+      it "finds records" do
         get :index, q: "pdf", owner: 'all'
         expect(response).to be_success
         expect(response).to render_template('catalog/index')
@@ -55,7 +55,7 @@ describe CatalogController, :type => :controller do
         # TODO: this is not how a facet query is done.
         get :index, q: "{f=contributor_tesim}Contrib1"
       end
-      it "should find facet files" do
+      it "finds facet files" do
         expect(response).to be_success
         expect(response).to render_template('catalog/index')
         expect(assigns(:document_list).count).to eq 1
@@ -64,10 +64,10 @@ describe CatalogController, :type => :controller do
 
     context "with collections" do
       before do
-       @collection = Collection.new(title:"my collection", tag: ['rocks'], read_groups: ['public']).tap do |c|
-         c.apply_depositor_metadata('mjg36')
-         c.save!
-       end
+        @collection = Collection.new(title: "my collection", tag: ['rocks'], read_groups: ['public']).tap do |c|
+          c.apply_depositor_metadata('mjg36')
+          c.save!
+        end
       end
 
       it "finds collections and files" do
@@ -76,8 +76,6 @@ describe CatalogController, :type => :controller do
         doc_list = assigns(:document_list)
         expect(doc_list.map(&:id)).to match_array [@collection.id, @gf1.id]
       end
-
     end
-
   end
 end

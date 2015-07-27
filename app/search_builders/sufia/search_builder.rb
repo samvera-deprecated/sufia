@@ -1,5 +1,4 @@
 module Sufia::SearchBuilder
-
   include BlacklightAdvancedSearch::AdvancedSearchBuilder
   include Hydra::Collections::SearchBehaviors
 
@@ -44,7 +43,6 @@ module Sufia::SearchBuilder
   # @param user_parameters the current user-subitted parameters
   def only_generic_files_and_collections(solr_parameters)
     solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << "#{Solrizer.solr_name("has_model", :symbol)}:(\"GenericFile\" \"Collection\")"
+    solr_parameters[:fq] << "#{Solrizer.solr_name('has_model', :symbol)}:(\"GenericFile\" \"Collection\")"
   end
-
 end

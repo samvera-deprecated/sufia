@@ -1,5 +1,4 @@
 class ContentDeleteEventJob < EventJob
-
   def run
     action = "User #{link_to_profile depositor_id} has deleted file '#{generic_file_id}'"
     timestamp = Time.now.to_i
