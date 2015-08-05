@@ -41,7 +41,7 @@ describe Sufia::GenericFile::Actor do
       let(:actor2)      { described_class.new(generic_file, second_user) }
 
       let(:second_user) { FactoryGirl.find_or_create(:archivist) }
-      let(:versions)     { generic_file.content.versions }
+      let(:versions) { generic_file.content.versions }
 
       before do
         allow(Sufia.queue).to receive(:push)

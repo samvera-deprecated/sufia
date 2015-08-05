@@ -10,7 +10,7 @@ class ImportUrlJob < ActiveFedoraIdBasedJob
   def run
     user = User.find_by_user_key(generic_file.depositor)
 
-    Tempfile.open(id.gsub('/', '_')) do |f|
+    Tempfile.open(id.tr('/', '_')) do |f|
       path, mime_type = copy_remote_file(generic_file.import_url, f)
 
       # reload the generic file once the data is copied since this is a long running task
@@ -32,7 +32,7 @@ class ImportUrlJob < ActiveFedoraIdBasedJob
     # download file from url
     uri = URI(generic_file.import_url)
     http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = uri.scheme == "https"  # enable SSL/TLS
+    http.use_ssl = uri.scheme == "https" # enable SSL/TLS
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
     mime_type = nil
 

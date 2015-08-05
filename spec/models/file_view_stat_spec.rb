@@ -23,7 +23,7 @@ RSpec.describe FileViewStat, type: :model do
       ldates
     end
     let(:date_strs) do
-      dates.map { |date|  date.strftime("%Y%m%d") }
+      dates.map { |date| date.strftime("%Y%m%d") }
     end
 
     let(:view_output) do

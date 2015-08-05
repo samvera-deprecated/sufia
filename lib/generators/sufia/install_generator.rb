@@ -78,7 +78,7 @@ module Sufia
 
     # The engine routes have to come after the devise routes so that /users/sign_in will work
     def inject_routes
-      gsub_file 'config/routes.rb',  /root (:to =>|to:) "catalog#index"/, ''
+      gsub_file 'config/routes.rb', /root (:to =>|to:) "catalog#index"/, ''
 
       routing_code = "\n  Hydra::BatchEdit.add_routes(self)\n" \
         "  # This must be the very last route in the file because it has a catch-all route for 404 errors.

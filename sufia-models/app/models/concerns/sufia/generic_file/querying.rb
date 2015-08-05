@@ -8,7 +8,7 @@ module Sufia
         # @param [DateTime] start_datetime starting date time for range query
         # @param [DateTime] end_datetime ending date time for range query
         def find_by_date_created(start_datetime, end_datetime = nil)
-          return [] if start_datetime.blank?  # no date just return nothing
+          return [] if start_datetime.blank? # no date just return nothing
           where(build_date_query(start_datetime, end_datetime))
         end
 

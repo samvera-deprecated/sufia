@@ -14,7 +14,7 @@ module Sufia
       @generic_file.depositor = current_user.user_key
       @terms = terms - [:title, :format, :resource_type]
 
-      h  = {}
+      h = {}
       @names = []
       permissions = []
 

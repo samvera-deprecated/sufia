@@ -39,7 +39,7 @@ module Sufia
 
       def audit_file_versions(file, log)
         generic_file.attached_files[file].versions.all.each do |version|
-          log << audit_file(file, version.uri,  version.label)
+          log << audit_file(file, version.uri, version.label)
         end
         log
       end

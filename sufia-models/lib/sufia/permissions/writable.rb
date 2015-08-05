@@ -57,11 +57,11 @@ module Sufia
 
         def permission_hash
           old_perms = permissions
-          user_perms =  {}
+          user_perms = {}
           old_perms.select { |r| r[:type] == 'user' }.each do |r|
             user_perms[r[:name]] = r[:access]
           end
-          group_perms =  {}
+          group_perms = {}
           old_perms.select { |r| r[:type] == 'group' }.each do |r|
             group_perms[r[:name]] = r[:access]
           end

@@ -58,9 +58,9 @@ describe UsersController, type: :controller do
       end
     end
 
-    describe "query users"  do
+    describe "query users" do
       it "finds the expected user via email" do
-        get :index,  uq: u1.email
+        get :index, uq: u1.email
         expect(assigns[:users]).to include(u1)
         expect(assigns[:users]).to_not include(u2)
         expect(response).to be_successful
@@ -72,7 +72,7 @@ describe UsersController, type: :controller do
         u2.display_name = "Jr. Architect"
         u2.save
         allow_any_instance_of(User).to receive(:display_name).and_return("Dr. Curator", "Jr.Archivist")
-        get :index,  uq: u1.display_name
+        get :index, uq: u1.display_name
         expect(assigns[:users]).to include(u1)
         expect(assigns[:users]).to_not include(u2)
         expect(response).to be_successful
