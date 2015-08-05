@@ -86,7 +86,7 @@ module Sufia
           return ::User.order('created_at DESC').limit(5) if @users_stats[:start_date].blank?
 
           start_date = DateTime.parse @users_stats[:start_date]
-          end_date = DateTime.parse(@users_stats[:end_date]).end_of_day unless  @users_stats[:end_date].blank?
+          end_date = DateTime.parse(@users_stats[:end_date]).end_of_day unless @users_stats[:end_date].blank?
           ::User.recent_users start_date, end_date
         end
     end

@@ -1,6 +1,6 @@
 module Sufia
   class VersionPresenter
-    attr_reader :version
+    attr_reader :version, :current
 
     def initialize(version)
       @version = version
@@ -8,13 +8,10 @@ module Sufia
     end
 
     delegate :label, :uri, to: :version
+    alias_method :current?, :current
 
     def current!
       @current = true
-    end
-
-    def current?
-      @current
     end
 
     def created

@@ -353,7 +353,7 @@ describe GenericFile, type: :model do
     end
     describe "with a video", if: Sufia.config.enable_ffmpeg do
       before do
-        allow(@f).to receive(mime_type: 'video/quicktime')  # Would get set by the characterization job
+        allow(@f).to receive(mime_type: 'video/quicktime') # Would get set by the characterization job
         @f.add_file(File.open("#{fixture_path}/countdown.avi", 'rb'), path: 'content', original_name: 'countdown.avi')
         @f.save
       end

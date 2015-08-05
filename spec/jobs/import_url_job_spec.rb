@@ -4,7 +4,7 @@ describe ImportUrlJob do
   let(:user) { FactoryGirl.find_or_create(:jill) }
 
   let(:file_path) { '/world.png' }
-  let(:file_hash)  { '/673467823498723948237462429793840923582' }
+  let(:file_hash) { '/673467823498723948237462429793840923582' }
 
   let(:generic_file) do
     GenericFile.create do |f|

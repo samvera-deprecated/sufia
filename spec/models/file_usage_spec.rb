@@ -25,7 +25,7 @@ describe FileUsage, type: :model do
   end
 
   let(:download_output) do
-    [[statistic_date(dates[0]), 1], [statistic_date(dates[1]), 1], [statistic_date(dates[2]), 2], [statistic_date(dates[3]), 3],  [statistic_date(dates[4]), 5]]
+    [[statistic_date(dates[0]), 1], [statistic_date(dates[1]), 1], [statistic_date(dates[2]), 2], [statistic_date(dates[3]), 3], [statistic_date(dates[4]), 5]]
   end
 
   # This is what the data looks like that's returned from Google Analytics (GA) via the Legato gem

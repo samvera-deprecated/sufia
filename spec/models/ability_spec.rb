@@ -23,7 +23,7 @@ describe Sufia::Ability, type: :model do
     it { is_expected.not_to be_able_to(:create, TinymceAsset) }
     it { is_expected.not_to be_able_to(:create, ContentBlock) }
     it { is_expected.not_to be_able_to(:update, ContentBlock) }
-    it { is_expected.to be_able_to(:read,  ContentBlock) }
+    it { is_expected.to be_able_to(:read, ContentBlock) }
     it { is_expected.to be_able_to(:view_share_work, GenericFile) }
   end
 
@@ -35,7 +35,7 @@ describe Sufia::Ability, type: :model do
     it { is_expected.to be_able_to(:create, TinymceAsset) }
     it { is_expected.to be_able_to(:create, ContentBlock) }
     it { is_expected.to be_able_to(:update, ContentBlock) }
-    it { is_expected.to be_able_to(:read,  ContentBlock) }
+    it { is_expected.to be_able_to(:read, ContentBlock) }
     it { is_expected.to be_able_to(:view_share_work, GenericFile) }
   end
 

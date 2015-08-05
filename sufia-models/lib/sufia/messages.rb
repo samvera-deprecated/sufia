@@ -42,7 +42,7 @@ module Sufia
     # Double-quotes are replaced with single ones so this list can be included in a data block. Ex:
     #   <a href="#" data-content="<a href='#'>embedded link</a>" rel="popover">Click me</a>
     def file_list(files)
-      files.map { |gf| link_to_file(gf) }.join(', ').gsub(/"/, "'")
+      files.map { |gf| link_to_file(gf) }.join(', ').tr("\"", "'")
     end
 
     def link_to_file(file)

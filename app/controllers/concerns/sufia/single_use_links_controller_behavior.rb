@@ -21,7 +21,7 @@ module Sufia
 
       respond_to do |format|
         format.html
-        format.js  { render js: @link }
+        format.js { render js: @link }
       end
     end
 
@@ -31,7 +31,7 @@ module Sufia
 
       respond_to do |format|
         format.html
-        format.js  { render js: @link }
+        format.js { render js: @link }
       end
     end
 
