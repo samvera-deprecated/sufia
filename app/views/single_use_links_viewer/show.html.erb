@@ -2,7 +2,7 @@
   <h1 class="lower"><%= @asset %></h1>
     <h2 class="non lower">Actions</h2>
     <p>
-      <%= link_to "Download (can only be used once)", @download_link %>
+      <%= link_to "Download (can only be used once)", @download_link, data: { 'no-turbolink' => ''} %>
     </p>
   <h2> Descriptions:</h2>
 
