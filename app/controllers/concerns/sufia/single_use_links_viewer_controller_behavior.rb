@@ -31,6 +31,12 @@ module Sufia
 
     protected
 
+      def content_options
+        super.tap do |options|
+          options[:disposition] = 'attachment' if action_name == 'download'
+        end
+      end
+
       def presenter
         presenter_class.new(@asset)
       end
