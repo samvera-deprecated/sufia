@@ -89,7 +89,7 @@ If you have questions or need help, please email [the Hydra community tech list]
 # Creating a Sufia-based app
 
 This document contains instructions specific to setting up an app with __Sufia
-v6.2.0__. If you are looking for instructions on installing a different
+v6.3.0__. If you are looking for instructions on installing a different
 version, be sure to select the appropriate branch or tag from the drop-down
 menu above.
 
@@ -127,7 +127,7 @@ We recommend either Ruby 2.2 or the latest 2.1 version.
 
 ## Rails
 
-Generate a new Rails application.  Sufia 6.2.x requires Rails 4.2.
+Generate a new Rails application.  Sufia > 6.1.0 requires Rails 4.2.
 
 ```
 gem install rails -v 4.2
@@ -139,7 +139,7 @@ rails new my_app
 Add the following lines to your application's Gemfile.
 
 ```
-gem 'sufia', '6.2.0'
+gem 'sufia', '6.3.0'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'  # required to handle pagination properly in dashboard. See https://github.com/amatsuda/kaminari/pull/322
 ```
 

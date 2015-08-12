@@ -1,5 +1,34 @@
 # History of Sufia releases
 
+## 6.3.0
+
+* Fix problems with single use download links. [Olli Lyytinen]
+* Use ActiveFedora::Noid 1.0 and surface its config in the Sufia config. [Michael J. Giarlo]
+* Do not use hard-coded paths to URLs in the navbar. [Michael J. Giarlo]
+* Fixes 2 label issue for radio button and better accessibility compliance. [mtribone]
+* Tweak link text and switch Bootstrap icon to span. [mtribone]
+* Fixed open alt tag that I incorrectly set previously to address accessibility [mtribone]
+* Obey rubocop 0.33. [Michael J. Giarlo]
+* Unregistered users should have the ability to see file citations [Michael J. Giarlo]
+* After a week of training on "Practical Object-Oriented Design" with Sandi Metz @cam156 @awead and I decided to take a stab at refactoring a small piece of functionality with some of the ideas that we learned. [Hector Correa]
+* Build a Rubocop config file that matches our community's styles. Allow Rubocop to autocorrect where possible. Correct style exceptions. [Michael J. Giarlo]
+* Fixing audit service since audit no longer exists on the GenericFile [Carolyn Cole]
+* Reload the object in the imprt url job after loading in the file incase another job has modified the object in the while the data was being copied [Carolyn Cole]
+* Refactor the controller test to assume the ingest job is already tested [Carolyn Cole]
+* Adding an announcement editable content block to the home page [Carolyn Cole]
+* Adding object type and facte count to get all the files deposited by all users, not just all the objects deposited by the top 10 users [Carolyn Cole]
+* Adds mention of Java 8 prerequisite for hydra-jetty. Fixes #1253 [kerchner]
+* Fixes Bootstrap columns to allow caret to remain with text for batch editing. [mtribone]
+* Makes the edit actions under thumbnail match browse view [mtribone]
+* Fixes dropdown menu from being hidden on small devices 767px or smaller [mtribone]
+* Update README.md [E. Lynette Rayle]
+* Moving admin stats controller to a behavior so it can be overriden in the main app [Carolyn Cole]
+* Swaps order of heading and sort, adjusts spacing of gallery display, and adds Bootstrap columns for structure [mtribone]
+* Test on CI with the latest JDK and the latest Rails [Michael J. Giarlo]
+* Updates README for v6.2.0. [Andrew Myers]
+* Our librarians wants to be able to edit the labels.  There is no real need to have the headings around and hard coded. [Carolyn Cole]
+* Show deposits between a date range by users.  fixes #1188 [Carolyn Cole]
+
 ## 6.2.0
 
 * Check to make sure Zotero integration is enabled before asking user instances if they have a Zotero user ID. Fixes #1235 [Michael J. Giarlo]
@@ -371,7 +400,6 @@
 * Adds condition to make the version of sass-rails dependent on the value of RAILS_VERSION [Michael J. Giarlo]
 * Merge travis config change to speed up the build [Michael J. Giarlo]
 * Adding the browse view link into the bread crumbs so it shows on both the edit and the stats page. [Carolyn Cole]
-
 
 ## 4.3.1
 
