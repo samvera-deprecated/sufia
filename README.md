@@ -103,18 +103,20 @@ Sufia requires the following software to work:
 1. A SQL RDBMS (MySQL, PostgreSQL), though **note** that SQLite will be used by default if you're looking to get up and running quickly
 1. [Redis](http://redis.io/) key-value store
 1. [ImageMagick](http://www.imagemagick.org/)
-1. [FITS](#characterization)
+1. [FITS 0.6.2](#characterization)
 
 **NOTE: If you do not already have Solr and Fedora instances you can use in your development environment, you may use hydra-jetty (instructions are provided below to get you up and running quickly and with minimal hassle).**
 
 ### Characterization
 
-1. Go to http://projects.iq.harvard.edu/fits/downloads and download a copy of FITS & unpack it somewhere on your machine.  You can also install FITS on OSX with homebrew `brew install fits` (you may also have to create a symlink from `fits.sh -> fits` in the next step).
+1. Go to http://projects.iq.harvard.edu/fits/downloads and download a copy of FITS 0.6.2 & unpack it somewhere on your machine.  You can also install FITS on OSX with homebrew `brew install fits` (you may also have to create a symlink from `fits.sh -> fits` in the next step).
 1. Mark fits.sh as executable (`chmod a+x fits.sh`)
 1. Run "fits.sh -h" from the command line and see a help message to ensure FITS is properly installed
 1. Give your Sufia app access to FITS by:
     1. Adding the full fits.sh path to your PATH (e.g., in your .bash_profile), **OR**
     1. Changing `config/initializers/sufia.rb` to point to your FITS location:  `config.fits_path = "/<your full path>/fits.sh"`
+
+**NOTE: Sufia is not compatible with later versions of Fits, so be sure you are using the latest 0.6.x version.**
 
 ## Environments
 
