@@ -6,6 +6,10 @@
         &nbsp;|&nbsp;
         <%= link_to "Analytics", sufia.stats_generic_file_path(@generic_file), id: 'stats' %>
       <% end %>
+      <% if Sufia.config.citations %>
+        &nbsp;|&nbsp;
+        <%= link_to "Citations", sufia.citation_generic_file_path(@generic_file), id: 'citations' %>
+      <% end %>
       <% if can? :edit, @generic_file %>
           &nbsp;|&nbsp;
           <% if @generic_file.processing? %>

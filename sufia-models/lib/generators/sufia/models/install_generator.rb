@@ -15,6 +15,7 @@ This generator makes the following changes to your application:
  8. Runs cached stats generator
  9. Runs ORCID field generator
 10. Runs user stats generator
+11. Runs citation config generator
        """
   def banner
     say_status("info", "GENERATING SUFIA MODELS", :blue)
@@ -108,5 +109,10 @@ This generator makes the following changes to your application:
   # Adds clamav initializtion
   def clamav
     generate 'sufia:models:clamav'
+  end
+
+  # Adds citations initialization
+  def citation_config
+    generate 'sufia:models:citation_config'
   end
 end
