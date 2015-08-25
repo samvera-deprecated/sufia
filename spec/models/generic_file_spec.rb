@@ -661,6 +661,18 @@ describe GenericFile, type: :model do
     end
   end
 
+  describe '#where_digest_is' do
+    subject { described_class.where_digest_is digest_string }
+    let(:digest_string) { 'f794b23c0c6fe1083d0ca8b58261a078cd968967' }
+    before do
+      @file.add_file(File.open(fixture_path + '/world.png'), path: 'content', original_name: 'world.png')
+      @file.save
+    end
+    it 'returns a list of files' do
+      expect(subject).to eq [@file]
+    end
+  end
+
   describe "where_access_is" do
     subject { described_class.where_access_is access_level }
     before do
