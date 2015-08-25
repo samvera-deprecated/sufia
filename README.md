@@ -4,6 +4,7 @@
 [![Build Status](https://travis-ci.org/projecthydra/sufia.png?branch=master)](https://travis-ci.org/projecthydra/sufia)
 [![Dependency Status](https://gemnasium.com/projecthydra/sufia.png)](https://gemnasium.com/projecthydra/sufia)
 [![Coverage Status](https://coveralls.io/repos/projecthydra/sufia/badge.svg)](https://coveralls.io/r/projecthydra/sufia)
+[![Documentation Status](http://inch-ci.org/github/projecthydra/sufia.svg?branch=master)](http://inch-ci.org/github/projecthydra/sufia)
 [![Code Climate](https://codeclimate.com/github/projecthydra/sufia/badges/gpa.svg)](https://codeclimate.com/github/projecthydra/sufia)
 [![Apache 2.0 License](http://img.shields.io/badge/APACHE2-license-blue.svg)](./LICENSE)
 [![Contribution Guidelines](http://img.shields.io/badge/CONTRIBUTING-Guidelines-blue.svg)](./CONTRIBUTING.md)
