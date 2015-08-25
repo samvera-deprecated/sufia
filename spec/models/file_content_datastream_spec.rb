@@ -45,7 +45,7 @@ describe FileContentDatastream, type: :model do
       @generic_file.apply_depositor_metadata('mjg36')
     end
 
-    it "onlies return true when the datastream has actually changed" do
+    it "only returns true when the datastream has actually changed" do
       @generic_file.add_file(File.open(fixture_path + '/world.png', 'rb'), path: 'content', original_name: 'world.png')
       expect(@generic_file.content).to be_changed
       @generic_file.save!

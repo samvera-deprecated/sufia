@@ -491,7 +491,7 @@ describe GenericFile, type: :model do
       expect(subject.edit_users).to eq ['jcoyne']
     end
 
-    it "onlies revoke eligible groups" do
+    it "only revokes eligible groups" do
       subject.set_read_groups(['group-2', 'group-3'], ['group-6'])
       # 'group-7' is not eligible to be revoked
       expect(subject.read_groups).to match_array ['group-2', 'group-3', 'group-7']

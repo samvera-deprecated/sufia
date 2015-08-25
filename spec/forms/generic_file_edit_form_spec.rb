@@ -23,7 +23,7 @@ describe Sufia::Forms::GenericFileEditForm do
     let(:params) { ActionController::Parameters.new(title: ['foo'], description: [''], "permissions_attributes" => { "2" => { "access" => "edit", "_destroy" => "true", "id" => "a987551e-b87f-427a-8721-3e5942273125" } }) }
     subject { described_class.model_attributes(params) }
 
-    it "onlies change title" do
+    it "only changes title" do
       expect(subject['title']).to eq ["foo"]
       expect(subject['description']).to be_empty
       expect(subject['permissions_attributes']).to eq("2" => { "access" => "edit", "id" => "a987551e-b87f-427a-8721-3e5942273125", "_destroy" => "true" })
