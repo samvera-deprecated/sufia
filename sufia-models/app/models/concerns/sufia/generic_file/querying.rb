@@ -38,6 +38,14 @@ module Sufia
           where Solrizer.solr_name('read_access_group', :symbol) => access_level
         end
 
+        def where_digest_is(digest_string)
+          where Solrizer.solr_name('digest', :symbol) => urnify(digest_string)
+        end
+
+        def urnify(digest_string)
+          "urn:sha1:#{digest_string}"
+        end
+
         def date_format
           "%Y-%m-%dT%H:%M:%SZ"
         end
