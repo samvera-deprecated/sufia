@@ -25,6 +25,15 @@ describe 'collection', type: :feature do
   let(:title2) { "Test Collection 2" }
   let(:description2) { "Description for collection 2 we are testing." }
 
+  let(:collection1) do
+    Collection.create(title: title1, description: description1,
+                      members: []) { |c| c.apply_depositor_metadata(user.user_key) }
+  end
+  let(:collection2) do
+    Collection.create(title: title2, description: description2,
+                      members: []) { |c| c.apply_depositor_metadata(user.user_key) }
+  end
+
   let(:user) { FactoryGirl.create(:user) }
 
   let(:gfs) do
@@ -137,6 +146,69 @@ describe 'collection', type: :feature do
       expect(page).to have_content("Search Results")
       expect(page).to have_content(gf1.title.first)
       expect(page).to_not have_content(gf2.title.first)
+    end
+  end
+
+  describe 'collection sorting' do
+    before do
+      collection1 # create the collections by referencing them
+      sleep(1) # make sure the timestamps aren't equal
+      collection2
+      sleep(1)
+      collection1.title += 'changed'
+      collection1.save
+      # collection 1 is now earlier when sorting by create date but later
+      # when sorting by modified date
+
+      sign_in user
+      visit '/dashboard/collections'
+    end
+
+    it "has creation date for collections" do
+      expect(page).to have_content(collection1.create_date.to_date.to_formatted_s(:standard))
+    end
+
+    it "allows changing sort order" do
+      find(:xpath, "//select[@id='sort']/option[contains(., 'date modified')][contains(@value, 'asc')]") \
+        .select_option
+      click_button('Refresh')
+      expect(page).to have_css("#document_#{collection1.id}")
+      expect(page).to have_css("#document_#{collection2.id}")
+      expect(page.body.index("id=\"document_#{collection1.id}")).to be > page.body.index("id=\"document_#{collection2.id}")
+
+      find(:xpath, "//select[@id='sort']/option[contains(., 'date modified')][contains(@value, 'desc')]") \
+        .select_option
+      click_button('Refresh')
+      expect(page).to have_css("#document_#{collection1.id}")
+      expect(page).to have_css("#document_#{collection2.id}")
+      expect(page.body.index("id=\"document_#{collection1.id}")).to be < page.body.index("id=\"document_#{collection2.id}")
+    end
+  end
+
+  describe 'add files to collection' do
+    let!(:gf1) { gfs[0] }
+    let!(:gf2) { gfs[1] }
+
+    before do
+      collection1 # create collections by referencing them
+      collection2
+      sign_in user
+    end
+
+    it "preselects the collection we are adding files to" do
+      visit "/collections/#{collection1.id}"
+      click_link 'Add files'
+      first('input#check_all').click
+      click_button "Add to Collection"
+      expect(page).to have_css("input#id_#{collection1.id}[checked='checked']")
+      expect(page).not_to have_css("input#id_#{collection2.id}[checked='checked']")
+
+      visit "/collections/#{collection2.id}"
+      click_link 'Add files'
+      first('input#check_all').click
+      click_button "Add to Collection"
+      expect(page).not_to have_css("input#id_#{collection1.id}[checked='checked']")
+      expect(page).to have_css("input#id_#{collection2.id}[checked='checked']")
     end
   end
 
