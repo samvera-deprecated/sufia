@@ -36,7 +36,7 @@ describe 'generic_files/edit.html.erb', :no_clean do
       Capybara::Node::Simple.new(rendered)
     end
 
-    it "onlies draw one resource_type multiselect" do
+    it "only draws one resource_type multiselect" do
       expect(page).to have_selector("select#generic_file_resource_type", count: 1)
     end
   end
