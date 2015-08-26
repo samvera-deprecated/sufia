@@ -45,7 +45,17 @@ module Sufia
       return unless field.present?
       begin
         Date.parse(field).to_formatted_s(:standard)
-      rescue
+      rescue ArgumentError
+        ActiveFedora::Base.logger.info "Unable to parse date: #{field.first.inspect} for #{self['id']}"
+      end
+    end
+
+    def create_date
+      field = self[CatalogController.uploaded_field]
+      return unless field.present?
+      begin
+        Date.parse(field).to_formatted_s(:standard)
+      rescue ArgumentError
         ActiveFedora::Base.logger.info "Unable to parse date: #{field.first.inspect} for #{self['id']}"
       end
     end

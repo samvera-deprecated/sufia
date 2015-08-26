@@ -87,4 +87,9 @@ describe My::FilesController, type: :controller do
       expect(assigns(:batches)).to include("ss-" + batch_id2)
     end
   end
+
+  it "sets add_files_to_collection when provided in params" do
+    get :index, add_files_to_collection: '12345'
+    expect(assigns(:add_files_to_collection)).to eql('12345')
+  end
 end
