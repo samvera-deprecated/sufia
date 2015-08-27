@@ -9,6 +9,8 @@ module Sufia
     extend ActiveSupport::Concern
     extend Sufia::FilesController::UploadCompleteBehavior
     include Sufia::Breadcrumbs
+    include Hydra::Catalog
+    include Hydra::Collections::SelectsCollections
 
     included do
       include Hydra::Controller::ControllerBehavior
@@ -38,6 +40,9 @@ module Sufia
       before_action :authenticate_user!, except: [:show, :citation, :stats]
       before_action :has_access?, except: [:show]
       before_action :build_breadcrumbs, only: [:show, :edit, :stats]
+      before_action only: [:new] do
+        find_collections_with_edit_access(true, -1, t("sufia.upload.collection.select_default_option"))
+      end
       load_resource only: [:audit]
       load_and_authorize_resource except: [:index, :audit, :show]
 
@@ -227,7 +232,7 @@ module Sufia
 
         update_metadata_from_upload_screen
         actor.create_metadata(params[:batch_id])
-        if actor.create_content(file, file.original_filename, file_path, file.content_type)
+        if actor.create_content(file, file.original_filename, file_path, file.content_type, params[:collection])
           respond_to do |format|
             format.html do
               render 'jq_upload', formats: 'json', content_type: 'text/html'

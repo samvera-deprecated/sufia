@@ -4,6 +4,9 @@
 </div>
 <div class="well">
   <%= form_tag(sufia.generic_files_path, id: 'browse_everything_form', method: 'post') do %>
+      <% if Sufia.config.upload_to_collection %>
+          <%= render partial: 'generic_files/upload/to_collection' %>
+      <% end %>
       <%= render partial: 'generic_files/upload/tos_checkbox' %>
       <%= hidden_field_tag(:batch_id, @batch_id) %>
       <%= button_tag(t('sufia.upload.browse_everything.browse_files_button'), type: 'button', class: 'btn btn-lg btn-success', id: "browse-btn",

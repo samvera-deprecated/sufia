@@ -27,15 +27,24 @@ module Sufia::GenericFile
       yield(generic_file) if block_given?
     end
 
-    def create_content(file, file_name, path, mime_type)
+    def create_content(file, file_name, path, mime_type, collection_id = nil)
       generic_file.add_file(file, path: path, original_name: file_name, mime_type: mime_type)
       generic_file.label ||= file_name
       generic_file.title = [generic_file.label] if generic_file.title.blank?
-      save_characterize_and_record_committer do
+      saved = save_characterize_and_record_committer do
         if Sufia.config.respond_to?(:after_create_content)
           Sufia.config.after_create_content.call(generic_file, user)
         end
       end
+      add_file_to_collection(collection_id) if saved
+      saved
+    end
+
+    def add_file_to_collection(collection_id)
+      return if collection_id.nil? || collection_id == -1
+      collection = Collection.find(collection_id)
+      collection.add_members [generic_file.id]
+      collection.save
     end
 
     def revert_content(revision_id)

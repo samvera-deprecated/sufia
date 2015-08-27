@@ -95,6 +95,10 @@ Sufia.config do |config|
   # Default is false
   # config.citations = false
 
+  # Enables a select menu on the batch upload page to select a collection into which to add newly uploaded files.
+  # Default is false
+  # config.upload_to_collection = false
+
   # Where to store tempfiles, leave blank for the system temp directory (e.g. /tmp)
   # config.temp_file_base = '/home/developer1'
 

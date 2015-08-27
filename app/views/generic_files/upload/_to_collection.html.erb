@@ -1,0 +1,5 @@
+<p>
+  <label><%= t("sufia.upload.collection.select_label") %></label>
+  <%= select_tag 'collection', options_from_collection_for_select(@user_collections, "id", "title") %>
+</p>
+<p>&nbsp;</p>

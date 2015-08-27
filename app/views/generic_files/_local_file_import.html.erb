@@ -1,2 +1,5 @@
+<% if Sufia.config.upload_to_collection %>
+  <%= render partial: 'generic_files/upload/to_collection' %>
+<% end %>
 <%= render partial: 'generic_files/upload/agreement' %>
 <%= render partial: 'generic_files/upload/local_file_import_chooser' %>

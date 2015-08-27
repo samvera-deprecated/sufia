@@ -6,6 +6,9 @@
     </div>
   <% end %>
   <div class="well">
+    <% if Sufia.config.upload_to_collection %>
+        <%= render partial: 'generic_files/upload/to_collection' %>
+    <% end %>
     <%= render partial: 'generic_files/upload/form_fields' %>
   </div>
 <% end %>
