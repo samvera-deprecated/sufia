@@ -37,6 +37,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'yaml_db', '~> 0.2'
   gem.add_dependency 'font-awesome-rails', '~> 4.2'
   gem.add_dependency 'hydra-editor', '~> 1.0'
+  gem.add_dependency 'openseadragon'
   gem.add_dependency 'blacklight-gallery', '~> 0.1'
   gem.add_dependency 'breadcrumbs_on_rails', '~> 2.3.0'
   gem.add_dependency 'select2-rails', '~> 3.5.9'

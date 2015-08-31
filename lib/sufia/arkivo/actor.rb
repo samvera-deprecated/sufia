@@ -45,7 +45,7 @@ module Sufia
           actor.generic_file.tap do |gf|
             gf.resource_type = []
             gf.title = []
-            gf.rights = []
+            gf.rights = nil
             gf.tag = []
             gf.creator = []
             gf.description = []

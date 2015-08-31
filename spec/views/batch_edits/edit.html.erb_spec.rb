@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'batch_edits/edit.html.erb' do
-  let(:generic_file) { stub_model(GenericFile, id: nil, depositor: 'bob', rights: ['']) }
+  let(:generic_file) { stub_model(GenericFile, id: nil, depositor: 'bob', rights: '') }
 
   before do
     allow(controller).to receive(:current_user).and_return(stub_model(User))

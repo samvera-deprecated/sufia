@@ -301,7 +301,7 @@ describe GenericFile, type: :model do
       subject.date_modified = Date.parse("2012-01-01")
       subject.subject = ["Theology"]
       subject.language = ["Arabic"]
-      subject.rights = ["Wide open, buddy."]
+      subject.rights = "Wide open, buddy."
       subject.resource_type = ["Book"]
       subject.identifier = ["urn:isbn:1234567890"]
       subject.based_near = ["Medina, Saudi Arabia"]
@@ -318,7 +318,7 @@ describe GenericFile, type: :model do
       expect(local[Solrizer.solr_name("date_modified")]).to be_nil
       expect(local[Solrizer.solr_name("date_uploaded", :stored_sortable, type: :date)]).to eq '2011-01-01T00:00:00Z'
       expect(local[Solrizer.solr_name("date_modified", :stored_sortable, type: :date)]).to eq '2012-01-01T00:00:00Z'
-      expect(local[Solrizer.solr_name("rights")]).to eq ["Wide open, buddy."]
+      expect(local[Solrizer.solr_name("rights")]).to eq "Wide open, buddy."
       expect(local[Solrizer.solr_name("related_url")]).to eq ["http://example.org/TheWork/"]
       expect(local[Solrizer.solr_name("contributor")]).to eq ["Mohammad"]
       expect(local[Solrizer.solr_name("creator")]).to eq ["Allah"]

@@ -30,7 +30,7 @@ describe 'batch/edit.html.erb' do
 
     # access rights
     expect(rendered).to have_selector("div#rightsModal .modal-dialog .modal-content")
-    expect(rendered).to have_selector('select#generic_file_rights[name="generic_file[rights][]"]')
+    expect(rendered).to have_selector('select#generic_file_rights[name="generic_file[rights]"]')
     page = Capybara::Node::Simple.new(rendered)
     page.all('select#generic_file_rights option').each do |elem|
       expect(elem.value).to_not be_empty

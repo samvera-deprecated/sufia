@@ -77,6 +77,10 @@ module Sufia
       Array(self[Solrizer.solr_name('label')]).first
     end
 
+    def rights
+      Array(self[Solrizer.solr_name('rights')]).first
+    end
+
     def file_format
       Array(self[Solrizer.solr_name('file_format')]).first
     end

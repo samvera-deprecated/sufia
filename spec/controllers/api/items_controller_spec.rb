@@ -186,7 +186,7 @@ describe API::ItemsController, type: :controller do
         expect(deposited_file.identifier).to eq [item_hash['metadata']['identifier']]
         expect(deposited_file.related_url).to eq [item_hash['metadata']['url']]
         expect(deposited_file.language).to eq [item_hash['metadata']['language']]
-        expect(deposited_file.rights).to eq [item_hash['metadata']['rights']]
+        expect(deposited_file.rights).to eq item_hash['metadata']['rights']
         expect(deposited_file.tag).to eq item_hash['metadata']['tags']
         expect(deposited_file.creator).to eq ['Doe, John', 'Babs McGee']
         expect(deposited_file.contributor).to eq ['Nadal, Rafael', 'Jane Doeski']
@@ -255,7 +255,7 @@ describe API::ItemsController, type: :controller do
       it 'changes the metadata' do
         expect(put_deposited_file.resource_type).to eq [put_item_hash['metadata']['resourceType']]
         expect(put_deposited_file.title).to eq [put_item_hash['metadata']['title']]
-        expect(put_deposited_file.rights).to eq [put_item_hash['metadata']['rights']]
+        expect(put_deposited_file.rights).to eq put_item_hash['metadata']['rights']
         expect(put_deposited_file.tag).to eq put_item_hash['metadata']['tags']
         expect(put_deposited_file.creator).to eq ['Doe, John', 'Babs McGee']
         expect(put_deposited_file.description).to eq []

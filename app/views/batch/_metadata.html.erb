@@ -27,17 +27,7 @@
     <div class="row">
       <div class="col-sm-6">
       <h3>Applies to all files just uploaded</h3>
-      <%= f.input :resource_type, as: :select_with_help, collection: Sufia.config.resource_types,
-          input_html: { class: 'form-control', multiple: true } %>
-
-      <%= f.input :tag, as: :multi_value_with_help %>
-
-      <%= f.input :creator, as: :multi_value_with_help %>
-
-      <%= f.input :rights, as: :select_with_modal_help, collection: Sufia.config.cc_licenses,
-          input_html: { class: 'form-control', multiple: false } %>
-
-      <%= render "generic_files/rights_modal" %>
+      <%= render 'bulk_metadata_above_the_fold', f: f %>
 
       <button id="show_addl_descriptions" class="btn btn-default" aria-label="reveal additional metadata description fields">Show Additional Fields</button>
       <!-- hidden on initial load -->

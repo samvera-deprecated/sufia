@@ -38,7 +38,7 @@ module Sufia
         property :tag, predicate: ::RDF::DC.relation do |index|
           index.as :stored_searchable, :facetable
         end
-        property :rights, predicate: ::RDF::DC.rights do |index|
+        property :rights, predicate: ::RDF::DC.rights, multiple: false do |index|
           index.as :stored_searchable
         end
         property :publisher, predicate: ::RDF::DC.publisher do |index|
