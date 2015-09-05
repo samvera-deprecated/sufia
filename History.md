@@ -1,5 +1,11 @@
 # History of Sufia releases
 
+## 6.3.1
+
+* Add configuration allowing select menu on batch upload to upload files to a collection. [E. Lynette Rayle]
+* Bump active-fedora version to 9.4 [E. Lynette Rayle]
+* Bump hydra-collections to 5.0.3 [E. Lynette Rayle]
+
 ## 6.3.0
 
 * Fix problems with single use download links. [Olli Lyytinen]

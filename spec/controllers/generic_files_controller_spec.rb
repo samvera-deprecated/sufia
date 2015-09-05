@@ -15,6 +15,12 @@ describe GenericFilesController do
       let(:mock) { GenericFile.new(id: 'test123') }
       let(:batch) { Batch.create }
       let(:batch_id) { batch.id }
+      let(:collection) {
+        Collection.create(title: 'test collection') do |c|
+          c.apply_depositor_metadata(user.user_key)
+        end
+      }
+      let(:collection_id) { collection.id }
       let(:file) { fixture_file_upload('/world.png', 'image/png') }
 
       before do
@@ -42,7 +48,7 @@ describe GenericFilesController do
       context "when everything is perfect" do
         render_views
         it "spawns a content deposit event job" do
-          expect_any_instance_of(Sufia::GenericFile::Actor).to receive(:create_content).with(file, 'world.png', 'content', 'image/png').and_return(true)
+          expect_any_instance_of(Sufia::GenericFile::Actor).to receive(:create_content).with(file, 'world.png', 'content', 'image/png', nil).and_return(true)
           xhr :post, :create, files: [file], 'Filename' => 'The world', batch_id: batch_id, permission: { group: { public: 'read' } }, terms_of_service: '1'
           expect(response.body).to eq '[{"name":null,"size":null,"url":"/files/test123","thumbnail_url":"test123","delete_url":"deleteme","delete_type":"DELETE"}]'
           expect(flash[:error]).to be_nil
@@ -81,6 +87,15 @@ describe GenericFilesController do
           # This is confirming that apply_depositor_metadata recorded the depositor
           expect(saved_file.depositor).to eq 'jilluser@example.com'
           expect(saved_file.to_solr['depositor_tesim']).to eq ['jilluser@example.com']
+        end
+
+        it "adds new file to collection" do
+          xhr :post, :create, files: [file], Filename: "The world", batch_id: batch_id, permission: { "group" => { "public" => "read" } }, terms_of_service: "1", collection: collection_id
+          expect(response).to be_success
+
+          updated_collection = Collection.find(collection_id)
+          # This is confirming that the file was added to the collection
+          expect(updated_collection.member_ids).to eq ['test123']
         end
       end
 
