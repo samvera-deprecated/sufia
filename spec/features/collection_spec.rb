@@ -212,6 +212,25 @@ describe 'collection', type: :feature do
     end
   end
 
+  describe 'upload files to collection' do
+    let(:upload_to_collection) { true }
+    let!(:gf1) { gfs[0] }
+    let!(:gf2) { gfs[1] }
+
+    before do
+      Sufia.config.upload_to_collection = upload_to_collection
+      collection1 # create collections by referencing them
+      collection2
+      sign_in user
+    end
+
+    it "preselects the collection we are uploading files to" do
+      visit "/collections/#{collection1.id}"
+      click_link 'Upload files'
+      expect(page).to have_select('collection', selected: title1)
+    end
+  end
+
   describe 'edit collection' do
     let!(:collection) do
       Collection.create(title: 'collection title', description: 'collection description',

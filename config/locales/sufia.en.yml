@@ -163,6 +163,16 @@ en:
         add_another_keyword: "add another Keyword"
         add_another_creator: "add another Creator"
         add_another_rights: "add another Rights"
+      show:
+        edit:
+          label: "Edit"
+          desc: "Edit metadata for this Collection"
+        add_files:
+          label: "Add files"
+          desc: "Add files to this Collection"
+        upload_files:
+          label: "Upload files"
+          desc: "Upload files to this Collection"
     mailbox:
       date:     'Date'
       subject:  'Subject'

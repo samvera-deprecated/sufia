@@ -1,7 +1,12 @@
 <h2 class="sr-only">Actions</h2>
 <div class="actions-controls-collections">
   <% if can? :edit, @collection %>
-      <span class="label label-default"><%= link_to "Edit", collections.edit_collection_path, title: "Edit this Collection" %></span> &nbsp;&nbsp;
-      <span class="label label-default"><%= link_to "Add files",  sufia.dashboard_files_path( add_files_to_collection: @collection.id ), title: "Add files to this Collection" %></span>
+      <span class="label label-default"><%= link_to t("sufia.collection.show.edit.label"), collections.edit_collection_path, title: t("sufia.collection.show.edit.label") %></span> &nbsp;&nbsp;
+      <span class="label label-default"><%= link_to t("sufia.collection.show.add_files.label"),  sufia.dashboard_files_path( add_files_to_collection: @collection.id ), title: t("sufia.collection.show.add_files.label") %></span>
+      <% if Sufia.config.upload_to_collection %>
+          <div class="actions-controls-collections-line2">
+            <span class="label label-default"><%= link_to t("sufia.collection.show.upload_files.label"),  sufia.new_generic_file_path( collection: @collection.id ), title: t("sufia.collection.show.upload_files.desc") %></span>
+          </div>
+      <%end %>
   <%end %>
 </div>

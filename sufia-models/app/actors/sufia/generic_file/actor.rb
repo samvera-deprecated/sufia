@@ -41,8 +41,9 @@ module Sufia::GenericFile
     end
 
     def add_file_to_collection(collection_id)
-      return if collection_id.nil? || collection_id == -1
+      return if collection_id.nil? || collection_id == "-1"
       collection = Collection.find(collection_id)
+      return unless user.can? :edit, collection
       collection.add_members [generic_file.id]
       collection.save
     end
