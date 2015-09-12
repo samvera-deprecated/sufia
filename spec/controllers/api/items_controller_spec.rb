@@ -10,7 +10,7 @@ describe API::ItemsController, type: :controller do
 
   context 'with an HTTP GET or HEAD' do
     before do
-      post :create, format: :json, item: item
+      post :create, item, format: :json
     end
 
     let(:deposited_file) { GenericFile.where(label: item['file']['filename']).take }
@@ -128,7 +128,7 @@ describe API::ItemsController, type: :controller do
 
     context 'with an invalid item' do
       before do
-        post :create, format: :json, item: item
+        post :create, item, format: :json
       end
 
       let(:item) { { foo: 'bar' }.to_json }
@@ -144,7 +144,7 @@ describe API::ItemsController, type: :controller do
 
     context 'with a valid item and matching token' do
       before do
-        expect { post :create, format: :json, item: item }.to change { GenericFile.count }.by(1)
+        expect { post :create, item, format: :json }.to change { GenericFile.count }.by(1)
       end
 
       let(:deposited_file) { GenericFile.where(label: item['file']['filename']).take }
@@ -195,7 +195,7 @@ describe API::ItemsController, type: :controller do
 
     context 'with a valid item and unfamiliar token' do
       before do
-        post :create, format: :json, item: item
+        post :create, item, format: :json
       end
 
       let(:token) { 'unfamiliar_token' }
@@ -222,12 +222,12 @@ describe API::ItemsController, type: :controller do
     let(:post_item_hash) { JSON.parse(post_item) }
 
     before do
-      expect { post :create, format: :json, item: post_item }.to change { GenericFile.count }.by(1)
+      expect { post :create, post_item, format: :json }.to change { GenericFile.count }.by(1)
     end
 
     context 'with a valid item, matching token, and authorized resource' do
       before do
-        put :update, id: post_deposited_file.id, format: :json, item: put_item
+        put :update, put_item, id: post_deposited_file.id, format: :json
       end
 
       let(:put_deposited_file) { GenericFile.where(label: put_item['file']['filename']).take }
@@ -272,7 +272,7 @@ describe API::ItemsController, type: :controller do
     context 'with a valid item, matching token, authorized resource, but not Arkivo-deposited' do
       before do
         allow_any_instance_of(GenericFile).to receive(:arkivo_checksum) { nil }
-        put :update, id: post_deposited_file.id, format: :json, item: item
+        put :update, item, id: post_deposited_file.id, format: :json
       end
 
       let(:item) { FactoryGirl.json(:put_item, token: post_token) }
@@ -295,7 +295,7 @@ describe API::ItemsController, type: :controller do
         allow(GenericFile).to receive(:find).with(post_deposited_file.id) do
           raise(ActiveFedora::ObjectNotFoundError)
         end
-        put :update, id: post_deposited_file.id, format: :json, item: item
+        put :update, item, id: post_deposited_file.id, format: :json
       end
 
       subject { response }
@@ -311,7 +311,7 @@ describe API::ItemsController, type: :controller do
     context 'with a valid item, matching token, and unauthorized resource' do
       before do
         allow_any_instance_of(User).to receive(:can?).with(:edit, post_deposited_file) { false }
-        put :update, id: post_deposited_file.id, format: :json, item: item
+        put :update, item, id: post_deposited_file.id, format: :json
       end
 
       let(:item) { FactoryGirl.json(:put_item, token: post_token) }
@@ -335,7 +335,7 @@ describe API::ItemsController, type: :controller do
 
     context 'with a valid item and unfamiliar token' do
       before do
-        put :update, id: post_deposited_file.id, format: :json, item: item
+        put :update, item, id: post_deposited_file.id, format: :json
       end
 
       let(:token) { 'unfamiliar_token' }
@@ -356,7 +356,7 @@ describe API::ItemsController, type: :controller do
 
     context 'with an invalid item' do
       before do
-        put :update, id: post_deposited_file.id, format: :json, item: item
+        put :update, item, id: post_deposited_file.id, format: :json
       end
 
       let(:item) { { foo: 'bar' }.to_json }
@@ -373,7 +373,7 @@ describe API::ItemsController, type: :controller do
 
   context 'with an HTTP DELETE' do
     before do
-      post :create, format: :json, item: item
+      post :create, item, format: :json
     end
 
     let(:deposited_file) { GenericFile.where(label: item['file']['filename']).take }
