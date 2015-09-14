@@ -69,6 +69,41 @@ describe Sufia::GenericFile::Actor do
         expect(VersionCommitter.where(version_id: versions.last.uri).pluck(:committer_login)).to eq [second_user.user_key]
       end
     end
+
+    context "with collection" do
+      let(:file)       { "world.png" }
+      let(:actor)      { described_class.new(generic_file, user) }
+      let(:col_editable) do
+        Collection.new(title: 'editable', description: 'user can edit this collection') do |c|
+          c.apply_depositor_metadata(user)
+        end
+      end
+      let(:col_editable_id) { col_editable.id }
+      let(:col_not_editable) { Collection.new(title: 'not editable', description: 'user cannot edit this collection') }
+      let(:col_not_editable_id) { col_not_editable.id }
+      before do
+        allow(generic_file).to receive(:label).and_return(file)
+        allow(col_editable).to receive(:id).and_return('ce')
+        allow(Collection).to receive(:find).with(col_editable_id).and_return(col_editable)
+        allow(user).to receive(:can?).with(:edit, col_editable).and_return(true)
+        allow(col_not_editable).to receive(:id).and_return('cne')
+        allow(Collection).to receive(:find).with(col_not_editable_id).and_return(col_not_editable)
+        allow(user).to receive(:can?).with(:edit, col_not_editable).and_return(false)
+        allow(Sufia.queue).to receive(:push)
+      end
+
+      it "adds file to collection when user can edit the collection" do
+        actor.create_content(fixture_file_upload(file), file, 'content', 'image/png', col_editable_id)
+        updated_collection = Collection.find(col_editable_id)
+        expect(updated_collection.member_ids).to eq [generic_file.id]
+      end
+
+      it "does not add file to collection when user can NOT edit the collection" do
+        actor.create_content(fixture_file_upload(file), file, 'content', 'image/png', col_not_editable_id)
+        updated_collection = Collection.find(col_not_editable_id)
+        expect(updated_collection.member_ids).to eq []
+      end
+    end
   end
 
   describe "#virus_check" do

@@ -21,6 +21,8 @@ describe GenericFilesController do
         end
       }
       let(:collection_id) { collection.id }
+      let(:collection_noedit) { Collection.create(title: 'test collection - NO EDIT') }
+      let(:collection_noedit_id) { collection_noedit.id }
       let(:file) { fixture_file_upload('/world.png', 'image/png') }
 
       before do
@@ -42,6 +44,18 @@ describe GenericFilesController do
           xhr :post, :create, files: [file], Filename: "The World", batch_id: 'sample_batch_id', permission: { "group" => { "public" => "read" } }, terms_of_service: '1'
           expect(response.status).to eq 422
           expect(JSON.parse(response.body).first['error']).to match(/no file for upload/i)
+        end
+      end
+
+      context "when user tries to upload to a collection they can't edit" do
+        # This shouldn't happen via the UI which will only present to the user collections they can edit.
+        it "adds new file but does not put the file in the collection" do
+          xhr :post, :create, files: [file], Filename: "The world", batch_id: batch_id, permission: { "group" => { "public" => "read" } }, terms_of_service: "1", collection: collection_noedit_id
+          expect(response).to be_success
+
+          updated_collection = Collection.find(collection_id)
+          # This is confirming that the file was NOT added to the collection the user cannot edit
+          expect(updated_collection.member_ids).to eq []
         end
       end
 
@@ -87,6 +101,11 @@ describe GenericFilesController do
           # This is confirming that apply_depositor_metadata recorded the depositor
           expect(saved_file.depositor).to eq 'jilluser@example.com'
           expect(saved_file.to_solr['depositor_tesim']).to eq ['jilluser@example.com']
+        end
+
+        it "adds new file when collection is instructions id" do
+          xhr :post, :create, files: [file], Filename: "The world", batch_id: batch_id, permission: { "group" => { "public" => "read" } }, terms_of_service: "1", collection: '-1'
+          expect(response).to be_success
         end
 
         it "adds new file to collection" do

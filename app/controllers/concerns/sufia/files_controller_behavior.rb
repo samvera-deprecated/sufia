@@ -64,6 +64,7 @@ module Sufia
 
     # routed to /files/new
     def new
+      set_variables_for_new_form
       @batch_id = ActiveFedora::Noid::Service.new.mint
     end
 
@@ -156,6 +157,10 @@ module Sufia
     end
 
     protected
+
+      def set_variables_for_new_form
+        @collection_id = params[:collection] if @user_collections.collect(&:id).include? params[:collection]
+      end
 
       def set_variables_for_edit_form
         @form = edit_form
