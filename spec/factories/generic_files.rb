@@ -25,6 +25,7 @@ FactoryGirl.define do
         resource_type ["Dissertation"]
         subject %w(lorem ipsum dolor sit amet)
         title ["fake_document.pdf"]
+        mime_type 'application/pdf'
         before(:create) do |gf|
           gf.title = ["Fake PDF Title"]
         end
@@ -36,6 +37,7 @@ FactoryGirl.define do
         initialize_with { new(id: id) }
         subject %w(consectetur adipisicing elit)
         title ["Test Document MP3.mp3"]
+        mime_type 'audio/mpeg'
         read_groups ["public"]
       end
       factory :public_wav do
@@ -46,6 +48,7 @@ FactoryGirl.define do
         resource_type ["Audio", "Dataset"]
         read_groups ["public"]
         title ["Fake Wav File.wav"]
+        mime_type 'audio/wav'
         subject %w(sed do eiusmod tempor incididunt ut labore)
       end
     end
