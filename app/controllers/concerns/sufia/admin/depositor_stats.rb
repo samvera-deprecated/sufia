@@ -19,7 +19,7 @@ module Sufia::Admin::DepositorStats
     start_datetime = DateTime.parse(deposit_stats[:start_date]) unless deposit_stats[:start_date].blank?
     end_datetime = DateTime.parse(deposit_stats[:end_date]).end_of_day unless deposit_stats[:end_date].blank?
 
-    query = GenericFile.build_date_query(start_datetime, end_datetime) unless start_datetime.blank?
+    query = ::GenericFile.build_date_query(start_datetime, end_datetime) unless start_datetime.blank?
     sb = DepositSearchBuilder.new([:include_depositor_facet], self)
     facet_results = repository.search(sb.merge(q: query).query)
     facets = facet_results["facet_counts"]["facet_fields"]["depositor_ssim"]
