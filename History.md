@@ -7,6 +7,7 @@
 * Bump hydra-collections to 5.0.3 [E. Lynette Rayle]
 * Add button 'Upload files' on collection show page which goes to batch upload with collection select menu set to the calling collection [E. Lynette Rayle]
 * Use `sufia.root_path` instead of `root_path` in the navbar and the logo [Randy Coulman]
+* Do not use a hard-coded path to the contact form URL on the terms page. [Randy Coulman]
 
 ## 6.3.0
 
