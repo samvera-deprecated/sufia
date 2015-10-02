@@ -171,4 +171,10 @@ describe CreateDerivativesJob do
       end
     end
   end
+
+  describe 'minimagick setup' do
+    it 'uses posix-spawn' do
+      expect(MiniMagick.shell_api).to eq('posix-spawn')
+    end
+  end
 end

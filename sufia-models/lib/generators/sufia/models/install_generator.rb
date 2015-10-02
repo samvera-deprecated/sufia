@@ -68,6 +68,7 @@ This generator makes the following changes to your application:
     copy_file 'config/resque_admin.rb', 'config/initializers/resque_admin.rb'
     copy_file 'config/resque_config.rb', 'config/initializers/resque_config.rb'
     copy_file 'config/resque.rake', 'lib/tasks/resque.rake'
+    copy_file 'config/mini_magick.rb', 'config/initializers/mini_magick.rb'
   end
 
   def create_collection
