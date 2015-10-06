@@ -3,9 +3,6 @@
 ## HEAD (unreleased)
 
 * Configure minimagick to use posix-spawn instead of popen3 (rake task must be run). [Anna Headley]
-
-## 6.3.1
-
 * Add configuration allowing select menu on batch upload to upload files to a collection. [E. Lynette Rayle]
 * Bump active-fedora version to 9.4 [E. Lynette Rayle]
 * Bump hydra-collections to 5.0.3 [E. Lynette Rayle]
