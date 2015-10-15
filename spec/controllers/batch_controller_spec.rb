@@ -17,6 +17,7 @@ describe BatchController do
       it "is successful" do
         expect(Sufia.queue).to receive(:push).with(batch_update_message).once
         post :update, id: batch.id, title: { '1' => 'foo' }, visibility: 'open', generic_file: { tag: [""] }
+        expect(assigns(:batch_update_job)).to eq(batch_update_message)
         expect(response).to redirect_to routes.url_helpers.dashboard_files_path
         expect(flash[:notice]).to include("Your files are being processed")
       end
