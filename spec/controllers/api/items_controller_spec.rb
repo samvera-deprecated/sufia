@@ -7,19 +7,25 @@ describe API::ItemsController, type: :controller do
   end
 
   let(:user) { FactoryGirl.find_or_create(:jill) }
+  let!(:default_file) do
+    GenericFile.create(title: ['Foo Bar']) do |gf|
+      gf.apply_depositor_metadata(user)
+      gf.arkivo_checksum = '6872d21557992f6ad1d07375f19fbfaf'
+    end
+  end
 
   context 'with an HTTP GET or HEAD' do
     before do
       post :create, item, format: :json
     end
 
-    let(:deposited_file) { GenericFile.where(label: item['file']['filename']).take }
     let(:token) { user.arkivo_token }
     let(:item) { FactoryGirl.json(:post_item, token: token) }
+    let(:item_hash) { JSON.parse(item) }
 
     context 'with a missing token' do
       before do
-        get :show, format: :json, id: deposited_file.id
+        get :show, format: :json, id: default_file.id
       end
 
       subject { response }
@@ -33,7 +39,7 @@ describe API::ItemsController, type: :controller do
 
     context 'with an unfamiliar token' do
       before do
-        get :show, format: :json, id: deposited_file.id, token: get_token
+        get :show, format: :json, id: default_file.id, token: get_token
       end
 
       let(:get_token) { 'foobar' }
@@ -49,8 +55,8 @@ describe API::ItemsController, type: :controller do
 
     context 'with an unauthorized resource' do
       before do
-        allow_any_instance_of(User).to receive(:can?).with(:edit, deposited_file) { false }
-        get :show, format: :json, id: deposited_file.id, token: token
+        allow_any_instance_of(User).to receive(:can?).with(:edit, default_file) { false }
+        get :show, format: :json, id: default_file.id, token: token
       end
 
       subject { response }
@@ -58,18 +64,18 @@ describe API::ItemsController, type: :controller do
       it { is_expected.to have_http_status(401) }
 
       it 'loads the file' do
-        expect(assigns[:file]).to eq deposited_file
+        expect(assigns[:file]).to eq default_file
       end
 
       it 'provides a reason for refusing to act' do
-        expect(subject.body).to include("#{user} lacks access to #{deposited_file}")
+        expect(subject.body).to include("#{user} lacks access to #{default_file}")
       end
     end
 
     context 'with a resource not deposited via Arkivo' do
       before do
         allow_any_instance_of(GenericFile).to receive(:arkivo_checksum) { nil }
-        get :show, format: :json, id: deposited_file.id, token: token
+        get :show, format: :json, id: default_file.id, token: token
       end
 
       subject { response }
@@ -77,14 +83,14 @@ describe API::ItemsController, type: :controller do
       it { is_expected.to have_http_status(403) }
 
       it 'provides a reason for refusing to act' do
-        expect(subject.body).to include("Forbidden: #{deposited_file} not deposited via Arkivo")
+        expect(subject.body).to include("Forbidden: #{default_file} not deposited via Arkivo")
       end
     end
 
     context 'with a resource not found in the repository' do
       before do
-        allow(GenericFile).to receive(:find).with(deposited_file.id).and_raise(ActiveFedora::ObjectNotFoundError)
-        get :show, format: :json, id: deposited_file.id, token: token
+        allow(GenericFile).to receive(:find).with(default_file.id).and_raise(ActiveFedora::ObjectNotFoundError)
+        get :show, format: :json, id: default_file.id, token: token
       end
 
       subject { response }
@@ -92,13 +98,13 @@ describe API::ItemsController, type: :controller do
       it { is_expected.to have_http_status(404) }
 
       it 'provides a reason for refusing to act' do
-        expect(subject.body).to include("id '#{deposited_file.id}' not found")
+        expect(subject.body).to include("id '#{default_file.id}' not found")
       end
     end
 
     context 'with an authorized Arkivo-deposited resource' do
       before do
-        get :show, format: :json, id: deposited_file.id, token: token
+        get :show, format: :json, id: default_file.id, token: token
       end
 
       subject { response }
@@ -147,7 +153,7 @@ describe API::ItemsController, type: :controller do
         expect { post :create, item, format: :json }.to change { GenericFile.count }.by(1)
       end
 
-      let(:deposited_file) { GenericFile.where(label: item['file']['filename']).take }
+      let!(:deposited_file) { GenericFile.where(label: item_hash['file']['filename']).take }
       let(:token) { user.arkivo_token }
       let(:item) { FactoryGirl.json(:post_item, token: token) }
       let(:item_hash) { JSON.parse(item) }
@@ -216,7 +222,7 @@ describe API::ItemsController, type: :controller do
   end
 
   context 'with an HTTP PUT' do
-    let(:post_deposited_file) { GenericFile.where(label: post_item['file']['filename']).take }
+    let(:post_deposited_file) { GenericFile.where(label: post_item_hash['file']['filename']).take }
     let(:post_token) { user.arkivo_token }
     let(:post_item) { FactoryGirl.json(:post_item, token: post_token) }
     let(:post_item_hash) { JSON.parse(post_item) }
@@ -230,7 +236,7 @@ describe API::ItemsController, type: :controller do
         put :update, put_item, id: post_deposited_file.id, format: :json
       end
 
-      let(:put_deposited_file) { GenericFile.where(label: put_item['file']['filename']).take }
+      let(:put_deposited_file) { post_deposited_file.reload }
       let(:put_token) { user.arkivo_token }
       let(:put_item) { FactoryGirl.json(:put_item, token: put_token) }
       let(:put_item_hash) { JSON.parse(put_item) }
@@ -376,13 +382,13 @@ describe API::ItemsController, type: :controller do
       post :create, item, format: :json
     end
 
-    let(:deposited_file) { GenericFile.where(label: item['file']['filename']).take }
     let(:token) { user.arkivo_token }
     let(:item) { FactoryGirl.json(:post_item, token: token) }
+    let(:item_hash) { JSON.parse(item) }
 
     context 'with a missing token' do
       before do
-        delete :destroy, format: :json, id: deposited_file.id
+        delete :destroy, format: :json, id: default_file.id
       end
 
       subject { response }
@@ -396,7 +402,7 @@ describe API::ItemsController, type: :controller do
 
     context 'with an unfamiliar token' do
       before do
-        delete :destroy, format: :json, id: deposited_file.id, token: delete_token
+        delete :destroy, format: :json, id: default_file.id, token: delete_token
       end
 
       let(:delete_token) { 'foobar' }
@@ -412,8 +418,8 @@ describe API::ItemsController, type: :controller do
 
     context 'with an unauthorized resource' do
       before do
-        allow_any_instance_of(User).to receive(:can?).with(:edit, deposited_file) { false }
-        delete :destroy, format: :json, id: deposited_file.id, token: token
+        allow_any_instance_of(User).to receive(:can?).with(:edit, default_file) { false }
+        delete :destroy, format: :json, id: default_file.id, token: token
       end
 
       subject { response }
@@ -421,18 +427,18 @@ describe API::ItemsController, type: :controller do
       it { is_expected.to have_http_status(401) }
 
       it 'loads the file' do
-        expect(assigns[:file]).to eq deposited_file
+        expect(assigns[:file]).to eq default_file
       end
 
       it 'provides a reason for refusing to act' do
-        expect(subject.body).to include("#{user} lacks access to #{deposited_file}")
+        expect(subject.body).to include("#{user} lacks access to #{default_file}")
       end
     end
 
     context 'with a resource not deposited via Arkivo' do
       before do
         allow_any_instance_of(GenericFile).to receive(:arkivo_checksum) { nil }
-        delete :destroy, format: :json, id: deposited_file.id, token: token
+        delete :destroy, format: :json, id: default_file.id, token: token
       end
 
       subject { response }
@@ -440,14 +446,14 @@ describe API::ItemsController, type: :controller do
       it { is_expected.to have_http_status(403) }
 
       it 'provides a reason for refusing to act' do
-        expect(subject.body).to include("Forbidden: #{deposited_file} not deposited via Arkivo")
+        expect(subject.body).to include("Forbidden: #{default_file} not deposited via Arkivo")
       end
     end
 
     context 'with a resource not found in the repository' do
       before do
-        allow(GenericFile).to receive(:find).with(deposited_file.id).and_raise(ActiveFedora::ObjectNotFoundError)
-        delete :destroy, format: :json, id: deposited_file.id, token: token
+        allow(GenericFile).to receive(:find).with(default_file.id).and_raise(ActiveFedora::ObjectNotFoundError)
+        delete :destroy, format: :json, id: default_file.id, token: token
       end
 
       subject { response }
@@ -455,13 +461,13 @@ describe API::ItemsController, type: :controller do
       it { is_expected.to have_http_status(404) }
 
       it 'provides a reason for refusing to act' do
-        expect(subject.body).to include("id '#{deposited_file.id}' not found")
+        expect(subject.body).to include("id '#{default_file.id}' not found")
       end
     end
 
     context 'with an authorized Arkivo-deposited resource' do
       before do
-        expect { delete :destroy, format: :json, id: deposited_file.id, token: token }.to change { GenericFile.count }.by(-1)
+        expect { delete :destroy, format: :json, id: default_file.id, token: token }.to change { GenericFile.count }.by(-1)
       end
 
       subject { response }
