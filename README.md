@@ -99,8 +99,8 @@ menu above.
 
 Sufia requires the following software to work:
 
-1. Solr
-1. [Fedora Commons](http://www.fedora-commons.org/) digital repository
+1. Solr (tested with Solr 4.x)
+1. [Fedora 4](http://www.fedora-commons.org/) repository
 1. A SQL RDBMS (MySQL, PostgreSQL), though **note** that SQLite will be used by default if you're looking to get up and running quickly
 1. [Redis](http://redis.io/) key-value store
 1. [ImageMagick](http://www.imagemagick.org/)
@@ -172,7 +172,7 @@ rake db:migrate
 
 ## Solr and Fedora
 
-If you already have instances of Solr and Fedora that you would like to use, you may skip this step. Otherwise feel free to use [hydra-jetty](https://github.com/projecthydra/hydra-jetty), the bundled copy of Jetty, a Java servlet container that is configured to run versions of Solr and Fedora that are known to work with Sufia. Hydra-jetty (since v8.4.0) requires Java 8.
+If you already have instances of Solr and Fedora 4 that you would like to use, you may skip this step. Otherwise feel free to use [hydra-jetty](https://github.com/projecthydra/hydra-jetty), the bundled copy of Jetty, a Java servlet container that is configured to run versions of Solr and Fedora that are known to work with Sufia. Hydra-jetty (since v8.4.0) requires Java 8.
 
 The following rake tasks will install hydra-jetty and start up Jetty with Solr and Fedora.
 
