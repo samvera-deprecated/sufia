@@ -13,7 +13,7 @@ module GenericFileHelper
     if title.nil?
       link_to download_image_tag, sufia.download_path(@generic_file), target: "_blank", title: "Download the document", id: "file_download", data: { label: @generic_file.id }
     else
-      label = download_image_tag(title) + title
+      label = download_image_tag(title)
       link_to label, sufia.download_path(@generic_file), target: "_blank", title: title, id: "file_download", data: { label: @generic_file.id }
     end
   end
@@ -34,10 +34,13 @@ module GenericFileHelper
   private
 
     def download_image_tag(title = nil)
-      if title.nil?
-        image_tag "default.png", alt: "No preview available", class: "img-responsive"
-      else
-        image_tag sufia.download_path(@generic_file, file: 'thumbnail'), class: "img-responsive", alt: "#{title} of #{@generic_file.title.first}"
+      content_tag :figure do
+        if title.nil?
+          concat image_tag "default.png", alt: "No preview available", class: "img-responsive"
+        else
+          concat image_tag sufia.download_path(@generic_file, file: 'thumbnail'), class: "img-responsive", alt: "#{title} of #{@generic_file.title.first}"
+        end
+        concat content_tag :figcaption, "Download the full sized image"
       end
     end
 

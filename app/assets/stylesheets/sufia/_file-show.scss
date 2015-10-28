@@ -22,3 +22,7 @@
   -webkit-column-width: 20em;
   column-width: 20em;
 }
+
+.img-responsive, figure {
+  display: inline-block;
+}
