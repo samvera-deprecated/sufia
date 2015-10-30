@@ -34,6 +34,7 @@ module Sufia
       config.activity_to_show_default_seconds_since_now = 24 * 60 * 60
       config.arkivo_api = false
       config.retry_unless_sleep = 0.0
+      config.geonames_username = ""
 
       # Noid identifiers
       config.enable_noids = true
