@@ -1,4 +1,11 @@
-class ContentDepositorChangeEventJob < EventJob
+# A specific job to log a file deposit change to a user's activity stream
+#
+# This is a bit wierd becuase the job performs the depositor transfer along with logging the job
+#
+# @attr [String] id identifier of the file to be transfered
+# @attr [String] login the user key of the user the file is being transfered to.
+# @attr [Boolean] reset (false) should the access controls be reset. This means revoking edit access from the depositor
+class ContentDepositorChangeEventJob < ContentEventJob
   def queue_name
     :proxy_deposit
   end
@@ -9,34 +16,39 @@ class ContentDepositorChangeEventJob < EventJob
   # @param [String] login the user key of the user the file is being transfered to.
   # @param [Boolean] reset (false) should the access controls be reset. This means revoking edit access from the depositor
   def initialize(id, login, reset = false)
+    super(id, login)
     self.id = id
     self.login = login
     self.reset = reset
   end
 
   def run
-    # TODO: This should be in its own job, not this event job
-    file = ::GenericFile.find(id)
-    file.proxy_depositor = file.depositor
-    file.clear_permissions! if reset
-    file.apply_depositor_metadata(login)
-    file.save!
+    super
 
-    action = "User #{link_to_profile file.proxy_depositor} has transferred #{link_to file.title.first, Sufia::Engine.routes.url_helpers.generic_file_path(file)} to user #{link_to_profile login}"
-    timestamp = Time.now.to_i
-    depositor = ::User.find_by_user_key(file.depositor)
-    proxy_depositor = ::User.find_by_user_key(file.proxy_depositor)
-    # Create the event
-    event = proxy_depositor.create_event(action, timestamp)
-    # Log the event to the GF's stream
-    file.log_event(event)
     # log the event to the proxy depositor's profile
+    proxy_depositor = ::User.find_by_user_key(generic_file.proxy_depositor)
     proxy_depositor.log_profile_event(event)
-    # log the event to the depositor's dashboard
-    depositor.log_event(event)
-    # Fan out the event to the depositor's followers who have access
-    depositor.followers.select { |user| user.can? :read, file }.each do |follower|
-      follower.log_event(event)
+  end
+
+  def action
+    "User #{link_to_profile generic_file.proxy_depositor} has transferred #{link_to generic_file.title.first, Sufia::Engine.routes.url_helpers.generic_file_path(generic_file)} to user #{link_to_profile login}"
+  end
+
+  # overriding default to load from fedora and change the depositor
+  def generic_file
+    # TODO: This should be in its own job, not this event job
+    @generic_file ||= begin
+      file = ::GenericFile.find(id)
+      file.proxy_depositor = file.depositor
+      file.clear_permissions! if reset
+      file.apply_depositor_metadata(login)
+      file.save!
+      file
     end
+  end
+
+  # overriding default to log the event to the depositor instead of their profile
+  def log_user_event
+    depositor.log_event(event)
   end
 end
