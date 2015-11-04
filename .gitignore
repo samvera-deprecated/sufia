@@ -49,6 +49,7 @@ pkg/
 spec/dummy/db/*.sqlite3
 spec/dummy/log/*.log
 spec/dummy/tmp/
+.internal_test_app/**/*
 
 spec/mock_upload_directory
 
@@ -97,5 +98,3 @@ public/system/
 
 ## Sitemap
 public/sitemap.xml
-
-./spec/internal
