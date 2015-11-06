@@ -44,7 +44,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'json-schema'
   gem.add_dependency 'oauth'
 
-  gem.add_development_dependency 'engine_cart', '~> 0.5'
+  gem.add_development_dependency 'engine_cart', '~> 0.8'
   gem.add_development_dependency 'mida', '~> 0.3'
   gem.add_development_dependency 'database_cleaner', '~> 1.3'
   gem.add_development_dependency 'rspec-rails', '~> 3.1'
