@@ -40,6 +40,7 @@ Metrics/ClassLength:
     - 'lib/generators/sufia/templates/catalog_controller.rb'
     - 'sufia-models/app/models/datastreams/fits_datastream.rb'
     - 'sufia-models/app/actors/sufia/generic_file/actor.rb'
+    - 'sufia-models/lib/generators/sufia/models/install_generator.rb'
 
 Metrics/ModuleLength:
   Exclude:

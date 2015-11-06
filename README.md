@@ -193,7 +193,7 @@ Next you will need to start up the Resque workers provided by Sufia. The followi
 RUN_AT_EXIT_HOOKS=true TERM_CHILD=1 QUEUE=* rake environment resque:work
 ```
 
-Or, if you prefer (e.g., in production-like environments), you may want to set up a `config/resque-pool.yml` file -- [here is a simple example](https://github.com/projecthydra/sufia/blob/master/sufia-models/lib/generators/sufia/models/templates/config/resque-pool.yml) -- and run resque-pool which will manage your background workers in a dedicated process.
+Or, if you prefer (e.g., in production-like environments), you may want to set up a `config/resque-pool.yml` file -- [here is a simple example](https://github.com/projecthydra/sufia/blob/master/sufia-models/lib/generators/sufia/models/templates/config/resque-pool.yml) -- and run `resque-pool` (at the root of your rails app) which will manage your background workers in a dedicated process.
 
 ```
 RUN_AT_EXIT_HOOKS=true TERM_CHILD=1 bundle exec resque-pool --daemon --environment development start
