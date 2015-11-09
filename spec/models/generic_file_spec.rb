@@ -643,7 +643,7 @@ describe GenericFile, type: :model do
     end
 
     context "with no end date" do
-      let(:start_date) { 1.days.ago }
+      let(:start_date) { 1.day.ago }
       let(:end_date) { nil }
       before do
         @file.save
@@ -652,7 +652,7 @@ describe GenericFile, type: :model do
     end
 
     context "with an end date" do
-      let(:start_date) { 1.days.ago }
+      let(:start_date) { 1.day.ago }
       let(:end_date) { DateTime.now }
       before do
         @file.save

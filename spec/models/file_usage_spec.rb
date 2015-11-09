@@ -55,7 +55,7 @@ describe FileUsage, type: :model do
   end
 
   let(:usage) do
-    allow_any_instance_of(GenericFile).to receive(:create_date).and_return((Date.today - 4.day).to_s)
+    allow_any_instance_of(GenericFile).to receive(:create_date).and_return((Date.today - 4.days).to_s)
     expect(FileDownloadStat).to receive(:ga_statistics).and_return(sample_download_statistics)
     expect(FileViewStat).to receive(:ga_statistics).and_return(sample_pageview_statistics)
     described_class.new(file.id)
@@ -123,7 +123,7 @@ describe FileUsage, type: :model do
 
       describe "create date after earliest" do
         let(:usage) do
-          allow_any_instance_of(GenericFile).to receive(:create_date).and_return((Date.today - 4.day).to_s)
+          allow_any_instance_of(GenericFile).to receive(:create_date).and_return((Date.today - 4.days).to_s)
           expect(FileDownloadStat).to receive(:ga_statistics).and_return(sample_download_statistics)
           expect(FileViewStat).to receive(:ga_statistics).and_return(sample_pageview_statistics)
           Sufia.config.analytic_start_date = earliest
