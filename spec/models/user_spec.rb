@@ -189,7 +189,7 @@ describe User, type: :model do
       end
 
       context "when has start and end date" do
-        subject { described_class.recent_users(Date.today - 2.days, Date.today - 1.days) }
+        subject { described_class.recent_users(Date.today - 2.days, Date.today - 1.day) }
         it "returns valid data" do
           expect(subject.count).to eq 1
           is_expected.to include(new_users[1])
