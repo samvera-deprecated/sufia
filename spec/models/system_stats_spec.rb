@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ::SystemStats, type: :model do
   let(:user1) { FactoryGirl.find_or_create(:user) }
   let(:morning_two_days_ago) { 2.days.ago.to_date.to_datetime.to_s }
-  let(:yesterday) { 1.days.ago.to_datetime.to_s }
+  let(:yesterday) { 1.day.ago.to_datetime.to_s }
   let(:this_morning) { 0.days.ago.to_date.to_datetime.to_s }
 
   let(:stats) { described_class.new(depositor_count, user_stats[:start_date], user_stats[:end_date]) }
@@ -135,7 +135,7 @@ describe ::SystemStats, type: :model do
   describe "#recent_users" do
     let!(:user2) { FactoryGirl.find_or_create(:archivist) }
 
-    let(:one_day_ago_date) { 1.days.ago.to_datetime }
+    let(:one_day_ago_date) { 1.day.ago.to_datetime }
     let(:two_days_ago_date) { 2.days.ago.to_datetime.end_of_day }
     let(:one_day_ago) { one_day_ago_date.strftime("%Y-%m-%d") }
     let(:two_days_ago) { two_days_ago_date.strftime("%Y-%m-%d") }

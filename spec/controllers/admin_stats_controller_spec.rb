@@ -27,7 +27,7 @@ describe Admin::StatsController, type: :controller do
     end
 
     describe "querying stats_filters" do
-      let(:one_day_ago_date) { 1.days.ago.to_datetime }
+      let(:one_day_ago_date) { 1.day.ago.to_datetime }
       let(:two_days_ago_date) { 2.days.ago.to_datetime.end_of_day }
       let(:one_day_ago) { one_day_ago_date.strftime("%Y-%m-%d") }
       let(:two_days_ago) { two_days_ago_date.strftime("%Y-%m-%d") }
@@ -85,19 +85,19 @@ describe Admin::StatsController, type: :controller do
 
       context "when start date set" do
         it "queries by start date" do
-          expect(GenericFile).to receive(:find_by_date_created).exactly(3).times.with(1.days.ago.to_datetime, nil).and_call_original
+          expect(GenericFile).to receive(:find_by_date_created).exactly(3).times.with(1.day.ago.to_datetime, nil).and_call_original
           expect(GenericFile).to receive(:where_public).and_call_original
           expect(GenericFile).to receive(:where_registered).and_call_original
-          get :index, stats_filters: { start_date: 1.days.ago.strftime("%Y-%m-%d") }
+          get :index, stats_filters: { start_date: 1.day.ago.strftime("%Y-%m-%d") }
         end
       end
 
       context "when date range set" do
         it "queries by start and date" do
-          expect(GenericFile).to receive(:find_by_date_created).exactly(3).times.with(1.days.ago.to_datetime, 0.days.ago.to_datetime.end_of_day).and_call_original
+          expect(GenericFile).to receive(:find_by_date_created).exactly(3).times.with(1.day.ago.to_datetime, 0.days.ago.to_datetime.end_of_day).and_call_original
           expect(GenericFile).to receive(:where_public).and_call_original
           expect(GenericFile).to receive(:where_registered).and_call_original
-          get :index, stats_filters: { start_date: 1.days.ago.strftime("%Y-%m-%d"), end_date: 0.days.ago.strftime("%Y-%m-%d") }
+          get :index, stats_filters: { start_date: 1.day.ago.strftime("%Y-%m-%d"), end_date: 0.days.ago.strftime("%Y-%m-%d") }
         end
       end
     end
@@ -130,7 +130,7 @@ describe Admin::StatsController, type: :controller do
       end
 
       it "gathers user deposits during a date range" do
-        get :index, stats_filters: { start_date: 1.days.ago.strftime("%Y-%m-%d"), end_date: 0.days.ago.strftime("%Y-%m-%d") }
+        get :index, stats_filters: { start_date: 1.day.ago.strftime("%Y-%m-%d"), end_date: 0.days.ago.strftime("%Y-%m-%d") }
         expect(assigns[:presenter].depositors).to include({ key: user1.user_key, deposits: 1, user: user1 }, key: user2.user_key, deposits: 1, user: user2)
       end
 
