@@ -5,6 +5,7 @@
 * Configure minimagick to use posix-spawn instead of popen3 (rake task must be run). [Anna Headley]
 * Citation config (TODO: flesh this out at time of next release)
 * Lock manager (TODO: flesh this out at time of next release)
+* Geonames username (TODO: flesh this out at time of next release) -- NOTE: must be overridden in config
 * Add configuration allowing select menu on batch upload to upload files to a collection. [E. Lynette Rayle]
 * Bump active-fedora version to 9.4 [E. Lynette Rayle]
 * Bump hydra-collections to 5.0.3 [E. Lynette Rayle]
