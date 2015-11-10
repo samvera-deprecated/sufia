@@ -44,8 +44,10 @@ module Sufia::GenericFile
       return if collection_id.nil? || collection_id == "-1"
       collection = Collection.find(collection_id)
       return unless user.can? :edit, collection
-      collection.add_members [generic_file.id]
-      collection.save
+      acquire_lock_for(collection_id) do
+        collection.add_members [generic_file.id]
+        collection.save
+      end
     end
 
     def revert_content(revision_id)
@@ -139,6 +141,17 @@ module Sufia::GenericFile
       def remove_from_feature_works
         featured_work = FeaturedWork.find_by_generic_file_id(generic_file.id)
         featured_work.destroy unless featured_work.nil?
+      end
+
+      def acquire_lock_for(lock_key, &block)
+        lock_manager.lock(lock_key, &block)
+      end
+
+      def lock_manager
+        @lock_manager ||= Sufia::LockManager.new(
+          Sufia.config.lock_time_to_live,
+          Sufia.config.lock_retry_count,
+          Sufia.config.lock_retry_delay)
       end
   end
 end

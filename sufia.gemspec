@@ -43,6 +43,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "devise", "~> 3.0"
   gem.add_dependency 'json-schema'
   gem.add_dependency 'oauth'
+  gem.add_dependency 'redlock', '~> 0.1.2'
 
   gem.add_development_dependency 'engine_cart', '~> 0.8'
   gem.add_development_dependency 'mida', '~> 0.3'
