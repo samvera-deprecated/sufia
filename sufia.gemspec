@@ -18,7 +18,7 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'sufia-models', version
   gem.add_dependency 'blacklight_advanced_search', ['>= 5.1.4', '< 6.0']
-  gem.add_dependency 'blacklight', '~> 5.12'
+  gem.add_dependency 'blacklight', '~> 5.16'
   gem.add_dependency 'railties', '>= 4.2.0'
   gem.add_dependency 'tinymce-rails', '~> 4.1'
   gem.add_dependency 'tinymce-rails-imageupload', '~> 4.0.16.beta'
