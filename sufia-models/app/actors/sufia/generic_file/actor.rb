@@ -46,7 +46,12 @@ module Sufia::GenericFile
       return unless user.can? :edit, collection
       acquire_lock_for(collection_id) do
         collection.add_members [generic_file.id]
-        collection.save
+        begin
+          collection.save
+        rescue StandardError => error
+          Sufia.config.upload_logger.warn "Sufia::GenericFile::Actor::add_file_to_collection Error adding #{generic_file.title} to collection #{collection.title}. Caught Exception error #{error.inspect}"
+          raise error
+        end
       end
     end
 
@@ -102,11 +107,22 @@ module Sufia::GenericFile
         return false unless generic_file.save
       rescue RSolr::Error::Http => error
         ActiveFedora::Base.logger.warn "Sufia::GenericFile::Actor::save_and_record_committer Caught RSOLR error #{error.inspect}"
+        Sufia.config.upload_logger.warn "Sufia::GenericFile::Actor::save_and_record_committer Error saving #{generic_file.title}. Caught RSOLR error #{error.inspect}"
         save_tries += 1
         # fail for good if the tries is greater than 3
         raise error if save_tries >= 3
         sleep 0.01
         retry
+      rescue Ldp::Gone => error
+        Sufia.config.upload_logger.warn "Sufia::GenericFile::Actor::save_and_record_committer Error saving #{generic_file.title}. Caught LDP error #{error.inspect}"
+        save_tries += 1
+        # fail for good if the tries is greater than 3
+        raise error if save_tries >= 3
+        sleep 0.01
+        retry
+      rescue StandardError => error
+        Sufia.config.upload_logger.warn "Sufia::GenericFile::Actor::save_and_record_committer Error saving #{generic_file.title}. Caught Exception error #{error.inspect}"
+        raise error
       end
       yield if block_given?
       generic_file.record_version_committer(user)
