@@ -62,6 +62,7 @@ db/*.sqlite3
 db/*.sqlite3-journal
 log/*.log
 tmp
+.byebug_history
 
 *.sqlite3
 *.log
