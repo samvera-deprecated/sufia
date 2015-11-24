@@ -95,6 +95,12 @@ Sufia.config do |config|
   # Default is false
   # config.citations = false
 
+  # Add a collection facet to search results.  Possible values are...
+  #   nil (default) - do not include collection facet
+  #   :user - show for logged in users
+  #   :public - show for everyone (e.g. logged in and non-logged in users)
+  # config.collection_facet = nil
+
   # Enables a select menu on the batch upload page to select a collection into which to add newly uploaded files.
   # Default is false
   # config.upload_to_collection = false
