@@ -85,6 +85,9 @@ Sufia.config do |config|
   # Requires a Google Analytics id and OAuth2 keyfile.  See README for more info
   config.analytics = false
 
+  # Specify file for logging upload file errors.
+  config.upload_logger = Logger.new('log/upload_error.log')
+
   # Specify a Google Analytics tracking ID to gather usage statistics
   # config.google_analytics_id = 'UA-99999999-1'
 
