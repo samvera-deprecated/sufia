@@ -30,6 +30,12 @@ module Sufia
       presenter
     end
 
+    def update
+      super
+      new_members = ActiveFedora::Base.find(params[:batch_document_ids])
+      new_members.each(&:update_index)
+    end
+
     protected
 
       def presenter
