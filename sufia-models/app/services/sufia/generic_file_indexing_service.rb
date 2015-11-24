@@ -13,6 +13,7 @@ module Sufia
         # between files on disk (in fcrepo.binary-store-path) and objects
         # in the repository.
         solr_doc[Solrizer.solr_name('digest', :symbol)] = digest_from_content
+        object.index_collection_ids(solr_doc)
       end
     end
 
