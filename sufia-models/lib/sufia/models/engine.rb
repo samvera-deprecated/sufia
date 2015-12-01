@@ -25,6 +25,7 @@ module Sufia
       config.enable_local_ingest = nil
       config.analytics = false
       config.citations = false
+      config.collection_facet = nil
       config.upload_to_collection = false
       config.lock_retry_count = 600 # Up to 2 minutes of trying at intervals up to 200ms
       config.lock_time_to_live = 60_000 # milliseconds

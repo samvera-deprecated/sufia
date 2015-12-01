@@ -30,6 +30,16 @@ module Sufia
       presenter
     end
 
+    def create
+      super
+      update_members_indices
+    end
+
+    def update
+      super
+      update_members_indices
+    end
+
     protected
 
       def presenter
@@ -76,6 +86,13 @@ module Sufia
 
       def _prefixes
         @_prefixes ||= super + ['catalog']
+      end
+
+      def update_members_indices
+        return if Sufia.config.collection_facet.nil?
+        Array(params[:batch_document_ids]).each do |gf|
+          Sufia.queue.push(ResolrizeGenericFileJob.new(gf))
+        end
       end
   end
 end
