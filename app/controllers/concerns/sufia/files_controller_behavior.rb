@@ -29,6 +29,7 @@ module Sufia
 
     def new
       @upload_set_id = ActiveFedora::Noid::Service.new.mint
+      @presenter = Sufia::WorkShowPresenter.new(@solr_document, nil)
     end
 
     # routed to /files/:id/stats

@@ -2,6 +2,7 @@ module Sufia
   class WorkShowPresenter < ::CurationConcerns::WorkShowPresenter
     # delegate fields from Sufia::Works::Metadata to solr_document
     delegate :based_near, :depositor, :identifier, :resource_type, :tag, to: :solr_document
+    attr_reader :upload_set_id
 
     def tweeter
       user = ::User.find_by_user_key(depositor)
