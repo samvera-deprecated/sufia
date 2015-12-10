@@ -1,5 +1,12 @@
 # History of Sufia releases
 
+## 6.5.0
+* Remove unnecessary require [Justin Coyne]
+* Option to show collection facet in Dashboard and search results [E. Lynette Rayle]
+* Remove space after icon if no text is present, fix projecthydra/sufia#1354 [Anna Headley]
+* Ignore byebug history file [Adam Wead]
+* Ignore visibility of files[] input, it's hidden from Capybara [Adam Wead]
+
 ## 6.4.0
 
 * Remove deprecation warnings [Adam Wead]
