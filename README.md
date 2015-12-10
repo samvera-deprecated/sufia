@@ -90,7 +90,7 @@ If you have questions or need help, please email [the Hydra community tech list]
 # Creating a Sufia-based app
 
 This document contains instructions specific to setting up an app with __Sufia
-v6.4.0__. If you are looking for instructions on installing a different
+v6.5.0__. If you are looking for instructions on installing a different
 version, be sure to select the appropriate branch or tag from the drop-down
 menu above.
 
@@ -142,7 +142,7 @@ rails new my_app
 Add the following lines to your application's Gemfile.
 
 ```
-gem 'sufia', '6.4.0'
+gem 'sufia', '6.5.0'
 gem 'kaminari', github: 'jcoyne/kaminari', branch: 'sufia'  # required to handle pagination properly in dashboard. See https://github.com/amatsuda/kaminari/pull/322
 ```
 
