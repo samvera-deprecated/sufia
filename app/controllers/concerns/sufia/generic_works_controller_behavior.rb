@@ -12,6 +12,11 @@ module Sufia
       layout "sufia-one-column"
     end
 
+    def show
+      @work_id = params[:id]
+      super
+    end
+
     def new
       # TODO: move this to curation_concerns
       @form = form_class.new(curation_concern, current_ability)
