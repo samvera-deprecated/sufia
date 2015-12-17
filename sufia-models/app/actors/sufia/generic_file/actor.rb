@@ -1,6 +1,8 @@
 module Sufia::GenericFile
   # Actions are decoupled from controller logic so that they may be called from a controller or a background job.
   class Actor
+    include Sufia::Lockable
+
     attr_reader :generic_file, :user
 
     def initialize(generic_file, user)
@@ -141,17 +143,6 @@ module Sufia::GenericFile
       def remove_from_feature_works
         featured_work = FeaturedWork.find_by_generic_file_id(generic_file.id)
         featured_work.destroy unless featured_work.nil?
-      end
-
-      def acquire_lock_for(lock_key, &block)
-        lock_manager.lock(lock_key, &block)
-      end
-
-      def lock_manager
-        @lock_manager ||= Sufia::LockManager.new(
-          Sufia.config.lock_time_to_live,
-          Sufia.config.lock_retry_count,
-          Sufia.config.lock_retry_delay)
       end
   end
 end
