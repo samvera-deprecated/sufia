@@ -191,6 +191,10 @@ module Sufia
       user.respond_to?(:name) ? "#{user.name} (#{user_key})" : user_key
     end
 
+    def is_url?(str)
+      str =~ /\A#{URI.regexp(['http', 'https'])}\z/
+    end
+
     private
 
       def search_action_for_dashboard
