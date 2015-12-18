@@ -49,4 +49,5 @@ class TestAppGenerator < Rails::Generators::Base
     append_file 'config/initializers/assets.rb' do
       "\n" + "Rails.application.config.assets.precompile += %w( default.png )" + "\n"
     end
+  end
 end
