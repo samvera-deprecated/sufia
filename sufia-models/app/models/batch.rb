@@ -2,6 +2,7 @@ class Batch < ActiveFedora::Base
   include Hydra::AccessControls::Permissions
   include Sufia::ModelMethods
   include Sufia::Noid
+  extend Sufia::Lockable
 
   has_many :generic_files, predicate: ActiveFedora::RDF::Fcrepo::RelsExt.isPartOf
 
@@ -9,22 +10,14 @@ class Batch < ActiveFedora::Base
   property :title, predicate: ::RDF::DC.title
   property :status, predicate: ::RDF::DC.type
 
-  def self.find_or_create(id)
-    Batch.find(id)
-  rescue ActiveFedora::ObjectNotFoundError
-    safe_create(id)
-  end
-
   # This method handles most race conditions gracefully.
-  # If a batch with the same ID is created by another thread
-  # we fetch the batch that was created (rather than throwing
-  # an error) and continute.
-  def self.safe_create(id)
-    Batch.create(id: id)
-  rescue ActiveFedora::IllegalOperation
-    # This is the exception thrown by LDP when we attempt to
-    # create a duplicate object. If we can find the object
-    # then we are good to go.
-    Batch.find(id)
+  def self.find_or_create(id)
+    acquire_lock_for(id) do
+      begin
+        Batch.find(id)
+      rescue ActiveFedora::ObjectNotFoundError
+        Batch.create(id: id)
+      end
+    end
   end
 end

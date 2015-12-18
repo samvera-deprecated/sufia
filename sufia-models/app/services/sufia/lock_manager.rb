@@ -18,13 +18,15 @@ module Sufia
 
     # Blocks until lock is acquired or timeout.
     def lock(key)
+      returned_from_block = nil
       client.lock(key, @ttl) do |locked|
         if locked
-          yield
+          returned_from_block = yield
         else
           raise UnableToAcquireLockError
         end
       end
+      returned_from_block
     end
 
     private

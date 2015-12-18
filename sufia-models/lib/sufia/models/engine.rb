@@ -71,6 +71,7 @@ module Sufia
         require 'sufia/analytics'
         require 'sufia/pageview'
         require 'sufia/download'
+        require 'sufia/lockable'
       end
 
       initializer 'configure' do

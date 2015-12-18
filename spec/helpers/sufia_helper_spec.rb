@@ -52,7 +52,7 @@ describe SufiaHelper, type: :helper do
       let(:document) { SolrDocument.new(mime_type_tesim: 'audio/x-wave', id: '1234') }
       it "shows the audio thumbnail" do
         rendered = helper.sufia_thumbnail_tag(document, {})
-        expect(rendered).to match(/src="\/assets\/audio.png"/)
+        expect(rendered).to match(/src="\/assets\/audio-.*.png"/)
       end
     end
     context "for an document object" do
