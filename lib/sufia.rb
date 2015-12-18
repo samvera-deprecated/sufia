@@ -32,6 +32,7 @@ module Sufia
 
     config.autoload_paths += %W(
       #{config.root}/app/controllers/concerns
+      #{config.root}/app/helpers/concerns
       #{config.root}/app/models/concerns
       #{Hydra::Engine.root}/app/models/concerns
     )
