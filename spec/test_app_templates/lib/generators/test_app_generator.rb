@@ -47,7 +47,8 @@ class TestAppGenerator < Rails::Generators::Base
 
   def sprockets_assets
     append_file 'config/initializers/assets.rb' do
-      "\n" + "Rails.application.config.assets.precompile += %w( default.png )" + "\n"
+      "\n" + "Rails.application.config.assets.precompile += %w( default.png )" + 
+      "\n" + "Rails.application.config.assets.precompile += %w( missing_thumb.png )"
     end
   end
 end
