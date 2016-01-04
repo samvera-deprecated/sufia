@@ -186,4 +186,16 @@ describe SufiaHelper, type: :helper do
       conn.commit
     end
   end
+
+  describe "#is_url?" do
+    it "returns false for non-url string" do
+      url = 'all rights reserved'
+      expect(helper.is_url?(url)).to be_falsey
+    end
+
+    it "returns true for url" do
+      url = 'http://creativecommons.org/licenses/by/3.0/us/'
+      expect(helper.is_url?(url)).to be_truthy
+    end
+  end
 end

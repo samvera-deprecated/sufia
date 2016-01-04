@@ -113,12 +113,17 @@ module Sufia
       link_to(display, link_url)
     end
 
-    def iconify_auto_link(text, showLink = true)
+    def iconify_auto_link(text, show_link = true)
       # this block is only executed when a link is inserted;
       # if we pass text containing no links, it just returns text.
       auto_link(text) do |value|
-        "<i class='glyphicon glyphicon-new-window'></i>#{('&nbsp;' + value) if showLink}<br />"
+        "<i class='glyphicon glyphicon-new-window'></i>#{('&nbsp;' + value) if show_link}<br />"
       end
+    end
+
+    def iconify_link(text)
+      # different from above in that if text is not a url, return nil.
+      iconify_auto_link(text, false) if is_url?(text)
     end
 
     def link_to_profile(login)
@@ -189,6 +194,10 @@ module Sufia
       return user_key if user.nil?
 
       user.respond_to?(:name) ? "#{user.name} (#{user_key})" : user_key
+    end
+
+    def is_url?(str)
+      str =~ /\A#{URI.regexp(['http', 'https'])}\z/
     end
 
     private
