@@ -4,7 +4,7 @@ describe 'my/_index_partials/_list_works.html.erb' do
   let(:work_title) { 'Work Title' }
   let(:coll_title) { 'Collection Title' }
   let(:collection) { FactoryGirl.build(:collection, id: '3197z497t', title: coll_title) }
-  let!(:work) { FactoryGirl.build(:work, id: '3197z511f', title: [work_title]) }
+  let!(:work) { FactoryGirl.create(:generic_work, id: '3197z511f', title: [work_title]) }
   let(:doc) { SolrDocument.new(work.to_solr) }
 
   let(:config) { My::WorksController.new.blacklight_config }
