@@ -133,7 +133,7 @@ describe GenericFilesController do
 
           file = fixture_file_upload('/world.png', 'image/png')
           xhr :post, :create, files: [file], Filename: "The world", batch_id: "sample_batch_id", permission: { "group" => { "public" => "read" } }, terms_of_service: "1"
-          expect(response.body).to include("Error occurred while creating generic file.")
+          expect(response.body).to include("Error occurred while creating generic file.", "world.png")
         end
       end
     end

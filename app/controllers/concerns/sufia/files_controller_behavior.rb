@@ -106,7 +106,7 @@ module Sufia
       end
     rescue => error
       logger.error "GenericFilesController::create rescued #{error.class}\n\t#{error}\n #{error.backtrace.join("\n")}\n\n"
-      json_error "Error occurred while creating generic file."
+      json_error "Error occurred while creating generic file.", file.original_filename
     ensure
       # remove the tempfile (only if it is a temp file)
       file.tempfile.delete if file.respond_to?(:tempfile)
