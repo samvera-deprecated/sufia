@@ -13,8 +13,8 @@ class ActiveFedoraIdBasedJob
     @object ||= ActiveFedora::Base.find(id)
   end
 
-  alias_method :generic_file, :object
-  alias_method :generic_file_id, :id
+  alias generic_file object
+  alias generic_file_id id
 
   def run
     raise "Define #run in a subclass"

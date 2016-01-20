@@ -22,12 +22,12 @@ module Sufia
       # @yeild block [] code you want to run and retry
       #
       # @return result of the block call
-      def retry_unless(number_of_tries, condition, &block)
+      def retry_unless(number_of_tries, condition, &_block)
         raise ArgumentError, "First argument must be an enumerator" unless number_of_tries.is_a? Enumerator
         raise ArgumentError, "Second argument must be a lambda" unless condition.respond_to? :call
         raise ArgumentError, "Must pass a block of code to retry" unless block_given?
         number_of_tries.each do
-          result = block.call
+          result = yield
           return result unless condition.call
           sleep(Sufia.config.retry_unless_sleep) if Sufia.config.retry_unless_sleep > 0
         end

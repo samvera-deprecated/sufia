@@ -8,7 +8,7 @@ module Sufia
     end
 
     delegate :label, :uri, to: :version
-    alias_method :current?, :current
+    alias current? current
 
     def current!
       @current = true
