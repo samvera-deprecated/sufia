@@ -3,8 +3,8 @@ class AuditJob < ActiveFedoraIdBasedJob
     :audit
   end
 
-  PASS = 'Passing Audit Run'
-  FAIL = 'Failing Audit Run'
+  PASS = 'Passing Audit Run'.freeze
+  FAIL = 'Failing Audit Run'.freeze
 
   attr_accessor :uri, :id, :path
 
