@@ -44,6 +44,7 @@ class BatchUpdateJob
   # @param [GenericFile] gf
   def queue_additional_jobs(gf)
     Sufia.queue.push(ContentUpdateEventJob.new(gf.id, login))
+    Sufia.queue.push(ResolrizeGenericFileJob.new(gf.id)) unless Sufia.config.collection_facet.nil?
   end
 
   def send_user_success_message

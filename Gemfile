@@ -12,7 +12,7 @@ group :development, :test do
   gem "simplecov", require: false
   gem 'byebug' unless ENV['CI']
   gem 'coveralls', require: false
-  gem 'rubocop', require: false
+  gem 'rubocop', '~> 0.35', '< 0.36', require: false
   gem 'rubocop-rspec', require: false
 end
 
