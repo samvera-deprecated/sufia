@@ -23,6 +23,9 @@ module Sufia
     initializer 'requires' do
       require 'activerecord-import'
       require 'hydra/derivatives'
+      require 'sufia/analytics'
+      require 'sufia/pageview'
+      require 'sufia/download'
     end
 
     initializer 'configure' do

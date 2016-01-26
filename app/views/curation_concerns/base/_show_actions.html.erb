@@ -1,7 +1,10 @@
 <div class="form-actions">
   <% if Sufia.config.analytics %>
-    <%= link_to "Analytics", sufia.stats_work_path(@presenter), id: 'stats', class: 'btn btn-default' %>
-  <% end %>
+    <% if @presenter.model_name.name ==  "GenericWork" %>
+      <%= link_to "Analytics", sufia.stats_work_path(@presenter), id: 'stats', class: 'btn btn-default' %>
+    <% else %>
+      <%= link_to "Analytics", sufia.stats_file_path(@presenter), id: 'stats', class: 'btn btn-default' %>
+    <% end %>
   <% if Sufia.config.citations %>
     <%= link_to "Citations", sufia.citations_work_path(@presenter), id: 'citations', class: 'btn btn-default' %>
   <% end %>
@@ -13,16 +16,18 @@
   <%= link_to 'Export to Zotero', sufia.static_path('zotero'), id: 'zoteroLink', name: 'zotero', class: 'btn btn-default' %>
   <%= link_to 'Export to Mendeley', sufia.static_path('mendeley'), id: 'mendeleyLink', name: 'mendeley', class: 'btn btn-default' %>
 
-  <% if @presenter.display_feature_link? %>
-    <%= link_to "Feature", sufia.featured_work_path(@presenter, format: :json),
-      data: {behavior: 'feature'}, id: 'featureLink', name: 'featureLink', class: 'btn btn-default' %>
+  <% if @presenter.model_name.name ==  "GenericWork" %>
+    <% if @presenter.display_feature_link? %> 
+      <%= link_to "Feature", sufia.featured_work_path(@presenter, format: :json),
+        data: {behavior: 'feature'}, id: 'featureLink', name: 'featureLink', class: 'btn btn-default' %>
+    <% end %>
+  
+    <% if @presenter.display_unfeature_link? %>
+      <%= link_to "Unfeature", sufia.featured_work_path(@presenter, format: :json),
+        data: {behavior: 'unfeature'}, id: 'unfeatureLink', name: 'unfeatureLink', class: 'btn btn-default' %>
+    <% end %>
   <% end %>
-
-  <% if @presenter.display_unfeature_link? %>
-    <%= link_to "Unfeature", sufia.featured_work_path(@presenter, format: :json),
-      data: {behavior: 'unfeature'}, id: 'unfeatureLink', name: 'unfeatureLink', class: 'btn btn-default' %>
-  <% end %>
-
+ 
   <!-- COinS hook for Zotero -->
   <span class="Z3988" title="<%= export_as_openurl_ctx_kev(@presenter) %>"></span>
 </div>
