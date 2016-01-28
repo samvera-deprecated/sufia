@@ -1,5 +1,18 @@
 # History of Sufia releases
 
+## 6.6.0
+* Update background workers doc [E. Lynette Rayle]
+* Replaces table rows with an unordered list to make html valid, fixes #1058 [Adam Wead]
+* Fix duplicative labels on show pages [Adam Wead]
+* Add default metadata help for collection fixes #1057 [Adam Wead]
+* Pin Sufia 6 to hydra-head 9.5 [Adam Wead]
+* Updating to Rubocop 0.36 [Adam Wead]
+* Reindex generic_files in background from batch_update_job [E. Lynette Rayle]
+* Include the name of the file if it fails to upload [Adam Wead]
+* Fix intermittent failure to add file to collection [E. Lynette Rayle]
+* Don't generate auto_link on a non-url rights statement, fixes projecthydra/sufia#1356 [Anna Headley]
+* Use lockable module to prevent race conditions in Batches. [Michael J. Giarlo]
+
 ## 6.5.0
 * Remove unnecessary require [Justin Coyne]
 * Option to show collection facet in Dashboard and search results [E. Lynette Rayle]
