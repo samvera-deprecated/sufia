@@ -198,4 +198,18 @@ describe SufiaHelper, type: :helper do
       expect(helper.is_url?(url)).to be_truthy
     end
   end
+
+  describe "#iconify_auto_link" do
+    subject { helper.iconify_auto_link('Foo < http://www.example.com. & More text') }
+    it "escapes input" do
+      expect(subject).to start_with('Foo &lt;')
+      expect(subject).to end_with('. &amp; More text')
+    end
+    it "adds links" do
+      expect(subject).to include('<a href="http://www.example.com">')
+    end
+    it "adds icons" do
+      expect(subject).to include('class="glyphicon glyphicon-new-window"')
+    end
+  end
 end
