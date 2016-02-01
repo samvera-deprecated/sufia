@@ -28,7 +28,7 @@ module GenericFileHelper
   end
 
   def display_multiple(value)
-    auto_link(value.join(" | "))
+    auto_link(html_escape(value.join(" | ")))
   end
 
   private
