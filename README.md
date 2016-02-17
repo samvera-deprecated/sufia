@@ -8,14 +8,11 @@ Since Sufia 7 is unreleased, not all the documentation has been updated to accou
 git clone git@github.com:projecthydra/sufia.git
 cd sufia
 bundle install
-rake jetty:clean
-rake curation_concerns:jetty:config
-rake jetty:start
 rake engine_cart:generate
 cd .internal_test_app
 redis-server
 RUN_AT_EXIT_HOOKS=true TERM_CHILD=1 resque-pool --daemon --environment development start
-rails server
+rake hydra:server
 ```
 
 After running these steps, browse to http://localhost:3000/ and you should see the application running.
