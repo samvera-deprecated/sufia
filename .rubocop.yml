@@ -124,6 +124,12 @@ Style/ClassVars:
 Style/SignalException:
   Enabled: false
 
+Style/ZeroLengthPredicate:
+  Exclude:
+    - 'app/controllers/concerns/sufia/files_controller_behavior.rb'
+    - 'sufia-models/app/services/sufia/generic_file_audit_service.rb'
+    - 'sufia-models/app/models/concerns/sufia/file_stat_utils.rb'
+
 Rails:
   Enabled: true
 
@@ -162,3 +168,9 @@ RSpec/DescribeClass:
     - 'spec/views/**/*'
     - 'spec/routing/**/*'
     - 'spec/inputs/**/*'
+
+RSpec/AnyInstance:
+  Enabled: false
+
+RSpec/NotToNot:
+  Enabled: false
