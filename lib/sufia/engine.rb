@@ -1,4 +1,12 @@
 module Sufia
+  class Statefile
+    def self.default
+      return '/tmp/minter-state' if Rails.env.development? || Rails.env.test?
+      raise NotImplementedError, "can't use the default statefile for production" unless Dir.exist?('/var/sufia')
+      '/var/sufia/minter-state'
+    end
+  end
+
   class Engine < ::Rails::Engine
     engine_name 'sufia'
 
@@ -79,7 +87,7 @@ module Sufia
     # Noid identifiers
     config.enable_noids = true
     config.noid_template = '.reeddeeddk'
-    config.minter_statefile = '/tmp/minter-state'
+    config.minter_statefile = Statefile.default
     config.translate_uri_to_id = ActiveFedora::Noid.config.translate_uri_to_id
     config.translate_id_to_uri = ActiveFedora::Noid.config.translate_id_to_uri
 
