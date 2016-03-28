@@ -41,6 +41,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activerecord-import', '~> 0.5'
   spec.add_dependency 'posix-spawn'
   spec.add_dependency 'kaminari_route_prefix'
+  spec.add_dependency 'active-fedora', '= 9.9'
 
   spec.add_development_dependency 'engine_cart', '~> 0.8'
   spec.add_development_dependency 'mida', '~> 0.3'
