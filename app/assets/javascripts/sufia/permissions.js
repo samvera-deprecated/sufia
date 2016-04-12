@@ -15,6 +15,7 @@ Blacklight.onLoad(function() {
 
   // add button for new user
   $('#add_new_user_skel').on('click', function() {
+    debugger;
       if ($('#new_user_name_skel').val() == "" || $('#new_user_permission_skel :selected').index() == "0") {
         $('#new_user_name_skel').focus();
         return false;
