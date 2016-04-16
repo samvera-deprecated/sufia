@@ -8,16 +8,21 @@ Sufia = {
   },
 
   browse_everything: function() {
-    $('#browse-btn').browseEverything()
-      .done(function(data) {
+    $('#browse-btn').browseEverything({
+      onSelection: function(data) {
         $('#status').html(data.length.toString() + " <%= t('sufia.upload.browse_everything.files_selected')%>");
         $('#submit-btn').html("Submit "+data.length.toString() + " selected files");
         var evt = {
           isDefaultPrevented: function() { return false; }
         };
         var files = $.map(data, function(d) { return { name: d.file_name, size: d.file_size, id: d.url }; });
-        $.blueimp.fileupload.prototype.options.done.call($('#fileupload').fileupload(), evt, { result: { files: files }});
-      });
+
+        $.blueimp.fileupload.prototype.options.done.call(
+          $('#fileupload').fileupload(),
+          evt,
+          { result: { files: files }}
+        );
+      }});
   },
 
   save_work_control: function() {
