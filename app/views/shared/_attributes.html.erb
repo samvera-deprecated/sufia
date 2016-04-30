@@ -1,8 +1,11 @@
-      <table class="table">
+<% include_title ||= false # title is part of the exterior template in common cases %>
+    <table class="table">
+      <% if include_title %>
         <tr>
           <th><span class="attribute-label h4">Title:</span></th>
           <td><%= work.title %></td>
         </tr>
+      <% end %>
         <tr>
           <th><span class="attribute-label h4">Owner:</span></th>
           <td><%= link_to_profile work.depositor("no depositor value") %></td>
@@ -33,5 +36,4 @@
           <th><span class="attribute-label h4">Date Uploaded:</span></th>
           <td><%= work.date_uploaded %></td>
         </tr>
-      </table>
-
+    </table>
