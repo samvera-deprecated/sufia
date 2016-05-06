@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'curation_concerns/base/_browse_everything.html.erb', type: :view do
-  let(:model) { stub_model(GenericWork) }
+  let(:model) { stub_model(Work) }
   let(:form) { Sufia::Forms::WorkForm.new(model, double) }
   let(:f) { double(object: form) }
   before do

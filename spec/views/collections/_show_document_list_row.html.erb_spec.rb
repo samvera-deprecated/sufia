@@ -4,7 +4,7 @@ describe 'collections/_show_document_list_row.html.erb', type: :view do
   let(:user) { create(:user) }
 
   let(:work) do
-    GenericWork.create(creator: ["ggm"], title: ['One Hundred Years of Solitude']) do |gw|
+    Work.create(creator: ["ggm"], title: ['One Hundred Years of Solitude']) do |gw|
       gw.apply_depositor_metadata(user)
     end
   end

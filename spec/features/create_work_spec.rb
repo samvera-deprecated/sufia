@@ -24,14 +24,14 @@ feature 'Creating a new Work', :js do
       expect(page).to have_content "Add files"
       expect(page).to have_content "Add folder"
       # Capybara/poltergeist don't dependably upload files, so we'll stub out the results of the uploader:
-      page.execute_script(%{$("#new_generic_work").append('<input name="uploaded_files[]" value="#{uploaded_file1.id}" type="hidden">').append('<input name="uploaded_files[]" value="#{uploaded_file2.id}" type="hidden">');})
+      page.execute_script(%{$("#new_work").append('<input name="uploaded_files[]" value="#{uploaded_file1.id}" type="hidden">').append('<input name="uploaded_files[]" value="#{uploaded_file2.id}" type="hidden">');})
       # attach_file("files[]", File.dirname(__FILE__) + "/../../spec/fixtures/image.jp2", visible: false)
       # attach_file("files[]", File.dirname(__FILE__) + "/../../spec/fixtures/jp2_fits.xml", visible: false)
       # click_button "Start upload"
       click_link "Metadata" # switch tab
       fill_in('Title', with: 'My Test Work')
 
-      choose('generic_work_visibility_open')
+      choose('work_visibility_open')
       expect(page).to have_content('Please note, making something visible to the world (i.e. marking this as Public) may be viewed as publishing which could impact your ability to')
       # attach_file('Upload a file', fixture_file_path('files/image.png'))
       check('agreement')
@@ -58,7 +58,7 @@ feature 'Creating a new Work', :js do
       expect(page).to have_content "Add files"
 
       # Capybara/poltergeist don't dependably upload files, so we'll stub out the results of the uploader:
-      page.execute_script(%{$("#new_generic_work").append('<input name="uploaded_files[]" value="#{uploaded_file1.id}" type="hidden">').append('<input name="uploaded_files[]" value="#{uploaded_file2.id}" type="hidden">');})
+      page.execute_script(%{$("#new_work").append('<input name="uploaded_files[]" value="#{uploaded_file1.id}" type="hidden">').append('<input name="uploaded_files[]" value="#{uploaded_file2.id}" type="hidden">');})
       # attach_file("files[]", File.dirname(__FILE__) + "/../../spec/fixtures/image.jp2", visible: false)
       # attach_file("files[]", File.dirname(__FILE__) + "/../../spec/fixtures/jp2_fits.xml", visible: false)
       # click_button "Start upload"
@@ -66,7 +66,7 @@ feature 'Creating a new Work', :js do
       click_link "Metadata" # switch tab
       fill_in('Title', with: 'My Test Work')
 
-      choose('generic_work_visibility_open')
+      choose('work_visibility_open')
       expect(page).to have_content('Please note, making something visible to the world (i.e. marking this as Public) may be viewed as publishing which could impact your ability to')
       select(second_user.user_key, from: 'On behalf of')
       check('agreement')

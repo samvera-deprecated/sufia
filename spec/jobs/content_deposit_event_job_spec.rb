@@ -16,7 +16,7 @@ describe ContentDepositEventJob do
   let(:curation_concern) { create(:work, title: ['MacBeth'], user: user) }
   let(:event) do
     {
-      action: "User <a href=\"/users/#{user.to_param}\">#{user.user_key}</a> has deposited <a href=\"/concern/generic_works/#{curation_concern.id}\">MacBeth</a>",
+      action: "User <a href=\"/users/#{user.to_param}\">#{user.user_key}</a> has deposited <a href=\"/concern/works/#{curation_concern.id}\">MacBeth</a>",
       timestamp: '1'
     }
   end

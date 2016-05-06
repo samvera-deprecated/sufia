@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'sufia/batch_uploads/_form.html.erb' do
-  let(:work) { GenericWork.new }
+  let(:work) { Work.new }
   let(:ability) { double }
   let(:form) { Sufia::BatchUploadForm.new(work, ability) }
 
@@ -22,8 +22,8 @@ describe 'sufia/batch_uploads/_form.html.erb' do
   it "draws the page" do
     expect(page).to have_selector("form[action='/batch_uploads']")
     # No title, because it's captured per file (e.g. Display label)
-    expect(page).not_to have_selector("input#generic_work_title")
-    expect(page).to have_link("New Work", href: "/concern/generic_works/new")
+    expect(page).not_to have_selector("input#work_title")
+    expect(page).to have_link("New Work", href: "/concern/works/new")
     expect(page).to have_link("Cancel", href: "/dashboard")
     expect(rendered).to match(/Display label/)
   end

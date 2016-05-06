@@ -52,7 +52,7 @@ describe("SaveWorkControl", function() {
   describe("validateAgreement", function() {
     var target;
     beforeEach(function() {
-      var fixture = setFixtures('<form id="edit_generic_work">' +
+      var fixture = setFixtures('<form id="edit_work">' +
         '<aside id="form-progress"><ul><li id="required-metadata"><li id="required-files"></ul>' +
         '<input type="checkbox" name="agreement" id="agreement" value="1" required="required" checked="checked" />' +
         '<input type="submit"></aside></form>');
@@ -79,7 +79,7 @@ describe("SaveWorkControl", function() {
       check: function() { },
       uncheck: function() { },
     };
-    var form_id = 'new_generic_work';
+    var form_id = 'new_work';
     var form = {
       attr: function() { return form_id },
       on: function() { },
@@ -126,7 +126,7 @@ describe("SaveWorkControl", function() {
 
     describe("when a required files are missing and it's an edit form", function() {
       beforeEach(function() {
-        form_id = 'edit_generic_work'
+        form_id = 'edit_work'
       });
       it("is complete", function() {
         target.validateFiles();
@@ -139,7 +139,7 @@ describe("SaveWorkControl", function() {
   describe("activate", function() {
     var target;
     beforeEach(function() {
-      var fixture = setFixtures('<form id="new_generic_work"><aside id="form-progress"><ul><li id="required-metadata"><li id="required-files"></ul><input type="submit"></aside></form>');
+      var fixture = setFixtures('<form id="new_work"><aside id="form-progress"><ul><li id="required-metadata"><li id="required-files"></ul><input type="submit"></aside></form>');
       target = new control.SaveWorkControl(fixture.find('#form-progress'));
       target.activate()
     });
@@ -158,24 +158,24 @@ describe("SaveWorkControl", function() {
   describe("on submit", function() {
     var target;
     beforeEach(function() {
-      var fixture = setFixtures('<form id="new_generic_work"><aside id="form-progress"><ul><li id="required-metadata"><li id="required-files"></ul><input type="submit"></aside></form>');
+      var fixture = setFixtures('<form id="new_work"><aside id="form-progress"><ul><li id="required-metadata"><li id="required-files"></ul><input type="submit"></aside></form>');
       target = new control.SaveWorkControl(fixture.find('#form-progress'));
       target.activate()
     });
 
     describe("when the form is invalid", function() {
       it("prevents submission", function() {
-        var spyEvent = spyOnEvent('#new_generic_work', 'submit');
-        $('#new_generic_work').submit();
+        var spyEvent = spyOnEvent('#new_work', 'submit');
+        $('#new_work').submit();
         expect(spyEvent).toHaveBeenPrevented();
       });
     });
 
     describe("when the form is valid", function() {
       it("prevents submission", function() {
-        var spyEvent = spyOnEvent('#new_generic_work', 'submit');
+        var spyEvent = spyOnEvent('#new_work', 'submit');
         spyOn(target, 'isValid').and.returnValue(true);
-        $('#new_generic_work').submit();
+        $('#new_work').submit();
         expect(spyEvent).not.toHaveBeenPrevented();
       });
     });

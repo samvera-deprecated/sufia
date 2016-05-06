@@ -20,7 +20,7 @@ describe CurationConcerns::FileSetsController do
         end
       end
       let(:work) do
-        GenericWork.create!(title: ['test title']) do |w|
+        Work.create!(title: ['test title']) do |w|
           w.apply_depositor_metadata(user)
         end
       end
@@ -236,7 +236,7 @@ describe CurationConcerns::FileSetsController do
 
     context "with a referer" do
       let(:work) do
-        create(:generic_work,
+        create(:work,
                title: ['test title'],
                user: user,
                visibility: Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC)
@@ -252,7 +252,7 @@ describe CurationConcerns::FileSetsController do
       it "shows me the breadcrumbs" do
         expect(controller).to receive(:add_breadcrumb).with('My Dashboard', Sufia::Engine.routes.url_helpers.dashboard_index_path)
         expect(controller).to receive(:add_breadcrumb).with('My Works', Sufia::Engine.routes.url_helpers.dashboard_works_path)
-        expect(controller).to receive(:add_breadcrumb).with('test title', Sufia::Engine.routes.url_helpers.curation_concerns_generic_work_path(work.id))
+        expect(controller).to receive(:add_breadcrumb).with('test title', Sufia::Engine.routes.url_helpers.curation_concerns_work_path(work.id))
         expect(controller).to receive(:add_breadcrumb).with('test file', main_app.curation_concerns_file_set_path(file_set))
         get :show, id: file_set
         expect(response).to be_successful

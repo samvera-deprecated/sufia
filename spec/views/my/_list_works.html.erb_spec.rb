@@ -5,7 +5,7 @@ describe 'my/_index_partials/_list_works.html.erb' do
   let(:work_data) do
     {
       id: id,
-      "has_model_ssim" => ["GenericWork"],
+      "has_model_ssim" => ["Work"],
       "title_tesim" => ["Work Title"]
     }
   end
@@ -31,9 +31,9 @@ describe 'my/_index_partials/_list_works.html.erb' do
 
   it 'the line item displays the work and its actions' do
     expect(rendered).to have_selector("tr#document_#{id}")
-    expect(rendered).to have_link 'Work Title', href: curation_concerns_generic_work_path(id)
-    expect(rendered).to have_link 'Edit Work', href: edit_curation_concerns_generic_work_path(id)
-    expect(rendered).to have_link 'Delete Work', href: curation_concerns_generic_work_path(id)
+    expect(rendered).to have_link 'Work Title', href: curation_concerns_work_path(id)
+    expect(rendered).to have_link 'Edit Work', href: edit_curation_concerns_work_path(id)
+    expect(rendered).to have_link 'Delete Work', href: curation_concerns_work_path(id)
     expect(rendered).to have_css 'a.visibility-link', text: 'Private'
     expect(rendered).to have_link 'Collection Title', href: 'collection/1'
     expect(rendered).to have_link 'Highlight Work on Profile'

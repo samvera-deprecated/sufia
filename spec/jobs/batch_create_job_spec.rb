@@ -51,7 +51,7 @@ describe BatchCreateJob do
       end
       it "sets the groups" do
         subject
-        work = GenericWork.last
+        work = Work.last
         expect(work.read_groups).to include "public"
       end
     end
@@ -62,7 +62,7 @@ describe BatchCreateJob do
       end
       it "sets public read access" do
         subject
-        work = GenericWork.last
+        work = Work.last
         expect(work.reload.read_groups).to eq ['public']
       end
     end

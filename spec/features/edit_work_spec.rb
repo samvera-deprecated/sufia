@@ -13,8 +13,8 @@ feature 'Editing a work', type: :feature do
 
   context 'when the user changes permissions' do
     it 'confirms copying permissions to files using Sufia layout' do
-      visit edit_curation_concerns_generic_work_path(work)
-      choose('generic_work_visibility_open')
+      visit edit_polymorphic_path(work)
+      choose('work_visibility_open')
       check('agreement')
       click_on('Save')
       expect(page).to have_content 'Apply changes to contents?'

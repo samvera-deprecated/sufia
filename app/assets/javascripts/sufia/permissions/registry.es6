@@ -3,7 +3,7 @@ export class Registry {
   /**
    * Initialize the registry
    * @param {jQuery} element the jquery selector for the permissions container
-   * @param {String} object_name the name of the object, for constructing form fields (e.g. 'generic_work')
+   * @param {String} object_name the name of the object, for constructing form fields (e.g. 'work')
    * @param {String} template_id the the identifier of the template for the added elements
    */
   constructor(element, object_name, template_id) {

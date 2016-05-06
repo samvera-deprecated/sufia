@@ -18,7 +18,7 @@ describe "dashboard/index.html.erb", type: :view do
     allow(user).to receive(:avatar).and_return(nil)
     allow(controller).to receive(:current_user).and_return(user)
     allow(controller).to receive(:current_ability).and_return(ability)
-    allow(ability).to receive(:can?).with(:create, GenericWork).and_return(can_create_work)
+    allow(ability).to receive(:can?).with(:create, Work).and_return(can_create_work)
     allow(ability).to receive(:can?).with(:create, Collection).and_return(can_create_collection)
     allow(ability).to receive(:can?).with(:edit, user).and_return(can_edit_user)
     allow(view).to receive(:number_of_works).and_return("15")
@@ -36,7 +36,7 @@ describe "dashboard/index.html.erb", type: :view do
     let(:heading) { view.content_for(:page_header) }
 
     it "displays welcome message and links" do
-      expect(heading).to have_link("Create Work", new_curation_concerns_generic_work_path)
+      expect(heading).to have_link("Create Work", new_curation_concerns_work_path)
       expect(heading).to have_link("Create Collection", new_collection_path)
       expect(heading).to have_link("View Works", sufia.dashboard_works_path)
       expect(heading).to include "My Dashboard"
@@ -45,7 +45,7 @@ describe "dashboard/index.html.erb", type: :view do
     context "when the user can't create works" do
       let(:can_create_work) { false }
       it "does not display the create work button" do
-        expect(heading).not_to have_link("Create Work", new_curation_concerns_generic_work_path)
+        expect(heading).not_to have_link("Create Work", new_curation_concerns_work_path)
       end
     end
     context "when the user can't create collections" do

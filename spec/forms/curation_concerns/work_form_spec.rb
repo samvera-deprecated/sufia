@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe CurationConcerns::GenericWorkForm do
-  let(:work) { GenericWork.new }
+describe CurationConcerns::WorkForm do
+  let(:work) { Work.new }
   let(:form) { described_class.new(work, nil) }
 
   describe "#required_fields" do

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "display a work as its owner" do
-  let(:work_path) { "/concern/generic_works/#{work.id}" }
+  let(:work_path) { "/concern/works/#{work.id}" }
 
   context "as the work owner" do
     let(:work) { create(:work_with_one_file, title: ["Magnificent splendor"], user: user) }
@@ -22,7 +22,7 @@ describe "display a work as its owner" do
   end
 
   context "as a user who is not logged in" do
-    let(:work) { create(:public_generic_work, title: ["Magnificent splendor"]) }
+    let(:work) { create(:public_work, title: ["Magnificent splendor"]) }
     before do
       visit work_path
     end

@@ -14,7 +14,7 @@ This Generator makes the following changes to your application:
 
   def inject_config_initializer
     inject_into_file 'config/initializers/sufia.rb', before: "# Where to store tempfiles, leave blank for the system temp directory (e.g. /tmp)" do
-      "# Enables a link to the citations page for a generic_file.\n" \
+      "# Enables a link to the citations page for a work.\n" \
         "# Default is false\n" \
         "# config.citations = false\n"
     end

@@ -13,14 +13,14 @@
     </li>
 
     <li role="menuitem" tabindex="-1">
-      <%= link_to(edit_curation_concerns_generic_work_path(document.id)) do %>
+      <%= link_to(edit_curation_concerns_work_path(document.id)) do %>
         <i class="glyphicon glyphicon-pencil" aria-hidden="true"></i>
         <span> Edit Work </span>
       <% end %>
     </li>
 
     <li role="menuitem" tabindex="-1">
-      <%= link_to(curation_concerns_generic_work_path(document.id), method: :delete, data: { confirm: "Deleting a work from #{application_name} is permanent. Click OK to delete this work from #{application_name}, or Cancel to cancel this operation" }) do %>
+      <%= link_to(curation_concerns_work_path(document.id), method: :delete, data: { confirm: "Deleting a work from #{application_name} is permanent. Click OK to delete this work from #{application_name}, or Cancel to cancel this operation" }) do %>
         <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
         <span> Delete Work </span>
       <% end %>
@@ -32,11 +32,10 @@
       <% end %>
     </li>
     <li role="menuitem" tabindex="-1">
-      <%= link_to(sufia.new_generic_work_transfer_path(document.id), class: 'itemicon itemtransfer', title: 'Transfer Ownership of Work') do %>
+      <%= link_to(sufia.new_work_transfer_path(document.id), class: 'itemicon itemtransfer', title: 'Transfer Ownership of Work') do %>
         <i aria-hidden="true" class='glyphicon glyphicon-transfer'></i>
         <span> Transfer Ownership of Work </span>
       <% end %>
     </li>
   </ul>
 </div>
-

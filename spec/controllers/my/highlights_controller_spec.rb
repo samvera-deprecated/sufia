@@ -7,25 +7,25 @@ describe My::HighlightsController, type: :controller do
 
     describe "#index" do
       before do
-        GenericWork.destroy_all
+        Work.destroy_all
         Collection.destroy_all
-        @highlighted_work = create(:generic_work, user: user)
-        user.trophies.create(generic_work_id: @highlighted_work.id)
+        @highlighted_work = create(:work, user: user)
+        user.trophies.create(work_id: @highlighted_work.id)
 
-        @normal_work = create(:generic_work, user: user)
+        @normal_work = create(:work, user: user)
         other_user = create(:user)
-        @unrelated_highlighted_work = create(:generic_work, user: other_user).tap do |r|
+        @unrelated_highlighted_work = create(:work, user: other_user).tap do |r|
           r.edit_users += [user.user_key]
           r.save!
         end
-        other_user.trophies.create(generic_work_id: @unrelated_highlighted_work.id)
+        other_user.trophies.create(work_id: @unrelated_highlighted_work.id)
       end
 
       it "paginates" do
         work1 = create(:work, user: user)
         work2 = create(:work, user: user)
-        user.trophies.create!(generic_work_id: work1.id)
-        user.trophies.create!(generic_work_id: work2.id)
+        user.trophies.create!(work_id: work1.id)
+        user.trophies.create!(work_id: work2.id)
         get :index, per_page: 2
         expect(assigns[:document_list].length).to eq 2
         get :index, per_page: 2, page: 2

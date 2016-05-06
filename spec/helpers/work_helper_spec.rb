@@ -1,16 +1,16 @@
 require 'spec_helper'
 
-describe GenericWorkHelper do
+describe WorkHelper do
   describe '#render_collection_links' do
-    let!(:work_doc) { SolrDocument.new(id: '123', title_tesim: ['My GenericWork']) }
+    let!(:work_doc) { SolrDocument.new(id: '123', title_tesim: ['My Work']) }
 
-    context 'when a GenericWork does not belongs to any collections' do
+    context 'when a Work does not belongs to any collections' do
       it 'renders nothing' do
         expect(helper.render_collection_links(work_doc)).to be_nil
       end
     end
 
-    context 'when a GenericWork belongs to collections' do
+    context 'when a Work belongs to collections' do
       let(:coll_ids) { ['111', '222'] }
       let(:coll_titles) { ['Collection 111', 'Collection 222'] }
       let(:coll1_attrs) { { id: coll_ids[0], title_tesim: [coll_titles[0]], child_object_ids_ssim: [work_doc.id] } }

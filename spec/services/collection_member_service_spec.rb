@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Sufia::CollectionMemberService do
-  let(:work_attrs) { { id: '123', title_tesim: ['A generic work'] } }
+  let(:work_attrs) { { id: '123', title_tesim: ['A work'] } }
 
   let(:coll1_attrs) { { id: 'col1', title_tesim: ['A Collection 1'], child_object_ids_ssim: [work.id] } }
   let(:coll2_attrs) { { id: 'col2', title_tesim: ['A Collection 2'], child_object_ids_ssim: [work.id, 'abc123'] } }

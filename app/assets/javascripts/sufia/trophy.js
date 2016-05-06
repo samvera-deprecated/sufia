@@ -3,7 +3,7 @@ function toggleTrophy(url, anchor) {
      url: url,
      type: "post",
      success: function(data) {
-       gid = data.generic_work_id;
+       gid = data.work_id;
        if (anchor.hasClass("trophy-on")){
          // we've just removed the trophy
          trophyOff(anchor);
@@ -43,5 +43,3 @@ Blacklight.onLoad( function() {
     toggleTrophy(anchor.data('url'), anchor);
   });
 });
-
-

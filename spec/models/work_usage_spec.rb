@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe WorkUsage, type: :model do
   let!(:work) do
-    GenericWork.create(id: '12345', title: ['bilbo work 1']) do |work|
+    Work.create(id: '12345', title: ['bilbo work 1']) do |work|
       work.apply_depositor_metadata("gordonl")
     end
   end
@@ -39,7 +39,7 @@ describe WorkUsage, type: :model do
   }
 
   let(:usage) {
-    allow_any_instance_of(GenericWork).to receive(:create_date).and_return((Time.zone.today - 4.days).to_s)
+    allow_any_instance_of(Work).to receive(:create_date).and_return((Time.zone.today - 4.days).to_s)
     expect(WorkViewStat).to receive(:ga_statistics).and_return(sample_pageview_statistics)
     described_class.new(work.id)
   }
@@ -50,7 +50,7 @@ describe WorkUsage, type: :model do
     end
 
     it "sets the path" do
-      expect(usage.path).to eq("/concern/generic_works/#{URI.encode(work.id, '/')}")
+      expect(usage.path).to eq("/concern/works/#{URI.encode(work.id, '/')}")
     end
 
     it "sets the created date" do
@@ -88,7 +88,7 @@ describe WorkUsage, type: :model do
 
       describe "create date before earliest date set" do
         let(:usage) {
-          allow_any_instance_of(GenericWork).to receive(:create_date).and_return(create_date.to_s)
+          allow_any_instance_of(Work).to receive(:create_date).and_return(create_date.to_s)
           expect(WorkViewStat).to receive(:ga_statistics).and_return(sample_pageview_statistics)
           described_class.new(work.id)
         }
@@ -99,7 +99,7 @@ describe WorkUsage, type: :model do
 
       describe "create date after earliest" do
         let(:usage) {
-          allow_any_instance_of(GenericWork).to receive(:create_date).and_return((Time.zone.today - 4.days).to_s)
+          allow_any_instance_of(Work).to receive(:create_date).and_return((Time.zone.today - 4.days).to_s)
           expect(WorkViewStat).to receive(:ga_statistics).and_return(sample_pageview_statistics)
           Sufia.config.analytic_start_date = earliest
           described_class.new(work.id)
@@ -115,7 +115,7 @@ describe WorkUsage, type: :model do
       end
 
       let(:usage) {
-        allow_any_instance_of(GenericWork).to receive(:create_date).and_return(create_date.to_s)
+        allow_any_instance_of(Work).to receive(:create_date).and_return(create_date.to_s)
         expect(WorkViewStat).to receive(:ga_statistics).and_return(sample_pageview_statistics)
         described_class.new(work.id)
       }
@@ -129,7 +129,7 @@ describe WorkUsage, type: :model do
     let(:date_uploaded) { "2014-12-31" }
 
     let(:work_migrated) do
-      GenericWork.create(id: '6789', title: ['bilbo work 2']) do |work|
+      Work.create(id: '6789', title: ['bilbo work 2']) do |work|
         work.apply_depositor_metadata("gordonl")
         work.date_uploaded = date_uploaded
         work.save

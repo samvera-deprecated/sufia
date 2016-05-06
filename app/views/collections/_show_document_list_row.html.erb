@@ -1,5 +1,5 @@
 <% id = document.id %>
-<% presenter = document.is_a?(GenericWork) ? Sufia::WorkShowPresenter.new(document, nil) : nil %>
+<% presenter = document.is_a?(Work) ? Sufia::WorkShowPresenter.new(document, nil) : nil %>
 <tr id="document_<%= id %>">
   <td>&nbsp;
     <% if current_user and document.depositor != current_user.user_key %>
@@ -8,12 +8,12 @@
   </td>
   <td>
     <div class="media">
-      <%= link_to curation_concerns_generic_work_path(document), class: "media-left" do %>
+      <%= link_to polymorphic_path(document), class: "media-left" do %>
         <%= render_thumbnail_tag document, { class: "hidden-xs file_listing_thumbnail" }, { suppress_link: true } %>
       <% end %>
       <div class="media-body">
         <h4 class="media-heading">
-          <%= link_to document.title_or_label, curation_concerns_generic_work_path(document), id: "src_copy_link#{id}", class: "#{'document-title' if document.title_or_label == document.label}" %>
+          <%= link_to document.title_or_label, polymorphic_path(document), id: "src_copy_link#{id}", class: "#{'document-title' if document.title_or_label == document.label}" %>
           <a href="#" class="small" title="Click for more details"><i id="expand_<%= id %>" class="glyphicon glyphicon-chevron-right"></i></a>
         </h4>
         <%= render_collection_links(document) %>

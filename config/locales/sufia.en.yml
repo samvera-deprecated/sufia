@@ -158,7 +158,7 @@ en:
       help:
         title: "Filename will be the default title. Please provide a more meaningful title, and filenames will still be preserved by the system."
         resource_type: "You may select multiple types to apply to all files"
-    generic_works:
+    works:
       new:
         header: Add New Work
       edit:
@@ -188,7 +188,7 @@ en:
         add_another_keyword: "add another Keyword"
         add_another_creator: "add another Creator"
         add_another_rights: "add another Rights"
-      generic_work:
+      work:
         edit: "Edit"
     mailbox:
       date:     'Date'
@@ -231,7 +231,7 @@ en:
         related_url:      "Related URL"
         total_items:      "Total Items"
         size:             "Size"
-      generic_work:
+      work:
         collection_ids:   "Add as member of collection"
 
     metadata_help:

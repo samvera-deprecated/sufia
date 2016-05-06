@@ -8,7 +8,7 @@
     </div>
     <div itemscope itemtype="<%= @presenter.itemtype %>" class="col-xs-12 col-sm-8">
       <h1 class="visibility"><%= @presenter.title %> <%= render_visibility_badge @presenter %></h1>
-      <p class="genericfile_description"><%= display_multiple @presenter.description %></p>
+      <p class="file_description"><%= display_multiple @presenter.description %></p>
       <%# TODO: render 'show_descriptions' See https://github.com/projecthydra/sufia/issues/1481 %>
       <%= render 'show_details' %>
       <%= render 'users/activity_log', events: @presenter.events %>

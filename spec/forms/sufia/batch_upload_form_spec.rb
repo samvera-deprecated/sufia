@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Sufia::BatchUploadForm do
-  let(:model) { GenericWork.new }
+  let(:model) { Work.new }
   let(:form) { described_class.new(model, ability) }
   let(:ability) { Ability.new(user) }
   let(:user) { build(:user, display_name: 'Jill Z. User') }
@@ -25,9 +25,7 @@ describe Sufia::BatchUploadForm do
     end
 
     it "has a param_key" do
-      derp = subject
-      derp.param_key
-      expect(subject.param_key).to eq 'generic_work'
+      expect(subject.param_key).to eq 'work'
     end
   end
 

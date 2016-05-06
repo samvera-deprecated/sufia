@@ -65,19 +65,19 @@ describe Sufia::UserStatImporter do
 
   # work
   let!(:bilbo_work_1) do
-    GenericWork.create(id: 'xyzbilbowork1', title: ['bilbo work 1']) do |work|
+    Work.create(id: 'xyzbilbowork1', title: ['bilbo work 1']) do |work|
       work.apply_depositor_metadata(bilbo.email)
     end
   end
 
   let!(:bilbo_work_2) do
-    GenericWork.create(id: 'xyzbilbowork2', title: ['bilbo work 2']) do |work|
+    Work.create(id: 'xyzbilbowork2', title: ['bilbo work 2']) do |work|
       work.apply_depositor_metadata(bilbo.email)
     end
   end
 
   let!(:frodo_work_1) do
-    GenericWork.create(id: 'xyzfrodowork1', title: ['frodo work 1']) do |work|
+    Work.create(id: 'xyzfrodowork1', title: ['frodo work 1']) do |work|
       work.apply_depositor_metadata(frodo.email)
     end
   end

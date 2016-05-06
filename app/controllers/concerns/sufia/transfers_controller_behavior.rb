@@ -19,7 +19,7 @@ module Sufia
     end
 
     def new
-      @generic_work = ::GenericWork.load_instance_from_solr(@id)
+      @work = ::Work.load_instance_from_solr(@id)
     end
 
     def create
@@ -61,7 +61,7 @@ module Sufia
       def authorize_depositor_by_id
         @id = params[:id]
         authorize! :transfer, @id
-        @proxy_deposit_request.generic_work_id = @id
+        @proxy_deposit_request.work_id = @id
       rescue CanCan::AccessDenied
         redirect_to root_url, alert: 'You are not authorized to transfer this work.'
       end

@@ -32,15 +32,15 @@ describe '/_toolbar.html.erb', type: :view do
   describe "New Work button" do
     context "when the user can create file sets" do
       it "has a link to upload" do
-        allow(view).to receive(:can?).with(:create, GenericWork).and_return(true)
+        allow(view).to receive(:can?).with(:create, Work).and_return(true)
         render
-        expect(rendered).to have_link('New Work', href: sufia.new_curation_concerns_generic_work_path)
+        expect(rendered).to have_link('New Work', href: sufia.new_curation_concerns_work_path)
       end
     end
 
     context "when the user can't create file sets" do
       it "does not have a link to upload" do
-        allow(view).to receive(:can?).with(:create, GenericWork).and_return(false)
+        allow(view).to receive(:can?).with(:create, Work).and_return(false)
         render
         expect(rendered).not_to have_link('New Work')
       end

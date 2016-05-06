@@ -11,12 +11,12 @@ describe CatalogController, type: :controller do
 
   describe "#index" do
     let(:rocks) {
-      GenericWork.new(id: 'rock123', title: ['Rock Documents'], read_groups: ['public'])
+      Work.new(id: 'rock123', title: ['Rock Documents'], read_groups: ['public'])
     }
 
     let(:clouds) {
-      GenericWork.new(id: 'cloud123', title: ['Cloud Documents'], read_groups: ['public'],
-                      contributor: ['frodo'])
+      Work.new(id: 'cloud123', title: ['Cloud Documents'], read_groups: ['public'],
+               contributor: ['frodo'])
     }
 
     before do
@@ -75,7 +75,7 @@ describe CatalogController, type: :controller do
       end
     end
 
-    describe 'full-text search', skip: 'Will GenericWorks have a full_text search?' do
+    describe 'full-text search', skip: 'Will Works have a full_text search?' do
       let(:objects) { [rocks, clouds] }
       it 'finds matching records' do
         get :index, q: 'full_textfull_text'
@@ -92,13 +92,13 @@ describe CatalogController, type: :controller do
       end
 
       let(:work1) do
-        { has_model_ssim: ["GenericWork"], id: "ff365c76z", title_tesim: ["me too"],
+        { has_model_ssim: ["Work"], id: "ff365c76z", title_tesim: ["me too"],
           file_set_ids_ssim: ["ff365c78h", "ff365c79s"],
           read_access_group_ssim: ["public"], edit_access_person_ssim: ["user1@example.com"] }
       end
 
       let(:work2) do
-        { has_model_ssim: ["GenericWork"], id: "ff365c777", title_tesim: ["find me"],
+        { has_model_ssim: ["Work"], id: "ff365c777", title_tesim: ["find me"],
           file_set_ids_ssim: [],
           read_access_group_ssim: ["public"], edit_access_person_ssim: ["user2@example.com"] }
       end

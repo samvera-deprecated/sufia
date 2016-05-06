@@ -6,19 +6,19 @@ class ContentDepositorChangeEventJob < ContentEventJob
 
   attr_accessor :reset
 
-  # @param [GenericWork] generic_work the generic work to be transfered
-  # @param [User] user the user the generic work is being transfered to.
+  # @param [Work] work the work to be transfered
+  # @param [User] user the user the work is being transferred to.
   # @param [TrueClass,FalseClass] reset (false) if true, reset the access controls. This revokes edit access from the depositor
-  def perform(generic_work, user, reset = false)
+  def perform(work, user, reset = false)
     @reset = reset
-    super(generic_work, user)
+    super(work, user)
   end
 
   def action
-    "User #{link_to_profile work.proxy_depositor} has transferred #{link_to work.title.first, Rails.application.routes.url_helpers.curation_concerns_generic_work_path(work)} to user #{link_to_profile depositor}"
+    "User #{link_to_profile work.proxy_depositor} has transferred #{link_to work.title.first, Rails.application.routes.url_helpers.curation_concerns_work_path(work)} to user #{link_to_profile depositor}"
   end
 
-  # Log the event to the GenericWork's stream
+  # Log the event to the Work's stream
   def log_work_event(work)
     work.log_event(event)
   end

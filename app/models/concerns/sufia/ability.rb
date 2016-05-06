@@ -43,7 +43,7 @@ module Sufia
     end
 
     def file_set_abilities
-      can :view_share_work, GenericWork
+      can :view_share_work, Work
     end
 
     def editor_abilities
@@ -66,7 +66,7 @@ module Sufia
     private
 
       def depositor_for_document(document_id)
-        ::GenericWork.load_instance_from_solr(document_id).depositor
+        ::Work.load_instance_from_solr(document_id).depositor
       end
   end
 end

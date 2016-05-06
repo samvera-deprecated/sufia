@@ -18,8 +18,8 @@ describe "auto complete", ->
   describe "language", ->
     beforeEach ->
       # setup two inputs for us to attach  auto complete to
-      setFixtures  '<input class="generic_work_language"  value="" id="generic_work_language" type="text" >
-                    <input class="generic_work_language"  value="" type="text">'
+      setFixtures  '<input class="work_language"  value="" id="work_language" type="text" >
+                    <input class="work_language"  value="" type="text">'
 
       # run all Blacklight.onload functions
       Blacklight.activate()
@@ -29,7 +29,7 @@ describe "auto complete", ->
       # field triggers auto complete
       it "auto completes on typing", ->
         # send a key stroke to the target input to activate the auto complete
-        target = $($("input.generic_work_language")[0])
+        target = $($("input.work_language")[0])
         target.val('fre')
         target.trigger(@typeEvent)
 
@@ -39,13 +39,12 @@ describe "auto complete", ->
         # verify that the ajax call was made
         expect(@spy_on_json).toHaveBeenCalled()
 
-
     describe "second input", ->
 
       # field triggers auto complete
       it "auto completes on typing", ->
         # send a key stroke to the target input to activate the auto complete
-        target = $($("input.generic_work_language")[1])
+        target = $($("input.work_language")[1])
         target.val('fre')
         target.trigger(@typeEvent)
 
@@ -58,8 +57,8 @@ describe "auto complete", ->
   describe "subject", ->
     beforeEach ->
       # setup two inputs for us to attach  auto complete to
-      setFixtures  '<input class="generic_work_subject"  value="" id="generic_work_subject" type="text" >
-                    <input class="generic_work_subject"  value="" type="text">'
+      setFixtures  '<input class="work_subject"  value="" id="work_subject" type="text" >
+                    <input class="work_subject"  value="" type="text">'
 
       # run all Blacklight.onload functions
       Blacklight.activate()
@@ -69,7 +68,7 @@ describe "auto complete", ->
       # field triggers auto complete
       it "auto completes on typing", ->
         # send a key stroke to the target input to activate the auto complete
-        target = $($("input.generic_work_subject")[0])
+        target = $($("input.work_subject")[0])
         target.val('fre')
         target.trigger(@typeEvent)
 
@@ -78,14 +77,13 @@ describe "auto complete", ->
 
         # verify that the ajax call was made
         expect(@spy_on_json).toHaveBeenCalled()
-
 
     describe "second input", ->
 
       # field triggers auto complete
       it "auto completes on typing", ->
         # send a key stroke to the target input to activate the auto complete
-        target = $($("input.generic_work_subject")[1])
+        target = $($("input.work_subject")[1])
         target.val('fre')
         target.trigger(@typeEvent)
 
@@ -94,13 +92,12 @@ describe "auto complete", ->
 
         # verify that the ajax call was made
         expect(@spy_on_json).toHaveBeenCalled()
-
 
   describe "location", ->
     beforeEach ->
       # setup two inputs for us to attach  auto complete to
-      setFixtures  '<input class="generic_work_based_near"  value="" id="generic_work_based_near" type="text" >
-                    <input class="generic_work_based_near"  value="" type="text">'
+      setFixtures  '<input class="work_based_near"  value="" id="work_based_near" type="text" >
+                    <input class="work_based_near"  value="" type="text">'
 
       # run all Blacklight.onload functions
       Blacklight.activate()
@@ -110,7 +107,7 @@ describe "auto complete", ->
       # field triggers auto complete
       it "auto completes on typing", ->
         # send a key stroke to the target input to activate the auto complete
-        target = $($("input.generic_work_based_near")[0])
+        target = $($("input.work_based_near")[0])
         target.val('fre')
         target.trigger(@typeEvent)
 
@@ -120,13 +117,12 @@ describe "auto complete", ->
         # verify that the ajax call was made
         expect(@spy_on_json).toHaveBeenCalled()
 
-
     describe "second input", ->
 
       # field triggers auto complete
       it "auto completes on typing", ->
         # send a key stroke to the target input to activate the auto complete
-        target = $($("input.generic_work_based_near")[1])
+        target = $($("input.work_based_near")[1])
         target.val('fre')
         target.trigger(@typeEvent)
 

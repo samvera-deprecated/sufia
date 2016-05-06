@@ -10,8 +10,8 @@ module Sufia
 
     def edit
       super
-      @generic_work = ::GenericWork.new
-      @generic_work.depositor = current_user.user_key
+      @work = ::Work.new
+      @work.depositor = current_user.user_key
       @terms = terms - [:title, :format, :resource_type]
 
       h = {}
@@ -20,7 +20,7 @@ module Sufia
 
       # For each of the files in the batch, set the attributes to be the concatination of all the attributes
       batch.each do |doc_id|
-        gw = ::GenericWork.load_instance_from_solr(doc_id)
+        gw = ::Work.load_instance_from_solr(doc_id)
         terms.each do |key|
           h[key] ||= []
           h[key] = (h[key] + gw[key]).uniq
@@ -29,9 +29,9 @@ module Sufia
         permissions = (permissions + gw.permissions).uniq
       end
 
-      initialize_fields(h, @generic_work)
+      initialize_fields(h, @work)
 
-      @generic_work.permissions_attributes = [{ type: 'group', name: 'public', access: 'read' }]
+      @work.permissions_attributes = [{ type: 'group', name: 'public', access: 'read' }]
     end
 
     def after_update
@@ -46,7 +46,7 @@ module Sufia
     end
 
     def update_document(obj)
-      obj.attributes = generic_work_params
+      obj.attributes = work_params
       obj.date_modified = Time.current.ctime
       obj.visibility = params[:visibility]
     end
@@ -88,9 +88,9 @@ module Sufia
         Forms::BatchEditForm.terms
       end
 
-      def generic_work_params
-        generic_work_params = params[:generic_work] || ActionController::Parameters.new
-        Forms::BatchEditForm.model_attributes(generic_work_params)
+      def work_params
+        work_params = params[:work] || ActionController::Parameters.new
+        Forms::BatchEditForm.model_attributes(work_params)
       end
 
       def redirect_to_return_controller

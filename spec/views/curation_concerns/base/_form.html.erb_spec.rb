@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe 'curation_concerns/base/_form.html.erb' do
   let(:work) do
-    stub_model(GenericWork, id: '456')
+    stub_model(Work, id: '456')
   end
   let(:ability) { double }
 
   let(:form) do
-    CurationConcerns::GenericWorkForm.new(work, ability)
+    CurationConcerns::WorkForm.new(work, ability)
   end
 
   before do
@@ -24,9 +24,9 @@ describe 'curation_concerns/base/_form.html.erb' do
   end
 
   context "for a new object" do
-    let(:work) { GenericWork.new }
-    it "routes to the GenericWorkController" do
-      expect(page).to have_selector("form[action='/concern/generic_works']")
+    let(:work) { Work.new }
+    it "routes to the WorkController" do
+      expect(page).to have_selector("form[action='/concern/works']")
     end
 
     it "has a switch to Batch Upload link" do
@@ -68,19 +68,19 @@ describe 'curation_concerns/base/_form.html.erb' do
   end
 
   context "for a persisted object" do
-    it "routes to the GenericWorkController" do
-      expect(page).to have_selector("form[action='/concern/generic_works/456']")
+    it "routes to the WorkController" do
+      expect(page).to have_selector("form[action='/concern/works/456']")
     end
 
     describe 'when the work has two or more resource types' do
       it "only draws one resource_type multiselect" do
-        expect(page).to have_selector("select#generic_work_resource_type", count: 1)
+        expect(page).to have_selector("select#work_resource_type", count: 1)
       end
       it "allows to change the thumbnail" do
-        expect(page).to have_selector("select#generic_work_thumbnail_id", count: 1)
+        expect(page).to have_selector("select#work_thumbnail_id", count: 1)
       end
       it "allows to change the representative media" do
-        expect(page).to have_selector("select#generic_work_representative_id", count: 1)
+        expect(page).to have_selector("select#work_representative_id", count: 1)
       end
     end
 

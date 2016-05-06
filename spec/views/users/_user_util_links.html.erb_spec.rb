@@ -5,7 +5,7 @@ describe '/_user_util_links.html.erb', type: :view do
   before do
     allow(view).to receive(:user_signed_in?).and_return(true)
     allow(view).to receive(:current_user).and_return(stub_model(User, user_key: 'userX'))
-    allow(view).to receive(:can?).with(:create, GenericWork).and_return(can_create_file)
+    allow(view).to receive(:can?).with(:create, Work).and_return(can_create_file)
     assign :notify_number, 8
   end
 

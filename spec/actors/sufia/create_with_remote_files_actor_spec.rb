@@ -8,7 +8,7 @@ describe Sufia::CreateWithRemoteFilesActor do
     CurationConcerns::ActorStack.new(work, user, [described_class])
   end
   let(:user) { create(:user) }
-  let(:work) { create(:generic_work, user: user) }
+  let(:work) { create(:work, user: user) }
   let(:url1) { "https://dl.dropbox.com/fake/blah-blah.filepicker-demo.txt.txt" }
   let(:url2) { "https://dl.dropbox.com/fake/blah-blah.Getting%20Started.pdf" }
 

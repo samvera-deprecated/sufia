@@ -11,7 +11,7 @@ class CreateWorkJob < ActiveJob::Base
   def perform(user, attributes, log)
     log.performing!
 
-    work = GenericWork.new
+    work = Work.new
     actor = work_actor(work, user)
     status = actor.create(attributes)
     return log.success! if status

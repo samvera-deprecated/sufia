@@ -26,7 +26,7 @@ describe Sufia::BatchUploadsController do
         post :create, title: { '1' => 'foo' },
                       resource_type: { '1' => 'Article' },
                       uploaded_files: ['1'],
-                      generic_work: { tag: [""], visibility: 'open' }
+                      work: { tag: [""], visibility: 'open' }
         expect(response).to redirect_to Sufia::Engine.routes.url_helpers.dashboard_works_path
         expect(flash[:notice]).to include("Your files are being processed")
       end
@@ -36,7 +36,7 @@ describe Sufia::BatchUploadsController do
       it "redirects to my shares page" do
         allow(BatchCreateJob).to receive(:perform_later)
         post :create,
-             generic_work: {
+             work: {
                permissions_attributes: [
                  { type: "group", name: "public", access: "read" }
                ],
@@ -53,7 +53,7 @@ describe Sufia::BatchUploadsController do
     before do
       controller.params = { title: { '1' => 'foo' },
                             uploaded_files: ['1'],
-                            generic_work: { tag: [""], visibility: 'open' } }
+                            work: { tag: [""], visibility: 'open' } }
     end
     it "excludes uploaded_files and title" do
       expect(subject).to eq('tag' => [],

@@ -38,7 +38,7 @@ describe "Browse Dashboard", type: :feature do
 
     within("#document_#{mp3_work.id}") do
       expect(page).to have_link("Display all details of Test Document MP3",
-                                href: curation_concerns_generic_work_path(mp3_work))
+                                href: polymorphic_path(mp3_work))
     end
     click_link("Remove constraint Subject: consectetur")
 
@@ -63,6 +63,6 @@ describe "Browse Dashboard", type: :feature do
     first('input#check_all').click
     expect {
       click_button('Delete Selected')
-    }.to change { GenericWork.count }.by(-3)
+    }.to change { Work.count }.by(-3)
   end
 end

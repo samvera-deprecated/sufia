@@ -20,7 +20,7 @@ module Sufia
       @multi_value_separator = multi_value_separator
     end
 
-    # provide csv version of the GenericFile
+    # provide csv version of the FileSet
     def csv
       ::CSV.generate do |csv|
         csv << terms.map do |term|
@@ -31,7 +31,7 @@ module Sufia
       end
     end
 
-    # provide csv header line for a GenericFile
+    # provide csv header line for a FileSet
     def csv_header
       ::CSV.generate do |csv|
         csv << terms

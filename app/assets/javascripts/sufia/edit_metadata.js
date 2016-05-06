@@ -3,7 +3,7 @@ Blacklight.onLoad(function() {
     var autocomplete_opts = {
       minLength: 2,
       source: function( request, response ) {
-        $.getJSON( "/authorities/generic_works/" + field, {
+        $.getJSON( "/authorities/works/" + field, {
           q: request.term
         }, response );
       },
@@ -46,7 +46,7 @@ Blacklight.onLoad(function() {
     minLength: 2
   };
 
-  var autocomplete_model = "generic_work"
+  var autocomplete_model = "work"
   $("input." + autocomplete_model + "_based_near").autocomplete(get_autocomplete_opts("location"));
 
   var autocomplete_vocab = new Object();
@@ -69,7 +69,6 @@ Blacklight.onLoad(function() {
         })
         .autocomplete( get_autocomplete_opts(autocomplete_vocab.url_var[i]) );
   }
-
 
   // attach an auto complete based on the field
   function setup_autocomplete(e, cloneElem) {

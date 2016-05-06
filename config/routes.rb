@@ -7,7 +7,7 @@ Sufia::Engine.routes.draw do
 
   # Handle routes that existed in Sufia < 7
   #   e.g. https://scholarsphere.psu.edu/files/gm80hv36p
-  get '/files/:id', to: redirect('/concern/generic_works/%{id}')
+  get '/files/:id', to: redirect('/concern/works/%{id}')
 
   delete '/uploads/:id', to: 'sufia/uploads#destroy', as: :sufia_uploaded_file
   post '/uploads', to: 'sufia/uploads#create'
@@ -31,7 +31,7 @@ Sufia::Engine.routes.draw do
         get 'stats'
       end
     end
-    resources :generic_works
+    resources :works
   end
 
   resources :files, only: [] do
@@ -41,10 +41,10 @@ Sufia::Engine.routes.draw do
     end
   end
 
-  # Generic work routes
+  # Work routes
   resources :works, only: [] do
     member do
-      resources :transfers, as: :generic_work_transfers, only: [:new, :create]
+      resources :transfers, as: :work_transfers, only: [:new, :create]
       resource :featured_work, only: [:create, :destroy]
       get :citation, controller: :citations, action: :work, as: :citations
       get :stats, controller: :stats, action: :work, as: :stats
@@ -94,9 +94,9 @@ Sufia::Engine.routes.draw do
   # Preserves existing behavior by maintaining paths to /dashboard
   # Routes actions to the various My controllers
   scope :dashboard do
-    get '/works',             controller: 'my/works', action: :index, as: 'dashboard_works'
-    get '/works/page/:page',  controller: 'my/works', action: :index
-    get '/works/facet/:id',   controller: 'my/works', action: :facet, as: 'dashboard_works_facet'
+    get '/works', controller: 'my/works', action: :index, as: 'dashboard_works'
+    get '/works/page/:page', controller: 'my/works', action: :index
+    get '/works/facet/:id', controller: 'my/works', action: :index, as: 'dashboard_works_facet'
 
     get '/collections',             controller: 'my/collections', action: :index, as: 'dashboard_collections'
     get '/collections/page/:page',  controller: 'my/collections', action: :index
@@ -110,7 +110,6 @@ Sufia::Engine.routes.draw do
     get '/shares/page/:page', controller: 'my/shares', action: :index
     get '/shares/facet/:id',  controller: 'my/shares', action: :facet, as: 'dashboard_shares_facet'
   end
-
   # advanced routes for advanced search
   get 'search' => 'advanced#index', as: :advanced
 

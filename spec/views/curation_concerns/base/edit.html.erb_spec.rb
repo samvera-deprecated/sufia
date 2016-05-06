@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe 'curation_concerns/base/edit.html.erb' do
-  let(:work) { stub_model(GenericWork, id: '456', title: ["A nice work"]) }
+  let(:work) { stub_model(Work, id: '456', title: ["A nice work"]) }
   let(:ability) { double }
 
   let(:form) do
-    CurationConcerns::GenericWorkForm.new(work, ability)
+    CurationConcerns::WorkForm.new(work, ability)
   end
 
   before do
@@ -13,7 +13,7 @@ describe 'curation_concerns/base/edit.html.erb' do
     allow(view).to receive(:curation_concern).and_return(work)
     allow(controller).to receive(:current_user).and_return(stub_model(User))
     assign(:form, form)
-    view.controller = CurationConcerns::GenericWorksController.new
+    view.controller = CurationConcerns::WorksController.new
     view.controller.action_name = 'edit'
     stub_template "curation_concerns/base/_form.html.erb" => 'a form'
   end

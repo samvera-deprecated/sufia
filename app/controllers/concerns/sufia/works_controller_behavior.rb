@@ -8,7 +8,7 @@ module Sufia
       include Sufia::Breadcrumbs
       before_action :has_access?, except: :show
       before_action :build_breadcrumbs, only: [:edit, :show]
-      self.curation_concern_type = GenericWork
+      self.curation_concern_type = Work
       self.show_presenter = Sufia::WorkShowPresenter
       layout "sufia-one-column"
     end

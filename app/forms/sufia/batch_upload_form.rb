@@ -1,6 +1,6 @@
 module Sufia
   class BatchUploadForm < Sufia::Forms::WorkForm
-    self.model_class = ::GenericWork
+    self.model_class = ::Work
     include HydraEditor::Form::Permissions
 
     self.terms -= [:title, :resource_type]
@@ -39,9 +39,9 @@ module Sufia
     # without changing the param key.
     #
     # Example:
-    #   name = Name.new(GenericWork)
+    #   name = Name.new(Work)
     #   name.param_key
-    #   # => 'generic_work'
+    #   # => 'work'
     #   name.route_key
     #   # => 'batch_uploads'
     #

@@ -1,7 +1,7 @@
 <div class="home_call_action col-xs-12 col-sm-4 pull-right">
-  <% if can? :view_share_work, GenericWork %>
+  <% if can? :view_share_work, Work %>
     <div class="home_share_work">
-      <%= link_to sufia.new_curation_concerns_generic_work_path, class: "btn btn-primary btn-lg btn-block", id: "contribute_link" do %>
+      <%= link_to sufia.new_curation_concerns_work_path, class: "btn btn-primary btn-lg btn-block", id: "contribute_link" do %>
         <i class="glyphicon glyphicon-upload"></i> <%= t('sufia.share_button') %>
       <% end %>
       <p class="text-center"><a href="/terms/">Terms of Use</a></p>

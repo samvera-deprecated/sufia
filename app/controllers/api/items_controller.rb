@@ -1,7 +1,7 @@
 module API
   # Adds an endpoint that consumes and RESTfully emits JSON from Arkivo
   # representing new and updated Zotero-managed publications. An item in the
-  # Zotero parlance is mapped to a GenericWork in Sufia.
+  # Zotero parlance is mapped to a Work in Sufia.
   class ItemsController < ApplicationController
     skip_before_action :verify_authenticity_token
     before_action :validate_item, only: [:create, :update]
@@ -31,7 +31,7 @@ module API
     private
 
       def my_load_and_authorize_resource
-        @work = GenericWork.find(params[:id])
+        @work = Work.find(params[:id])
 
         unless user.can? :edit, @work
           return render plain: "#{user} lacks access to #{@work}", status: :unauthorized

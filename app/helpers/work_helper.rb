@@ -1,4 +1,4 @@
-module GenericWorkHelper
+module WorkHelper
   def render_collection_links(solr_doc)
     collection_list = Sufia::CollectionMemberService.run(solr_doc)
     return if collection_list.empty?

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe GenericWork do
+describe Work do
   describe ".properties" do
     subject { described_class.properties.keys }
     it { is_expected.to include("has_model", "create_date", "modified_date") }
@@ -43,14 +43,14 @@ describe GenericWork do
       @w = described_class.create!(title: ['demoname']) do |gw|
         gw.apply_depositor_metadata(u)
       end
-      @t = Trophy.create(user_id: u.id, generic_work_id: @w.id)
+      @t = Trophy.create(user_id: u.id, work_id: @w.id)
     end
     it "has a trophy" do
-      expect(Trophy.where(generic_work_id: @w.id).count).to eq 1
+      expect(Trophy.where(work_id: @w.id).count).to eq 1
     end
     it "removes all trophies when work is deleted" do
       @w.destroy
-      expect(Trophy.where(generic_work_id: @w.id).count).to eq 0
+      expect(Trophy.where(work_id: @w.id).count).to eq 0
     end
   end
 
@@ -78,7 +78,7 @@ describe GenericWork do
   end
 
   describe "find_by_date_created" do
-    let!(:work) { create(:generic_work) }
+    let!(:work) { create(:work) }
     subject { described_class.find_by_date_created(start_date, end_date) }
 
     context "with no start date" do
@@ -102,7 +102,7 @@ describe GenericWork do
 
   describe "where_access_is" do
     subject { described_class.where_access_is access_level }
-    let!(:work) { create(:generic_work, read_groups: read_groups) }
+    let!(:work) { create(:work, read_groups: read_groups) }
 
     context "when file is private" do
       let(:read_groups) { ["private"] }

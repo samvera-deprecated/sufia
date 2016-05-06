@@ -34,9 +34,9 @@ class Sufia::SystemStats
     return document_by_date_by_permission if start_date
 
     files_count = {}
-    files_count[:total] = ::GenericWork.count
-    files_count[:public] = ::GenericWork.where_public.count
-    files_count[:registered] = ::GenericWork.where_registered.count
+    files_count[:total] = ::Work.count
+    files_count[:public] = ::Work.where_public.count
+    files_count[:registered] = ::Work.where_registered.count
     files_count[:private] = files_count[:total] - (files_count[:registered] + files_count[:public])
     files_count
   end
@@ -87,9 +87,9 @@ class Sufia::SystemStats
 
     def document_by_date_by_permission
       files_count = {}
-      files_count[:total] = ::GenericWork.find_by_date_created(start_date, end_date).count
-      files_count[:public] = ::GenericWork.find_by_date_created(start_date, end_date).merge(::GenericWork.where_public).count
-      files_count[:registered] = ::GenericWork.find_by_date_created(start_date, end_date).merge(::GenericWork.where_registered).count
+      files_count[:total] = ::Work.find_by_date_created(start_date, end_date).count
+      files_count[:public] = ::Work.find_by_date_created(start_date, end_date).merge(::Work.where_public).count
+      files_count[:registered] = ::Work.find_by_date_created(start_date, end_date).merge(::Work.where_registered).count
       files_count[:private] = files_count[:total] - (files_count[:registered] + files_count[:public])
       files_count
     end

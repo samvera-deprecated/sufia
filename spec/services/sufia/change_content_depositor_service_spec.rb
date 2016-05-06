@@ -9,7 +9,7 @@ describe Sufia::ChangeContentDepositorService do
     end
   end
   let!(:work) do
-    GenericWork.create!(title: ['Test work']) do |w|
+    Work.create!(title: ['Test work']) do |w|
       w.apply_depositor_metadata(depositor.user_key)
     end
   end

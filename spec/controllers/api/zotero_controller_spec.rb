@@ -17,7 +17,7 @@ describe API::ZoteroController, type: :controller do
 
     context 'with an unregistered user' do
       before do
-        allow_any_instance_of(Ability).to receive(:can?).with(:create, GenericWork).and_return(false)
+        allow_any_instance_of(Ability).to receive(:can?).with(:create, Work).and_return(false)
         sign_in user
         get :initiate
       end
@@ -86,7 +86,7 @@ describe API::ZoteroController, type: :controller do
 
     context 'with a user who is not permitted to make works' do
       before do
-        allow_any_instance_of(Ability).to receive(:can?).with(:create, GenericWork).and_return(false)
+        allow_any_instance_of(Ability).to receive(:can?).with(:create, Work).and_return(false)
         sign_in user
         get :callback
       end

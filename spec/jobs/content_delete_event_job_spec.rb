@@ -34,7 +34,7 @@ describe ContentDeleteEventJob do
   end
 
   context 'with a Work' do
-    let(:curation_concern) { create(:generic_work, title: ['BethsMac'], user: user) }
+    let(:curation_concern) { create(:work, title: ['BethsMac'], user: user) }
 
     it "logs the event to the depositor's profile and followers' dashboards" do
       expect {

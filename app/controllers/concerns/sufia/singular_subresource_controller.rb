@@ -3,7 +3,7 @@ module Sufia::SingularSubresourceController
 
   included do
     load_and_authorize_resource :file, class: 'FileSet', only: :file, id_param: :id
-    load_and_authorize_resource :work, class: 'GenericWork', only: :work, id_param: :id
+    load_and_authorize_resource :work, class: 'Work', only: :work, id_param: :id
   end
 
   # Overriding the default behavior from Hydra::Core::ControllerBehavior

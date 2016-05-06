@@ -24,7 +24,7 @@ describe Sufia::Arkivo::Actor do
     it { is_expected.to respond_to(:create_work_from_item) }
 
     it 'instantiates an actor' do
-      expect(CurationConcerns::GenericWorkActor).to receive(:new).once.and_call_original
+      expect(CurationConcerns::WorkActor).to receive(:new).once.and_call_original
       subject.create_work_from_item
     end
 
@@ -56,7 +56,7 @@ describe Sufia::Arkivo::Actor do
     end
 
     it 'returns a GF instance' do
-      expect(subject.create_work_from_item).to be_instance_of(GenericWork)
+      expect(subject.create_work_from_item).to be_instance_of(Work)
     end
   end
 
@@ -66,7 +66,7 @@ describe Sufia::Arkivo::Actor do
     let(:description) { ['This is rather lengthy.'] }
     let(:checksum) { 'abc123' }
     let(:work) do
-      GenericWork.new(title: title, description: description) do |f|
+      Work.new(title: title, description: description) do |f|
         f.apply_depositor_metadata(user.user_key)
         f.arkivo_checksum = checksum
       end
@@ -119,12 +119,12 @@ describe Sufia::Arkivo::Actor do
     end
 
     it 'returns a GF instance' do
-      expect(subject.update_work_from_item(work)).to be_instance_of(GenericWork)
+      expect(subject.update_work_from_item(work)).to be_instance_of(Work)
     end
   end
 
   describe '#destroy_work' do
-    let(:work) { create(:generic_work, user: user) }
+    let(:work) { create(:work, user: user) }
     it 'deletes the file' do
       expect {
         subject.destroy_work(work)

@@ -9,9 +9,9 @@ describe 'Transferring work ownership:', type: :feature do
   let(:original_owner) { create(:user) }
   let(:new_owner) { create(:user) }
   let!(:work) do
-    GenericWork.new.tap do |f|
-      f.title = ['little_generic_work']
-      f.creator = ['little_generic_work.creator']
+    Work.new.tap do |f|
+      f.title = ['little_work']
+      f.creator = ['little_work.creator']
       f.resource_type = ["stuff"]
       f.read_groups = ['public']
       f.apply_depositor_metadata(original_owner.user_key)

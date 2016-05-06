@@ -6,7 +6,7 @@ class CitationsController < ApplicationController
   before_action :build_breadcrumbs, only: [:work, :file]
 
   def work
-    @curation_concern_type = GenericWork
+    @curation_concern_type = Work
     @presenter_class = Sufia::WorkShowPresenter
     show
   end
