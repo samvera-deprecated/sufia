@@ -4,6 +4,7 @@ module Sufia::Forms
     include HydraEditor::Form::Permissions
 
     attr_reader :agreement_accepted
+    attr_accessor :file_sets
 
     self.terms += [:collection_ids]
     self.required_fields = [:title, :creator, :tag, :rights]
