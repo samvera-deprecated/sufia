@@ -215,9 +215,9 @@ describe 'Routes', type: :routing do
   describe 'main app routes' do
     routes { Rails.application.routes }
 
-    describe 'GenericWork' do
+    describe 'Work' do
       it "routes to show" do
-        expect(get: '/concern/generic_works/4').to route_to(controller: 'curation_concerns/generic_works', action: 'show', id: '4')
+        expect(get: '/concern/works/4').to route_to(controller: 'curation_concerns/works', action: 'show', id: '4')
       end
     end
   end

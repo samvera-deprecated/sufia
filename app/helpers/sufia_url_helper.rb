@@ -1,6 +1,6 @@
 # TODO: Are these methods still needed?
 module SufiaUrlHelper
-  def track_generic_work_path(*args)
+  def track_work_path(*args)
     track_catalog_path(*args)
   end
 

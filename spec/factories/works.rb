@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :work, aliases: [:generic_work, :private_generic_work], class: GenericWork do
+  factory :work, aliases: [:private_work], class: Work do
     transient do
       user { FactoryGirl.create(:user) }
     end
@@ -11,11 +11,11 @@ FactoryGirl.define do
       work.apply_depositor_metadata(evaluator.user.user_key)
     end
 
-    factory :public_generic_work, aliases: [:public_work] do
+    factory :public_work do
       visibility Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC
     end
 
-    factory :registered_generic_work do
+    factory :registered_work do
       read_groups ["registered"]
     end
 

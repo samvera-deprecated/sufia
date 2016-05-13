@@ -41,7 +41,7 @@ module Sufia
     end
 
     def number_of_works(user = current_user)
-      ::GenericWork.where(DepositSearchBuilder.depositor_field => user.user_key).count
+      ::Work.where(DepositSearchBuilder.depositor_field => user.user_key).count
     end
 
     def number_of_files(user = current_user)

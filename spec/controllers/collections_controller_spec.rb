@@ -67,7 +67,7 @@ describe CollectionsController do
         expect(asset_results["response"]["numFound"]).to eq 1
         doc = asset_results["response"]["docs"].first
         expect(doc["id"]).to eq asset1.id
-        afterupdate = GenericWork.find(asset1.id)
+        afterupdate = Work.find(asset1.id)
         expect(doc[Solrizer.solr_name(:collection)]).to eq afterupdate.to_solr[Solrizer.solr_name(:collection)]
       end
     end
@@ -104,7 +104,7 @@ describe CollectionsController do
         expect(asset_results["response"]["numFound"]).to eq 1
         doc = asset_results["response"]["docs"].first
         expect(doc["id"]).to eq asset2.id
-        afterupdate = GenericWork.find(asset2.id)
+        afterupdate = Work.find(asset2.id)
         expect(doc[Solrizer.solr_name(:collection)]).to eq afterupdate.to_solr[Solrizer.solr_name(:collection)]
 
         put :update, id: collection,

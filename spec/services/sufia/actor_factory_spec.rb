@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Sufia::ActorFactory do
-  let(:work) { GenericWork.new }
+  let(:work) { Work.new }
   let(:user) { double }
 
   describe '.stack_actors' do
@@ -13,7 +13,7 @@ describe Sufia::ActorFactory do
                             CurationConcerns::AttachFilesActor,
                             CurationConcerns::ApplyOrderActor,
                             CurationConcerns::InterpretVisibilityActor,
-                            CurationConcerns::GenericWorkActor,
+                            CurationConcerns::WorkActor,
                             CurationConcerns::AssignIdentifierActor] }
   end
 
@@ -27,7 +27,7 @@ describe Sufia::ActorFactory do
         CurationConcerns::AttachFilesActor,
         CurationConcerns::ApplyOrderActor,
         CurationConcerns::InterpretVisibilityActor,
-        CurationConcerns::GenericWorkActor,
+        CurationConcerns::WorkActor,
         CurationConcerns::AssignIdentifierActor
       ]
       expect(subject.first_actor_class).to eq Sufia::CreateWithRemoteFilesActor

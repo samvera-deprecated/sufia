@@ -4,7 +4,7 @@ describe 'curation_concerns/base/_form_progress.html.erb' do
   let(:ability) { double }
   let(:user) { stub_model(User) }
   let(:form) do
-    CurationConcerns::GenericWorkForm.new(work, ability)
+    CurationConcerns::WorkForm.new(work, ability)
   end
 
   before do
@@ -22,7 +22,7 @@ describe 'curation_concerns/base/_form_progress.html.erb' do
   context "for a new object" do
     before { assign(:form, form) }
 
-    let(:work) { GenericWork.new }
+    let(:work) { Work.new }
 
     context "with options for proxy" do
       let(:proxies) { [stub_model(User, email: 'bob@example.com')] }
@@ -31,8 +31,8 @@ describe 'curation_concerns/base/_form_progress.html.erb' do
       end
       it "shows options for proxy" do
         expect(page).to have_content 'On behalf of'
-        expect(page).to have_selector("select#generic_work_on_behalf_of option[value=\"\"]", text: 'Yourself')
-        expect(page).to have_selector("select#generic_work_on_behalf_of option[value=\"bob@example.com\"]")
+        expect(page).to have_selector("select#work_on_behalf_of option[value=\"\"]", text: 'Yourself')
+        expect(page).to have_selector("select#work_on_behalf_of option[value=\"bob@example.com\"]")
       end
     end
 
@@ -43,7 +43,7 @@ describe 'curation_concerns/base/_form_progress.html.erb' do
       end
       it "doesn't show options for proxy" do
         expect(page).not_to have_content 'On behalf of'
-        expect(page).not_to have_selector 'select#generic_work_on_behalf_of'
+        expect(page).not_to have_selector 'select#work_on_behalf_of'
       end
     end
 
@@ -73,7 +73,7 @@ describe 'curation_concerns/base/_form_progress.html.erb' do
       assign(:form, form)
     end
 
-    let(:work) { stub_model(GenericWork, id: '456') }
+    let(:work) { stub_model(Work, id: '456') }
 
     it "renders the deposit agreement already checked" do
       expect(page).to have_selector("#agreement[checked]")

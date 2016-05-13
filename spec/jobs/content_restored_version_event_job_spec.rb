@@ -5,7 +5,7 @@ describe ContentRestoredVersionEventJob do
   let(:another_user) { create(:user) }
   let(:third_user) { create(:user) }
   let(:file_set) { create(:file_set, title: ['Hamlet'], user: user) }
-  let(:generic_work) { create(:generic_work, title: ['BethsMac'], user: user) }
+  let(:work) { create(:work, title: ['BethsMac'], user: user) }
   let(:mock_time) { Time.zone.at(1) }
   let(:event) { { action: "User <a href=\"/users/#{user.to_param}\">#{user.user_key}</a> has restored a version 'content.0' of <a href=\"/concern/file_sets/#{file_set.id}\">Hamlet</a>", timestamp: '1' } }
   before do

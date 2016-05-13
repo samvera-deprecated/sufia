@@ -5,13 +5,13 @@ describe SufiaHelper, type: :helper do
     let(:sender) { create(:user) }
     let(:user) { create(:user) }
     let(:work) do
-      GenericWork.create!(title: ["Test work"]) do |work|
+      Work.create!(title: ["Test work"]) do |work|
         work.apply_depositor_metadata(sender.user_key)
       end
     end
 
     context "when work is canceled" do
-      let(:request) { ProxyDepositRequest.create!(generic_work_id: work.id, receiving_user: user, sending_user: sender, status: 'canceled') }
+      let(:request) { ProxyDepositRequest.create!(work_id: work.id, receiving_user: user, sending_user: sender, status: 'canceled') }
       subject { helper.show_transfer_request_title request }
       it { expect(subject).to eq 'Test work' }
     end

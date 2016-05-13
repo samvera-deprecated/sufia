@@ -4,7 +4,7 @@ describe 'curation_concerns/permissions/confirm.html.erb', :no_clean do
   class MockCurationConcern
     attr_reader :human_readable_type, :visibility
     def initialize
-      @human_readable_type = "GenericWork"
+      @human_readable_type = "Work"
       @visibility = "public"
     end
   end

@@ -9,8 +9,8 @@ describe 'curation_concerns/base/_citations.html.erb', type: :view do
     SolrDocument.new(
       id: '999',
       object_profile_ssm: object_profile,
-      has_model_ssim: ['GenericWork'],
-      human_readable_type_tesim: ['Generic Work'],
+      has_model_ssim: ['Work'],
+      human_readable_type_tesim: ['Work'],
       contributor_tesim: contributor,
       creator_tesim: creator,
       rights_tesim: ['http://creativecommons.org/licenses/by/3.0/us/']

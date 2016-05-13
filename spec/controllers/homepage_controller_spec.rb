@@ -49,16 +49,16 @@ describe Sufia::HomepageController, type: :controller do
       expect(titles).to_not include('Test Private Document')
     end
 
-    it "includes only GenericWork objects in recent documents" do
+    it "includes only Work objects in recent documents" do
       get :index
       assigns(:recent_documents).each do |doc|
-        expect(doc[Solrizer.solr_name("has_model", :symbol)]).to eql ["GenericWork"]
+        expect(doc[Solrizer.solr_name("has_model", :symbol)]).to eql ["Work"]
       end
     end
 
     context "with a document not created this second" do
       before do
-        gw3 = GenericWork.new(title: ['Test 3 Document'], read_groups: ['public'])
+        gw3 = Work.new(title: ['Test 3 Document'], read_groups: ['public'])
         gw3.apply_depositor_metadata('mjg36')
         # stubbing to_solr so we know we have something that didn't create in the current second
         old_to_solr = gw3.method(:to_solr)
@@ -83,7 +83,7 @@ describe Sufia::HomepageController, type: :controller do
       let!(:my_work) { FactoryGirl.create(:work, user: user) }
 
       before do
-        FeaturedWork.create!(generic_work_id: my_work.id)
+        FeaturedWork.create!(work_id: my_work.id)
       end
 
       it "sets featured works" do

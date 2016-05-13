@@ -19,15 +19,15 @@ describe 'users/edit.html.erb', type: :view do
   end
 
   context "with trophy" do
-    let(:generic_work) { stub_model(GenericWork, title: ["Fake object"], id: "abc123") }
+    let(:work) { stub_model(Work, title: ["Fake object"], id: "abc123") }
     before do
-      assign(:trophies, [generic_work])
+      assign(:trophies, [work])
     end
 
     it "has trophy" do
       render
       page = Capybara::Node::Simple.new(rendered)
-      expect(page).to have_selector("#remove_trophy_#{generic_work.id}")
+      expect(page).to have_selector("#remove_trophy_#{work.id}")
     end
   end
 

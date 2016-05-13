@@ -4,7 +4,7 @@ module Sufia
       class EndnoteFormatter < BaseFormatter
         def format(work)
           text = []
-          text << "%0 GenericFile"
+          text << "%0 Work"
           end_note_format.each do |endnote_key, mapping|
             if mapping.is_a? String
               values = [mapping]

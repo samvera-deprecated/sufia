@@ -34,7 +34,7 @@ module API
     private
 
       def authorize_user!
-        authorize! :create, ::GenericWork
+        authorize! :create, ::Work
       rescue CanCan::AccessDenied
         return redirect_to root_url, alert: 'You are not authorized to perform this operation'
       end

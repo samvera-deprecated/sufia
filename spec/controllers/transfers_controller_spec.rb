@@ -11,14 +11,14 @@ describe TransfersController, type: :controller do
 
     describe "#index" do
       let!(:incoming_work) do
-        GenericWork.new(title: ['incoming title']) do |w|
+        Work.new(title: ['incoming title']) do |w|
           w.apply_depositor_metadata(another_user.user_key)
           w.save!
           w.request_transfer_to(user)
         end
       end
       let!(:outgoing_work) do
-        GenericWork.new(title: ['outgoing title']) do |w|
+        Work.new(title: ['outgoing title']) do |w|
           w.apply_depositor_metadata(user.user_key)
           w.save!
           w.request_transfer_to(another_user)
@@ -29,9 +29,9 @@ describe TransfersController, type: :controller do
         get :index
         expect(response).to be_success
         expect(assigns[:incoming].first).to be_kind_of ProxyDepositRequest
-        expect(assigns[:incoming].first.generic_work_id).to eq(incoming_work.id)
+        expect(assigns[:incoming].first.work_id).to eq(incoming_work.id)
         expect(assigns[:outgoing].first).to be_kind_of ProxyDepositRequest
-        expect(assigns[:outgoing].first.generic_work_id).to eq(outgoing_work.id)
+        expect(assigns[:outgoing].first.work_id).to eq(outgoing_work.id)
       end
 
       describe "When the incoming request is for a deleted work" do
@@ -48,7 +48,7 @@ describe TransfersController, type: :controller do
 
     describe "#new" do
       let(:work) do
-        GenericWork.create!(title: ['a work']) do |w|
+        Work.create!(title: ['a work']) do |w|
           w.apply_depositor_metadata(user.user_key)
         end
       end
@@ -57,16 +57,16 @@ describe TransfersController, type: :controller do
           sign_in user
           get :new, id: work.id
           expect(response).to be_success
-          expect(assigns[:generic_work]).to eq(work)
+          expect(assigns[:work]).to eq(work)
           expect(assigns[:proxy_deposit_request]).to be_kind_of ProxyDepositRequest
-          expect(assigns[:proxy_deposit_request].generic_work_id).to eq(work.id)
+          expect(assigns[:proxy_deposit_request].work_id).to eq(work.id)
         end
       end
     end
 
     describe "#create" do
       let(:work) do
-        GenericWork.create!(title: ['a work']) do |w|
+        Work.create!(title: ['a work']) do |w|
           w.apply_depositor_metadata(user.user_key)
         end
       end
@@ -78,7 +78,7 @@ describe TransfersController, type: :controller do
         expect(response).to redirect_to @routes.url_helpers.transfers_path
         expect(flash[:notice]).to eq('Transfer request created')
         proxy_request = another_user.proxy_deposit_requests.first
-        expect(proxy_request.generic_work_id).to eq(work.id)
+        expect(proxy_request.work_id).to eq(work.id)
         expect(proxy_request.sending_user).to eq(user)
         # AND A NOTIFICATION SHOULD HAVE BEEN CREATED
         notification = another_user.reload.mailbox.inbox[0].messages[0]
@@ -97,7 +97,7 @@ describe TransfersController, type: :controller do
     describe "#accept" do
       context "when I am the receiver" do
         let!(:incoming_work) do
-          GenericWork.new(title: ['incoming']) do |w|
+          Work.new(title: ['incoming']) do |w|
             w.apply_depositor_metadata(another_user.user_key)
             w.save!
             w.request_transfer_to(user)
@@ -128,7 +128,7 @@ describe TransfersController, type: :controller do
 
       context "accepting one that isn't mine" do
         let!(:incoming_work) do
-          GenericWork.new(title: ['incoming']) do |w|
+          Work.new(title: ['incoming']) do |w|
             w.apply_depositor_metadata(user.user_key)
             w.save!
             w.request_transfer_to(another_user)
@@ -145,7 +145,7 @@ describe TransfersController, type: :controller do
     describe "#reject" do
       context "when I am the receiver" do
         let!(:incoming_work) do
-          GenericWork.new(title: ['incoming']) do |w|
+          Work.new(title: ['incoming']) do |w|
             w.apply_depositor_metadata(another_user.user_key)
             w.save!
             w.request_transfer_to(user)
@@ -161,7 +161,7 @@ describe TransfersController, type: :controller do
 
       context "accepting one that isn't mine" do
         let!(:incoming_work) do
-          GenericWork.new(title: ['incoming']) do |w|
+          Work.new(title: ['incoming']) do |w|
             w.apply_depositor_metadata(user.user_key)
             w.save!
             w.request_transfer_to(another_user)
@@ -178,7 +178,7 @@ describe TransfersController, type: :controller do
     describe "#destroy" do
       context "when I am the sender" do
         let!(:incoming_work) do
-          GenericWork.new(title: ['incoming']) do |w|
+          Work.new(title: ['incoming']) do |w|
             w.apply_depositor_metadata(user.user_key)
             w.save!
             w.request_transfer_to(another_user)
@@ -193,7 +193,7 @@ describe TransfersController, type: :controller do
 
       context "accepting one that isn't mine" do
         let!(:incoming_work) do
-          GenericWork.new(title: ['incoming']) do |w|
+          Work.new(title: ['incoming']) do |w|
             w.apply_depositor_metadata(another_user.user_key)
             w.save!
             w.request_transfer_to(user)

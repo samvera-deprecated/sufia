@@ -16,8 +16,8 @@ class FeaturedWorkList
     @works = FeaturedWork.all
     add_solr_document_to_works
     @works = @works.reject do |work|
-      work.destroy if work.generic_work_solr_document.blank?
-      work.generic_work_solr_document.blank?
+      work.destroy if work.work_solr_document.blank?
+      work.work_solr_document.blank?
     end
   end
 
@@ -27,12 +27,12 @@ class FeaturedWorkList
 
     def add_solr_document_to_works
       solr_docs.each do |doc|
-        work_with_id(doc['id']).generic_work_solr_document = SolrDocument.new(doc)
+        work_with_id(doc['id']).work_solr_document = SolrDocument.new(doc)
       end
     end
 
     def ids
-      @works.pluck(:generic_work_id)
+      @works.pluck(:work_id)
     end
 
     def solr_docs
@@ -40,6 +40,6 @@ class FeaturedWorkList
     end
 
     def work_with_id(id)
-      @works.find { |w| w.generic_work_id == id }
+      @works.find { |w| w.work_id == id }
     end
 end

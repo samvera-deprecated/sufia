@@ -6,12 +6,12 @@ class WorkUsage
   attr_accessor :id, :created, :path, :pageviews
 
   def initialize(id)
-    work = ::GenericWork.find(id)
+    work = ::Work.find(id)
     user = User.find_by(email: work.depositor)
     user_id = user ? user.id : nil
 
     self.id = id
-    self.path = Rails.application.routes.url_helpers.curation_concerns_generic_work_path(id)
+    self.path = Rails.application.routes.url_helpers.curation_concerns_work_path(id)
     self.created = date_for_analytics(work)
     self.pageviews = WorkViewStat.to_flots WorkViewStat.statistics(id, created, user_id)
   end

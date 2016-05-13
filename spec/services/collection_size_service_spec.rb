@@ -19,8 +19,8 @@ describe Sufia::CollectionSizeService do
       let(:file1_attrs) { { id: 'file_1111', title_tesim: ['A first file set'], file_size_ssim: [50] } }
       let(:file2_attrs) { { id: 'file_2222', title_tesim: ['A second file set'], file_size_ssim: [55] } }
 
-      let(:work1_attrs) { { id: 'work_1111', title_tesim: ['A first generic work'], file_set_ids_ssim: files1 } }
-      let(:work2_attrs) { { id: 'work_2222', title_tesim: ['A second generic work'], file_set_ids_ssim: files2 } }
+      let(:work1_attrs) { { id: 'work_1111', title_tesim: ['A first work'], file_set_ids_ssim: files1 } }
+      let(:work2_attrs) { { id: 'work_2222', title_tesim: ['A second work'], file_set_ids_ssim: files2 } }
 
       let(:work1) { SolrDocument.new(work1_attrs) }
       let(:work2) { SolrDocument.new(work2_attrs) }

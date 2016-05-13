@@ -10,10 +10,10 @@ describe Sufia::Ability, type: :model do
     it { is_expected.not_to be_able_to(:create, ContentBlock) }
     it { is_expected.not_to be_able_to(:update, ContentBlock) }
     it { is_expected.to be_able_to(:read, ContentBlock) }
-    it { is_expected.to be_able_to(:view_share_work, GenericWork) }
-    it { is_expected.to be_able_to(:read, GenericWork) }
-    it { is_expected.to be_able_to(:stats, GenericWork) }
-    it { is_expected.to be_able_to(:citation, GenericWork) }
+    it { is_expected.to be_able_to(:view_share_work, Work) }
+    it { is_expected.to be_able_to(:read, Work) }
+    it { is_expected.to be_able_to(:stats, Work) }
+    it { is_expected.to be_able_to(:citation, Work) }
   end
 
   describe "a registered user" do
@@ -24,7 +24,7 @@ describe Sufia::Ability, type: :model do
     it { is_expected.not_to be_able_to(:create, ContentBlock) }
     it { is_expected.not_to be_able_to(:update, ContentBlock) }
     it { is_expected.to be_able_to(:read, ContentBlock) }
-    it { is_expected.to be_able_to(:view_share_work, GenericWork) }
+    it { is_expected.to be_able_to(:view_share_work, Work) }
   end
 
   describe "a user in the admin group" do
@@ -36,14 +36,14 @@ describe Sufia::Ability, type: :model do
     it { is_expected.to be_able_to(:create, ContentBlock) }
     it { is_expected.to be_able_to(:update, ContentBlock) }
     it { is_expected.to be_able_to(:read, ContentBlock) }
-    it { is_expected.to be_able_to(:view_share_work, GenericWork) }
+    it { is_expected.to be_able_to(:view_share_work, Work) }
   end
 
   describe "proxies and transfers" do
     let(:sender) { create(:user) }
     let(:user) { create(:user) }
     let(:work) do
-      GenericWork.create!(title: ["Test work"]) do |work|
+      Work.create!(title: ["Test work"]) do |work|
         work.apply_depositor_metadata(sender.user_key)
       end
     end
@@ -62,13 +62,13 @@ describe Sufia::Ability, type: :model do
     end
 
     context "with a ProxyDepositRequest that they receive" do
-      let(:request) { ProxyDepositRequest.create!(generic_work_id: work.id, receiving_user: user, sending_user: sender) }
+      let(:request) { ProxyDepositRequest.create!(work_id: work.id, receiving_user: user, sending_user: sender) }
       it { should be_able_to(:accept, request) }
       it { should be_able_to(:reject, request) }
       it { should_not be_able_to(:destroy, request) }
 
       context "and the request has already been accepted" do
-        let(:request) { ProxyDepositRequest.create!(generic_work_id: work.id, receiving_user: user, sending_user: sender, status: 'accepted') }
+        let(:request) { ProxyDepositRequest.create!(work_id: work.id, receiving_user: user, sending_user: sender, status: 'accepted') }
         it { should_not be_able_to(:accept, request) }
         it { should_not be_able_to(:reject, request) }
         it { should_not be_able_to(:destroy, request) }
@@ -76,13 +76,13 @@ describe Sufia::Ability, type: :model do
     end
 
     context "with a ProxyDepositRequest they are the sender of" do
-      let(:request) { ProxyDepositRequest.create!(generic_work_id: work.id, receiving_user: sender, sending_user: user) }
+      let(:request) { ProxyDepositRequest.create!(work_id: work.id, receiving_user: sender, sending_user: user) }
       it { should_not be_able_to(:accept, request) }
       it { should_not be_able_to(:reject, request) }
       it { should be_able_to(:destroy, request) }
 
       context "and the request has already been accepted" do
-        let(:request) { ProxyDepositRequest.create!(generic_work_id: work.id, receiving_user: sender, sending_user: user, status: 'accepted') }
+        let(:request) { ProxyDepositRequest.create!(work_id: work.id, receiving_user: sender, sending_user: user, status: 'accepted') }
         it { should_not be_able_to(:accept, request) }
         it { should_not be_able_to(:reject, request) }
         it { should_not be_able_to(:destroy, request) }

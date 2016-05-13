@@ -12,9 +12,9 @@ describe BatchEditsController, type: :controller do
 
   describe "#edit" do
     before do
-      @one = GenericWork.new(creator: ["Fred"], title: ["abc"], language: ['en'])
+      @one = Work.new(creator: ["Fred"], title: ["abc"], language: ['en'])
       @one.apply_depositor_metadata('mjg36')
-      @two = GenericWork.new(creator: ["Wilma"], title: ["abc"], publisher: ['Rand McNally'], language: ['en'], resource_type: ['bar'])
+      @two = Work.new(creator: ["Wilma"], title: ["abc"], publisher: ['Rand McNally'], language: ['en'], resource_type: ['bar'])
       @two.apply_depositor_metadata('mjg36')
       @one.save!
       @two.save!
@@ -31,9 +31,9 @@ describe BatchEditsController, type: :controller do
       expect(response).to be_successful
       expect(assigns[:terms]).to eq [:creator, :contributor, :description, :tag, :rights, :publisher,
                                      :date_created, :subject, :language, :identifier, :based_near, :related_url]
-      expect(assigns[:generic_work].creator).to eq ["Fred", "Wilma"]
-      expect(assigns[:generic_work].publisher).to eq ["Rand McNally"]
-      expect(assigns[:generic_work].language).to eq ["en"]
+      expect(assigns[:work].creator).to eq ["Fred", "Wilma"]
+      expect(assigns[:work].publisher).to eq ["Rand McNally"]
+      expect(assigns[:work].language).to eq ["en"]
     end
 
     it "sets the breadcrumb trail" do
@@ -45,13 +45,13 @@ describe BatchEditsController, type: :controller do
 
   describe "update" do
     let!(:one) do
-      GenericWork.create(creator: ["Fred"], title: ["abc"], language: ['en']) do |gw|
+      Work.create(creator: ["Fred"], title: ["abc"], language: ['en']) do |gw|
         gw.apply_depositor_metadata('mjg36')
       end
     end
 
     let!(:two) do
-      GenericWork.create(creator: ["Fred"], title: ["abc"], language: ['en']) do |gw|
+      Work.create(creator: ["Fred"], title: ["abc"], language: ['en']) do |gw|
         gw.apply_depositor_metadata('mjg36')
       end
     end
@@ -67,8 +67,8 @@ describe BatchEditsController, type: :controller do
     it "is successful" do
       put :update, update_type: "delete_all"
       expect(response).to redirect_to(Sufia::Engine.routes.url_for(controller: "dashboard", only_path: true))
-      expect { GenericWork.find(one.id) }.to raise_error(Ldp::Gone)
-      expect { GenericWork.find(two.id) }.to raise_error(Ldp::Gone)
+      expect { Work.find(one.id) }.to raise_error(Ldp::Gone)
+      expect { Work.find(two.id) }.to raise_error(Ldp::Gone)
     end
 
     it "redirects to the return controller" do
@@ -77,17 +77,17 @@ describe BatchEditsController, type: :controller do
     end
 
     it "updates the records" do
-      put :update, update_type: "update", generic_work: { subject: ["zzz"] }
+      put :update, update_type: "update", work: { subject: ["zzz"] }
       expect(response).to be_redirect
-      expect(GenericWork.find(one.id).subject).to eq ["zzz"]
-      expect(GenericWork.find(two.id).subject).to eq ["zzz"]
+      expect(Work.find(one.id).subject).to eq ["zzz"]
+      expect(Work.find(two.id).subject).to eq ["zzz"]
     end
 
     it "updates permissions" do
       put :update, update_type: "update", visibility: "authenticated"
       expect(response).to be_redirect
-      expect(GenericWork.find(one.id).visibility).to eq "authenticated"
-      expect(GenericWork.find(two.id).visibility).to eq "authenticated"
+      expect(Work.find(one.id).visibility).to eq "authenticated"
+      expect(Work.find(two.id).visibility).to eq "authenticated"
     end
   end
 end

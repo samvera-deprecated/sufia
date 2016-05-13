@@ -101,7 +101,7 @@ module Sufia
 
       def work_ids_for_user(user)
         ids = []
-        ::GenericWork.search_in_batches("#{depositor_field}:\"#{user.user_key}\"", fl: "id") do |group|
+        ::Work.search_in_batches("#{depositor_field}:\"#{user.user_key}\"", fl: "id") do |group|
           ids.concat group.map { |doc| doc["id"] }
         end
         ids

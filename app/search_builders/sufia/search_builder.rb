@@ -18,10 +18,10 @@ class Sufia::SearchBuilder < Blacklight::SearchBuilder
     ]
   end
 
-  def show_only_generic_works(solr_parameters)
+  def show_only_works(solr_parameters)
     solr_parameters[:fq] ||= []
     solr_parameters[:fq] += [
-      ActiveFedora::SolrQueryBuilder.construct_query_for_rel(has_model: ::GenericWork.to_class_uri)
+      ActiveFedora::SolrQueryBuilder.construct_query_for_rel(has_model: ::Work.to_class_uri)
     ]
   end
 
@@ -33,19 +33,19 @@ class Sufia::SearchBuilder < Blacklight::SearchBuilder
   end
 
   def show_only_highlighted_works(solr_parameters)
-    ids = scope.current_user.trophies.pluck(:generic_work_id)
+    ids = scope.current_user.trophies.pluck(:work_id)
     solr_parameters[:fq] ||= []
     solr_parameters[:fq] += [
       ActiveFedora::SolrQueryBuilder.construct_query_for_ids(ids)
     ]
   end
 
-  # Limits search results just to GenericWorks and collections
+  # Limits search results just to Works and collections
   # @param solr_parameters the current solr parameters
   # @param user_parameters the current user-submitted parameters
   def only_works_and_collections(solr_parameters)
     solr_parameters[:fq] ||= []
-    solr_parameters[:fq] << "#{Solrizer.solr_name('has_model', :symbol)}:(\"GenericWork\" \"Collection\")"
+    solr_parameters[:fq] << "#{Solrizer.solr_name('has_model', :symbol)}:(\"Work\" \"Collection\")"
   end
 
   # show both works that match the query and works that contain files that match the query

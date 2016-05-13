@@ -71,14 +71,14 @@ describe ::SolrDocument, type: :model do
     subject { document.collection_ids }
     context 'when the object belongs to collections' do
       let(:attributes) { { id: '123',
-                           title_tesim: ['A generic work'],
+                           title_tesim: ['A work'],
                            collection_ids_tesim: ['123', '456', '789'] } }
       it { is_expected.to eq ['123', '456', '789'] }
     end
 
     context 'when the object does not belong to any collections' do
       let(:attributes) { { id: '123',
-                           title_tesim: ['A generic work'] } }
+                           title_tesim: ['A work'] } }
 
       it { is_expected.to eq [] }
     end
@@ -89,7 +89,7 @@ describe ::SolrDocument, type: :model do
     context 'when the object belongs to a collection' do
       let(:coll_id) { '456' }
       let(:attributes) { { id: '123',
-                           title_tesim: ['A generic work'],
+                           title_tesim: ['A work'],
                            collection_ids_tesim: [coll_id] } }
 
       let(:coll_attrs) { { id: coll_id, title_tesim: ['A Collection'] } }

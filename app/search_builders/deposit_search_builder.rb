@@ -11,7 +11,7 @@ class DepositSearchBuilder < ::SearchBuilder
     solr_parameters[:"facet.limit"] = ::User.count
 
     # only get file information
-    solr_parameters[:fq] = "has_model_ssim:GenericWork"
+    solr_parameters[:fq] = "has_model_ssim:Work"
 
     # we only want the facte counts not the actual data
     solr_parameters[:rows] = 0

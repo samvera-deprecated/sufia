@@ -18,20 +18,20 @@ describe Sufia::SystemStats do
       # I am specifically creating objects in this test
       # I am doing this for one test to make sure that the full loop works
       before do
-        GenericWork.new(id: "abc123") do |gf|
+        Work.new(id: "abc123") do |gf|
           gf.apply_depositor_metadata(user1)
           gf.update_index
         end
-        GenericWork.new(id: "def123") do |gf|
+        Work.new(id: "def123") do |gf|
           gf.apply_depositor_metadata(user2)
           gf.update_index
         end
-        GenericWork.new(id: "zzz123") do |gf|
+        Work.new(id: "zzz123") do |gf|
           gf.create_date = [2.days.ago]
           gf.apply_depositor_metadata(user1)
           gf.update_index
         end
-        GenericWork.new(id: "ccc123") do |c|
+        Work.new(id: "ccc123") do |c|
           c.apply_depositor_metadata(user1)
           c.update_index
         end
@@ -68,11 +68,11 @@ describe Sufia::SystemStats do
     let(:depositor_count) { nil }
 
     before do
-      build(:public_generic_work, user: user1, id: "pdf1223").update_index
-      build(:public_generic_work, user: user1, id: "wav1223").update_index
-      build(:public_generic_work, user: user1, id: "mp31223", create_date: [2.days.ago]).update_index
-      build(:registered_generic_work, user: user1, id: "reg1223").update_index
-      build(:generic_work, user: user1, id: "private1223").update_index
+      build(:public_work, user: user1, id: "pdf1223").update_index
+      build(:public_work, user: user1, id: "wav1223").update_index
+      build(:public_work, user: user1, id: "mp31223", create_date: [2.days.ago]).update_index
+      build(:registered_work, user: user1, id: "reg1223").update_index
+      build(:work, user: user1, id: "private1223").update_index
       Collection.new(id: "ccc123") do |c|
         c.apply_depositor_metadata(user1)
         c.update_index

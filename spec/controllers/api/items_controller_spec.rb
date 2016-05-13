@@ -12,7 +12,7 @@ describe API::ItemsController, type: :controller do
 
   let!(:user) { create(:user) }
   let!(:default_work) do
-    GenericWork.create(title: ['Foo Bar']) do |gf|
+    Work.create(title: ['Foo Bar']) do |gf|
       gf.apply_depositor_metadata(user)
       gf.arkivo_checksum = '6872d21557992f6ad1d07375f19fbfaf'
     end
@@ -59,7 +59,7 @@ describe API::ItemsController, type: :controller do
 
     context 'with a resource not deposited via Arkivo' do
       before do
-        allow_any_instance_of(GenericWork).to receive(:arkivo_checksum) { nil }
+        allow_any_instance_of(Work).to receive(:arkivo_checksum) { nil }
         get :show, format: :json, id: default_work.id, token: token
       end
 
@@ -71,7 +71,7 @@ describe API::ItemsController, type: :controller do
 
     context 'with a resource not found in the repository' do
       before do
-        allow(GenericWork).to receive(:find).with(default_work.id).and_raise(ActiveFedora::ObjectNotFoundError)
+        allow(Work).to receive(:find).with(default_work.id).and_raise(ActiveFedora::ObjectNotFoundError)
         get :show, format: :json, id: default_work.id, token: token
       end
 
@@ -113,7 +113,7 @@ describe API::ItemsController, type: :controller do
 
     context 'post with a valid item and matching token' do
       let(:deposited_file) { FileSet.where(label: item_hash['file']['filename']).take }
-      let(:a_work) { build :generic_work, id: '123' }
+      let(:a_work) { build :work, id: '123' }
       let!(:token) { user.arkivo_token }
       let(:item) { FactoryGirl.json(:post_item, token: token) }
       let(:item_hash) { JSON.parse(item) }
@@ -170,11 +170,11 @@ describe API::ItemsController, type: :controller do
   context 'with an HTTP PUT' do
     let(:put_item) { FactoryGirl.json(:put_item, token: token) }
     let(:token) { user.arkivo_token }
-    let(:gw) { build :generic_work, id: '123' }
+    let(:gw) { build :work, id: '123' }
 
     before do
       # Mock ActiveFedora
-      allow(GenericWork).to receive(:find).with(gw.id).and_return(gw)
+      allow(Work).to receive(:find).with(gw.id).and_return(gw)
       # Mock Arkivo Actor
       allow(arkivo_actor).to receive(:update_work_from_item)
     end
@@ -199,13 +199,13 @@ describe API::ItemsController, type: :controller do
     end
 
     context 'with a valid item, matching token, authorized resource, but not Arkivo-deposited' do
-      let(:non_arkivo_gw) { create :generic_work, id: '777', arkivo_checksum: nil }
+      let(:non_arkivo_gw) { create :work, id: '777', arkivo_checksum: nil }
       before do
         # Mock user authorization
         allow(controller).to receive(:user).and_return(user)
         allow(user).to receive(:can?).and_return(true)
         # Mock ActiveFedora for non_arkivo_work
-        allow(GenericWork).to receive(:find).with(non_arkivo_gw.id).and_return(non_arkivo_gw)
+        allow(Work).to receive(:find).with(non_arkivo_gw.id).and_return(non_arkivo_gw)
         # Post an update to a work with a nil arkivo_checksum
         put :update, put_item, id: non_arkivo_gw.id, format: :json
       end
@@ -219,7 +219,7 @@ describe API::ItemsController, type: :controller do
 
     context 'with a valid item, matching token, missing resource' do
       before do
-        allow(GenericWork).to receive(:find).with(gw.id) do
+        allow(Work).to receive(:find).with(gw.id) do
           raise(ActiveFedora::ObjectNotFoundError)
         end
         put :update, put_item, id: gw.id, format: :json
@@ -276,11 +276,11 @@ describe API::ItemsController, type: :controller do
     let(:token) { user.arkivo_token }
     let(:item) { FactoryGirl.json(:post_item, token: token) }
     let(:item_hash) { JSON.parse(item) }
-    let(:gw) { build :generic_work, id: '123' }
+    let(:gw) { build :work, id: '123' }
 
     before do
       # Mock ActiveFedora
-      allow(GenericWork).to receive(:find).with(gw.id).and_return(gw)
+      allow(Work).to receive(:find).with(gw.id).and_return(gw)
       # Mock ArkivoActor destroy work
       allow(arkivo_actor).to receive(:destroy_work)
     end
@@ -325,13 +325,13 @@ describe API::ItemsController, type: :controller do
     end
 
     context 'with a resource not deposited via Arkivo' do
-      let(:non_arkivo_gw) { create :generic_work, id: '777', arkivo_checksum: nil }
+      let(:non_arkivo_gw) { create :work, id: '777', arkivo_checksum: nil }
       before do
         # Mock user authorization
         allow(controller).to receive(:user).and_return(user)
         allow(user).to receive(:can?).and_return(true)
         # Mock ActiveFedora for non_arkivo_work
-        allow(GenericWork).to receive(:find).with(non_arkivo_gw.id).and_return(non_arkivo_gw)
+        allow(Work).to receive(:find).with(non_arkivo_gw.id).and_return(non_arkivo_gw)
         # Make call to destroy
         delete :destroy, format: :json, id: non_arkivo_gw.id, token: token
       end
@@ -346,7 +346,7 @@ describe API::ItemsController, type: :controller do
       let(:not_found_id) { '409' }
       before do
         # Mock ActiveFedora
-        allow(GenericWork).to receive(:find).with(not_found_id).and_raise(ActiveFedora::ObjectNotFoundError)
+        allow(Work).to receive(:find).with(not_found_id).and_raise(ActiveFedora::ObjectNotFoundError)
         delete :destroy, format: :json, id: not_found_id, token: token
       end
 

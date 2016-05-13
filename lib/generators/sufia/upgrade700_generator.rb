@@ -24,25 +24,25 @@ This generator for upgrading sufia from 6.0.0 to 7.0 makes the following changes
   # Setup the database migrations
   def copy_migrations
     [
-      'change_trophy_generic_file_id_to_generic_work_id.rb',
-      'change_proxy_deposit_generic_file_id_to_generic_work_id.rb',
+      'change_trophy_generic_file_id_to_work_id.rb',
+      'change_proxy_deposit_generic_file_id_to_work_id.rb',
       'change_audit_log_generic_file_id_to_file_set_id.rb',
-      'change_proxy_deposit_request_generic_file_id_to_generic_work_id.rb',
-      'change_featured_work_generic_file_id_to_generic_work_id.rb'
+      'change_proxy_deposit_request_generic_file_id_to_work_id.rb',
+      'change_featured_work_generic_file_id_to_work_id.rb'
     ].each do |file|
       better_migration_template file
     end
   end
 
   def inject_sufia_work_controller_behavior
-    file_path = "app/controllers/curation_concerns/generic_works_controller.rb"
+    file_path = "app/controllers/curation_concerns/works_controller.rb"
     if File.exist?(file_path)
       inject_into_file file_path, after: /include CurationConcerns::CurationConcernController/ do
         "\n  # Adds Sufia behaviors to the controller.\n" \
           "  include Sufia::WorksControllerBehavior\n"
       end
     else
-      puts "     \e[31mFailure\e[0m  Sufia requires a CurationConcerns::GenericWorksController object. This generator assumes that the model is defined in the file #{file_path}, which does not exist."
+      puts "     \e[31mFailure\e[0m  Sufia requires a CurationConcerns::WorksController object. This generator assumes that the model is defined in the file #{file_path}, which does not exist."
     end
   end
 

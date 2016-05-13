@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CurationConcerns::GenericWorksController do
+describe CurationConcerns::WorksController do
   let(:user) { create(:user) }
 
   before { sign_in user }
@@ -11,7 +11,7 @@ describe CurationConcerns::GenericWorksController do
     it "is successful" do
       expect(response).to be_successful
       expect(response).to render_template("layouts/sufia-one-column")
-      expect(assigns[:curation_concern]).to be_kind_of GenericWork
+      expect(assigns[:curation_concern]).to be_kind_of Work
     end
 
     it "applies depositor metadata" do
@@ -27,7 +27,7 @@ describe CurationConcerns::GenericWorksController do
       get :edit, id: work
       expect(response).to be_successful
       expect(response).to render_template("layouts/sufia-one-column")
-      expect(assigns[:form]).to be_kind_of CurationConcerns::GenericWorkForm
+      expect(assigns[:form]).to be_kind_of CurationConcerns::WorkForm
     end
   end
 
@@ -60,11 +60,11 @@ describe CurationConcerns::GenericWorksController do
       expect(actor).to receive(:create)
         .with(hash_including(:uploaded_files))
         .and_return(true)
-      post :create, generic_work: { title: ["First title"],
-                                    visibility: 'open' },
+      post :create, work: { title: ["First title"],
+                            visibility: 'open' },
                     uploaded_files: ['777', '888']
       expect(flash[:notice]).to eq "Your files are being processed by Sufia in the background. The metadata and access controls you specified are being applied. Files will be marked <span class=\"label label-danger\" title=\"Private\">Private</span> until this process is complete (shouldn't take too long, hang in there!). You may need to refresh your dashboard to see these updates."
-      expect(response).to redirect_to main_app.curation_concerns_generic_work_path(work)
+      expect(response).to redirect_to main_app.curation_concerns_work_path(work)
     end
 
     context "from browse everything" do
@@ -102,7 +102,7 @@ describe CurationConcerns::GenericWorksController do
 
       context "when a work id is passed" do
         let(:work) do
-          GenericWork.create!(title: ['test title']) do |w|
+          Work.create!(title: ['test title']) do |w|
             w.apply_depositor_metadata(user)
           end
         end
@@ -116,9 +116,9 @@ describe CurationConcerns::GenericWorksController do
           post :create, selected_files: browse_everything_params,
                         uploaded_files: uploaded_files,
                         parent_id: work.id,
-                        generic_work: { title: ['First title'] }
+                        work: { title: ['First title'] }
           expect(flash[:notice]).to eq "Your files are being processed by Sufia in the background. The metadata and access controls you specified are being applied. Files will be marked <span class=\"label label-danger\" title=\"Private\">Private</span> until this process is complete (shouldn't take too long, hang in there!). You may need to refresh your dashboard to see these updates."
-          expect(response).to redirect_to main_app.curation_concerns_generic_work_path(work)
+          expect(response).to redirect_to main_app.curation_concerns_work_path(work)
         end
       end
     end

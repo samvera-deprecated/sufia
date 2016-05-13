@@ -75,7 +75,7 @@ Sufia.config do |config|
   # Specify a date you wish to start collecting Google Analytic statistics for.
   # config.analytic_start_date = DateTime.new(2014,9,10)
 
-  # Enables a link to the citations page for a generic_file.
+  # Enables a link to the citations page for a work.
   # Default is false
   # config.citations = false
 

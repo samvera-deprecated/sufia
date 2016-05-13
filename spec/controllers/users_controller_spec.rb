@@ -22,13 +22,13 @@ describe UsersController, type: :controller do
     end
 
     describe "when the user has trophies" do
-      let(:work1) { GenericWork.create(title: ["w1"]) { |w| w.apply_depositor_metadata(user) } }
-      let(:work2) { GenericWork.create(title: ["w2"]) { |w| w.apply_depositor_metadata(user) } }
-      let(:work3) { GenericWork.create(title: ["w3"]) { |w| w.apply_depositor_metadata(user) } }
-      let!(:trophy1) { user.trophies.create!(generic_work_id: work1.id) }
-      let!(:trophy2) { user.trophies.create!(generic_work_id: work2.id) }
-      let!(:trophy3) { user.trophies.create!(generic_work_id: work3.id) }
-      let!(:badtrophy) { user.trophies.create!(generic_work_id: 'not_a_generic_work') }
+      let(:work1) { Work.create(title: ["w1"]) { |w| w.apply_depositor_metadata(user) } }
+      let(:work2) { Work.create(title: ["w2"]) { |w| w.apply_depositor_metadata(user) } }
+      let(:work3) { Work.create(title: ["w3"]) { |w| w.apply_depositor_metadata(user) } }
+      let!(:trophy1) { user.trophies.create!(work_id: work1.id) }
+      let!(:trophy2) { user.trophies.create!(work_id: work2.id) }
+      let!(:trophy3) { user.trophies.create!(work_id: work3.id) }
+      let!(:badtrophy) { user.trophies.create!(work_id: 'not_a_work') }
 
       it "show the user profile if user exists" do
         get :show, id: user.user_key
@@ -125,12 +125,12 @@ describe UsersController, type: :controller do
     end
 
     context "when the user has trophies" do
-      let(:work1) { GenericWork.create(title: ["w1"]) { |w| w.apply_depositor_metadata(user) } }
-      let(:work2) { GenericWork.create(title: ["w2"]) { |w| w.apply_depositor_metadata(user) } }
-      let(:work3) { GenericWork.create(title: ["w3"]) { |w| w.apply_depositor_metadata(user) } }
-      let!(:trophy1) { user.trophies.create!(generic_work_id: work1.id) }
-      let!(:trophy2) { user.trophies.create!(generic_work_id: work2.id) }
-      let!(:trophy3) { user.trophies.create!(generic_work_id: work3.id) }
+      let(:work1) { Work.create(title: ["w1"]) { |w| w.apply_depositor_metadata(user) } }
+      let(:work2) { Work.create(title: ["w2"]) { |w| w.apply_depositor_metadata(user) } }
+      let(:work3) { Work.create(title: ["w3"]) { |w| w.apply_depositor_metadata(user) } }
+      let!(:trophy1) { user.trophies.create!(work_id: work1.id) }
+      let!(:trophy2) { user.trophies.create!(work_id: work2.id) }
+      let!(:trophy3) { user.trophies.create!(work_id: work3.id) }
 
       it "show the user profile if user exists" do
         get :edit, id: user.user_key
@@ -222,9 +222,9 @@ describe UsersController, type: :controller do
     end
 
     context "when removing a trophy" do
-      let(:work) { GenericWork.create(title: ["w1"]) { |w| w.apply_depositor_metadata(user) } }
+      let(:work) { Work.create(title: ["w1"]) { |w| w.apply_depositor_metadata(user) } }
       before do
-        user.trophies.create!(generic_work_id: work.id)
+        user.trophies.create!(work_id: work.id)
       end
       it "removes a trophy" do
         expect {
@@ -285,7 +285,7 @@ describe UsersController, type: :controller do
   end
 
   describe "#toggle_trophy" do
-    let(:work) { GenericWork.create(title: ["w1"]) { |w| w.apply_depositor_metadata(user) } }
+    let(:work) { Work.create(title: ["w1"]) { |w| w.apply_depositor_metadata(user) } }
     let(:work_id) { work.id }
     let(:another_user) { FactoryGirl.create(:user) }
 
@@ -293,7 +293,7 @@ describe UsersController, type: :controller do
       post :toggle_trophy, id: user.user_key, work_id: work_id
       json = JSON.parse(response.body)
       expect(json['user_id']).to eq user.id
-      expect(json['generic_work_id']).to eq work_id
+      expect(json['work_id']).to eq work_id
     end
     it "does not trophy a work for a different user" do
       post :toggle_trophy, id: another_user.user_key, work_id: work_id

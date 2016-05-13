@@ -10,7 +10,7 @@ describe Sufia::CreateWithFilesActor do
   let(:user) { create(:user) }
   let(:uploaded_file1) { Sufia::UploadedFile.create(user: user) }
   let(:uploaded_file2) { Sufia::UploadedFile.create(user: user) }
-  let(:work) { create(:generic_work, user: user) }
+  let(:work) { create(:work, user: user) }
   let(:uploaded_file_ids) { [uploaded_file1.id, uploaded_file2.id] }
   let(:attributes) { { uploaded_files: uploaded_file_ids } }
 
@@ -21,7 +21,7 @@ describe Sufia::CreateWithFilesActor do
 
   context "when uploaded_file_ids belong to me" do
     it "attaches files" do
-      expect(AttachFilesToWorkJob).to receive(:perform_later).with(GenericWork, [uploaded_file1, uploaded_file2])
+      expect(AttachFilesToWorkJob).to receive(:perform_later).with(Work, [uploaded_file1, uploaded_file2])
       expect(actor.create(attributes)).to be true
     end
   end

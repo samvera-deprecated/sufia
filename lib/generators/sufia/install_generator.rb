@@ -11,7 +11,7 @@ module Sufia
    2. Installs model-related concerns
      * Creates several database migrations if they do not exist in /db/migrate
      * Adds user behavior to the user model
-     * Generates GenericWork model.
+     * Generates Work model.
      * Creates the sufia.rb configuration file
      * Generates mailboxer
      * Runs proxies generator
@@ -36,8 +36,8 @@ module Sufia
     end
 
     def run_curation_concerns_work_generator
-      say_status("info", "GENERATING DEFAULT GENERICWORK MODEL", :blue)
-      generate 'curation_concerns:work GenericWork'
+      say_status("info", "GENERATING DEFAULT WORK MODEL", :blue)
+      generate 'curation_concerns:work Work'
     end
 
     # Setup the database migrations
@@ -78,8 +78,8 @@ module Sufia
       end
     end
 
-    def inject_sufia_generic_work_behavior
-      insert_into_file 'app/models/generic_work.rb', after: 'include ::CurationConcerns::BasicMetadata' do
+    def inject_sufia_work_behavior
+      insert_into_file 'app/models/work.rb', after: 'include ::CurationConcerns::BasicMetadata' do
         "\n  include Sufia::WorkBehavior" \
         "\n  self.human_readable_type = 'Work'"
       end
@@ -185,14 +185,14 @@ module Sufia
     end
 
     def inject_sufia_form
-      file_path = "app/forms/curation_concerns/generic_work_form.rb"
+      file_path = "app/forms/curation_concerns/work_form.rb"
       if File.exist?(file_path)
         gsub_file file_path, /CurationConcerns::Forms::WorkForm/, "Sufia::Forms::WorkForm"
-        inject_into_file file_path, after: /model_class = ::GenericWork/ do
+        inject_into_file file_path, after: /model_class = ::Work/ do
           "\n    self.terms += [:resource_type]\n"
         end
       else
-        puts "     \e[31mFailure\e[0m  Sufia requires a GenericWorkForm object. This generator assumes that the model is defined in the file #{file_path}, which does not exist."
+        puts "     \e[31mFailure\e[0m  Sufia requires a WorkForm object. This generator assumes that the model is defined in the file #{file_path}, which does not exist."
       end
     end
 
