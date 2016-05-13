@@ -128,11 +128,6 @@ module Sufia::User
     nil
   end
 
-  # The basic groups method, override or will fallback to Sufia::Ldap::User
-  def groups
-    @groups ||= group_list ? group_list.split(";?;") : []
-  end
-
   def ability
     @ability ||= ::Ability.new(self)
   end
@@ -159,7 +154,7 @@ module Sufia::User
 
     # Override this method if you aren't using email as the userkey
     def audituser_key
-      'audituser@example.com'
+      Sufia.config.audit_user_key
     end
 
     # Override this method if you aren't using email/password
@@ -169,7 +164,7 @@ module Sufia::User
 
     # Override this method if you aren't using email as the userkey
     def batchuser_key
-      'batchuser@example.com'
+      Sufia.config.batch_user_key
     end
 
     def from_url_component(component)
