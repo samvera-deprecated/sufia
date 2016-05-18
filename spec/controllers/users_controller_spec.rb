@@ -220,6 +220,19 @@ describe UsersController, type: :controller do
       expect(u.orcid).to eq 'http://orcid.org/0000-0000-1111-2222'
     end
 
+    it "does not allow groups to be set" do
+      user.group_list = 'private group'
+      user.save
+      post :update, id: user.user_key, user: { group_list: ['my group'] }
+      expect(user.reload.group_list).to eq 'private group'
+    end
+
+    it "does not allow email to be set" do
+      original_email = user.email
+      post :update, id: user.user_key, user: { email: ['myemail.email.com'] }
+      expect(user.reload.email).to eq original_email
+    end
+
     it 'displays a flash when invalid ORCID is entered' do
       expect(user.orcid).to be_blank
       post :update, id: user.user_key, user: { orcid: 'foobar' }
