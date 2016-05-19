@@ -105,6 +105,12 @@ module EngineRoutes
   end
 end
 
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+  end
+end
+
 require 'active_fedora/cleaner'
 RSpec.configure do |config|
   config.expect_with :rspec do |c|
@@ -143,6 +149,8 @@ RSpec.configure do |config|
   # automatically. This will be the default behavior in future versions of
   # rspec-rails.
   config.infer_base_class_for_anonymous_controllers = false
+
+  config.include Shoulda::Matchers::Independent
 
   config.include Devise::TestHelpers, type: :controller
   config.include EngineRoutes, type: :controller
