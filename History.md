@@ -1,12 +1,12 @@
 # History of Sufia releases
 ## 6.6.1
-* 2016-05-18 : Upping the versions for 6.6.1 release [Carolyn Cole]
-* 2016-05-18 : Removing group and login from profile update [Carolyn Cole]
-* 2016-05-18 : Test with Rails 4.2.6 [Justin Coyne]
-* 2016-03-14 : Add auto-fix + exclusions for new Rubocop violations [Michael J. Giarlo]
-* 2016-03-14 : Temporarily pin Rubocop to get past broken 0.38.0 error [Michael J. Giarlo]
-* 2016-03-14 : Hydra-Jetty should be the default service container in 6.x. [Michael J. Giarlo]
-* 2016-02-01 : Escape property values before presenting them with auto_link. [Olli Lyytinen]
+* Upping the versions for 6.6.1 release [Carolyn Cole]
+* Removing group and login from profile update [Carolyn Cole]
+* Test with Rails 4.2.6 [Justin Coyne]
+* Add auto-fix + exclusions for new Rubocop violations [Michael J. Giarlo]
+* Temporarily pin Rubocop to get past broken 0.38.0 error [Michael J. Giarlo]
+* Hydra-Jetty should be the default service container in 6.x. [Michael J. Giarlo]
+* Escape property values before presenting them with auto_link. [Olli Lyytinen]
 
 ## 6.6.0
 * Update background workers doc [E. Lynette Rayle]
