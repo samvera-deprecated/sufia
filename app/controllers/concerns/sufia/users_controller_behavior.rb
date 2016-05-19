@@ -106,9 +106,9 @@ module Sufia::UsersControllerBehavior
   protected
 
     def user_params
-      params.require(:user).permit(:email, :login, :display_name, :address, :admin_area,
+      params.require(:user).permit(:display_name, :address, :admin_area,
                                    :department, :title, :office, :chat_id, :website, :affiliation,
-                                   :telephone, :avatar, :group_list, :groups_last_update, :facebook_handle,
+                                   :telephone, :avatar, :facebook_handle,
                                    :twitter_handle, :googleplus_handle, :linkedin_handle, :remove_avatar, :orcid)
     end
 
