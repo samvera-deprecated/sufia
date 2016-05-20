@@ -98,7 +98,7 @@ module Sufia
       # this block is only executed when a link is inserted;
       # if we pass text containing no links, it just returns text.
       auto_link(html_escape(text)) do |value|
-        "<i class='glyphicon glyphicon-new-window'></i>#{('&nbsp;' + value) if showLink}<br />"
+        "<span class='glyphicon glyphicon-new-window'></span>#{('&nbsp;' + value) if showLink}"
       end
     end
 
@@ -146,8 +146,10 @@ module Sufia
     end
 
     def render_visibility_link(document)
+      # Anchor must match with a tab in
+      # https://github.com/projecthydra/sufia/blob/master/app/views/curation_concerns/base/_guts4form.html.erb#L2
       link_to render_visibility_label(document),
-              edit_polymorphic_path([main_app, document], anchor: "permissions_display"),
+              edit_polymorphic_path([main_app, document], anchor: "share"),
               id: "permission_" + document.id, class: "visibility-link"
     end
 
