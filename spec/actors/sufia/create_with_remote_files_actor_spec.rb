@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Sufia::CreateWithRemoteFilesActor do
   let(:create_actor) { double('create actor', create: true,
                                               curation_concern: work,
@@ -26,7 +24,7 @@ describe Sufia::CreateWithRemoteFilesActor do
   end
 
   it "attaches files" do
-    expect(ImportUrlJob).to receive(:perform_later).with(FileSet).twice
+    expect(ImportUrlJob).to receive(:perform_later).with(FileSet, CurationConcerns::Operation).twice
     expect(actor.create(attributes)).to be true
   end
 end
