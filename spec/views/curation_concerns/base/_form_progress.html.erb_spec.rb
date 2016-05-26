@@ -20,9 +20,12 @@ describe 'curation_concerns/base/_form_progress.html.erb' do
   end
 
   context "for a new object" do
-    before { assign(:form, form) }
-
     let(:work) { GenericWork.new }
+
+    it "shows the header set in the locale config in the sidebar" do
+      controller_name = "batch_uploads"
+      expect(t("sufia.#{controller_name}.progress.header")).to eql "Batch Create New Works"
+    end
 
     context "with options for proxy" do
       let(:proxies) { [stub_model(User, email: 'bob@example.com')] }
