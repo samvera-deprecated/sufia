@@ -17,6 +17,20 @@ module Sufia
       end
     end
 
+    def collection_presenter_types
+      [
+        "genericwork",
+        "collection"
+      ]
+    end
+
+    def grouped_collection_presenters(filtered_by: nil, except: nil)
+      grouped = collection_presenters.group_by(&:model_name).transform_keys { |key| key.to_s.downcase }
+      grouped.select! { |obj| obj.downcase == filtered_by } unless filtered_by.nil?
+      grouped.except!(*except) unless except.nil?
+      grouped
+    end
+
     def display_feature_link?
       user_can_feature_works? && solr_document.public? && FeaturedWork.can_create_another? && !featured?
     end

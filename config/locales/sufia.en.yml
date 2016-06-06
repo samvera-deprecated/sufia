@@ -301,6 +301,8 @@ en:
         total_items:      "Total Items"
         size:             "Size"
         <<: *work_labels
+      in_works_ids:
+        empty:            "Cannot add an empty Parent"
 
     hints:
       generic_work:
@@ -337,9 +339,20 @@ en:
   curation_concerns:
     base:
       relationships:
-        header: Relationships
-        empty:       "This %{type} is not currently in any collections."
-        collections: "In collections:"
+       header: Relationships
+       empty:       "This %{type} is not currently in any collections."
+      relationships_collection_row:
+       collection: "In collections:"
+       genericwork: "In works:"
+      relationships_collection_row_empty:
+       collection: "In collections:"
+       genericwork: "In works:"
+       empty_collection:       "This %{type} is not currently in any collections."
+       empty_genericwork:       "This %{type} is not currently a part of any works."
+      relationships_member_rows:
+       member: "Has related members:"
+       genericwork: "Has child works:"
+       empty:       "This %{type} does not have any related works."
       metadata:
         header: Descriptions
         attribute_name_label: Attribute Name
@@ -365,6 +378,7 @@ en:
       fields:
         show:
           keyword: Keyword
+
 
   helpers:
     action:

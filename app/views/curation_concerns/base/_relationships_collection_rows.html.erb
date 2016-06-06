@@ -1,0 +1,19 @@
+<% collection_presenters = presenter.collection_presenters %>
+<% if collection_presenters.blank? %>
+  <% presenter.collection_presenter_types.each do |type| %>
+    <%= render 'relationships_collection_row_empty', type: type, presenter: presenter %>
+  <% end %>
+<% else %>
+  <% presenter.grouped_collection_presenters(except: presenter.collection_presenter_types).each_pair do |model_name, collection| %>
+    <%= render 'relationships_collection_row', model_name: model_name, collection: collection %>
+  <% end %>
+  <% presenter.collection_presenter_types.each do |type| %>
+    <% if presenter.grouped_collection_presenters(filtered_by: type).blank? %>
+      <%= render 'relationships_collection_row_empty', type: type, presenter: presenter %>
+    <% else %>
+      <% presenter.grouped_collection_presenters(filtered_by: type).each_pair do |model_name, collection| %>
+        <%= render 'relationships_collection_row', model_name: model_name, collection: collection %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

@@ -1,0 +1,16 @@
+<tr>
+<th><%= t(".#{model_name.downcase}", type: model_name) %></th>
+<td>
+  <% if collection.blank? %>
+    <p><%= t('.empty', type: model_name) %></p>
+  <% else %>
+    <ul class="tabular">
+      <% collection.each do |col| %>
+        <li class='attribute title'>
+          <%= link_to col.title.first, contextual_path(col, nil) %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</td>
+</tr>

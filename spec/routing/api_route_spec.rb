@@ -86,4 +86,26 @@ describe 'routing and paths', type: :routing do
       expect(api_zotero_callback_path).to eq '/api/zotero/callback'
     end
   end
+
+  describe 'nested works api helpers' do
+    let(:work_id) { "123" }
+    let(:parent_work_id) { "123" }
+
+    it 'has a path for adding a work parent to a work' do
+      expect(get: "/api/generic_works/#{work_id}/add_parent/#{parent_work_id}").to route_to(
+        controller: "api/generic_works",
+        action: "add_parent",
+        id: work_id,
+        parent_id: parent_work_id
+      )
+    end
+    it 'has a path for removing a work parent from a work' do
+      expect(get: "/api/generic_works/#{work_id}/remove_parent/#{parent_work_id}").to route_to(
+        controller: "api/generic_works",
+        action: "remove_parent",
+        id: work_id,
+        parent_id: parent_work_id
+      )
+    end
+  end
 end

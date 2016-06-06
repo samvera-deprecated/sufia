@@ -3,7 +3,10 @@ describe "single use link", ->
     beforeEach ->
       # setup two inputs for us to attach  auto complete to
       setFixtures  '<a id="test_link" data-generate-single-use-link-url="/single_use_link/generate_show/abc123" />'
-      jasmine.Ajax.install();
+      jasmine.Ajax.install()
+
+    afterEach ->
+      jasmine.Ajax.uninstall()
 
     # call ajax to get a link
     it "calls for the expected link", ->
