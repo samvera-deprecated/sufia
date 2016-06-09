@@ -10,6 +10,7 @@ describe 'catalog/_index_list_default' do
                          "http://creativecommons.org/publicdomain/mark/1.0/",
                          "http://www.europeana.eu/portal/rights/rr-r.html"] }
   end
+  let(:search_state) { Blacklight::SearchState.new(params, CatalogController.blacklight_config) }
   let(:document) { SolrDocument.new(attributes) }
   let(:blacklight_configuration_context) do
     Blacklight::Configuration::Context.new(controller)
@@ -21,13 +22,15 @@ describe 'catalog/_index_list_default' do
     allow(User).to receive(:find_by_user_key).and_return(joe, justin)
     allow(view).to receive(:blacklight_config).and_return(CatalogController.blacklight_config)
     allow(view).to receive(:blacklight_configuration_context).and_return(blacklight_configuration_context)
+    allow(view).to receive(:search_state).and_return(search_state)
+    allow(view).to receive(:search_action_path)
     render 'catalog/index_list_default', document: document
   end
 
   it "displays metadata" do
     expect(rendered).not_to include 'Title:'
     expect(rendered).to include '<span class="attribute-label h4">Creator:</span>'
-    expect(rendered).to include '<span itemprop="creator">Justin</span> and <span itemprop="creator">Joe</span>'
+    expect(rendered).to include '<span itemprop="creator"><a href="/catalog"><span itemprop="creator">Justin</span></a></span> and <span itemprop="creator"><a href="/catalog"><span itemprop="creator">Joe</span></a></span>'
     expect(rendered).to include '<span class="attribute-label h4">Description:</span>'
     expect(rendered).to include '<span itemprop="description">This links to <a href="http://example.com/"><span class="glyphicon glyphicon-new-window"></span> http://example.com/</a> What about that?</span>'
     expect(rendered).to include '<span class="attribute-label h4">Date Uploaded:</span>'
