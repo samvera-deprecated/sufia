@@ -1,0 +1,6 @@
+en:
+  blacklight:
+    search:
+      fields:
+        show:
+          keyword: Keyword
