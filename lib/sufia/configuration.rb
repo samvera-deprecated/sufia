@@ -123,5 +123,11 @@ module Sufia
     def translate_id_to_uri
       @translate_id_to_uri ||= ActiveFedora::Noid.config.translate_id_to_uri
     end
+
+    # Hostname is used for the externally visible URI when RDF is requested
+    attr_writer :hostname
+    def hostname
+      @hostname ||= 'localhost'
+    end
   end
 end

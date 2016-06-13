@@ -56,15 +56,28 @@ describe CurationConcerns::GenericWorksController do
       create(:work, title: ['test title'], user: user)
     end
 
-    it "is successful" do
-      get :show, id: work
-      expect(response).to be_successful
-      expect(assigns(:presenter)).to be_kind_of Sufia::WorkShowPresenter
+    context "html" do
+      it "is successful" do
+        get :show, id: work
+        expect(response).to be_successful
+        expect(assigns(:presenter)).to be_kind_of Sufia::WorkShowPresenter
+      end
     end
 
-    it 'renders an endnote file' do
-      get :show, id: work, format: 'endnote'
-      expect(response).to be_successful
+    context "endnote" do
+      it 'renders an endnote file' do
+        get :show, id: work, format: 'endnote'
+        expect(response).to be_successful
+      end
+    end
+
+    context "ttl" do
+      it 'renders an turtle file' do
+        get :show, id: work, format: :ttl
+        expect(response).to be_successful
+        expect(response.body).to start_with "\n<http://localhost/concern/generic_works/#{work.id}>"
+        expect(response.body).to match %r{<http://purl\.org/dc/terms/title> "test title";}
+      end
     end
 
     context "without a referer" do

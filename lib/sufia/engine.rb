@@ -47,6 +47,7 @@ module Sufia
       end
 
       CurationConcerns::CurationConcern.actor_factory = Sufia::ActorFactory
+      Hydra.config.id_to_resource_uri = Sufia.id_to_resource_uri
     end
 
     initializer 'sufia.assets.precompile' do |app|
