@@ -155,12 +155,8 @@ Sufia::Engine.routes.draw do
     get 'generic_works/:id/remove_parent/:parent_id' => 'generic_works#remove_parent'
   end
 
-  if defined?(Sufia::StatsAdmin)
-    namespace :admin do
-      constraints Sufia::StatsAdmin do
-        get 'stats' => 'stats#index', as: :stats
-      end
-    end
+  namespace :admin do
+    get 'stats' => 'stats#index', as: :stats
   end
 
   resources :content_blocks, only: ['create', 'update']
