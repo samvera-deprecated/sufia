@@ -39,7 +39,6 @@
 //= require sufia/search
 //= require sufia/editor
 //= require sufia/ga_events
-//= require sufia/form_add_remove_table_rows
 //= require sufia/select_submit
 //= require sufia/tabs
 //= require sufia/user_search
@@ -54,6 +53,7 @@
 //= require sufia/save_work
 //= require sufia/permissions
 //= require sufia/notifications
+//= require sufia/relationships_table
 
 //= require curation_concerns/collections
 //= require hydra-editor/hydra-editor

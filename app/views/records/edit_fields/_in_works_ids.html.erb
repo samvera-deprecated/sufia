@@ -1,15 +1,39 @@
 <%# Form UI behavior code and details;
-  Code:
-  app/assets/javascripts/sufia/form_add_remove_table_rows.js
+Code:
+  app/assets/javascripts/sufia/relationships_table.es6
 CSS:
+  table.relationships-api-enabled : Used by sufia JS app as selector to wire up the UI functionality
   tr.new-row : The basic template row for cloning when user clicks "Add"
   .btn-remove-row : Button to remove its parent TR from the table
   .btn-add-row : Button to clone its parent TR and inject a new row into the table
   input.new-form-control : Input field for client client side validation and additional features
+    .message.has-warning : Used to display UI errors related to input values and server errors
+HTML Properties:
+  table:
+    data-api-add-url : API url to call for adding a new row to this table
+    data-api-remove-url : API url to call for removing a row from this table
+    data-works-context : (parent|child)
+      this relates to the JSON returned from the server when successfully adding a new row.
+      See example API return:
+      {
+        "parent": {
+          "title":["dfdf"],
+          "path":"/concern/generic_works/9306sz37r",
+          "id":"9306sz37r"
+        },
+        "child": {
+          "title":["asdf"],
+          "path":"/concern/generic_works/2b88qc32v",
+          "id":"2b88qc32v"
+        }
+      }
 %>
 <% if f.object.class.multiple? key %>
   <div class="form-group multi_value optional generic_work_in_works_ids managed">
-    <table class="table table-striped related-files">
+    <table class="table table-striped related-files relationships-api-enabled"
+           data-api-add-url=<%="/api/generic_works/#{f.object.model.id}/add_parent/:id"%>
+           data-api-remove-url=<%="/api/generic_works/#{f.object.model.id}/remove_parent/:id"%>
+           data-works-context="parent">
       <thead>
         <tr>
           <th>Parent Work</th>
@@ -27,11 +51,7 @@ CSS:
             <td>
               <div class="child-actions">
                 <%= link_to "Edit", edit_polymorphic_path([main_app, :curation_concerns, curation_concern.model_name.singular], id: parent.id), target: "_blank", class: 'btn btn-default' %>
-                <a class="btn btn-danger btn-remove-row"
-                   data-api-url=<%="/api/generic_works/#{f.object.model.id}/remove_parent/:id"%>
-                   data-api-call="apiCall"
-                   data-api-success="apiRemoveParentSuccess"
-                   data-api-error="apiRemoveParentError">Remove</a>
+                <a class="btn btn-danger btn-remove-row">Remove</a>
               </div>
             </td>
           </tr>
@@ -39,22 +59,14 @@ CSS:
         <tr class="new-row">
           <td>
             <a href="" class="title hidden"></a>
-            <input class="new-form-control string multi_value optional related_works_ids form-control multi-text-field" name="" value="" aria-labelledby="generic_work_in_works_ids_label" type="text">
-            <div class="message has-warning hidden"><%= t('simple_form.labels.in_works_ids.empty') %></div>
+            <input class="new-form-control string multi_value optional related_works_ids form-control multi-text-field" name="generic_work[in_works_ids][]" value="" aria-labelledby="generic_work_in_works_ids_label" type="text">
+            <div class="message has-warning hidden"></div>
           </td>
           <td>
             <div class="child-actions">
               <a href="" class="edit hidden btn btn-default" target="_blank">Edit</a>
-              <a class="btn btn-danger btn-remove-row hidden"
-                 data-api-url=<%="/api/generic_works/#{f.object.model.id}/remove_parent/:id"%>
-                 data-api-call="apiCall"
-                 data-api-success="apiRemoveParentSuccess"
-                 data-api-error="apiRemoveParentError">Remove</a>
-              <a class="btn btn-primary btn-add-row"
-                 data-api-url=<%="/api/generic_works/#{f.object.model.id}/add_parent/:id"%>
-                 data-api-call="apiCall"
-                 data-api-success="apiAddParentSuccess"
-                 data-api-error="apiAddParentError">Add</a>
+              <a class="btn btn-danger btn-remove-row hidden">Remove</a>
+              <a class="btn btn-primary btn-add-row">Add</a>
             </div>
           </td>
         </tr>

@@ -301,8 +301,6 @@ en:
         total_items:      "Total Items"
         size:             "Size"
         <<: *work_labels
-      in_works_ids:
-        empty:            "Cannot add an empty Parent"
 
     hints:
       generic_work:
