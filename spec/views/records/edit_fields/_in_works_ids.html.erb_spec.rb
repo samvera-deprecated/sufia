@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "records/edit_fields/_in_works_ids.html.erb" do
+describe "records/edit_fields/_in_works_ids.html.erb", type: :view do
   let(:work) do
     stub_model(GenericWork, id: '456', title: ["MyWork"])
   end
@@ -37,15 +37,15 @@ describe "records/edit_fields/_in_works_ids.html.erb" do
       before do
         allow(work).to receive(:in_works_ids).and_return([])
       end
-      it "should have 1 empty parent work input" do
+      it "has 1 empty parent work input" do
         expect(page).to have_selector("input[value='']", count: 1)
       end
 
-      it "should not display the remove button in the actions" do
+      it "does not display the remove button in the actions" do
         expect(page).to have_selector(".btn-remove-row", visible: false)
       end
 
-      it "should display the add button in the actions" do
+      it "displays the add button in the actions" do
         expect(page).to have_selector(".btn-add-row", visible: true, count: 1)
       end
     end
@@ -57,20 +57,20 @@ describe "records/edit_fields/_in_works_ids.html.erb" do
       before do
         allow(work).to receive(:in_works_ids).and_return([work_2.id])
       end
-      it "should have 1 empty parent work input with add button" do
+      it "has 1 empty parent work input with add button" do
         expect(page).to have_selector("input[value='']", count: 1)
         expect(page).to have_selector(".btn-add-row", visible: true, count: 1)
       end
 
-      it "should have an input box that is filled in with the parent id" do
+      it "has an input box that is filled in with the parent id" do
         expect(page).to have_selector("input[value='#{work_2.id}']", count: 1)
       end
 
-      it "should generate a link for the parents first title" do
+      it "generates a link for the parents first title" do
         expect(page).to have_link("Test Parent Work")
       end
 
-      it "should have an edit and remove button" do
+      it "has an edit and remove button" do
         within ".old-row" do
           expect(page).to have_selector(".btn-remove-row", visible: true, count: 1)
           expect(page).to have_selector(".btn-edit-row", visible: true, count: 1)
@@ -88,22 +88,22 @@ describe "records/edit_fields/_in_works_ids.html.erb" do
         allow(::ActiveFedora::Base).to receive(:find).and_return(work_2, work_3)
         allow(work).to receive(:in_works_ids).and_return([work_2.id, work_3.id])
       end
-      it "should have 1 empty parent work input with add button" do
+      it "has 1 empty parent work input with add button" do
         expect(page).to have_selector("input[value='']", count: 1)
         expect(page).to have_selector(".btn-add-row", visible: true, count: 1)
       end
 
-      it "should have an input box that is filled in with the parent ids" do
+      it "has an input box that is filled in with the parent ids" do
         expect(page).to have_selector("input[value='#{work_2.id}']", count: 1)
         expect(page).to have_selector("input[value='#{work_3.id}']", count: 1)
       end
 
-      it "should generate a link for the parents first title" do
+      it "generates a link for the parents first title" do
         expect(page).to have_link("Test Parent Work")
         expect(page).to have_link("Test Parent Work 2")
       end
 
-      it "should have edit and remove buttons" do
+      it "has an edit and remove button" do
         within ".old-row" do
           expect(page).to have_selector(".btn-remove-row", visible: true, count: 2)
           expect(page).to have_selector(".btn-edit-row", visible: true, count: 2)

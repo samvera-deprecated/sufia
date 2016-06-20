@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "curation_concerns/base/_form_child_work_relationships.html.erb" do
+describe "curation_concerns/base/_form_child_work_relationships.html.erb", type: :view do
   let(:work) do
     stub_model(GenericWork, id: '456', title: ["MyWork"])
   end
@@ -33,15 +33,15 @@ describe "curation_concerns/base/_form_child_work_relationships.html.erb" do
       before do
         allow(work).to receive(:members).and_return([])
       end
-      it "should have 1 empty child work input" do
+      it "has 1 empty child work input" do
         expect(page).to have_selector("input[value='']", count: 1)
       end
 
-      it "should not display the remove button in the actions" do
+      it "will not display the remove button in the actions" do
         expect(page).to have_selector(".btn-remove-row", visible: false)
       end
 
-      it "should display the add button in the actions" do
+      it "will display the add button in the actions" do
         expect(page).to have_selector(".btn-add-row", visible: true, count: 1)
       end
     end
@@ -53,20 +53,20 @@ describe "curation_concerns/base/_form_child_work_relationships.html.erb" do
       before do
         allow(work).to receive(:members).and_return([work_2])
       end
-      it "should have 1 empty child work input with add button" do
+      it "has 1 empty child work input with add button" do
         expect(page).to have_selector("input[value='']", count: 1)
         expect(page).to have_selector(".btn-add-row", visible: true, count: 1)
       end
 
-      it "should have an input box that is filled in with the child id" do
+      it "has an input box that is filled in with the child id" do
         expect(page).to have_selector("input[value='#{work_2.id}']", count: 1)
       end
 
-      it "should generate a link for the childs first title" do
+      it "generates a link for the childs first title" do
         expect(page).to have_link("Test Child Work")
       end
 
-      it "should have an edit and remove button" do
+      it "has an edit and remove button" do
         within ".old-row" do
           expect(page).to have_selector(".btn-remove-row", visible: true, count: 1)
           expect(page).to have_selector(".btn-edit-row", visible: true, count: 1)
@@ -83,22 +83,22 @@ describe "curation_concerns/base/_form_child_work_relationships.html.erb" do
       before do
         allow(work).to receive(:members).and_return([work_2, work_3])
       end
-      it "should have 1 empty child work input with add button" do
+      it "has 1 empty child work input with add button" do
         expect(page).to have_selector("input[value='']", count: 1)
         expect(page).to have_selector(".btn-add-row", visible: true, count: 1)
       end
 
-      it "should have an input box that is filled in with the child ids" do
+      it "has an input box that is filled in with the child ids" do
         expect(page).to have_selector("input[value='#{work_2.id}']", count: 1)
         expect(page).to have_selector("input[value='#{work_3.id}']", count: 1)
       end
 
-      it "should generate a link for the childs first title" do
+      it "generates a link for the childs first title" do
         expect(page).to have_link("Test Child Work")
         expect(page).to have_link("Test Child Work 2")
       end
 
-      it "should have edit and remove buttons" do
+      it "has an edit and remove button" do
         within ".old-row" do
           expect(page).to have_selector(".btn-remove-row", visible: true, count: 2)
           expect(page).to have_selector(".btn-edit-row", visible: true, count: 2)

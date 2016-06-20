@@ -51,8 +51,8 @@ describe 'curation_concerns/base/relationships', type: :view do
     it "labels the link using the presenter's #to_s method" do
       expect(page).not_to have_content 'foobar'
     end
-    it "should show the empty messages for parents" do
-      expect(page).to_not have_content "This Work is not currently in any collections."
+    it "shows the empty messages for parents" do
+      expect(page).not_to have_content "This Work is not currently in any collections."
       expect(page).to have_content "This Work is not currently a part of any works."
     end
   end
@@ -72,9 +72,9 @@ describe 'curation_concerns/base/relationships', type: :view do
     it "labels the link using the presenter's #to_s method" do
       expect(page).not_to have_content 'barbaz'
     end
-    it "should show the empty messages for collections" do
+    it "shows the empty messages for collections" do
       expect(page).to have_content "This Work is not currently in any collections."
-      expect(page).to_not have_content "This Work is not currently a part of any works."
+      expect(page).not_to have_content "This Work is not currently a part of any works."
     end
   end
 
@@ -96,9 +96,9 @@ describe 'curation_concerns/base/relationships', type: :view do
       expect(page).not_to have_content 'barbaz'
       expect(page).not_to have_content 'foobar'
     end
-    it "should not show the empty messages" do
-      expect(page).to_not have_content "This Work is not currently in any collections."
-      expect(page).to_not have_content "This Work is not currently a part of any works."
+    it "does not show the empty messages" do
+      expect(page).not_to have_content "This Work is not currently in any collections."
+      expect(page).not_to have_content "This Work is not currently a part of any works."
     end
   end
 
@@ -117,8 +117,8 @@ describe 'curation_concerns/base/relationships', type: :view do
     it "labels the link using the presenter's #to_s method" do
       expect(page).not_to have_content 'barbaz'
     end
-    it "should not show the empty message" do
-      expect(page).to_not have_content "This Work does not have any related works."
+    it "does not show the empty message" do
+      expect(page).not_to have_content "This Work does not have any related works."
     end
   end
 end
