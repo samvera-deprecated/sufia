@@ -52,5 +52,39 @@ FactoryGirl.define do
         subject %w(sed do eiusmod tempor incididunt ut labore)
       end
     end
+
+    trait :with_content do
+      before(:create) do |gf|
+        gf.add_file(File.open(File.expand_path("../../fixtures", __FILE__) + '/small_file.txt'), path: 'content', original_name: 'world.png')
+      end
+    end
+
+    trait :with_complete_metadata do
+      title         ['titletitle']
+      label         'labellabel'
+      filename      ['filename.filename']
+      tag           ['tagtag']
+      based_near    ['based_nearbased_near']
+      language      ['languagelanguage']
+      creator       ['creatorcreator']
+      contributor   ['contributorcontributor']
+      publisher     ['publisherpublisher']
+      subject       ['subjectsubject']
+      resource_type ['resource_typeresource_type']
+      description   ['descriptiondescription']
+      format_label  ['format_labelformat_label']
+      related_url   ['http://example.org/TheRelatedURLLink/']
+      date_created  ['date_createddate_created']
+      bibliographic_citation ['bibliographic_citationbibliographic_citation']
+    end
+
+    trait :with_system_metadata do
+      arkivo_checksum 'checksumchecksum'
+      relative_path 'relpathrelpath'
+      import_url 'importurlimporturl'
+      date_uploaded DateTime.new(2016, 6, 21, 9, 8)
+      date_modified DateTime.new(2016, 6, 21, 9, 8)
+      source ['sourcesource']
+    end
   end
 end

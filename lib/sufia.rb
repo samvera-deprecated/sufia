@@ -11,6 +11,7 @@ require 'sufia/models'
 require 'sufia/inflections'
 require 'sufia/arkivo'
 require 'sufia/zotero'
+require 'sufia/export'
 
 require 'rails_autolink'
 require 'font-awesome-rails'
