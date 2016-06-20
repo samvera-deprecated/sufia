@@ -48,7 +48,7 @@ Rails/HasAndBelongsToMany:
     - 'app/models/local_authority.rb'
 
 RSpec/ExampleLength:
-  Max: 7 
+  Max: 7
   Exclude:
     - 'spec/controllers/api/items_controller_spec.rb'
     - 'spec/controllers/authorities_controller_spec.rb'
@@ -89,6 +89,7 @@ RSpec/VerifiedDoubles:
 
 RSpec/AnyInstance:
   Exclude:
+    - 'spec/controllers/api/generic_works_controller_spec.rb'
     - 'spec/controllers/api/items_controller_spec.rb'
     - 'spec/controllers/api/zotero_controller_spec.rb'
     - 'spec/controllers/batch_edits_controller_spec.rb'
