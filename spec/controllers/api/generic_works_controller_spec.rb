@@ -22,16 +22,31 @@ describe API::GenericWorksController, type: :controller do
   subject { response }
 
   context 'with an HTTP GET or HEAD' do
-    context 'add_parent with an unauthorized resource' do
+    context 'with an unauthorized resource' do
       before do
         allow_any_instance_of(User).to receive(:can?).with(:edit, default_work) { false }
-        get :add_parent, format: :json, id: default_work.id, parent_id: parent_work.id
       end
 
-      it 'is unauthorized' do
-        expect(subject).to have_http_status(401)
-        expect(assigns[:work]).to eq default_work
-        expect(subject.body).to include("#{user} lacks access to #{default_work}")
+      context 'add_parent with an unauthorized resource' do
+        before do
+          get :add_parent, format: :json, id: default_work.id, parent_id: parent_work.id
+        end
+        it 'is unauthorized' do
+          expect(subject).to have_http_status(401)
+          expect(assigns[:work]).to eq default_work
+          expect(subject.body).to include("#{user} lacks access to #{default_work}")
+        end
+      end
+
+      context 'remove_parent with an unauthorized resource' do
+        before do
+          get :remove_parent, format: :json, id: default_work.id, parent_id: parent_work.id
+        end
+        it 'is unauthorized' do
+          expect(subject).to have_http_status(401)
+          expect(assigns[:work]).to eq default_work
+          expect(subject.body).to include("#{user} lacks access to #{default_work}")
+        end
       end
     end
 
@@ -82,19 +97,6 @@ describe API::GenericWorksController, type: :controller do
         it "is not found" do
           expect(subject).to have_http_status(404)
         end
-      end
-    end
-
-    context 'remove_parent with an unauthorized resource' do
-      before do
-        allow_any_instance_of(User).to receive(:can?).with(:edit, default_work) { false }
-        get :remove_parent, format: :json, id: default_work.id, parent_id: parent_work.id
-      end
-
-      it 'is unauthorized' do
-        expect(subject).to have_http_status(401)
-        expect(assigns[:work]).to eq default_work
-        expect(subject.body).to include("#{user} lacks access to #{default_work}")
       end
     end
 
