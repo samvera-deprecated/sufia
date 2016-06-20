@@ -1,6 +1,15 @@
-<h3><%= t("sufia.#{controller_name}.#{action_name}.in_collections") %></h3>
-<div id="collection-widget">
+<%= render 'form_in_works', f: f %>
+<h3>This Work in Collections</h3>
+<div id="child_members">
   <%= f.input :collection_ids, as: :select,
       collection: available_collections(nil),
       input_html: { class: 'form-control', multiple: true } %>
 </div>
+
+<% if params[:id] %>
+  <h3>Other Works in This Work</h3>
+  <%= render 'form_child_work_relationships' %> 
+
+  <h3>This Work in Other Works</h3>
+  <%= render_edit_field_partial(:in_works_ids, f: f) %>
+<% end %>

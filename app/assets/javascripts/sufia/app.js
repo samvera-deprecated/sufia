@@ -8,6 +8,7 @@ Sufia = {
         this.permissions();
         this.notifications();
         this.transfers();
+        this.relationships_table();
     },
 
     saveWorkControl: function () {
@@ -46,6 +47,16 @@ Sufia = {
 
     transfers: function () {
         $("#proxy_deposit_request_transfer_to").userSearch();
+    },
+
+    relationships_table: function () {
+        var rel = require('sufia/relationships_table');
+        $('table.relationships-api-enabled').each(function () {
+            var add_url = $(this).data('api-add-url');
+            var remove_url = $(this).data('api-remove-url');
+            var works_context = $(this).data('works-context');
+            new rel.RelationshipsTable($(this));
+        });
     }
 };
 

@@ -1,0 +1,24 @@
+<% member_presenters = presenter.member_presenters.group_by(&:model_name).transform_keys{|key| key.to_s.downcase.singularize}.select{ |k,v| k.to_sym != :fileset } %>
+<% if member_presenters.blank? %>
+  <tr>
+    <th><%= t(".member", type: presenter.human_readable_type) %></th>
+    <td>
+      <p><%= t('.empty', type: presenter.human_readable_type) %></p>
+    </td>
+  </tr>
+<% else %>
+  <% member_presenters.each_pair do |model_name, members| %>
+    <tr>
+      <th><%= t(".#{model_name.downcase}", type: model_name) %></th>
+      <td>
+        <ul class="tabular">
+          <% members.each do |member| %>
+            <li class='attribute title'>
+              <%= link_to member.title.first, contextual_path(member, nil) %>
+            </li>
+          <% end %>
+        </ul>
+      </td>
+    </tr>
+  <% end %>
+<% end %>

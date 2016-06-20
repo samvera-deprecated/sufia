@@ -53,6 +53,7 @@
 //= require sufia/save_work
 //= require sufia/permissions
 //= require sufia/notifications
+//= require sufia/relationships_table
 
 //= require curation_concerns/collections
 //= require hydra-editor/hydra-editor

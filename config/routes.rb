@@ -149,6 +149,12 @@ Sufia::Engine.routes.draw do
     end
   end
 
+  namespace :api do
+    get 'generic_works/:id' => 'generic_works#show'
+    get 'generic_works/:id/add_parent/:parent_id' => 'generic_works#add_parent'
+    get 'generic_works/:id/remove_parent/:parent_id' => 'generic_works#remove_parent'
+  end
+
   namespace :admin do
     get 'stats' => 'stats#index', as: :stats
   end
