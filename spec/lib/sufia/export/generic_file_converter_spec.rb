@@ -10,7 +10,7 @@ describe Sufia::Export::GenericFileConverter do
     it { is_expected.to eq json }
 
     context "pretty json" do
-      subject { described_class.new(file).to_json(true) }
+      subject { described_class.new(file).to_json(pretty: true) }
       let(:json) { "{\n  \"id\": \"#{file.id}\",\n  \"label\": null,\n  \"depositor\": \"archivist1@example.com\",\n  \"arkivo_checksum\": null,\n  \"relative_path\": null,\n  \"import_url\": null,\n  \"resource_type\": [\n\n  ],\n  \"title\": [\n\n  ],\n  \"creator\": [\n\n  ],\n  \"contributor\": [\n\n  ],\n  \"description\": [\n\n  ],\n  \"tag\": [\n\n  ],\n  \"rights\": [\n\n  ],\n  \"publisher\": [\n\n  ],\n  \"date_created\": [\n\n  ],\n  \"date_uploaded\": null,\n  \"date_modified\": null,\n  \"subject\": [\n\n  ],\n  \"language\": [\n\n  ],\n  \"identifier\": [\n\n  ],\n  \"based_near\": [\n\n  ],\n  \"related_url\": [\n\n  ],\n  \"bibliographic_citation\": [\n\n  ],\n  \"source\": [\n\n  ],\n  \"visibility\": \"restricted\",\n  \"versions\": [\n\n  ],\n  \"permissions\": [\n    {\n      \"id\": \"#{permission.id}\",\n      \"agent\": \"http://projecthydra.org/ns/auth/person#archivist1@example.com\",\n      \"mode\": \"http://www.w3.org/ns/auth/acl#Write\",\n      \"access_to\": \"#{file.id}\"\n    }\n  ]\n}" }
       it { is_expected.to eq json }
     end
