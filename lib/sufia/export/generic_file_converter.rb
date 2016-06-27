@@ -3,7 +3,7 @@ module Sufia
     # Convert a GenericFile including metadata, permissions and version metadata into a PORO
     # so that the metadata can be exported in json format using to_json
     #
-    class GenericFileConverter
+    class GenericFileConverter < Converter
       # Create an instance of a GenericFile converter containing all the metadata for json export
       #
       # @param [GenericFile] generc_file file to be converted for export
@@ -38,23 +38,11 @@ module Sufia
         @permissions = permissions(generc_file)
       end
 
-      # overrides to_json to optionally allow for a pretty version of the json to be outputted
-      #
-      # @param [Boolean] pretty pass true to output formatted json using pretty_generate
-      def to_json(pretty = false)
-        return super unless pretty
-        JSON.pretty_generate(JSON.parse(to_json))
-      end
-
       private
 
         def versions(gf)
           return [] unless gf.content.has_versions?
           Sufia::Export::VersionGraphConverter.new(gf.content.versions).versions
-        end
-
-        def permissions(gf)
-          gf.permissions.map { |p| PermissionConverter.new(p) }
         end
     end
   end
