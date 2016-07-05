@@ -1,0 +1,66 @@
+#!/usr/bin/env ruby
+require 'rails'
+
+require ::File.join(File.dirname(Bundler.default_gemfile), 'config/environment')
+
+options = {}
+
+args = OptionParser.new do |opts|
+  opts.banner = "Exports model metdata from fedora to json files in tmp/export. Usage: sufia_export [options]"
+
+  opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
+    options[:verbose] = v
+  end
+
+  opts.on("--limit NUMBER_OF_OBJECTS", Integer, "Export a maximum number of objects (defaults to all)") do |v|
+    options[:limit] = v
+  end
+
+  opts.on("--ids ID_LIST", Array, "Export only the objects in the list of IDs",
+          "For example to export a Collection with the id abc123 and a GenericFile with an id def456:",
+          "  --ids abc123,def456") do |v|
+    options[:ids] = v
+  end
+
+  opts.on("--models MODEL_LIST", Array, "Specify the models to be output (defaults to GenericFile,Collection)",
+          "To override the default converter for a model or to register a new converter add the converter after the model.",
+          "For example to convert GenericFiles with a new converter and Collections with the default converter:",
+          "  --models GenericFile=Mine::NewGenericFileConverter,Collection") do |v|
+    options[:models] = v
+  end
+end
+
+begin
+  args.order!
+  args.parse!
+rescue => error
+  $stderr.puts "ERROR: #{error}\n"
+  $stderr.puts args.help
+  exit 1
+end
+
+verbose = options[:verbose]
+
+$stdout.puts "running with #{options}" if verbose
+actor = Sufia::Export::Actor.new
+
+if options[:models].blank?
+  # set model list to the default
+  model_list = actor.converter_registry.keys
+else
+  model_list = []
+  model_options = options.delete(:models)
+  $stdout.puts "processing models #{model_options}" if verbose
+  model_options.each do |model_str|
+    class_name, converter_name = model_str.split('=')
+    model_class = Object.const_get(class_name)
+    model_list << model_class
+    next if converter_name.blank?
+    $stdout.puts "Registering converter Class #{class_name} converter #{converter_name}" if verbose
+    converter_class = Object.const_get(converter_name)
+    actor.register_converter model_class, converter_class
+  end
+end
+
+$stdout.puts "Sending call with #{model_list} and  #{options}" if verbose
+actor.call(model_list, options)
