@@ -9,7 +9,8 @@ Gem::Specification.new do |gem|
   gem.homepage      = "http://github.com/projecthydra/sufia"
 
   gem.files         = `git ls-files | grep -v ^sufia-models`.split($\)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.bindir        = 'exe'
+  gem.executables   = gem.files.grep(%r{^exe/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "sufia"
   gem.require_paths = ["lib"]
