@@ -113,5 +113,10 @@ module Sufia
     def install_admin_stats
       generate "sufia:admin_stat"
     end
+
+    # Setup the database migrations
+    def copy_migrations
+      rake 'sufia:install:migrations'
+    end
   end
 end
