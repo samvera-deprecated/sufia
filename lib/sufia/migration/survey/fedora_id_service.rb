@@ -17,6 +17,7 @@ module Sufia
         # @raise [RegistryError] if the class is not an ActiveFedora based class
         def register_model(model_class)
           raise(RegistryError, "Model (#{model_class.name}) for conversion must be an ActiveFedora::Base") unless model_class.ancestors.include?(ActiveFedora::Base)
+          return if @model_registry.include? model_class
           @model_registry << model_class
         end
 

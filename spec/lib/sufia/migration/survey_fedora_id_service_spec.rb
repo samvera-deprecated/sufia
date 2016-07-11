@@ -26,6 +26,12 @@ describe Sufia::Migration::Survey::FedoraIdService do
       service.register_model(model_class)
       is_expected.to include(model_class)
     end
+
+    it "registers a model once" do
+      service.register_model(model_class)
+      service.register_model(model_class)
+      expect(subject.count(model_class)).to eq(1)
+    end
     context "invalid model" do
       let(:model_class) { String }
       it "throws an error" do

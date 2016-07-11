@@ -1,0 +1,87 @@
+#!/usr/bin/env ruby
+require 'rails'
+
+require ::File.join(File.dirname(Bundler.default_gemfile), 'config/environment')
+
+options = {}
+
+subtext = <<HELP
+Commonly used commands are:
+   clean :     cleans all Sufia::Migration::Survey::Items from the database
+See 'sufia_survey COMMAND --help' for more information on a specific command.
+HELP
+
+args = OptionParser.new do |opts|
+  opts.banner = "Survey model objects in fedora and store survey results in an ActiveRecord table. Usage: sufia_survey [options]"
+
+  opts.on("-v", "--[no-]verbose", "Run [not] verbosely") do |v|
+    options[:verbose] = v
+  end
+
+  opts.on("--limit NUMBER_OF_OBJECTS", Integer, "Survey a maximum number of objects (defaults to all)") do |v|
+    options[:limit] = v
+  end
+
+  opts.on("--ids ID_LIST", Array, "Survey only the objects in the list of IDs",
+          "For example to survey a Collection with the id abc123 and a GenericFile with an id def456:",
+          "  --ids abc123,def456") do |v|
+    options[:ids] = v
+  end
+
+  opts.on("--models MODEL_LIST", Array, "Specify the models to be surveyed (defaults to GenericFile,Collection)") do |v|
+    options[:models] = v
+  end
+
+  opts.separator ""
+  opts.separator subtext
+end
+
+subcommands = {
+  'clean' => OptionParser.new do |opts|
+    opts.banner = "Usage: sufia_survey clean"
+  end
+}
+
+begin
+  args.order!
+  command = ARGV.shift
+  if command
+    raise "Bad subcommand: #{command}" unless subcommands[command]
+    subcommands[command].order!
+  end
+  args.parse!
+rescue => error
+  $stderr.puts "ERROR: #{error}\n"
+  $stderr.puts args.help
+  exit 1
+end
+
+if command == 'clean'
+  $stdout.puts "cleaning Sufia::Migration::Survey::Items"
+  Sufia::Migration::Survey::Item.delete_all
+  exit 0
+end
+
+verbose = options[:verbose]
+
+$stdout.puts "running with #{options}" if verbose
+id_service = Sufia::Migration::Survey::FedoraIdService.new
+
+if options[:models]
+  model_options = options.delete(:models)
+  $stdout.puts "processing models #{model_options}" if verbose
+  model_options.each do |model_str|
+    model_class = Object.const_get(model_str)
+    id_service.register_model(model_class)
+  end
+end
+
+if options[:ids]
+  ids = options[:ids]
+else
+  $stdout.puts "Sending fedora_id with #{id_service.model_registry} and  #{options}" if verbose
+  ids = id_service.call(options[:limit] || :all)
+end
+
+$stdout.puts "Sending call with ids: #{ids}" if verbose
+Sufia::Migration::Survey::Surveyor.call(ids)

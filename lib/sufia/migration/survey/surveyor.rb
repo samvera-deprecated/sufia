@@ -9,7 +9,9 @@ module Sufia
           # @param [Array] id_list a list of ids to be surveyed
           def call(id_list)
             ActiveFedora::Base.find(id_list).each do |object|
-              Item.create(object_id: object.id, object_class: object.class, object_title: object.title, migration_status: :initial_state)
+              Item.find_or_create_by(object_id: object.id) do |item|
+                item.assign_attributes(object_class: object.class, object_title: object.title, migration_status: :initial_state)
+              end
             end
           end
         end
