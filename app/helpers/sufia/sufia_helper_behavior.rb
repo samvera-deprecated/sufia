@@ -121,13 +121,18 @@ module Sufia
       safe_join(values.map { |item| link_to_field(name, item, item) }, ", ".html_safe)
     end
 
-    # *Sometimes* a Blacklight helper_method
-    # @param text [String,Hash] string to format and escape or a hash as per helper_method
+    # Uses Rails auto_link to add links to fields
+    #
+    # @param [String,Hash] text string to format and escape or a hash as per helper_method
+    # @param text [SolrDocument] :document
+    # @param text [String] :field name of the solr field
+    # @param text [Blacklight::Configuration::IndexField, Blacklight::Configuration::ShowField] :config
+    # @param text [Array] :value array of values for the field
     # @param show_link [Boolean]
     # @return [ActiveSupport::SafeBuffer]
     # @todo stop being a helper_method, start being part of the Blacklight render stack?
     def iconify_auto_link(text, show_link = true)
-      text = index_presenter(text[:document]).field_value(text[:config].key, text[:config]) if text.is_a? Hash
+      text = index_presenter(text[:document]).field_value(text[:field].to_sym, text[:config]) if text.is_a? Hash
       # this block is only executed when a link is inserted;
       # if we pass text containing no links, it just returns text.
       auto_link(html_escape(text)) do |value|
