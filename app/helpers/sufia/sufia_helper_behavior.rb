@@ -132,7 +132,10 @@ module Sufia
     # @return [ActiveSupport::SafeBuffer]
     # @todo stop being a helper_method, start being part of the Blacklight render stack?
     def iconify_auto_link(text, show_link = true)
-      text = index_presenter(text[:document]).field_value(text[:field].to_sym, text[:config]) if text.is_a? Hash
+      if text.is_a? Hash
+        options = text[:config].separator_options || {}
+        text = text[:value].to_sentence(options)
+      end
       # this block is only executed when a link is inserted;
       # if we pass text containing no links, it just returns text.
       auto_link(html_escape(text)) do |value|

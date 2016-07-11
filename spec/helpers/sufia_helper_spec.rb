@@ -241,11 +241,12 @@ describe SufiaHelper, type: :helper do
     context "when using a hash argument" do
       subject { helper.iconify_auto_link(arg) }
       describe "auto-linking in the title" do
-        let(:arg) { { document: document, value: text, config: blacklight_config.index_fields['title_tesim'], field: 'title_tesim' } }
+        let(:arg) { { document: document, value: [text], config: blacklight_config.index_fields['title_tesim'], field: 'title_tesim' } }
         it { is_expected.to eq(linked_text) }
       end
+
       describe "auto-linking in the description" do
-        let(:arg) { { document: document, value: text, config: blacklight_config.index_fields['description_tesim'], field: 'description_tesim' } }
+        let(:arg) { { document: document, value: [text], config: blacklight_config.index_fields['description_tesim'], field: 'description_tesim' } }
         it { is_expected.to eq(linked_text) }
       end
     end
