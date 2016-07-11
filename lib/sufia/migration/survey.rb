@@ -1,4 +1,5 @@
 require 'sufia/migration/survey/item'
+require 'sufia/migration/survey/fedora_id_service'
 
 module Sufia
   module Migration
