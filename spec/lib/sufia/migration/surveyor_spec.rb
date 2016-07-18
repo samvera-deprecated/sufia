@@ -53,6 +53,17 @@ describe Sufia::Migration::Survey::Surveyor, type: :model do
         expect(collection_survey).not_to be_nil
       end
     end
+
+    context "when item is surveyed twice" do
+      let(:object) { file }
+      before do
+        described_class.call(ids)
+        described_class.call(ids)
+      end
+      it "creates a single item" do
+        expect(Sufia::Migration::Survey::Item.where(object_id: object.id).count).to eq 1
+      end
+    end
   end
 
   context "when one of the objects does not exist" do
