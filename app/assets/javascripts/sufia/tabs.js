@@ -1,3 +1,4 @@
+// This code is to implement the tabs on the home page
 Blacklight.onLoad(function () {
   // When we visit a link to a tab, open that tab.
   var url = document.location.toString();
@@ -16,7 +17,11 @@ Blacklight.onLoad(function () {
     if (activeTab.length) {
       activeTab.tab('show');
     } else {
-      $('.nav-tabs a:first').tab('show');
+      var firstTab = $('.nav-tabs a:first');
+      // select the first tab if it has an id and is expected to be selected
+      if (firstTab.id[0] != ""){
+        $(firstTab).tab('show');
+      }
     }
   });
 });
