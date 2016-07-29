@@ -57,6 +57,16 @@ module Sufia
       Array.wrap(self['collection_ids_tesim'])
     end
 
+    def embargo_release_date
+      date_field_name = Hydra.config.permissions.embargo.release_date.sub(/_dtsi/, '')
+      date_field(date_field_name)
+    end
+
+    def lease_expiration_date
+      date_field_name = Hydra.config.permissions.lease.expiration_date.sub(/_dtsi/, '')
+      date_field(date_field_name)
+    end
+
     # Find the solr documents for the collections this object belongs to
     def collections
       return @collections if @collections

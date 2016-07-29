@@ -30,6 +30,34 @@ describe ::SolrDocument, type: :model do
     end
   end
 
+  describe "embargo_release_date" do
+    let(:attributes) { { 'embargo_release_date_dtsi' => '2013-03-14T00:00:00Z' } }
+    subject { document.embargo_release_date }
+    it { is_expected.to eq '03/14/2013' }
+
+    context "when an invalid type is provided" do
+      let(:attributes) { { 'embargo_release_date_dtsi' => 'Test' } }
+      it "logs parse errors" do
+        expect(ActiveFedora::Base.logger).to receive(:info).with(/Unable to parse date.*/)
+        subject
+      end
+    end
+  end
+
+  describe "lease_expiration_date" do
+    let(:attributes) { { 'lease_expiration_date_dtsi' => '2013-03-14T00:00:00Z' } }
+    subject { document.lease_expiration_date }
+    it { is_expected.to eq '03/14/2013' }
+
+    context "when an invalid type is provided" do
+      let(:attributes) { { 'lease_expiration_date_dtsi' => 'Test' } }
+      it "logs parse errors" do
+        expect(ActiveFedora::Base.logger).to receive(:info).with(/Unable to parse date.*/)
+        subject
+      end
+    end
+  end
+
   describe "resource_type" do
     let(:attributes) { { 'resource_type_tesim' => ['Image'] } }
     subject { document.resource_type }
