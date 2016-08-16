@@ -2,7 +2,6 @@
 class CollectionSearchBuilder < CurationConcerns::MemberSearchBuilder
   include BlacklightAdvancedSearch::AdvancedSearchBuilder
 
-  self.from_field = 'child_object_ids_ssim'
   self.default_processor_chain += [:include_contained_files]
 
   # This is like include_collection_ids, but it also joins the files.
