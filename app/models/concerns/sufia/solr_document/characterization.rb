@@ -61,6 +61,22 @@ module Sufia
       def width
         self['width_is']
       end
+
+      def page_count
+        self[Solrizer.solr_name("page_count")]
+      end
+
+      def file_title
+        self[Solrizer.solr_name("file_title")]
+      end
+
+      def duration
+        self[Solrizer.solr_name("duration")]
+      end
+
+      def sample_rate
+        self[Solrizer.solr_name("sample_rate")]
+      end
     end
   end
 end

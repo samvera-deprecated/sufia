@@ -16,6 +16,11 @@ describe Sufia::FileSetPresenter do
   it { is_expected.to delegate_method(:date_created).to(:solr_document) }
   it { is_expected.to delegate_method(:date_modified).to(:solr_document) }
   it { is_expected.to delegate_method(:itemtype).to(:solr_document) }
+  it { is_expected.to delegate_method(:page_count).to(:solr_document) }
+  it { is_expected.to delegate_method(:file_title).to(:solr_document) }
+  it { is_expected.to delegate_method(:duration).to(:solr_document) }
+  it { is_expected.to delegate_method(:sample_rate).to(:solr_document) }
+  it { is_expected.to delegate_method(:file_format).to(:solr_document) }
 
   describe '#tweeter' do
     subject { presenter.tweeter }
@@ -42,6 +47,19 @@ describe Sufia::FileSetPresenter do
     describe "#characterization_metadata" do
       subject { presenter.characterization_metadata }
       it { is_expected.to be_kind_of(Hash) }
+
+      it "only has set attributes are in the metadata" do
+        expect(subject[:height]).to be_blank
+        expect(subject[:page_count]).to be_blank
+      end
+
+      context "when height is set" do
+        let(:attributes) { { height_is: '444' } }
+        it "only has set attributes are in the metadata" do
+          expect(subject[:height]).not_to be_blank
+          expect(subject[:page_count]).to be_blank
+        end
+      end
     end
 
     describe "#characterized?" do
@@ -50,6 +68,11 @@ describe Sufia::FileSetPresenter do
 
       context "when height is set" do
         let(:attributes) { { height_is: '444' } }
+        it { is_expected.to be_characterized }
+      end
+
+      context "when file_format is set" do
+        let(:attributes) { { file_format_tesim: ['format'] } }
         it { is_expected.to be_characterized }
       end
     end
