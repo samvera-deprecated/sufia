@@ -263,7 +263,7 @@ See the [release management process](https://github.com/projecthydra/sufia/wiki/
 
 # Acknowledgments
 
-This software has been developed by and is brought to you by the Hydra community.  Learn more at the
+This software has been developed by the Hydra community.  Learn more at the
 [Project Hydra website](http://projecthydra.org).
 
 ![Project Hydra Logo](http://sufia.io/assets/images/hydra_logo.png)
