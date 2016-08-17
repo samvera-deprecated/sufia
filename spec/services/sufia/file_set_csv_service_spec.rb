@@ -6,7 +6,11 @@ describe Sufia::FileSetCSVService do
            width: '',
            format_label: '',
            digest: '',
-           mime_type: 'application/pdf')
+           mime_type: 'application/pdf',
+           page_count: '1',
+           file_title: 'My PDF',
+           duration: '',
+           sample_rate: '')
   end
   let(:file) do
     FileSet.new(id: '123abc', title: ['My Title'], creator: ['Von, Creator'],

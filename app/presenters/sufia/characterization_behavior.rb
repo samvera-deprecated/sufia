@@ -7,7 +7,8 @@ module Sufia
         [
           :byte_order, :compression, :height, :width, :height, :color_space,
           :profile_name, :profile_version, :orientation, :color_map, :image_producer,
-          :capture_device, :scanning_software, :gps_timestamp, :latitude, :longitude
+          :capture_device, :scanning_software, :gps_timestamp, :latitude, :longitude,
+          :file_format, :file_title, :page_count, :duration, :sample_rate
         ]
       end
     end
@@ -72,7 +73,8 @@ module Sufia
 
       def build_characterization_metadata
         self.class.characterization_terms.each do |term|
-          additional_characterization_metadata[term.to_sym] = send(term)
+          value = send(term)
+          additional_characterization_metadata[term.to_sym] = value unless value.blank?
         end
         additional_characterization_metadata
       end
