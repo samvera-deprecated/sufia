@@ -10,10 +10,7 @@
       $(this).select2( {
         placeholder: $(this).attr('value') || "Search for a user",
         minimumInputLength: 2,
-        initSelection : function (element, callback) {
-          var data = {id: element.val(), text: element.val()};
-          callback(data);
-        },
+        theme: 'bootstrap',
         ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
           url: "/users.json",
           dataType: 'json',
