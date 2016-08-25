@@ -1,4 +1,3 @@
-
 describe 'collections/_show_document_list_row.html.erb', type: :view do
   let(:user) { create(:user) }
 
@@ -25,12 +24,12 @@ describe 'collections/_show_document_list_row.html.erb', type: :view do
     end
 
     it "renders collections links" do
-      render(partial: 'collections/show_document_list_row.html.erb', locals: { document: work })
+      render('collections/show_document_list_row.html.erb', document: work)
       expect(rendered).to have_content 'My awesome collection'
     end
 
     it "renders works" do
-      render(partial: 'collections/show_document_list_row.html.erb', locals: { document: work })
+      render('collections/show_document_list_row', document: work)
       expect(rendered).to have_content 'One Hundred Years of Solitude'
     end
   end

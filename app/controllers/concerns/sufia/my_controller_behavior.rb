@@ -15,6 +15,9 @@ module Sufia
       before_action :enforce_viewing_context_for_show_requests, only: :show
       before_action :find_collections_with_edit_access, only: :index
 
+      # include the render_check_all view helper method
+      helper ::BatchEditsHelper
+
       layout 'sufia-dashboard'
     end
 

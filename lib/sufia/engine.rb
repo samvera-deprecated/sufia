@@ -1,6 +1,7 @@
 module Sufia
   class Engine < ::Rails::Engine
     engine_name 'sufia'
+    isolate_namespace Sufia
 
     # These gems must be required outside of an initializer or it doesn't get loaded.
     require 'breadcrumbs_on_rails'

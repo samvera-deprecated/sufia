@@ -1,4 +1,4 @@
-RSpec.describe "dashboard/index.html.erb", type: :view do
+RSpec.describe "sufia/dashboard/index.html.erb", type: :view do
   let(:user) { create(:user, display_name: "Charles Francis Xavier") }
   let(:ability) { instance_double("Ability") }
   before do
@@ -20,6 +20,7 @@ RSpec.describe "dashboard/index.html.erb", type: :view do
     allow(view).to receive(:number_of_collections).and_return("3")
     assign(:activity, [])
     assign(:notifications, [])
+    view.lookup_context.view_paths.push 'app/views/sufia'
   end
   let(:can_create_work) { true }
   let(:can_create_collection) { true }

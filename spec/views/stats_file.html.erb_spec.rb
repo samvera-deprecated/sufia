@@ -2,7 +2,7 @@
 # test execution.  Specifically, the stub_model and render calls together.
 # See: https://github.com/projecthydra/sufia/pull/1932
 
-describe 'stats/file.html.erb', type: :view do
+describe 'sufia/stats/file.html.erb', type: :view do
   describe 'usage statistics' do
     before do
       allow_message_expectations_on_nil
