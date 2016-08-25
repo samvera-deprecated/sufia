@@ -6,8 +6,12 @@ module Sufia
     included do
       before_action :build_breadcrumbs, only: [:edit, :show]
       layout "sufia-one-column"
-      # include the link_to_remove_from_collection view helper methods
-      helper CurationConcerns::CollectionsHelper
+      # include the render_check_all view helper method
+      helper ::BatchEditsHelper
+      # include the display_trophy_link view helper method
+      helper Sufia::TrophyHelper
+      # include the present_terms view helper method
+      helper ::FileSetHelper
       self.presenter_class = Sufia::CollectionPresenter
       self.form_class = Sufia::Forms::CollectionForm
     end

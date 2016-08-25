@@ -5,9 +5,8 @@ module Sufia
         authorize! :manage, Feature
       end
 
-      # TODO: we could remove this if we used an isolated engine
       def features_url
-        sufia.admin_features_path
+        admin_features_path
       end
     end
   end

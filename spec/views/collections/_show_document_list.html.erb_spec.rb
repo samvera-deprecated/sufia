@@ -1,4 +1,3 @@
-
 describe 'collections/_show_document_list.html.erb', type: :view do
   let(:user) { create(:user) }
   let(:collection) { mock_model(Collection) }
@@ -25,7 +24,7 @@ describe 'collections/_show_document_list.html.erb', type: :view do
     end
 
     it "renders collection" do
-      render(partial: 'collections/show_document_list.html.erb', locals: { documents: documents })
+      render('collections/show_document_list.html.erb', documents: documents)
       expect(rendered).to have_content 'One Hundred Years of Solitude'
     end
   end

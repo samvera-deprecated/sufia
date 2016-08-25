@@ -39,8 +39,9 @@ module Sufia
       end
 
       def contact_form_params
-        return {} unless params.key?(:sufia_contact_form)
-        params.require(:sufia_contact_form).permit(:contact_method, :category, :name, :email, :subject, :message)
+        key = Sufia::ContactForm.model_name.param_key
+        return {} unless params.key?(key)
+        params.require(key).permit(:contact_method, :category, :name, :email, :subject, :message)
       end
   end
 end

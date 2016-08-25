@@ -51,11 +51,11 @@ describe BatchEditsController, type: :controller do
       expect(controller).to receive(:can?).with(:edit, two.id).and_return(true)
     end
 
-    let(:mycontroller) { "my/works" }
+    let(:mycontroller) { "sufia/my/works" }
 
     it "is successful" do
       put :update, params: { update_type: "delete_all" }
-      expect(response).to redirect_to(Sufia::Engine.routes.url_for(controller: "dashboard", only_path: true))
+      expect(response).to redirect_to(Sufia::Engine.routes.url_helpers.dashboard_index_path)
       expect { GenericWork.find(one.id) }.to raise_error(Ldp::Gone)
       expect { GenericWork.find(two.id) }.to raise_error(Ldp::Gone)
     end

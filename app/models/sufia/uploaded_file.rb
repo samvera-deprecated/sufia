@@ -4,6 +4,7 @@ module Sufia
   class UploadedFile < ActiveRecord::Base
     mount_uploader :file, UploadedFileUploader
     belongs_to :user, class_name: '::User'
+    self.table_name = 'uploaded_files'
 
     before_destroy do |obj|
       obj.remove_file!

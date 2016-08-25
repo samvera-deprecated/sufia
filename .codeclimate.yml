@@ -4,6 +4,11 @@ engines:
     enabled: true
     exclude_fingerprints:
       - 6ad4464dbb2a999591c7be8346dc137c3372b280f4a8b0c024fef91dfebeeb83
+      - 415cb0af8d78d7d63ef91800010fd967b176794b2837188cdd4aa97a82a24536
+      - f76e8f2757ae5e9757888de225947072c0575e9e20248e024e646fb754edff5f
+      - c6cdd32f208d68c9924e5e81d35703baea65c6e6174d46e3302eb1e4646e6903
+      - 12a1e0527e001b450f7938f4b4758edb00b97cd4a7b9c33dd4246dd9bbaf20fc
+      - 3ed8429d5cfaa9366b778364b483f1f6eaef2afce5f8c2f0c27ae0a1e4859241
   duplication:
     enabled: true
     exclude_fingerprints:
@@ -14,6 +19,8 @@ engines:
       - 941c94b2e2f00eee9dcceb7a1faeb92f
       - 93db286dbc27996f277d7246f80afd8a
       - 5b45a0b1e0e92099ae4725fdbfb8fd3f
+      - 40c7705cf1e3f58088583547265bd78e
+      - a6384b9b7998591b53b053ac2cf97377
     config:
       languages:
       - ruby
