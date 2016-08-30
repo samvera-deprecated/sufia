@@ -8,7 +8,7 @@ describe Sufia::Forms::CollectionEditForm do
     subject { form.terms }
     it { is_expected.to eq [:resource_type, :title, :creator, :contributor, :description,
                             :tag, :rights, :publisher, :date_created, :subject, :language,
-                            :identifier, :based_near, :related_url] }
+                            :identifier, :based_near, :related_url, :visibility] }
   end
 
   describe "multiple?" do

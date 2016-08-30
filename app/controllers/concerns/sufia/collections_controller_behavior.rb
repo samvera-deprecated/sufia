@@ -17,6 +17,7 @@ module Sufia
 
     def new
       super
+      @collection.visibility = 'open' # default to open access
       form
     end
 
@@ -56,10 +57,23 @@ module Sufia
 
       def collection_params
         form_class.model_attributes(
-          params.require(:collection).permit(:title, :description, :members, part_of: [],
-                                                                             contributor: [], creator: [], publisher: [], date_created: [], subject: [],
-                                                                             language: [], rights: [], resource_type: [], identifier: [], based_near: [],
-                                                                             tag: [], related_url: [])
+          params.require(:collection).permit(
+            :title,
+            :description,
+            :members,
+            part_of: [],
+            contributor: [],
+            creator: [],
+            publisher: [],
+            date_created: [],
+            subject: [],
+            language: [],
+            rights: [],
+            resource_type: [],
+            identifier: [],
+            ßbased_near: [],
+            tag: [],
+            related_url: []).merge(params.permit(:visibility))
         )
       end
 

@@ -7,12 +7,7 @@ module Sufia
     include Sufia::GenericFile::Permissions
 
     included do
-      before_save :update_permissions
       validates :title, presence: true
-    end
-
-    def update_permissions
-      self.visibility = "open"
     end
 
     # Compute the sum of each file in the collection using Solr to
