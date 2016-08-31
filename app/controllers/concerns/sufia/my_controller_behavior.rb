@@ -16,6 +16,9 @@ module Sufia
       before_action :find_collections, only: :index
       before_action :find_collections_with_edit_access, only: :index
 
+      # include the render_check_all view helper method
+      helper ::BatchEditsHelper
+
       layout 'sufia-dashboard'
     end
 

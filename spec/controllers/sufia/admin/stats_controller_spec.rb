@@ -1,4 +1,5 @@
 describe Sufia::Admin::StatsController, type: :controller do
+  routes { Sufia::Engine.routes }
   let(:user) { create(:user) }
 
   context "a non admin" do

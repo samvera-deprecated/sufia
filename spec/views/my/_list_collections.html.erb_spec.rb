@@ -1,4 +1,4 @@
-describe 'my/_index_partials/_list_collections.html.erb', type: :view do
+describe 'sufia/my/_index_partials/_list_collections.html.erb', type: :view do
   let(:id) { "3197z511f" }
   let(:attributes) do
     {
@@ -23,7 +23,7 @@ describe 'my/_index_partials/_list_collections.html.erb', type: :view do
     allow(doc).to receive(:to_model).and_return(stub_model(Collection, id: id))
     view.lookup_context.prefixes.push 'my'
 
-    render 'my/_index_partials/list_collections', document: doc
+    render 'sufia/my/_index_partials/list_collections', document: doc
   end
 
   it 'the line item displays the work and its actions' do

@@ -1,5 +1,5 @@
 
-describe 'citations/work.html.erb', type: :view do
+describe 'sufia/citations/work.html.erb', type: :view do
   let(:object_profile) { ["{\"id\":\"999\"}"] }
   let(:contributor) { ['Gandalf Grey'] }
   let(:creator)     { ['Bilbo Baggins', 'Baggins, Frodo'] }
