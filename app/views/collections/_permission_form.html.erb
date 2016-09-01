@@ -1,0 +1,29 @@
+<% depositor = f.model.depositor || current_user %>
+
+<div class="alert alert-info hidden" id="save_perm_note">Permissions are <strong>not</strong> saved until the &quot;Save&quot; button is pressed at the bottom of the page.</div>
+<div class="alert alert-warning hidden" id="permissions_error">
+  <a class="close" data-dismiss="alert" href="#">
+    <span class="sr-only">Close this alert</span>
+    <span aria-hidden="true">×</span>
+  </a>
+<span id="permissions_error_text"></span></div>
+
+<div class="well">
+
+  <h3>Visibility - <small>who should have the ability to read and download</small>
+    <span id="visibility_tooltip" class="h5"><%= visibility_help %></span>
+  </h3>
+  <div class="radio">
+    <label>
+      <input type="radio" id="visibility_open" name="visibility" value="<%=Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC %>" <% if f.model.public? %> checked="true"<% end %>/> <span class="label label-success">Open Access</span> Visible to the world.
+    </label>
+    <label>
+      <input type="radio" id="visibility_psu" name="visibility" value="<%=Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_AUTHENTICATED %>" <% if f.model.registered? %> checked="true"<% end %> /><span class="label label-info"><%=t('sufia.institution_name') %></span> Visible to all <%=t('sufia.institution_name') %> users.
+    </label>
+    <label>
+      <input type="radio" id="visibility_restricted" name="visibility" value="<%=Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE %>"<% if f.model.private? %> checked="true"<% end %> /> <span class="label label-danger">Private</span> Visible to users/groups specified below, if any.
+    </label>
+  </div>
+
+</div><!-- /.well -->
+

@@ -4,7 +4,12 @@ module Sufia
       include HydraEditor::Form
       self.model_class = ::Collection
       self.terms = [:resource_type, :title, :creator, :contributor, :description, :tag, :rights,
-                    :publisher, :date_created, :subject, :language, :identifier, :based_near, :related_url]
+                    :publisher, :date_created, :subject, :language, :identifier, :based_near, :related_url, :visibility]
+
+      # Remove visibility from the set of rendered terms
+      def rendered_terms
+        terms - [:visibility]
+      end
 
       # Test to see if the given field is required
       # @param [Symbol] key a field

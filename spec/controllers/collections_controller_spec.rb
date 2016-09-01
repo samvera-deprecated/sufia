@@ -133,44 +133,80 @@ describe CollectionsController do
 
   describe "#show" do
     let(:asset1) do
-      GenericFile.new(title: ["First of the Assets"]) { |a| a.apply_depositor_metadata(user) }
+      GenericFile.new(title: ["First of the Assets"]) do |gf|
+        gf.apply_depositor_metadata(user)
+        gf.visibility = "open"
+      end
     end
 
     let(:asset2) do
-      GenericFile.new(title: ["Second of the Assets"]) { |a| a.apply_depositor_metadata(user) }
+      GenericFile.new(title: ["Second of the Assets"]) do |gf|
+        gf.apply_depositor_metadata(user)
+        gf.visibility = "open"
+      end
     end
 
     let(:asset3) do
-      GenericFile.new(title: ["Third of the Assets"]) { |a| a.apply_depositor_metadata(user) }
+      GenericFile.new(title: ["Third of the Assets"]) do |gf|
+        gf.apply_depositor_metadata(user)
+        gf.visibility = "open"
+      end
     end
 
-    let!(:asset4) do
-      GenericFile.create(title: ["Fourth of the Assets"]) { |a| a.apply_depositor_metadata(user) }
-    end
+    # let!(:asset4) do
+    #   GenericFile.create(title: ["Fourth of the Assets"]) { |a| a.apply_depositor_metadata(user) }
+    # end
 
-    let(:collection) do
-      Collection.create(title: "My collection",
-                        description: "My incredibly detailed description of the collection",
-                        members: [asset1, asset2, asset3]) { |c| c.apply_depositor_metadata(user) }
-    end
+    let(:public_collection) {
+      create(:public_collection,
+             title: "My public collection",
+             description: "My incredibly detailed description of the public collection",
+             members: [asset1, asset2, asset3],
+             user: user)
+    }
+
+    let(:private_collection) {
+      create(:private_collection,
+             title: "My private collection",
+             description: "My incredibly detailed description of the private collection",
+             members: [asset1, asset2, asset3],
+             user: user)
+    }
 
     context "when signed in" do
       before { sign_in user }
 
-      it "returns the collection and its members" do
+      it "returns the public collection and its members" do
         expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.title'), Sufia::Engine.routes.url_helpers.dashboard_index_path)
-        get :show, id: collection
+        get :show, id: public_collection
         expect(response).to be_successful
         expect(assigns[:presenter]).to be_kind_of Sufia::CollectionPresenter
-        expect(assigns[:collection].title).to eq collection.title
+        expect(assigns[:collection].title).to eq public_collection.title
+        expect(assigns[:member_docs].map(&:id)).to match_array [asset1, asset2, asset3].map(&:id)
+      end
+
+      it "returns the private collection and its members" do
+        expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.title'), Sufia::Engine.routes.url_helpers.dashboard_index_path)
+        get :show, id: private_collection
+        expect(response).to be_successful
+        expect(assigns[:presenter]).to be_kind_of Sufia::CollectionPresenter
+        expect(assigns[:collection].title).to eq private_collection.title
         expect(assigns[:member_docs].map(&:id)).to match_array [asset1, asset2, asset3].map(&:id)
       end
     end
 
     context "not signed in" do
-      it "does not show me files in the collection" do
-        get :show, id: collection
-        expect(assigns[:member_docs].count).to eq 0
+      it "returns the public collection and its members" do
+        get :show, id: public_collection
+        expect(response).to be_successful
+        expect(assigns[:presenter]).to be_kind_of Sufia::CollectionPresenter
+        expect(assigns[:collection].title).to eq public_collection.title
+        expect(assigns[:member_docs].map(&:id)).to match_array [asset1, asset2, asset3].map(&:id)
+      end
+
+      it "does not show me files in the private collection" do
+        get :show, id: private_collection
+        expect(response).to redirect_to Rails.application.routes.url_helpers.new_user_session_path
       end
     end
   end

@@ -1,14 +1,12 @@
 require 'spec_helper'
 
 describe 'collections/_form.html.erb' do
-  let(:collection) do
-    Collection.new(title: 'the title', description: 'the description',
-                   creator: ['the creator'])
-  end
-
+  let(:user1) { FactoryGirl.create(:user) }
+  let(:collection) { create(:public_collection, title: "the title", creator: ["the creator"], description: "the description", user: user1) }
   let(:collection_form) { Sufia::Forms::CollectionEditForm.new(collection) }
 
   before do
+    allow(controller).to receive(:current_user).and_return(user1)
     controller.request.path_parameters[:id] = 'j12345'
     assign(:form, collection_form)
   end
@@ -30,5 +28,8 @@ describe 'collections/_form.html.erb' do
     expect(rendered).to have_selector("input#collection_related_url")
     expect(rendered).to have_selector("select#collection_rights")
     expect(rendered).to have_selector("select#collection_resource_type")
+    expect(rendered).to have_selector("input#visibility_open")
+    expect(rendered).to have_selector("input#visibility_psu")
+    expect(rendered).to have_selector("input#visibility_restricted")
   end
 end
