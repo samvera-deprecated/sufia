@@ -209,6 +209,8 @@ module Sufia
           sufia.dashboard_shares_path
         when "my/highlights"
           sufia.dashboard_highlights_path
+        when "my/shared_collections"
+          sufia.dashboard_shared_collections_path
         else
           sufia.dashboard_files_path
         end

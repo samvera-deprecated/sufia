@@ -64,7 +64,7 @@ Sufia::Engine.routes.draw do
     end
   end
 
-  # Routes for user's files, collections, highlights and shares
+  # Routes for user's files, collections, highlights, shares (files and collections)
   # Preserves existing behavior by maintaining paths to /dashboard
   # Routes actions to the various My controllers
   scope :dashboard do
@@ -83,6 +83,10 @@ Sufia::Engine.routes.draw do
     get '/shares',            controller: 'my/shares', action: :index, as: 'dashboard_shares'
     get '/shares/page/:page', controller: 'my/shares', action: :index
     get '/shares/facet/:id',  controller: 'my/shares', action: :facet, as: 'dashboard_shares_facet'
+
+    get '/shares/collections',            controller: 'my/shared_collections', action: :index, as: 'dashboard_shared_collections'
+    get '/shares/collections/page/:page', controller: 'my/shared_collections', action: :index
+    get '/shares/collections/facet/:id',  controller: 'my/shared_collections', action: :facet, as: 'dashboard_shared_collections_facet'
   end
 
   # advanced routes for advanced search

@@ -129,6 +129,90 @@ describe CollectionsController do
         expect(assigns[:collection].creator).to eq([])
       end
     end
+
+    context "when user has edit permissions on a collection" do
+      before do
+        @asset1 = GenericFile.new(title: ["First of the Assets"])
+        @asset1.apply_depositor_metadata(user.user_key)
+        @asset1.save
+        @asset2 = GenericFile.new(title: ["Second of the Assets"], depositor: user.user_key)
+        @asset2.apply_depositor_metadata(user.user_key)
+        @asset2.save
+        @asset3 = GenericFile.new(title: ["Third of the Assets"], depositor: 'abc')
+        @asset3.apply_depositor_metadata(user.user_key)
+        @asset3.save
+      end
+
+      let(:private_collection) {
+        create(:private_collection,
+               title: "My private collection",
+               description: "My incredibly detailed description of the private collection",
+               user: user)
+      }
+
+      it "sets the groups" do
+        post :update, id: private_collection,
+                      "collection" => { "permissions_attributes" => [{ "type" => "group", "name" => "group1", "access" => "read" }] }
+        private_collection.reload
+        expect(private_collection.read_groups).to include "group1"
+        expect(response).to redirect_to routes.url_helpers.collection_path(private_collection.id)
+      end
+
+      it "sets public read access" do
+        post :update, id: private_collection, visibility: "open", collection: { tag: [""] }
+        expect(private_collection.reload.read_groups).to eq ['public']
+      end
+
+      it "adds new groups and users" do
+        post :update, id: private_collection,
+                      collection: { permissions_attributes: [
+                        { type: 'person', name: 'user1', access: 'edit' },
+                        { type: 'group', name: 'group1', access: 'read' }] }
+        private_collection.reload
+        expect(private_collection.read_groups).to include "group1"
+        expect(private_collection.edit_users).to include "user1"
+      end
+
+      it "updates existing groups and users" do
+        private_collection.edit_groups = ['group3']
+        private_collection.save
+        post :update, id: private_collection,
+                      collection: { permissions_attributes: [
+                        { id: private_collection.permissions.last.id, type: 'group', name: 'group3', access: 'read' }] }
+        private_collection.reload
+        expect(private_collection.read_groups).to eq(["group3"])
+      end
+
+      it "sets metadata like title" do
+        post :update, id: private_collection, collection: { tag: ["footag", "bartag"], title: "New Title" }
+        private_collection.reload
+        expect(private_collection.title).to eq "New Title"
+        # TODO: is order important?
+        expect(private_collection.tag).to include("footag", "bartag")
+      end
+
+      it "does not set any tags" do
+        post :update, id: private_collection, collection: { tag: [""] }
+        expect(private_collection.reload.tag).to be_empty
+      end
+    end
+
+    context "when user does not have edit permissions on a collection" do
+      # TODO: all these tests could move to batch_update_job_spec.rb
+      let(:private_collection) {
+        create(:private_collection,
+               title: 'Original Title',
+               user: user)
+      }
+
+      it "does not modify the object" do
+        post :update, id: private_collection, "collection" => { "read_groups_string" => "group1, group2", "read_users_string" => "", "tag" => [""] },
+                      "title" => { private_collection.id => "Title Wont Change" }
+        private_collection.reload
+        expect(private_collection.title).to eq "Original Title"
+        expect(private_collection.read_groups).to eq []
+      end
+    end
   end
 
   describe "#show" do
@@ -152,10 +236,6 @@ describe CollectionsController do
         gf.visibility = "open"
       end
     end
-
-    # let!(:asset4) do
-    #   GenericFile.create(title: ["Fourth of the Assets"]) { |a| a.apply_depositor_metadata(user) }
-    # end
 
     let(:public_collection) {
       create(:public_collection,

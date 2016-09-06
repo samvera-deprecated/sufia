@@ -34,6 +34,8 @@ describe DashboardHelper, type: :helper do
       expect(helper).to be_on_the_dashboard
       allow(helper).to receive(:params).and_return(controller: "my/shares")
       expect(helper).to be_on_the_dashboard
+      allow(helper).to receive(:params).and_return(controller: "my/shared_collections")
+      expect(helper).to be_on_the_dashboard
     end
   end
 

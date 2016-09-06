@@ -40,6 +40,10 @@ module Sufia
       params[:controller].match(/^my\/files/)
     end
 
+    def on_my_shared_files?
+      params[:controller].match(/^my\/shares/)
+    end
+
     def number_of_files(user = current_user)
       ::GenericFile.where(Solrizer.solr_name('depositor', :symbol) => user.user_key).count
     end

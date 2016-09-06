@@ -51,6 +51,7 @@ Metrics/ModuleLength:
   Exclude:
     - 'app/controllers/concerns/sufia/users_controller_behavior.rb'
     - 'app/controllers/concerns/sufia/files_controller_behavior.rb'
+    - 'app/controllers/concerns/sufia/collections_controller_behavior.rb'
     - 'app/helpers/sufia/sufia_helper_behavior.rb'
 
 Style/BlockDelimiters:

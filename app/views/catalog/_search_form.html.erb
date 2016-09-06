@@ -40,6 +40,10 @@
                   <%= link_to t("sufia.search.form.option.my_shares.label_long"), "#",
                       data: { "search-option" => sufia.dashboard_shares_path, "search-label" => t("sufia.search.form.option.my_shares.label_short") } %>
                 </li>
+                <li>
+                  <%= link_to t("sufia.search.form.option.my_shared_collections.label_long"), "#",
+                              data: { "search-option" => sufia.dashboard_shared_collections_path, "search-label" => t("sufia.search.form.option.my_shared_collections.label_short") } %>
+                </li>
               <% end %>
 
             </ul>
