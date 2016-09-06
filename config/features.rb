@@ -10,5 +10,5 @@ Flipflop.configure do
           
   feature :enable_mediated_deposit,
   	      default: false,
-  	      description: "Enable mediated deposit to admin sets"
+  	      description: "Turn on mediation for all deposits"
 end
