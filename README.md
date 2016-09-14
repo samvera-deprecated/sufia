@@ -91,7 +91,9 @@ Sufia has the following features:
 * Virus detection for uploaded files
 * Citation formatting suggestions
 
-See [Sufia's documentation site](http://sufia.io/) for more non-technical documentation.
+See the [Sufia Management Guide](https://github.com/projecthydra/sufia/wiki/Sufia-Management-Guide) to learn which features listed above are turned on by default and which require configuration.
+
+For non-technical documentation about Sufia, see its [documentation site](http://sufia.io/).
 
 # Help
 
