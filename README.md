@@ -84,6 +84,12 @@ Sufia has the following features:
 * [ResourceSync](http://www.openarchives.org/rs/1.0/resourcesync) capability lists and resource lists
 * Administrative sets (curated collections)
 * Administrative dashboard, w/ feature flippers
+* Contact form
+* Customizable banner image
+* Flexible object model: upload and manage single-file works, multi-file works, zero-file works, and works-within-works
+* Geonames integration for location-oriented metadata fields
+* Virus detection for uploaded files
+* Citation formatting suggestions
 
 See [Sufia's documentation site](http://sufia.io/) for more non-technical documentation.
 
