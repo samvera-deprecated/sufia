@@ -25,6 +25,12 @@ describe ContentBlock, type: :model do
            value: '<h1>Announcement Text</h1>')
   end
 
+  let!(:about) do
+    create(:content_block,
+           name: ContentBlock::ABOUT,
+           value: '<h1>About Page</h1>')
+  end
+
   describe '.announcement_text' do
     subject { described_class.announcement_text.value }
     it { is_expected.to eq '<h1>Announcement Text</h1>' }
@@ -35,6 +41,19 @@ describe ContentBlock, type: :model do
     it 'sets a new announcement_text' do
       described_class.announcement_text = new_announcement
       expect(described_class.announcement_text.value).to eq new_announcement
+    end
+  end
+
+  describe '.about_page' do
+    subject { described_class.about_page.value }
+    it { is_expected.to eq '<h1>About Page</h1>' }
+  end
+
+  describe '.about_page=' do
+    let(:new_about) { '<h2>Foobarfoo</h2>' }
+    it 'sets a new announcement_text' do
+      described_class.about_page = new_about
+      expect(described_class.about_page.value).to eq new_about
     end
   end
 
