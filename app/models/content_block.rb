@@ -2,6 +2,7 @@ class ContentBlock < ActiveRecord::Base
   MARKETING  = 'marketing_text'.freeze
   RESEARCHER = 'featured_researcher'.freeze
   ANNOUNCEMENT = 'announcement_text'.freeze
+  ABOUT = 'about_page'.freeze
 
   def self.marketing_text
     find_or_create_by(name: MARKETING)
@@ -29,6 +30,14 @@ class ContentBlock < ActiveRecord::Base
 
   def self.featured_researcher=(value)
     create(name: RESEARCHER, value: value)
+  end
+
+  def self.about_page
+    find_or_create_by(name: ABOUT)
+  end
+
+  def self.about_page=(value)
+    about_page.update(value: value)
   end
 
   def self.external_keys
