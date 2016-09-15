@@ -72,7 +72,7 @@ describe CurationConcerns::GenericWorksController do
         get :show, params: { id: work, format: 'endnote' }
         expect(response).to be_successful
         expect(disposition).to include("attachment")
-        expect(content_type).to eq("application/x-endnote-refer")
+        expect(content_type).to eq("application/x-endnote-refer; charset=utf-8")
         expect(response.body).to include("%T test title")
       end
     end
