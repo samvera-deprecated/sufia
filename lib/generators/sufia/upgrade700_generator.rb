@@ -5,7 +5,9 @@ class Sufia::Upgrade700Generator < Rails::Generators::Base
   desc """
 This generator for upgrading sufia from 6.0.0 to 7.0 makes the following changes to your application:
  1. Updates the Catalog Controller
- 2. Creates several database migrations if they do not exist in /db/migrate
+ 2. Inserts the Questioning Authority route into config/routes.rb
+ 3. Generates database tables for Questioning Authority
+ 4. Creates one database migration if it does not exist in /db/migrate
 
        """
 
@@ -27,5 +29,9 @@ This generator for upgrading sufia from 6.0.0 to 7.0 makes the following changes
 
   def qa_tables
     generate 'qa:local:tables'
+  end
+
+  def copy_migrations
+    migration_template 'change_audit_log_dsid_to_file_id'
   end
 end
