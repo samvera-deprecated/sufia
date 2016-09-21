@@ -6,6 +6,18 @@ module Sufia
     included do
       include Sufia::Breadcrumbs
 
+      # Catch permission errors
+      rescue_from Hydra::AccessDenied, CanCan::AccessDenied do |exception|
+        if exception.action == :edit
+          redirect_to(sufia.url_for(action: 'show'), alert: "You do not have sufficient privileges to edit this document")
+        elsif current_user && current_user.persisted?
+          redirect_to root_url, alert: exception.message
+        else
+          session["user_return_to"] = request.url
+          redirect_to new_user_session_url, alert: exception.message
+        end
+      end
+
       before_action :filter_docs_with_read_access!, except: :show
       before_action :has_access?, except: :show
       before_action :build_breadcrumbs, only: [:edit, :show]
@@ -71,10 +83,11 @@ module Sufia
             rights: [],
             resource_type: [],
             identifier: [],
-            ßbased_near: [],
+            based_near: [],
             tag: [],
-            related_url: []).merge(params.permit(:visibility))
-        )
+            related_url: []).merge(params.permit(:visibility)).tap do |whitelisted|
+              whitelisted[:permissions_attributes] = params[:collection][:permissions_attributes]
+            end)
       end
 
       def query_collection_members
@@ -107,6 +120,15 @@ module Sufia
         Array(params[:batch_document_ids]).each do |gf|
           Sufia.queue.push(ResolrizeGenericFileJob.new(gf))
         end
+      end
+
+      def permissions_attributes
+        begin
+          perm_attrs = ActionController::Parameters.new(permissions_attributes: params.require(:collection).require(:permissions_attributes))
+        rescue
+          perm_attrs = ActionController::Parameters.new
+        end
+        perm_attrs
       end
   end
 end

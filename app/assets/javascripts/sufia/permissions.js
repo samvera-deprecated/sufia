@@ -77,15 +77,27 @@ Blacklight.onLoad(function() {
   // when user clicks on visibility, update potential access levels
   $("input[name='visibility']").on("change", set_access_levels);
 
-	$('#generic_file_permissions_new_group_name').change(function (){
-      var edit_option = $("#generic_file_permissions_new_group_permission option[value='edit']")[0];
-	    if (this.value.toUpperCase() == 'PUBLIC') {
-	       edit_option.disabled =true;
-	    } else {
-           edit_option.disabled =false;
-	    }
+    if (($("[id=new_collection]").length) || ($("[id^=edit_collection]")).length) {
+        $('#collection_permissions_new_group_name').change(function (){
+            var edit_option = $("#collection_permissions_new_group_permission option[value='edit']")[0];
+            if (this.value.toUpperCase() == 'PUBLIC') {
+                edit_option.disabled =true;
+            } else {
+                edit_option.disabled =false;
+            }
+        });
+    }
+    else {
+        $('#generic_file_permissions_new_group_name').change(function () {
+            var edit_option = $("#generic_file_permissions_new_group_permission option[value='edit']")[0];
+            if (this.value.toUpperCase() == 'PUBLIC') {
+                edit_option.disabled = true;
+            } else {
+                edit_option.disabled = false;
+            }
 
-	});
+        });
+    }
 
   function addPerm(agent_name, access, access_label, agent_type)
   {
@@ -114,7 +126,11 @@ Blacklight.onLoad(function() {
   }
 
   function addHiddenPermField(element, type, name, access) {
-      var prefix = 'generic_file[permissions_attributes][' + nextIndex() + ']';
+      var prefix = 'generic_file';
+      if (($("[id=new_collection]").length) || ($("[id^=edit_collection]").length)) {
+          prefix = 'collection';
+      }
+      prefix += '[permissions_attributes][' + nextIndex() + ']';
       $('<input>').attr({
           type: 'hidden',
           name: prefix + '[type]',
@@ -145,13 +161,17 @@ Blacklight.onLoad(function() {
   });
 
   function showPermissionNote() {
-     $('#save_perm_note').removeClass('hidden');
+      $('#save_perm_note').removeClass('hidden');
   }
 
   function addDestroyField(element, index) {
+      var prefix = 'generic_file';
+      if (($("[id=new_collection]").length) || ($("[id^=edit_collection]").length)) {
+          prefix = 'collection';
+      }
       $('<input>').attr({
           type: 'hidden',
-          name: 'generic_file[permissions_attributes][' + index + '][_destroy]',
+          name: prefix + '[permissions_attributes][' + index + '][_destroy]',
           value: 'true'
       }).appendTo(element);
   }
@@ -169,6 +189,10 @@ function get_visibility() {
  * visibility of Open or Institution) so disable the Read option
  */
 function set_access_levels() {
+  var permissions_fld = 'generic_file[permissions]';
+  if (($("[id=new_collection]").length) || ($("[id^=edit_collection]").length)) {
+    permissions_fld = 'collection[permissions]';
+  }
   var vis = get_visibility();
   var enabled_disabled = false;
   if (vis == "open" || vis == "psu") {
@@ -176,7 +200,7 @@ function set_access_levels() {
   }
   $('#new_group_permission_skel option[value=read]').attr("disabled", enabled_disabled);
   $('#new_user_permission_skel option[value=read]').attr("disabled", enabled_disabled);
-  var perms_sel = $("select[name^='generic_file[permissions]']");
+  var perms_sel = $("select[name^=permissions_fld]");
   $.each(perms_sel, function(index, sel_obj) {
     $.each(sel_obj, function(j, opt) {
       if( opt.value == "read") {
@@ -192,10 +216,14 @@ function set_access_levels() {
  */
 function is_permission_duplicate(user_or_group_name)
 {
+  var permissions_fld = 'generic_file[permissions]';
+  if (($("[id=new_collection]").length) || ($("[id^=edit_collection]").length)) {
+    permissions_fld = 'collection[permissions]';
+  }
   s = "[" + user_or_group_name + "]";
   var patt = new RegExp(preg_quote(s), 'gi');
-  var perms_input = $("input[name^='generic_file[permissions]']");
-  var perms_sel = $("select[name^='generic_file[permissions]']");
+  var perms_input = $("input[name^=permissions_fld]");
+  var perms_sel = $("select[name^=permissions_fld]");
   var flag = 1;
   perms_input.each(function(index, form_input) {
       // if the name is already being used - return false (not valid)

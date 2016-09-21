@@ -98,7 +98,7 @@ describe SufiaHelper, type: :helper do
         expect(helper.current_search_parameters).to be_nil
       end
 
-      it "is ignored on dashboard files, collections, highlights and shares" do
+      it "is ignored on dashboard files, collections, highlights and shares (files and collections)" do
         allow(helper).to receive(:params).and_return(controller: "my/files", q: "foo")
         expect(helper.current_search_parameters).to be_nil
         allow(helper).to receive(:params).and_return(controller: "my/collections", q: "foo")
@@ -106,6 +106,8 @@ describe SufiaHelper, type: :helper do
         allow(helper).to receive(:params).and_return(controller: "my/highlights", q: "foo")
         expect(helper.current_search_parameters).to be_nil
         allow(helper).to receive(:params).and_return(controller: "my/shares", q: "foo")
+        expect(helper.current_search_parameters).to be_nil
+        allow(helper).to receive(:params).and_return(controller: "my/shared_collections", q: "foo")
         expect(helper.current_search_parameters).to be_nil
       end
     end
@@ -151,6 +153,13 @@ describe SufiaHelper, type: :helper do
       it "returns the my dashboard shares path" do
         allow(helper).to receive(:params).and_return(controller: "my/shares")
         expect(helper.search_form_action).to eq(sufia.dashboard_shares_path)
+      end
+    end
+
+    context "when the user is on the my shared collections page" do
+      it "returns the my dashboard shared_collections path" do
+        allow(helper).to receive(:params).and_return(controller: "my/shared_collections")
+        expect(helper.search_form_action).to eq(sufia.dashboard_shared_collections_path)
       end
     end
   end

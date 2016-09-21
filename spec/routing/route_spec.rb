@@ -91,6 +91,10 @@ describe 'Routes', type: :routing do
     it "routes to my shared tab" do
       expect(get: '/dashboard/shares').to route_to(controller: 'my/shares', action: 'index')
     end
+
+    it "routes to my shared_collections tab" do
+      expect(get: '/dashboard/shares/collections').to route_to(controller: 'my/shared_collections', action: 'index')
+    end
   end
 
   describe 'Advanced Search' do

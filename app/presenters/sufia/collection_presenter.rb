@@ -11,7 +11,7 @@ module Sufia
 
     # Depositor and permissions are not displayed in app/views/collections/_show_descriptions.html.erb
     # so don't include them in `terms'.
-    # delegate :depositor, :permissions, to: :model
+    delegate :depositor, :permissions, to: :model
 
     def terms_with_values
       terms.select { |t| self[t].present? }

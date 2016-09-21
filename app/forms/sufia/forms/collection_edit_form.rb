@@ -2,6 +2,8 @@ module Sufia
   module Forms
     class CollectionEditForm
       include HydraEditor::Form
+      include HydraEditor::Form::Permissions
+
       self.model_class = ::Collection
       self.terms = [:resource_type, :title, :creator, :contributor, :description, :tag, :rights,
                     :publisher, :date_created, :subject, :language, :identifier, :based_near, :related_url, :visibility]
