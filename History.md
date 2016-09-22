@@ -1,5 +1,26 @@
 # History of Sufia releases
 
+## 6.7.0
+* Allow users and groups to share collections [E. Lynette Rayle]
+* Don’t run hound on ruby code [E. Lynette Rayle]
+* Add ability to set visibility for collections [E. Lynette Rayle]
+* Adding executable to run surveyor from the command line. Changing surveyor to not recreate survey items for existing items when you run the executable multiple times. [Carolyn Cole]
+* Adding a surveyor to create survey items for an id list And adding enumerator for migration status [Carolyn Cole]
+* Adding FedoraIdService to create a list of all the ids (of classes we care about) in fedora [Carolyn Cole]
+* Adding ActiveRecord class for Sufia::Migration::Survey::item [Carolyn Cole]
+* Moving bin directory to exe to follow new standards [Carolyn Cole]
+* Adding executable to run export actor from the command line [Carolyn Cole]
+* Export Actor which will export ActiveFedora classes to json files [Carolyn Cole]
+* Exporting a Collection's metadata, permissions, and members [Carolyn Cole]* 
+
+## 6.6.1* Export GenericFile metdata, versions, and permissions [Carolyn Cole]
+* Upping the versions for 6.6.1 release [Carolyn Cole]
+* Removing group and login from profile update [Carolyn Cole]
+* Test with Rails 4.2.6 [Justin Coyne]
+* Add auto-fix + exclusions for new Rubocop violations [Michael J. Giarlo]
+* Temporarily pin Rubocop to get past broken 0.38.0 error [Michael J. Giarlo]
+* Hydra-Jetty should be the default service container in 6.x. [Michael J. Giarlo]
+
 ## 6.6.0
 * Update background workers doc [E. Lynette Rayle]
 * Replaces table rows with an unordered list to make html valid, fixes #1058 [Adam Wead]
