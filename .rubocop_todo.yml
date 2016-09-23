@@ -113,4 +113,5 @@ RSpec/AnyInstance:
     - 'spec/presenters/sufia/work_usage_spec.rb'
     - 'spec/presenters/sufia/file_usage_spec.rb'
     - 'spec/services/sufia/repository_audit_service_spec.rb'
+    - 'spec/actors/sufia/create_with_files_actor_spec.rb'
 

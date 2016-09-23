@@ -48,6 +48,10 @@ describe Sufia::CreateWithFilesActor do
   describe "mediated deposit" do
     subject { actor.curation_concern.state }
     let(:inactive_uri) { RDF::URI('http://fedora.info/definitions/1/0/access/ObjState#inactive') }
+    let!(:admin) { create(:user) }
+    let!(:non_admin) { create(:user) }
+    let(:admin_inbox) { admin.mailbox.inbox }
+    let(:non_admin_inbox) { non_admin.mailbox.inbox }
     before do
       allow(Flipflop).to receive(:enable_mediated_deposit?).and_return(mediation_enabled)
       allow(AttachFilesToWorkJob).to receive(:perform_later).with(GenericWork, [uploaded_file1, uploaded_file2])
@@ -56,10 +60,27 @@ describe Sufia::CreateWithFilesActor do
     context "when enabled" do
       let(:mediation_enabled) { true }
       it { is_expected.to eq inactive_uri }
+      context "non-admin users" do
+        it "do not receive a new work notification" do
+          expect(non_admin_inbox.count).to eq(0)
+        end
+      end
+      context "admin users" do
+        before do
+          allow_any_instance_of(User).to receive(:admin?).and_return(true)
+          actor.create(attributes)
+        end
+        it "receive a new work notification" do
+          expect(admin_inbox.count).to eq(1)
+        end
+      end
     end
     context "when disabled" do
       let(:mediation_enabled) { false }
       it { is_expected.to be nil }
+      it "does not deliver a notification to admins" do
+        expect(admin_inbox.count).to eq(0)
+      end
     end
   end
 end
