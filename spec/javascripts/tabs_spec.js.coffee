@@ -36,3 +36,4 @@ describe "tabs", ->
 
       it "It does not error", ->
         tabNavigation();
+        expect($('#my_nav').attr('role')).toBe('navigation')

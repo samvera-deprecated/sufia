@@ -16,7 +16,7 @@
 
 <% if params[:id] %>
   <h3><%= t("sufia.works.#{action_name}.in_this_work") %></h3>
-  <%= render 'form_child_work_relationships', f: f %>
+  <%= render 'form_child_work_relationships', f: f, id_name: 'work_child_members_ids' %>
 
   <h3><%= t("sufia.works.#{action_name}.in_other_works") %></h3>
   <%= render_edit_field_partial(:in_works_ids, f: f) %>

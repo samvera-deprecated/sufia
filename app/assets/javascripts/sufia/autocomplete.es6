@@ -16,6 +16,9 @@ export class Autocomplete {
             case "based_near":
               this.autocompleteLocation(selector);
               break;
+            case "work":
+              this.autocompleteWork(selector);
+              break;
           }
       });
   }
@@ -47,5 +50,10 @@ export class Autocomplete {
   autocompleteLanguage(field) {
       var lang = require('sufia/autocomplete/language');
       new lang.Language(field, field.data('autocomplete-url'))
+  }
+
+  autocompleteWork(field) {
+    var lang = require('sufia/autocomplete/work');
+    new lang.Work(field, field.data('autocomplete-url'))
   }
 }

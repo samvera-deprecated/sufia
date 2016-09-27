@@ -1,4 +1,4 @@
-export class Language {
+export class Work {
   constructor(element, url) {
     this.url = url
     element.autocomplete(this.options());
@@ -7,7 +7,7 @@ export class Language {
   options() {
     return {
       minLength: 2,
-      source: (request, response) => {
+      source: ( request, response ) => {
         $.getJSON(this.url, {
           q: request.term
         }, response );
