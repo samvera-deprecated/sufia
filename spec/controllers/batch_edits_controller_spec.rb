@@ -18,8 +18,8 @@ describe BatchEditsController, type: :controller do
     end
 
     it "is successful" do
-      expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.title'), Sufia::Engine.routes.url_helpers.dashboard_index_path)
-      expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.my.works'), Sufia::Engine.routes.url_helpers.dashboard_works_path)
+      expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.title'), Sufia::Engine.routes.url_helpers.dashboard_index_path(locale: 'en'))
+      expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.my.works'), Sufia::Engine.routes.url_helpers.dashboard_works_path(locale: 'en'))
       get :edit
       expect(response).to be_successful
       expect(assigns[:form].model.creator).to match_array ["Fred", "Wilma"]
@@ -49,14 +49,14 @@ describe BatchEditsController, type: :controller do
 
     it "is successful" do
       put :update, params: { update_type: "delete_all" }
-      expect(response).to redirect_to(Sufia::Engine.routes.url_for(controller: "dashboard", only_path: true))
+      expect(response).to redirect_to(Sufia::Engine.routes.url_helpers.dashboard_index_path(locale: 'en'))
       expect { GenericWork.find(one.id) }.to raise_error(Ldp::Gone)
       expect { GenericWork.find(two.id) }.to raise_error(Ldp::Gone)
     end
 
     it "redirects to the return controller" do
       put :update, params: { update_type: "delete_all", return_controller: mycontroller }
-      expect(response).to redirect_to(Sufia::Engine.routes.url_for(controller: mycontroller, only_path: true))
+      expect(response).to redirect_to(Sufia::Engine.routes.url_for(controller: mycontroller, only_path: true, locale: 'en'))
     end
 
     it "updates the records" do
