@@ -9,7 +9,7 @@ describe CitationsController do
     end
 
     it "is successful" do
-      expect(controller).to receive(:add_breadcrumb).with('My Dashboard', Sufia::Engine.routes.url_helpers.dashboard_index_path)
+      expect(controller).to receive(:add_breadcrumb).with('My Dashboard', Sufia::Engine.routes.url_helpers.dashboard_index_path(locale: 'en'))
       get :work, params: { id: work }
       expect(response).to be_successful
       expect(assigns(:presenter)).to be_kind_of Sufia::WorkShowPresenter

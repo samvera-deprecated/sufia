@@ -111,7 +111,7 @@ describe CollectionsController do
           collection: { members: "add" },
           batch_document_ids: [asset3.id, asset1.id, asset2.id]
         }
-        expect(response).to redirect_to routes.url_helpers.collection_path(collection)
+        expect(response).to redirect_to routes.url_helpers.collection_path(collection, locale: 'en')
         expect(assigns[:collection].members).to match_array [asset2, asset3, asset1]
         asset_results = ActiveFedora::SolrService.instance.conn.get "select", params: { fq: ["id:\"#{asset2.id}\""], fl: ['id', Solrizer.solr_name(:collection)] }
         expect(asset_results["response"]["numFound"]).to eq 1
@@ -163,7 +163,7 @@ describe CollectionsController do
       end
 
       it "returns the collection and its members" do
-        expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.title'), Sufia::Engine.routes.url_helpers.dashboard_index_path)
+        expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.title'), Sufia::Engine.routes.url_helpers.dashboard_index_path(locale: 'en'))
         get :show, params: { id: collection }
         expect(response).to be_successful
         expect(assigns[:presenter]).to be_kind_of Sufia::CollectionPresenter
@@ -182,7 +182,7 @@ describe CollectionsController do
 
       context "without a referer" do
         it "sets breadcrumbs" do
-          expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.title'), Sufia::Engine.routes.url_helpers.dashboard_index_path)
+          expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.title'), Sufia::Engine.routes.url_helpers.dashboard_index_path(locale: 'en'))
           get :show, params: { id: collection }
           expect(response).to be_successful
         end
@@ -194,9 +194,9 @@ describe CollectionsController do
         end
 
         it "sets breadcrumbs" do
-          expect(controller).to receive(:add_breadcrumb).with('My Dashboard', Sufia::Engine.routes.url_helpers.dashboard_index_path)
-          expect(controller).to receive(:add_breadcrumb).with('My Collections', Sufia::Engine.routes.url_helpers.dashboard_collections_path)
-          expect(controller).to receive(:add_breadcrumb).with('My collection', collection_path(collection.id))
+          expect(controller).to receive(:add_breadcrumb).with('My Dashboard', Sufia::Engine.routes.url_helpers.dashboard_index_path(locale: 'en'))
+          expect(controller).to receive(:add_breadcrumb).with('My Collections', Sufia::Engine.routes.url_helpers.dashboard_collections_path(locale: 'en'))
+          expect(controller).to receive(:add_breadcrumb).with('My collection', collection_path(collection.id, locale: 'en'))
           get :show, params: { id: collection }
           expect(response).to be_successful
         end
@@ -223,7 +223,7 @@ describe CollectionsController do
 
     context "without a referer" do
       it "sets breadcrumbs" do
-        expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.title'), Sufia::Engine.routes.url_helpers.dashboard_index_path)
+        expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.title'), Sufia::Engine.routes.url_helpers.dashboard_index_path(locale: 'en'))
         get :edit, params: { id: collection }
         expect(response).to be_successful
       end
@@ -235,9 +235,9 @@ describe CollectionsController do
       end
 
       it "sets breadcrumbs" do
-        expect(controller).to receive(:add_breadcrumb).with('My Dashboard', Sufia::Engine.routes.url_helpers.dashboard_index_path)
-        expect(controller).to receive(:add_breadcrumb).with('My Collections', Sufia::Engine.routes.url_helpers.dashboard_collections_path)
-        expect(controller).to receive(:add_breadcrumb).with(I18n.t("sufia.collection.browse_view"), collection_path(collection.id))
+        expect(controller).to receive(:add_breadcrumb).with('My Dashboard', Sufia::Engine.routes.url_helpers.dashboard_index_path(locale: 'en'))
+        expect(controller).to receive(:add_breadcrumb).with('My Collections', Sufia::Engine.routes.url_helpers.dashboard_collections_path(locale: 'en'))
+        expect(controller).to receive(:add_breadcrumb).with(I18n.t("sufia.collection.browse_view"), collection_path(collection.id, locale: 'en'))
         get :edit, params: { id: collection }
         expect(response).to be_successful
       end
