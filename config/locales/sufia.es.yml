@@ -1,4 +1,837 @@
 es:
   sufia:
+    admin_sets:
+      index:
+        header:         "Colecciones Administrativas"
     controls:
-      home:             "Casa"
+      home:             "Inicio"
+      about:            "Acerca de"
+      help:             "Ayuda"
+      contact:          "Contacto"
+    product_name:       "Sufia"
+    product_twitter_handle: "@HydraSphere"
+    institution_name:   "Nombre de la institución"
+    institution_name_full: "El nombre de la institución"
+    sort_label: "Ordenar el listado de items"
+    account_name:       "Mi identificador de cuenta institucional"
+    account_label:      "Usuario"
+    passive_consent_to_agreement: "Al salvar este trabajo yo acepto a"
+    active_consent_to_agreement:  "He leído y estoy de acuerdo con"
+    deposit_agreement:  "Aceptación del Depósito"
+    document_language:  "es"
+    share_button:       "Comparte tu Trabajo"
+    view_profile:       "Ver Perfil"
+    edit_profile:       "Editar Perfil"
+    single_use_links:
+      button: "Vínculo a archivo de uso único"
+      expiration_message: "El Vínculo %{link} expira %{time}"
+    directory:
+      suffix:           "@ejemplo.org"
+    search:
+      form:
+        q:
+          label:          "Buscar en Sufia"
+          placeholder:    "Introduce términos de búsqueda"
+        option:
+          all:
+            label_short:  "Todo"
+            label_long:   "Todo Sufia"
+          my_works:
+            label_short:  "Mis trabajos"
+            label_long:   "Mis trabajos"
+          my_collections:
+            label_short:  "Mis Colecciones"
+            label_long:   "Mis Colecciones"
+          my_shares:
+            label_short:  "Lo que he compartido"
+            label_long:   "Lo que he compartido"
+      button:
+        html: '<span class="glyphicon glyphicon-search"></span> Ir'
+        text: "Buscar"
+    upload:
+      my_computer:
+        sr_tab_label: "Acceder a archivos desde"
+        tab_label: "Mi computadora"
+        sr_instructions: "Acepto a los términos de depósito y después seleccionar los archivos.  Presiona el botón de subir una vez que todos los archivos se hayan seleccionado."
+      browse_everything:
+        sr_tab_label: "Acceder a los archivos desde"
+        tab_label: "Proveedores en la Nube"
+        browse_files_button: "Navegar archivos en la nube"
+        files_selected: "archivos seleccionados"
+      local_ingest:
+        tab_label: "Ubicación en Red/Servidor"
+      processing: "El archivo se está procesando; se puede editar en cuanto termine el procesamiento"
+      permissions_message: "Actualizar permisos de archivo. Esto puede tardar unos minutos. Quizás quiera actualizar su navegador o regresar a este registro posteriormente para ver los permisos actualizados."
+      change_permissions_message_html: "<p>Ha cambiado los permisos en  %{curation_concern_human_readable_type}, <i>%{curation_concern}</i>, haciéndolo visible para <b>%{visibility_badge}</b>.</p><p>¿Quisiera cambiar todos los archivos dentro de %{curation_concern_human_readable_type} a <b>%{visibility_badge}</b> también?</p>"
+      change_access_message_html: "<p>Ha cambiado los permisos de acceso en el trabajo <i>%{curation_concern}</i>, haciéndolo accesible a otroso usuarios o grupos para ver o editar.</p><p>¿Quisiera cambiar todos los archivos dentro del mismo trabajo para que tengan los mismos usuarios de acceso, grupos y visibilidad también?</p>"
+      change_access_yes_message: "Si, por favor."
+      change_access_no_message: "No. Yo los actualizaré automáticamente."
+      change_access_flash_message: "Actualizar los niveles de acceso. Esto puede tomar unos minutos. Quizás quiera actualizar su navegador o regresar a este registro posteriormente para ver los niveles de acceso."
+      alert:
+        fail_html: "There was a problem during upload, none of your files uploaded correctly. Please %{reload_href}.  Use the %{contact_href} to report the error if it persists."
+        fail_restart_href_text: "start over"
+        contact_href_text: "contact form"
+        partial_fail_html: "One or more files did not upload successfully. To continue using the files that uploaded %{metadata_href}. <br /> Use the %{contact_href} to report the error if it persists."
+        partial_fail_metadata_href_text: "edit their metadata"
+      cloud_timeout_message_html: "Please note that if you upload a large number of files within a short period of time, the cloud provider may not be able to accommodate your request. If you experience any errors uploading from the cloud, let us know via the %{contact_href}."
+    homepage:
+      featured_works:
+        tab_label:          'Featured Works'
+        title:              'Featured Works'
+        no_works:           'No works have been featured'
+        drag:               'Drag'
+      featured_researcher:
+        tab_label:          'Featured Researcher'
+        title:              'Featured Researcher'
+      recently_uploaded:
+        depositor:          'Depositor'
+        details:            'Details'
+        tab_label:          'Recently Uploaded'
+        title:              'Recently Uploaded'
+        no_public:          'No public work has been contributed.'
+      admin_sets:
+        link:               'View all administrative collections'
+        tab_label:          'Explore Collections'
+        title:              'Explore Collections'
+    toolbar:
+      admin:
+        menu: "Administration"
+      dashboard:
+        menu: "Dashboard"
+        my: "My Dashboard"
+        highlights: "Highlights"
+        transfers: "Transfers"
+        shares: "Shares"
+      works:
+        menu: "Works"
+        new: "New"
+        my: "My Works"
+        batch: "Batch Create"
+      collections:
+        menu: "Collections"
+        my: "My Collections"
+        new: "New Collection"
+    dashboard:
+      title:                    "My Dashboard"
+      view_collections:         "View Collections"
+      create_collection:        "Create Collection"
+      view_files:               "View Files"
+      view_works:               "View Works"
+      create_work:              "Create Work"
+      user_activity:            "User Activity"
+      no_activity:              "User has no recent activity"
+      user_notifications:       "User Notifications"
+      no_notifications:         "User has no notifications"
+      additional_notifications: "See all notifications"
+      manage_proxies:           "Manage Proxies"
+      proxy_activity:           "Proxy Activity"
+      authorize_proxies:        "Authorize Proxies"
+      current_proxies:          "Current Proxies"
+      proxy_user:               "Proxy User"
+      transfer_of_ownership:    "Transfer of Ownership"
+      transfers_sent:           "Sent"
+      transfers_received:       "Received"
+      transfer_works_link:      "Select works to transfer"
+      no_transfer_requests:     "You haven't received any work transfer requests"
+      no_transfers:             "You haven't transferred any work"
+      stats:
+        heading:            "Your Statistics"
+        files:              "Files deposited"
+        file_views:         "View"
+        file_downloads:     "Download"
+        works:              "Works created"
+        collections:        "Collections created"
+      my:
+        works:        "My Works"
+        collections:  "My Collections"
+        highlights:   "My Highlights"
+        shares:       "Works Shared with Me"
+        facet_label:
+          files:        "Filter your files"
+          collections:  "Filter your collections"
+          highlighted: "Filter your highlights"
+          shared:      "Filter your shares"
+          works:       "Filter your works"
+        sr:
+          show_label:       "Display all details of"
+          detail_label:     "Display summary details of"
+          batch_checkbox:   "Check to add to a collection or edit list"
+          check_all_label:  "Select all files to be added to a collection or edited"
+          listing:          "Listing of items you have deposited in"
+          press_to:         "Press to"
+        heading:
+          title:          "Title"
+          date_uploaded:  "Date Uploaded"
+          visibility:     "Visibility"
+          action:         "Action"
+        collection_list:
+          description:    "Description:"
+          edit_access:    "Edit Access:"
+          groups:         "Groups:"
+          users:          "Users:"
+        action:
+          select:                  "Select an action"
+          edit_collection:         "Edit Collection"
+          delete_collection:       "Delete Collection"
+          edit_work:               "Edit Work"
+          delete_work:             "Delete Work"
+          transfer:                "Transfer Ownership of Work"
+          work_confirmation:       "Deleting a work from %{application_name} is permanent. Click OK to delete this work from %{application_name}, or Cancel to cancel this operation"
+          collection_confirmation: "Deleting a collection from %{application_name} is permanent. Click OK to delete this collection from %{application_name}, or Cancel to cancel this operation"
+
+    messages:
+      success:
+        single: "has been saved."
+        multiple:
+          link: "These files"
+          keyword: "have been saved."
+        title:  "Files uploaded successfully"
+        subject: "Batch upload complete"
+      failure:
+        single: "could not be updated. You do not have sufficient privileges to edit it."
+        multiple:
+          link: "These files"
+          keyword: "could not be updated. You do not have sufficient privileges to edit them."
+        title:  "Files failed"
+        subject: "Batch upload permission denied"
+    background_attribution_html: "Background image CC by-nc-sa by <a href=\"https://flic.kr/p/eirxaf\">f2b1610</a>"
+    bread_crumb:
+      search_results: "Back to search results"
+    visibility:
+      open: "Open Access"
+      private: "Private"
+      open_title_attr: "Change the visibility of this resource"
+      private_title_attr: "Change the visibility of this resource"
+    user_profile:
+      orcid:
+        alt: "ORCID icon"
+        label: "ORCID Profile"
+      tab_highlighted: "Highlighted"
+      tab_profile: "Profile"
+      tab_activity: "Activity"
+      zotero:
+        alt: "Zotero icon"
+        label: "Zotero Profile"
+        connected: "Connected!"
+        unlinked: "Link with Zotero"
+    batch:
+      help:
+        title: "Filename will be the default title. Please provide a more meaningful title, and filenames will still be preserved by the system."
+        resource_type: "You may select multiple types to apply to all files"
+    works:
+      new:
+        header: Add New Work
+        in_collections: This Work in Collections
+        in_this_work: Other Works in this Work
+        in_other_works: This Work in Other Works
+        after_create_html: "Your files are being processed by %{application_name} in the background. The metadata and access controls you specified are being applied. Files will be marked <span class=\"label label-danger\" title=\"Private\">Private</span> until this process is complete (shouldn't take too long, hang in there!). You may need to refresh this page to see these updates."
+      edit:
+        header: Edit Work
+        in_collections: This Work in Collections
+        in_this_work: Other Works in this Work
+        in_other_works: This Work in Other Works
+        additional_fields: "Additional fields"
+        tab:
+          metadata:      "Descriptions"
+          files:         "Files"
+          relationships: "Relationships"
+          share:         "Share"
+      progress:
+        header: Save Work
+      show:
+        no_preview: No preview available
+    batch_uploads:
+      new:
+        header: Batch Create New Works
+        in_collections: These Works in Collections
+        in_this_work: Other Works in this Work
+        in_other_works: This Work in Other Works
+      progress:
+        header: Save Works
+      files:
+        instructions: Each file will be uploaded to a separate new work resulting in one work per uploaded file.
+    collection:
+      is_part_of: "Is part of"
+      browse_view: "Browse View"
+      actions:
+        header: "Actions"
+        edit:
+          label: "Edit"
+          desc: "Edit this collection"
+        add_works:
+          label: "Add works"
+          desc: "Add works to this Collection"
+        delete:
+          label: "Delete"
+          desc: "Delete this collection"
+          confirmation: "Delete this collection?"
+      edit:
+        manage_items: "Manage Items in this Collection"
+        description: "Descriptions"
+        additional_fields: "Additional fields"
+      document_list:
+        edit: "Edit"
+        no_visible_works: "The collection is either empty or does not contain items to which you have access."
+      select_form:
+        title: "Add to collection"
+        no_collections: "You do not have access to any existing collections. You may create a new collection."
+        select_heading: "Select the collection to add your files to:"
+        close: "Close"
+        create: "Create Collection"
+        update: "Update Collection"
+        create_new: "Add to new Collection"
+    mailbox:
+      date:     'Date'
+      subject:  'Subject'
+      message:  'Message'
+      delete:   'Delete Message'
+      notifications_deleted: "Notifications have been deleted"
+    file_set:
+      browse_view: "Browse View"
+      show:
+        download: "Download the file"
+    work:
+      browse_view: "Browse View"
+    footer:
+      copyright_html: "<strong>Copyright &copy; 2016 Project Hydra</strong> Licensed under the Apache License, Version 2.0"
+    admin:
+      admin_sets:
+        edit:
+          header:         "Edit Administrative Set"
+        new:
+          header:         "Create New Administrative Set"
+        show:
+          header:           "Administrative Set"
+          item_list_header: "Works in This Set"
+      sidebar:
+        admin_sets: "Administrative Sets"
+        settings:   "Settings"
+        statistics: "Statistics"
+      stats:
+        registered: "Registered"
+        deposited_form:
+          heading: "Display Files Deposited:"
+          start_label: "Start"
+          end_label: "end [defaults to now]"
+        user_deposits:
+          heading: "Display files deposited by users"
+          start_label: "Starting"
+          end_label: "Ending [defaults to now]"
+    test:
+      progress:
+        header: "Test Header Title"
+
+  simple_form:
+    labels:
+      generic_work: &work_labels
+        based_near:       "Location"
+        description:      "Abstract or Summary"
+        keyword:          "Keyword"
+        date_created:     "Date Created"
+        related_url:      "Related URL"
+        files:            "Upload a new version of this file from your computer"
+        collection_ids:   "Add as member of collection"
+        admin_set_id:     "Add as member of administrative set"
+      collection:
+        total_items:      "Total Items"
+        size:             "Size"
+        <<: *work_labels
+
+    hints:
+      generic_work:
+        resource: "Pre-defined categories to describe the type of content being uploaded, such as &quot;article&quot; or &quot;dataset.&quot;  More than one type may be selected."
+        title: "A name to aid in identifying a work."
+        keyword: "Words or phrases you select to describe what the work is about. These are used to search for content."
+        subject: "Headings or index terms describing what the work is about; these do need to conform to an existing vocabulary."
+        creator: "The person or group responsible for the work. Usually this is the author of the content. Personal names should be entered with the last name first, e.g. &quot;Smith, John.&quot;."
+        related_url: "A link to a website or other specific content (audio, video, PDF document) related to the work. An example is the URL of a research project from which the work was derived."
+        based_near: "A place name related to the work, such as its site of publication, or the city, state, or country the work contents are about. Calls upon the <a href='http://www.geonames.org'>GeoNames web service</a>."
+        contributor: "A person or group you want to recognize for playing a role in the creation of the work, but not the primary role."
+        date_created: "The date on which the work was generated."
+        description: "Free-text notes about the work. Examples include abstracts of a paper or citation information for a journal article."
+        identifier: "A unique handle identifying the work. An example would be a DOI for a journal article, or an ISBN or OCLC number for a book."
+        language: "The language of the work's content."
+        publisher: "The person or group making the work available. Generally this is the institution."
+        rights: "Licensing and distribution information governing access to the work. Select from the provided drop-down list."
+      collection:
+        resource_type: "Pre-defined categories to describe the type of content being uploaded, such as &quot;article&quot; or &quot;dataset.&quot;  More than one type may be selected."
+        title: "A name to aid in identifying a collection."
+        keyword: "Words or phrases you select to describe what the collection is about. These are used to search for content."
+        subject: "Headings or index terms describing what the collection is about; these do need to conform to an existing vocabulary."
+        creator: "The person or group responsible for the collection. Usually this is the author of the content. Personal names should be entered with the last name first, e.g. &quot;Smith, John.&quot;."
+        related_url: "A link to a website or other specific content (audio, video, PDF document) related to the collection. An example is the URL of a research project from which the collection was derived."
+        based_near: "A place name related to the collection, such as its site of publication, or the city, state, or country the collection contents are about. Calls upon the <a href='http://www.geonames.org'>GeoNames web service</a>."
+        contributor: "A person or group you want to recognize for playing a role in the creation of the collection, but not the primary role."
+        date_created: "The date on which the collection was created."
+        description: "Free-text notes about the collection. Examples include abstracts of a paper or citation information for a journal article."
+        identifier: "A unique handle identifying the collection. An example would be a DOI for a journal article, or an ISBN or OCLC number for a book."
+        language: "The language of the collection's content."
+        publisher: "The person or group making the collection available. Generally this is the institution."
+        rights: "Licensing and distribution information governing access to the collection. Select from the provided drop-down list."
+
+  curation_concerns:
+    base:
+      relationships:
+        header: Relationships
+        empty: "This %{type} is not currently in any collections."
+      relationships_parent_row:
+        label: "In %{type}:"
+      relationships_parent_row_empty:
+        label: "In %{type}:"
+        empty: "There are no %{type} relationships."
+      metadata:
+        header: Descriptions
+        attribute_name_label: Attribute Name
+        attribute_values_label: Values
+      form_files:
+        local_upload: Add Local Files
+        external_upload: Cloud Providers
+        dropzone: "Drop files here."
+      items:
+        header: Items
+        thumbnail: Thumbnail
+        title: Title
+es:
+  sufia:
+    admin_sets:
+      index:
+        header:         "Colecciones Administrativas"
+    controls:
+      home:             "Inicio"
+      about:            "Acerca de"
+      help:             "Ayuda"
+      contact:          "Contacto"
+    product_name:       "Sufia"
+    product_twitter_handle: "@HydraSphere"
+    institution_name:   "Nombre de la institución"
+    institution_name_full: "El nombre de la institución"
+    sort_label: "Ordenar el listado de items"
+    account_name:       "Mi identificador de cuenta institucional"
+    account_label:      "Usuario"
+    passive_consent_to_agreement: "Al salvar este trabajo yo acepto a"
+    active_consent_to_agreement:  "He leído y estoy de acuerdo con"
+    deposit_agreement:  "Aceptación del Depósito"
+    document_language:  "es"
+    share_button:       "Comparte tu Trabajo"
+    view_profile:       "Ver Perfil"
+    edit_profile:       "Editar Perfil"
+    single_use_links:
+      button: "Vínculo a archivo de uso único"
+      expiration_message: "El Vínculo %{link} expira %{time}"
+    directory:
+      suffix:           "@ejemplo.org"
+    search:
+      form:
+        q:
+          label:          "Buscar en Sufia"
+          placeholder:    "Introduce términos de búsqueda"
+        option:
+          all:
+            label_short:  "Todo"
+            label_long:   "Todo Sufia"
+          my_works:
+            label_short:  "Mis trabajos"
+            label_long:   "Mis trabajos"
+          my_collections:
+            label_short:  "Mis Colecciones"
+            label_long:   "Mis Colecciones"
+          my_shares:
+            label_short:  "Lo que he compartido"
+            label_long:   "Lo que he compartido"
+      button:
+        html: '<span class="glyphicon glyphicon-search"></span> Ir'
+        text: "Buscar"
+    upload:
+      my_computer:
+        sr_tab_label: "Acceder a archivos desde"
+        tab_label: "Mi computadora"
+        sr_instructions: "Acepto a los términos de depósito y después seleccionar los archivos.  Presiona el botón de subir una vez que todos los archivos se hayan seleccionado."
+      browse_everything:
+        sr_tab_label: "Acceder a los archivos desde"
+        tab_label: "Proveedores en la Nube"
+        browse_files_button: "Navegar archivos en la nube"
+        files_selected: "archivos seleccionados"
+      local_ingest:
+        tab_label: "Ubicación en Red/Servidor"
+      processing: "El archivo se está procesando; se puede editar en cuanto termine el procesamiento"
+      permissions_message: "Actualizar permisos de archivo. Esto puede tardar unos minutos. Quizás quiera actualizar su navegador o regresar a este registro posteriormente para ver los permisos actualizados."
+      change_permissions_message_html: "<p>Ha cambiado los permisos en  %{curation_concern_human_readable_type}, <i>%{curation_concern}</i>, haciéndolo visible para <b>%{visibility_badge}</b>.</p><p>¿Quisiera cambiar todos los archivos dentro de %{curation_concern_human_readable_type} a <b>%{visibility_badge}</b> también?</p>"
+      change_access_message_html: "<p>Ha cambiado los permisos de acceso en el trabajo <i>%{curation_concern}</i>, haciéndolo accesible a otroso usuarios o grupos para ver o editar.</p><p>¿Quisiera cambiar todos los archivos dentro del mismo trabajo para que tengan los mismos usuarios de acceso, grupos y visibilidad también?</p>"
+      change_access_yes_message: "Si, por favor."
+      change_access_no_message: "No. Yo los actualizaré automáticamente."
+      change_access_flash_message: "Actualizar los niveles de acceso. Esto puede tomar unos minutos. Quizás quiera actualizar su navegador o regresar a este registro posteriormente para ver los niveles de acceso."
+      alert:
+        fail_html: "There was a problem during upload, none of your files uploaded correctly. Please %{reload_href}.  Use the %{contact_href} to report the error if it persists."
+        fail_restart_href_text: "start over"
+        contact_href_text: "contact form"
+        partial_fail_html: "One or more files did not upload successfully. To continue using the files that uploaded %{metadata_href}. <br /> Use the %{contact_href} to report the error if it persists."
+        partial_fail_metadata_href_text: "edit their metadata"
+      cloud_timeout_message_html: "Please note that if you upload a large number of files within a short period of time, the cloud provider may not be able to accommodate your request. If you experience any errors uploading from the cloud, let us know via the %{contact_href}."
+    homepage:
+      featured_works:
+        tab_label:          'Featured Trabajos'
+        title:              'Featured Trabajos'
+        no_works:           'No works have been featured'
+        drag:               Arrastrar
+      featured_researcher:
+        tab_label:          'Featured Researcher'
+        title:              'Featured Researcher'
+      recently_uploaded:
+        depositor:          'Depositor'
+        details:            'Detalles'
+        tab_label:          'Recently Uploaded'
+        title:              'Recently Uploaded'
+        no_public:          'No public work has been contributed.'
+      admin_sets:
+        link:               'View all administrative collections'
+        tab_label:          'Explore Coleccións'
+        title:              'Explore Coleccións'
+    toolbar:
+      admin:
+        menu: "Administration"
+      dashboard:
+        menu: "Panel de Control"
+        my: "Mi Panel de Control"
+        highlights: "Highlights"
+        transfers: "Transfers"
+        shares: "Shares"
+      works:
+        menu: "Trabajos"
+        new: "Nuevo"
+        my: "Mi Trabajos"
+        batch: "Batch Crear"
+      collections:
+        menu: "Coleccións"
+        my: "Mi Coleccións"
+        new: "Nuevo Colección"
+    dashboard:
+      title:                    "Mi Panel de Control"
+      view_collections:         "View Coleccións"
+      create_collection:        "Crear Colección"
+      view_files:               "View Files"
+      view_works:               "View Trabajos"
+      create_work:              "Crear Work"
+      user_activity:            "User Activity"
+      no_activity:              "User has no recent activity"
+      user_notifications:       "User Notifications"
+      no_notifications:         "User has no notifications"
+      additional_notifications: "See all notifications"
+      manage_proxies:           "Manage Proxies"
+      proxy_activity:           "Proxy Activity"
+      authorize_proxies:        "Authorize Proxies"
+      current_proxies:          "Current Proxies"
+      proxy_user:               "Proxy User"
+      transfer_of_ownership:    "Transfer of Ownership"
+      transfers_sent:           "Sent"
+      transfers_received:       "Received"
+      transfer_works_link:      "Select works to transfer"
+      no_transfer_requests:     "You haven't received any work transfer requests"
+      no_transfers:             "You haven't transferred any work"
+      stats:
+        heading:            "Your Estadísticas"
+        files:              "Files deposited"
+        file_views:         "View"
+        file_downloads:     "Download"
+        works:              "Trabajos created"
+        collections:        "Coleccións created"
+      my:
+        works:        "Mi Trabajos"
+        collections:  "Mi Coleccións"
+        highlights:   "Mi Highlights"
+        shares:       "Trabajos Shared with Me"
+        facet_label:
+          files:        "Filter your files"
+          collections:  "Filter your collections"
+          highlighted: "Filter your highlights"
+          shared:      "Filter your shares"
+          works:       "Filter your works"
+        sr:
+          show_label:       "Display all details of"
+          detail_label:     "Display summary details of"
+          batch_checkbox:   "Check to add to a collection or edit list"
+          check_all_label:  "Select all files to be added to a collection or edited"
+          listing:          "Listing of items you have deposited in"
+          press_to:         "Press to"
+        heading:
+          title:          "Title"
+          date_uploaded:  "Date Uploaded"
+          visibility:     "Visibility"
+          action:         "Action"
+        collection_list:
+          description:    "Description:"
+          edit_access:    "Edit Access:"
+          groups:         "Groups:"
+          users:          "Users:"
+        action:
+          select:                  "Select an action"
+          edit_collection:         "Edit Colección"
+          delete_collection:       "Delete Colección"
+          edit_work:               "Edit Work"
+          delete_work:             "Delete Work"
+          transfer:                "Transfer Ownership of Work"
+          work_confirmation:       "Deleting a work from %{application_name} is permanent. Click OK to delete this work from %{application_name}, or Cancel to cancel this operation"
+          collection_confirmation: "Deleting a collection from %{application_name} is permanent. Click OK to delete this collection from %{application_name}, or Cancel to cancel this operation"
+
+    messages:
+      success:
+        single: "has been saved."
+        multiple:
+          link: "These files"
+          keyword: "have been saved."
+        title:  "Files uploaded successfully"
+        subject: "Batch upload complete"
+      failure:
+        single: "could not be updated. You do not have sufficient privileges to edit it."
+        multiple:
+          link: "These files"
+          keyword: "could not be updated. You do not have sufficient privileges to edit them."
+        title:  "Files failed"
+        subject: "Batch upload permission denied"
+    background_attribution_html: "Background image CC by-nc-sa by <a href=\"https://flic.kr/p/eirxaf\">f2b1610</a>"
+    bread_crumb:
+      search_results: "Back to search results"
+    visibility:
+      open: "Open Access"
+      private: "Private"
+      open_title_attr: "Change the visibility of this resource"
+      private_title_attr: "Change the visibility of this resource"
+    user_profile:
+      orcid:
+        alt: "ORCID icon"
+        label: "ORCID Profile"
+      tab_highlighted: "Highlighted"
+      tab_profile: "Profile"
+      tab_activity: "Activity"
+      zotero:
+        alt: "Zotero icon"
+        label: "Zotero Profile"
+        connected: "Connected!"
+        unlinked: "Link with Zotero"
+    batch:
+      help:
+        title: "Filename will be the default title. Please provide a more meaningful title, and filenames will still be preserved by the system."
+        resource_type: "You may select multiple types to apply to all files"
+    works:
+      new:
+        header: Agregar Nuevo Work
+        in_collections: This Work in Coleccións
+        in_this_work: Other Trabajos in this Work
+        in_other_works: This Work in Other Trabajos
+        after_create_html: "Your files are being processed by %{application_name} in the background. The metadata and access controls you specified are being applied. Files will be marked <span class=\"label label-danger\" title=\"Private\">Private</span> until this process is complete (shouldn't take too long, hang in there!). You may need to refresh this page to see these updates."
+      edit:
+        header: Edit Work
+        in_collections: This Work in Coleccións
+        in_this_work: Other Trabajos in this Work
+        in_other_works: This Work in Other Trabajos
+        additional_fields: "Agregaritional fields"
+        tab:
+          metadata:      "Descriptions"
+          files:         "Files"
+          relationships: "Relationships"
+          share:         "Share"
+      progress:
+        header: Save Work
+      show:
+        no_preview: No preview available
+    batch_uploads:
+      new:
+        header: Batch Crear Nuevo Trabajos
+        in_collections: These Trabajos in Coleccións
+        in_this_work: Other Trabajos in this Work
+        in_other_works: This Work in Other Trabajos
+      progress:
+        header: Save Trabajos
+      files:
+        instructions: Each file will be uploaded to a separate new work resulting in one work per uploaded file.
+    collection:
+      is_part_of: "Is part of"
+      browse_view: "Navegar View"
+      actions:
+        header: "Actions"
+        edit:
+          label: "Edit"
+          desc: "Edit this collection"
+        add_works:
+          label: "Agregar works"
+          desc: "Agregar works to this Colección"
+        delete:
+          label: "Delete"
+          desc: "Delete this collection"
+          confirmation: "Delete this collection?"
+      edit:
+        manage_items: "Manage Items in this Colección"
+        description: "Descriptions"
+        additional_fields: "Agregaritional fields"
+      document_list:
+        edit: "Edit"
+        no_visible_works: "The collection is either empty or does not contain items to which you have access."
+      select_form:
+        title: "Agregar to collection"
+        no_collections: "You do not have access to any existing collections. You may create a new collection."
+        select_heading: "Select the collection to add your files to:"
+        close: "Close"
+        create: "Crear Colección"
+        update: "Actualizar Colección"
+        create_new: "Agregar to new Colección"
+    mailbox:
+      date:     'Date'
+      subject:  'Subject'
+      message:  'Message'
+      delete:   'Delete Message'
+      notifications_deleted: "Notifications have been deleted"
+    file_set:
+      browse_view: "Navegar View"
+      show:
+        download: "Download the file"
+    work:
+      browse_view: "Navegar View"
+    footer:
+      copyright_html: "<strong>Copyright &copy; 2016 Project Hydra</strong> Licensed under the Apache License, Version 2.0"
+    admin:
+      admin_sets:
+        edit:
+          header:         "Edit Administrative Set"
+        new:
+          header:         "Crear Nuevo Administrative Set"
+        show:
+          header:           "Administrative Set"
+          item_list_header: "Trabajos in This Set"
+      sidebar:
+        admin_sets: "Administrative Sets"
+        settings:   "Ajustes"
+        statistics: "Estadísticas"
+      stats:
+        registered: "Registered"
+        deposited_form:
+          heading: "Display Files Deposited:"
+          start_label: "Start"
+          end_label: "end [defaults to now]"
+        user_deposits:
+          heading: "Display files deposited by users"
+          start_label: "Starting"
+          end_label: "Ending [defaults to now]"
+    test:
+      progress:
+        header: "Test Header Title"
+
+  simple_form:
+    labels:
+      generic_work: &work_labels
+        based_near:       "Location"
+        description:      "Abstract or Summary"
+        keyword:          "Keyword"
+        date_created:     "Date Creard"
+        related_url:      "Related URL"
+        files:            "Upload a new version of this file from your computer"
+        collection_ids:   "Agregar as member of collection"
+        admin_set_id:     "Agregar as member of administrative set"
+      collection:
+        total_items:      "Total Items"
+        size:             "Size"
+        <<: *work_labels
+
+    hints:
+      generic_work:
+        resource: "Pre-defined categories to describe the type of content being uploaded, such as &quot;article&quot; or &quot;dataset.&quot;  More than one type may be selected."
+        title: "A name to aid in identifying a work."
+        keyword: "Words or phrases you select to describe what the work is about. These are used to search for content."
+        subject: "Headings or index terms describing what the work is about; these do need to conform to an existing vocabulary."
+        creator: "The person or group responsible for the work. Usually this is the author of the content. Personal names should be entered with the last name first, e.g. &quot;Smith, John.&quot;."
+        related_url: "A link to a website or other specific content (audio, video, PDF document) related to the work. An example is the URL of a research project from which the work was derived."
+        based_near: "A place name related to the work, such as its site of publication, or the city, state, or country the work contents are about. Calls upon the <a href='http://www.geonames.org'>GeoNames web service</a>."
+        contributor: "A person or group you want to recognize for playing a role in the creation of the work, but not the primary role."
+        date_created: "The date on which the work was generated."
+        description: "Free-text notes about the work. Examples include abstracts of a paper or citation information for a journal article."
+        identifier: "A unique handle identifying the work. An example would be a DOI for a journal article, or an ISBN or OCLC number for a book."
+        language: "The language of the work's content."
+        publisher: "The person or group making the work available. Generally this is the institution."
+        rights: "Licensing and distribution information governing access to the work. Select from the provided drop-down list."
+      collection:
+        resource_type: "Pre-defined categories to describe the type of content being uploaded, such as &quot;article&quot; or &quot;dataset.&quot;  More than one type may be selected."
+        title: "A name to aid in identifying a collection."
+        keyword: "Words or phrases you select to describe what the collection is about. These are used to search for content."
+        subject: "Headings or index terms describing what the collection is about; these do need to conform to an existing vocabulary."
+        creator: "The person or group responsible for the collection. Usually this is the author of the content. Personal names should be entered with the last name first, e.g. &quot;Smith, John.&quot;."
+        related_url: "A link to a website or other specific content (audio, video, PDF document) related to the collection. An example is the URL of a research project from which the collection was derived."
+        based_near: "A place name related to the collection, such as its site of publication, or the city, state, or country the collection contents are about. Calls upon the <a href='http://www.geonames.org'>GeoNames web service</a>."
+        contributor: "A person or group you want to recognize for playing a role in the creation of the collection, but not the primary role."
+        date_created: "The date on which the collection was created."
+        description: "Free-text notes about the collection. Examples include abstracts of a paper or citation information for a journal article."
+        identifier: "A unique handle identifying the collection. An example would be a DOI for a journal article, or an ISBN or OCLC number for a book."
+        language: "The language of the collection's content."
+        publisher: "The person or group making the collection available. Generally this is the institution."
+        rights: "Licensing and distribution information governing access to the collection. Select from the provided drop-down list."
+
+  curation_concerns:
+    base:
+      relationships:
+        header: Relationships
+        empty: "This %{type} is not currently in any collections."
+      relationships_parent_row:
+        label: "In %{type}:"
+      relationships_parent_row_empty:
+        label: "In %{type}:"
+        empty: "There are no %{type} relationships."
+      metadata:
+        header: Descriptions
+        attribute_name_label: Attribute Name
+        attribute_values_label: Values
+      form_files:
+        local_upload: Agregar Local Files
+        external_upload: Cloud Providers
+        dropzone: "Drop files here."
+      items:
+        header: Items
+        thumbnail: Thumbnail
+        title: Title
+        date_uploaded: "Date Uploaded"
+        visibility: Visibility
+        actions: Actions
+        empty:  "This %{type} has no files associated with it. Click \"edit\" to add more files."
+      citations:
+        header: 'Citations:'
+      social_media:
+        facebook: 'Facebook'
+        twitter: 'Twitter'
+        tumblr: 'Tumblr'
+        google: 'Google+'
+    file_sets:
+      groups_description:
+        description_html: >
+          The list of groups in the drop-down marked "Select a group" is a list of User Managed Groups that
+          you are a member of.  You may select a specific group and assign an access level for a file 
+          within %{application_name}, similarly to adding user access levels.
+    visibility:
+      open:
+        label_html: Public
+      authenticated:
+        label_html: "%{institution}"
+      embargo:
+        label_html: Embargo
+      lease:
+        label_html: Lease
+      private:
+        label_html: Private
+    single_use_links:
+      copy: 
+        button: Copy
+  blacklight:
+    search:
+      fields:
+        show:
+          based_near: Location
+          contributor: Contributors
+          keyword: Keyword
+
+
+  helpers:
+    action:
+      admin_set:
+        new: "Crear new administrative set"
+      cancel: "Cancel"
+      edit: "Edit"
+    submit:
+      admin_set:
+        create: 'Save'
+        update: 'Save'
+
