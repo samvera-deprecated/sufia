@@ -7,7 +7,7 @@ describe Sufia::Import::WorkBuilder do
   let(:sufia6_password) { "s6password" }
   let(:builder) { described_class.new(sufia6_user: sufia6_user, sufia6_password: sufia6_password) }
 
-  let(:gf_metadata) { JSON.parse(json, object_class: OpenStruct) }
+  let(:gf_metadata) { JSON.parse(json, symbolize_names: true) }
 
   let(:json) do
     generic_file_json(id: "th83kz34n",
@@ -21,7 +21,7 @@ describe Sufia::Import::WorkBuilder do
   end
 
   it "creates a Work with metadata and permissions" do
-    expect(permission_builder).to receive(:build).with(gf_metadata.permissions)
+    expect(permission_builder).to receive(:build).with(gf_metadata[:permissions])
     work = builder.build(gf_metadata)
     expect(work.id).to eq "th83kz34n"
     expect(work.label).to eq "15040187724_9e2f2d7c21_z.jpg"

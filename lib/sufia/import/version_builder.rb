@@ -14,14 +14,13 @@ module Sufia::Import
 
     # build versions based on the input
     #
-    # @param Array[OpenStruct] generic_file_versions
-    #     Each item is expected to contain uri, label, and created
-    #       uri     - Link to content in Sufia 6 repository
-    #       label   - Version label
-    #       created - date the version was created
+    # @param Array[hash] generic_file_versions, each with the keys below
+    # @option :uri Link to content in Sufia 6 repository
+    # @option :label Version label
+    # @option :created date the version was created
     #
     def build(generic_file_versions)
-      sorted_versions = generic_file_versions.sort_by(&:created)
+      sorted_versions = generic_file_versions.sort_by { |ver| ver[:created] }
       sorted_versions.each_with_index do |gf_version, index|
         filename_on_disk = create(gf_version)
 
@@ -35,10 +34,10 @@ module Sufia::Import
     private
 
       def create(version)
-        filename_on_disk = File.join Dir.tmpdir, "#{file_set.id}_#{version.label}"
+        filename_on_disk = File.join Dir.tmpdir, "#{file_set.id}_#{version[:label]}"
         Rails.logger.debug "[IMPORT] Downloading #{version} to #{filename_on_disk}"
         File.open(filename_on_disk, 'wb') do |file_to_upload|
-          source_uri = sufia6_version_open_uri(version.uri)
+          source_uri = sufia6_version_open_uri(version[:uri])
           file_to_upload.write source_uri.read
         end
 
