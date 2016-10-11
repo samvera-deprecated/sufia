@@ -28,6 +28,7 @@ Metrics/MethodLength:
     - 'app/controllers/concerns/sufia/my_controller_behavior.rb'
     - 'lib/generators/sufia/install_generator.rb'
     - 'lib/sufia/arkivo/metadata_munger.rb'
+    - 'lib/sufia/import/work_builder.rb'
 
 Style/LineEndConcatenation:
   Exclude:
@@ -84,6 +85,7 @@ RSpec/ExampleLength:
     - 'spec/services/sufia/user_stat_importer_spec.rb'
     - 'spec/views/catalog/_index_list_default.html.erb_spec.rb'
     - 'spec/views/collections/_form.html.erb_spec.rb'
+    - 'spec/lib/sufia/import/work_builder_spec.rb'
 
 RSpec/VerifiedDoubles:
   Enabled: false
