@@ -12,16 +12,12 @@ describe Sufia::Import::VersionBuilder do
   let(:version2_uri) { "http://127.0.0.1:8983/fedora/rest/dev/44/55/8d/49/44558d49x/content/fcr:versions/version2" }
   let(:versions) do
     [
-      OpenStruct.new(
-        "uri" => version1_uri,
-        "created" => "2016-09-28T20:00:14.658Z",
-        "label" => "version1"
-      ),
-      OpenStruct.new(
-        "uri" => version2_uri,
-        "created" => "2016-09-29T15:58:00.639Z",
-        "label" => "version2"
-      )
+      { uri: version1_uri,
+        created: "2016-09-28T20:00:14.658Z",
+        label: "version1" },
+      { uri: version2_uri,
+        created: "2016-09-29T15:58:00.639Z",
+        label: "version2" }
     ]
   end
   let(:version1) do

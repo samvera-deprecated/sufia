@@ -7,18 +7,18 @@ describe Sufia::Import::PermissionBuilder do
 
   let(:permissions) do
     [
-      OpenStruct.new("id" => "abc12333-07b1-43ab-b11d-1bc0534d874c",
-                     "agent" => "http://projecthydra.org/ns/auth/person##{user.user_key}",
-                     "mode" => "http://www.w3.org/ns/auth/acl#Write",
-                     "access_to" => "44558d49x"),
-      OpenStruct.new("id" => "b5911dfd-07b1-43ab-b11d-1bc0534d874c",
-                     "agent" => "http://projecthydra.org/ns/auth/person#cam156@psu.edu",
-                     "mode" => "http://www.w3.org/ns/auth/acl#Write",
-                     "access_to" => "44558d49x"),
-      OpenStruct.new("id" => "db8e6b05-3fe1-4d3f-9905-5232ba49f8f5",
-                     "agent" => "http://projecthydra.org/ns/auth/person#other@psu.edu",
-                     "mode" => "http://www.w3.org/ns/auth/acl#Read",
-                     "access_to" => "44558d49x")
+      { id: "abc12333-07b1-43ab-b11d-1bc0534d874c",
+        agent: "http://projecthydra.org/ns/auth/person##{user.user_key}",
+        mode: "http://www.w3.org/ns/auth/acl#Write",
+        access_to: "44558d49x" },
+      { id: "b5911dfd-07b1-43ab-b11d-1bc0534d874c",
+        agent: "http://projecthydra.org/ns/auth/person#cam156@psu.edu",
+        mode: "http://www.w3.org/ns/auth/acl#Write",
+        access_to: "44558d49x" },
+      { id: "db8e6b05-3fe1-4d3f-9905-5232ba49f8f5",
+        agent: "http://projecthydra.org/ns/auth/person#other@psu.edu",
+        mode: "http://www.w3.org/ns/auth/acl#Read",
+        access_to: "44558d49x" }
     ]
   end
 
