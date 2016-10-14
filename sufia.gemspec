@@ -46,7 +46,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'oauth'
   gem.add_dependency 'redlock', '~> 0.1.2'
 
-  gem.add_development_dependency 'engine_cart', '~> 0.8.2'
+  gem.add_development_dependency 'engine_cart', '~> 1.0'
   gem.add_development_dependency 'mida', '~> 0.3'
   gem.add_development_dependency 'database_cleaner', '~> 1.3'
   gem.add_development_dependency 'rspec-rails', '~> 3.1'
