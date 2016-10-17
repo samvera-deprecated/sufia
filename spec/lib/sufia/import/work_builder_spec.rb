@@ -12,7 +12,8 @@ describe Sufia::Import::WorkBuilder do
   let(:json) do
     generic_file_json(id: "th83kz34n",
                       date_uploaded: "2016-06-21T09:08:00.000+00:00",
-                      date_modified: "2016-06-21T09:08:00.000+00:00")
+                      date_modified: "2016-06-21T09:08:00.000+00:00",
+                      rights: 'All rights reserved')
   end
 
   let(:permission_builder) { instance_double(Sufia::Import::PermissionBuilder) }
@@ -37,7 +38,7 @@ describe Sufia::Import::WorkBuilder do
     expect(work.description).to eq ["description of the file"]
     expect(work.keyword).to include "tag1"
     expect(work.keyword).to include "tag2"
-    expect(work.rights).to eq ["Attribution 3.0"]
+    expect(work.rights).to eq ["http://www.europeana.eu/portal/rights/rr-r.html"]
     expect(work.publisher).to eq ["publisher joe"]
     expect(work.date_created).to eq ["a long time ago"]
     expect(work.date_uploaded).to eq "2016-06-21T09:08:00.000+00:00"
