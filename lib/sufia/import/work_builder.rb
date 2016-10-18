@@ -29,6 +29,10 @@ module Sufia::Import
       data.delete(:batch_id) # This attribute was removed in sufia 7
       data.delete(:versions) # works don't have versions; these are used in file set builder
       work.keyword << data.delete(:tag)
+      # "All rights reserved" was changed to a legit URI
+      if data[:rights].delete("All rights reserved")
+        data[:rights] << "http://www.europeana.eu/portal/rights/rr-r.html"
+      end
       work.apply_depositor_metadata(data.delete(:depositor))
       permission_builder.build(data.delete(:permissions))
       work.update_attributes(data)

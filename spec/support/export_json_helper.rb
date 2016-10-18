@@ -58,7 +58,7 @@ module ExportJsonHelper
         \"contributor\": [\"contributor1\", \"contribnutor2\"],
         \"description\": [\"description of the file\"],
         \"tag\": [\"tag1\", \"tag2\"],
-        \"rights\": [\"Attribution 3.0\"]"
+        \"rights\": [\"#{options.fetch(:rights, 'Attribution 3.0')}\"]"
     end
 
     def descriptive_metadata2_json(options = {})
