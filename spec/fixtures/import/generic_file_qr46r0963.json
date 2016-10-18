@@ -1,0 +1,87 @@
+{
+  "id": "qr46r0963",
+  "label": "open-book.jpg",
+  "depositor": "archivist@example.com",
+  "arkivo_checksum": null,
+  "relative_path": "",
+  "import_url": null,
+  "resource_type": [
+    "Image"
+  ],
+  "title": [
+    "Myth"
+  ],
+  "creator": [
+    "Perseus"
+  ],
+  "contributor": [
+    "Penelope"
+  ],
+  "description": [
+    "Hercules"
+  ],
+  "tag": [
+    "Hermes",
+    "Lyre"
+  ],
+  "rights": [
+    "All rights reserved"
+  ],
+  "publisher": [
+    "Homer"
+  ],
+  "date_created": [
+    "BCE"
+  ],
+  "date_uploaded": "2016-10-12T19:40:28.510+00:00",
+  "date_modified": "2016-10-12T15:45:55.758-04:00",
+  "subject": [
+    "Muses"
+  ],
+  "language": [
+    "Oral"
+  ],
+  "identifier": [
+    "Zeus"
+  ],
+  "based_near": [
+    "Olympus"
+  ],
+  "related_url": [
+    "Satyr"
+  ],
+  "bibliographic_citation": [
+
+  ],
+  "source": [
+
+  ],
+  "batch_id": "4f16c291q",
+  "visibility": "open",
+  "versions": [
+    {
+      "uri": "http://127.0.0.1:8983/fedora/rest/dev/qr/46/r0/96/qr46r0963/content/fcr:versions/version1",
+      "created": "2016-10-12T19:40:29.12Z",
+      "label": "version1"
+    },
+    {
+      "uri": "http://127.0.0.1:8983/fedora/rest/dev/qr/46/r0/96/qr46r0963/content/fcr:versions/version2",
+      "created": "2016-10-12T19:45:41.285Z",
+      "label": "version2"
+    }
+  ],
+  "permissions": [
+    {
+      "id": "e8fa513f-a685-4ba7-b4ee-ef43027bd242",
+      "agent": "http://projecthydra.org/ns/auth/person#archivist@example.com",
+      "mode": "http://www.w3.org/ns/auth/acl#Write",
+      "access_to": "qr46r0963"
+    },
+    {
+      "id": "f9cde75f-bf1f-4ad9-be1c-5024b2d21454",
+      "agent": "http://projecthydra.org/ns/auth/group#public",
+      "mode": "http://www.w3.org/ns/auth/acl#Read",
+      "access_to": "qr46r0963"
+    }
+  ]
+}
