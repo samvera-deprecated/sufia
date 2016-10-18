@@ -50,8 +50,8 @@ describe Sufia::Import::VersionBuilder do
       expect(file_set.original_file.versions.all.count).to eq(2)
       expect(file_set.original_file.versions.all.map(&:label)).to contain_exactly("version1", "version2")
       expect(file_set.original_file.content).to eq("hello world! version2")
-      # TODO: how do we set the dates correctly...
-      # expect(file_set.original_file.versions.all.map(&:created)).to contain_exactly("2016-09-28T20:00:14.658Z", "2016-09-29T15:58:00.639Z")
+      expect(file_set.original_file.date_created).to eq(["2016-09-29T15:58:00.639Z"])
+      expect(file_set.original_file.versions.all.map { |v| Hydra::PCDM::File.new(v.uri).date_created.first }).to contain_exactly("2016-09-28T20:00:14.658Z", "2016-09-29T15:58:00.639Z")
     end
   end
 end
