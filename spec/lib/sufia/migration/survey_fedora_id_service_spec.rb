@@ -52,7 +52,7 @@ describe Sufia::Migration::Survey::FedoraIdService do
 
     it "finds the model ids" do
       is_expected.to include(file.id, collection.id)
-      subject.count eq 2
+      expect(subject.count).to eq 2
     end
 
     context "we only want a limited set" do
@@ -60,7 +60,21 @@ describe Sufia::Migration::Survey::FedoraIdService do
 
       it "finds the model ids" do
         is_expected.to include(file.id)
-        subject.count eq 1
+        expect(subject.count).to eq 1
+      end
+    end
+
+    context "we get a blank model back" do
+      before do
+        original_to_solr = file.to_solr
+        original_to_solr["has_model_ssim"] = nil
+        allow(file).to receive(:to_solr).and_return(original_to_solr)
+        file.update_index
+      end
+
+      it "finds the collection id" do
+        is_expected.to include(collection.id)
+        expect(subject.count).to eq 1
       end
     end
   end

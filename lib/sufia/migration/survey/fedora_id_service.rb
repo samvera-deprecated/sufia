@@ -49,7 +49,12 @@ module Sufia
             query = 'id:"' + id + '"'
             matches = ActiveFedora::SolrService.query(query)
             return nil if matches.count == 0
-            model_str = matches.first["active_fedora_model_ssi"]
+            model_str = matches.first["has_model_ssim"]
+            model_str = model_str.first if model_str.is_a?(Array)
+            if model_str.blank? || !Object.const_defined?(model_str)
+              Rails.logger.error("Invalid model #{id} #{model_str}")
+              return nil
+            end
             Object.const_get(model_str)
           end
 
