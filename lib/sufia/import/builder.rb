@@ -11,8 +11,7 @@ module Sufia
       #        @attr import_binary    - (default true) Import the binaryt content from fedora
       def initialize(settings)
         @settings = settings
-        @import_binary = settings[:import_binary]
-        @import_binary ||= true
+        @import_binary = settings.fetch(:import_binary, true)
         @sufia6_user = settings[:sufia6_user]
         @sufia6_password = settings[:sufia6_password]
       end
