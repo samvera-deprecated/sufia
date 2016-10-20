@@ -1,0 +1,62 @@
+#!/usr/bin/env ruby
+require 'rails'
+require ::File.join(File.dirname(Bundler.default_gemfile), 'config/environment')
+
+options = OpenStruct.new
+options.verbose = false
+options.import_dir = "tmp/import"
+# TODO: add collection like options.mappings = ["Sufia::Import::CollectionTranslator=collection_", "Sufia::Import::GenericFileTranslator=generic_file_"]
+options.mappings = ["Sufia::Import::GenericFileTranslator=generic_file_"]
+options.import_binary = true
+options.user = 's6user'
+options.password = 's6password'
+
+args = OptionParser.new do |opts|
+  opts.banner = "imports model metdata json files in, contacting fedora to import binaries. Usage: sufia_import [options]"
+
+  opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
+    options.verbose = v
+  end
+
+  opts.on("-d", "--json_directory [path/to/files]", "Directory containing files for import.  Defaults to tmp/import") do |dir|
+    options.import_dir = dir
+  end
+
+  opts.on("--json_mapping [class=prefix, ...]", Array, "For each class: prefix pair, import the files discovedrable by the prefix as objects ot the class. Defaults to Sufia::Import::CollectionTranslator=collection_, Sufia::Import::GenericFileTranslator=generic_file_ ") do |mappings|
+    options.mappings = mappings
+  end
+
+  opts.on("--[no-]binary", "Whether to import the binary (useful to turn off for testing); default true") do |import|
+    options.import_binary = import
+  end
+
+  opts.on("-u", "--user [username]", "fcrepo user for sufia6 data") do |user|
+    options.user = user
+  end
+
+  opts.on("-p", "--password [password]", "fcrepo password for sufia6 data") do |password|
+    options.password = password
+  end
+end
+
+begin
+  args.order!
+  args.parse!
+rescue => error
+  $stderr.puts "ERROR: #{error}\n"
+  $stderr.puts args.help
+  exit 1
+end
+
+if options.verbose
+  $stdout.puts "running with #{options}"
+  stdout_logger = Logger.new(STDOUT)
+  stdout_logger.level = Logger::DEBUG
+  Rails.logger.extend(ActiveSupport::Logger.broadcast(stdout_logger))
+end
+
+options.mappings.each do |pair|
+  class_name, prefix = pair.split('=')
+  translator = class_name.constantize.new(sufia6_user: options.user, sufia6_password: options.password, import_binary: options.import_binary)
+  translator.import(options.import_dir, prefix)
+end
