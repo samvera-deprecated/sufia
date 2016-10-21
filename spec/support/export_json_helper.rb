@@ -2,8 +2,29 @@ module ExportJsonHelper
   def generic_file_json(options = {})
     "{
       \"id\": \"#{options.fetch(:id, '44558d49x')}\",
-      #{descriptive_metadata1_json(options)},
-      #{descriptive_metadata2_json(options)},
+      \"label\": \"#{options.fetch(:label, '15040187724_9e2f2d7c21_z.jpg')}\",
+      \"depositor\": \"cam156@psu.edu\",
+      \"arkivo_checksum\": \"arkivo checksum\",
+      \"relative_path\": \"relative path\",
+      \"import_url\": \"import url\",
+      \"resource_type\": [\"resource type\"],
+      \"title\": #{options.fetch(:title, '["My Awesone File"]')},
+      \"creator\": [ \"cam156@psu.edu\" ],
+      \"contributor\": [\"contributor1\", \"contribnutor2\"],
+      \"description\": [\"description of the file\"],
+      \"tag\": [\"tag1\", \"tag2\"],
+      \"rights\": [\"#{options.fetch(:rights, 'Attribution 3.0')}\"],
+      \"publisher\": [\"publisher joe\"],
+      \"date_created\": [\"a long time ago\"],
+      \"date_uploaded\": \"#{options.fetch(:date_uploaded, '2016-09-28T20:00:14.243+00:00')}\",
+      \"date_modified\": \"#{options.fetch(:date_modified, '2016-09-28T17:32:46.610-04:00')}\",
+      \"subject\": [\"subject 1\", \"subject 2\"],
+      \"language\": [\"WA Language WA\"],
+      \"identifier\": [\"You ID ME\"],
+      \"based_near\": [\"Kalamazoo\"],
+      \"related_url\": [\"abc123.org\"],
+      \"bibliographic_citation\": [\"cite me\"],
+      \"source\": [\"source of me\"],
       \"batch_id\": \"qn59q409q\",
       \"visibility\": \"restricted\",
       \"versions\": #{versions_json(options)},
@@ -43,39 +64,33 @@ module ExportJsonHelper
       ]"
   end
 
-  private
+  def collection_json(options = {})
+    "{
+      \"id\": \"2v23vt57t\",
+      \"title\": \"Fantasy\",
+      \"description\": \"Magic and power\",
+      \"creator\": [
+        \"Arthur\"
+      ],
+      \"members\": #{options.fetch(:member_ids, [])},
+      \"permissions\": [
+        {
+          \"id\": \"e78502f4-9e46-47b1-9d43-835004228573\",
+          \"agent\": \"http://projecthydra.org/ns/auth/group#public\",
+          \"mode\": \"http://www.w3.org/ns/auth/acl#Read\",
+          \"access_to\": \"2v23vt57t\"
+        },
+        {
+          \"id\": \"2a9205fa-ad70-4888-9441-39bfba6fc95e\",
+          \"agent\": \"http://projecthydra.org/ns/auth/person#aheadley@chemheritage.org\",
+          \"mode\": \"http://www.w3.org/ns/auth/acl#Write\",
+          \"access_to\": \"2v23vt57t\"
+        }
+      ]
+    }"
+  end
 
-    # breaking this out and apart so rubocop will be happy
-    def descriptive_metadata1_json(options = {})
-      "      \"label\": \"#{options.fetch(:label, '15040187724_9e2f2d7c21_z.jpg')}\",
-        \"depositor\": \"cam156@psu.edu\",
-        \"arkivo_checksum\": \"arkivo checksum\",
-        \"relative_path\": \"relative path\",
-        \"import_url\": \"import url\",
-        \"resource_type\": [\"resource type\"],
-        \"title\": #{options.fetch(:title, '["My Awesone File"]')},
-        \"creator\": [ \"cam156@psu.edu\" ],
-        \"contributor\": [\"contributor1\", \"contribnutor2\"],
-        \"description\": [\"description of the file\"],
-        \"tag\": [\"tag1\", \"tag2\"],
-        \"rights\": [\"#{options.fetch(:rights, 'Attribution 3.0')}\"]"
-    end
-
-    def descriptive_metadata2_json(options = {})
-      "      \"publisher\": [\"publisher joe\"],
-        \"date_created\": [\"a long time ago\"],
-        \"date_uploaded\": \"#{options.fetch(:date_uploaded, '2016-09-28T20:00:14.243+00:00')}\",
-        \"date_modified\": \"#{options.fetch(:date_modified, '2016-09-28T17:32:46.610-04:00')}\",
-        \"subject\": [\"subject 1\", \"subject 2\"],
-        \"language\": [\"WA Language WA\"],
-        \"identifier\": [\"You ID ME\"],
-        \"based_near\": [\"Kalamazoo\"],
-        \"related_url\": [\"abc123.org\"],
-        \"bibliographic_citation\": [\"cite me\"],
-        \"source\": [\"source of me\"]"
-    end
-
-    RSpec.configure do |config|
-      config.include ExportJsonHelper
-    end
+  RSpec.configure do |config|
+    config.include ExportJsonHelper
+  end
 end
