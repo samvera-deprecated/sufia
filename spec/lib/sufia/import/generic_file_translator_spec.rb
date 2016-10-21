@@ -28,6 +28,8 @@ describe Sufia::Import::GenericFileTranslator do
       expect(FileSet.count).to eq 1
       expect(work.ordered_members.ids.count).to eq 1
       expect(work.title).to include 'Myth'
+      expect(work.representative_id).to be_truthy
+      expect(work.thumbnail_id).to be_truthy
     end
 
     it 'Errors when passed a nonexistent directory' do
