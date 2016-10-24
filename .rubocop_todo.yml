@@ -29,6 +29,7 @@ Metrics/MethodLength:
     - 'lib/generators/sufia/install_generator.rb'
     - 'lib/sufia/arkivo/metadata_munger.rb'
     - 'lib/sufia/import/work_builder.rb'
+    - 'spec/support/export_json_helper.rb'
 
 Style/LineEndConcatenation:
   Exclude:
