@@ -28,9 +28,15 @@ module Sufia::Import
         Rails.logger.debug "Importing #{File.basename(filename)}"
         file_str = File.read(filename)
         json = JSON.parse(file_str)
-        work = @work_builder.build(json)
         fileset = @file_set_builder.build(json)
+        work = @work_builder.build(json)
+        link(work, fileset)
+      end
+
+      def link(work, fileset)
         work.ordered_members << fileset
+        work.thumbnail_id = fileset.id
+        work.representative_id = fileset.id
         work.save
       end
 

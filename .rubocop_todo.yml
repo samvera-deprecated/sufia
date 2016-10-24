@@ -87,6 +87,7 @@ RSpec/ExampleLength:
     - 'spec/views/catalog/_index_list_default.html.erb_spec.rb'
     - 'spec/views/collections/_form.html.erb_spec.rb'
     - 'spec/lib/sufia/import/work_builder_spec.rb'
+    - 'spec/lib/sufia/import/generic_file_translator_spec.rb'
 
 RSpec/VerifiedDoubles:
   Enabled: false
