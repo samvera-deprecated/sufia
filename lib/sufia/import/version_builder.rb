@@ -43,8 +43,9 @@ module Sufia::Import
 
         # ...upload it...
         File.open(filename_on_disk, 'rb') do |file_to_upload|
-          Hydra::Works::UploadFileToFileSet.call(file_set, file_to_upload)
+          Sufia::Import::AddVersionToFileSet.call(file_set, file_to_upload, :original_file, version[:created])
         end
+
         filename_on_disk
       end
 
