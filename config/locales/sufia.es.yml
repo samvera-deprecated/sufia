@@ -440,4 +440,4 @@ es:
     submit:
       admin_set:
         create: 'Guardar'
-        update: 'Guardar'
+        update: 'Actualizar'
