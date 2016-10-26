@@ -15,7 +15,7 @@ module Sufia::Import
     #
     # @param hash json metadata from the collection, e.g.:
     #    { "id": "2v23vt57t", "title": "Fantasy", "description": "Magic and power", "creator": [ "Arthur" ],
-    #            "members": [ "qr46r0963" ],
+    #            "depositor": "depositor@example.com", "members": [ "qr46r0963" ],
     #            "permissions": [ { "id": "2a9205fa-ad70-4888-9441-39bfba6fc95e",
     #                "agent": "http://projecthydra.org/ns/auth/person#depositor@example.com", "mode": "http://www.w3.org/ns/auth/acl#Write",
     #                "access_to": "2v23vt57t" } ] }
@@ -26,11 +26,11 @@ module Sufia::Import
       #   difference in data models between versions? or problem with export script?
       data[:title] = Array(data[:title])
       data[:description] = Array(data[:description])
+      collection.apply_depositor_metadata(data.delete(:depositor))
       permission_builder.build(data.delete(:permissions))
       collection.update_attributes(data)
-      collection.members = members
+      members.each { |w| collection.ordered_members << w }
 
-      collection.save
       collection
     end
 

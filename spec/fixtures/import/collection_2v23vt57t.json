@@ -1,0 +1,27 @@
+// TODO: this is the export as-is from sufia 6 currently; does it need to include more fields?
+{
+  "id": "2v23vt57t",
+  "title": "Fantasy",
+  "depositor": "archivist@example.com",
+  "description": "Magic and power",
+  "creator": [
+    "Arthur"
+  ],
+  "members": [
+    "qr46r0963"
+  ],
+  "permissions": [
+    {
+      "id": "e78502f4-9e46-47b1-9d43-835004228573",
+      "agent": "http://projecthydra.org/ns/auth/group#public",
+      "mode": "http://www.w3.org/ns/auth/acl#Read",
+      "access_to": "2v23vt57t"
+    },
+    {
+      "id": "2a9205fa-ad70-4888-9441-39bfba6fc95e",
+      "agent": "http://projecthydra.org/ns/auth/person#archivist@example.com",
+      "mode": "http://www.w3.org/ns/auth/acl#Write",
+      "access_to": "2v23vt57t"
+    }
+  ]
+}

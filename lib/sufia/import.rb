@@ -6,6 +6,7 @@ require 'sufia/import/add_version_to_file_set'
 require 'sufia/import/work_builder'
 require 'sufia/import/collection_builder'
 require 'sufia/import/generic_file_translator'
+require 'sufia/import/collection_translator'
 
 module Sufia
   module Permissions
