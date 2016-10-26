@@ -68,6 +68,7 @@ module ExportJsonHelper
     "{
       \"id\": \"2v23vt57t\",
       \"title\": \"Fantasy\",
+      \"depositor\": \"archivist@example.com\",
       \"description\": \"Magic and power\",
       \"creator\": [
         \"Arthur\"
@@ -82,7 +83,7 @@ module ExportJsonHelper
         },
         {
           \"id\": \"2a9205fa-ad70-4888-9441-39bfba6fc95e\",
-          \"agent\": \"http://projecthydra.org/ns/auth/person#aheadley@chemheritage.org\",
+          \"agent\": \"http://projecthydra.org/ns/auth/person#archivist@example.com\",
           \"mode\": \"http://www.w3.org/ns/auth/acl#Write\",
           \"access_to\": \"2v23vt57t\"
         }
