@@ -100,12 +100,12 @@ es:
         menu: "Panel de Control"
         my: "Mi Panel de Control"
         highlights: "Aspectos destacados"
-        transfers: "Transferirencias"
+        transfers: "Transferencias"
         shares: "Compartido"
       works:
         menu: "Trabajos"
         new: "Nuevo"
-        my: "Mi Trabajos"
+        my: "Mis Trabajos"
         batch: "Crear lote"
       collections:
         menu: "Colecciones"
@@ -128,7 +128,7 @@ es:
       authorize_proxies:        "Autorizar Proxies"
       current_proxies:          "Proxies actuales"
       proxy_user:               "Usuario de Proxy"
-      transfer_of_ownership:    "Transferirencia de propiedad"
+      transfer_of_ownership:    "Transferencia de propiedad"
       transfers_sent:           "Enviado"
       transfers_received:       "Recibido"
       transfer_works_link:      "Seleccionar los trabajos a transferir"
@@ -245,7 +245,7 @@ es:
         header: Crear nuevos Trabajos en lote
         in_collections: Estos Trabajos en Colecciones
         in_this_work: Otros Trabajos en este Trabajo
-        in_other_works: Este Trabajo en otrosTrabajos
+        in_other_works: Este Trabajo en otros Trabajos
       progress:
         header: Guardar Trabajos
       files:
