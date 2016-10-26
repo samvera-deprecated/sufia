@@ -1,13 +1,11 @@
 # Create permissions on a Work or FileSet
 module Sufia::Import
-  class PermissionBuilder < Builder
+  class PermissionBuilder
     attr_reader :object
 
-    # @param Hash       settings see Sufia::Import::Builder for settings
     # @param PCDMObject object   Object for the permissions to be applied to
     #
-    def initialize(settings, object)
-      super(settings)
+    def initialize(object)
       @object = object
     end
 

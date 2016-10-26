@@ -4,7 +4,7 @@ require 'support/export_json_helper'
 describe Sufia::Import::CollectionBuilder do
   let(:sufia6_user) { "s6user" }
   let(:sufia6_password) { "s6password" }
-  let(:builder) { described_class.new(sufia6_user: sufia6_user, sufia6_password: sufia6_password) }
+  let(:builder) { described_class.new }
 
   let(:data) { JSON.parse(json, symbolize_names: true) }
   let(:json) { collection_json }

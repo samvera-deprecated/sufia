@@ -5,7 +5,7 @@ describe Sufia::Import::FileSetBuilder do
   let(:user) { create(:user) }
   let(:sufia6_user) { "s6user" }
   let(:sufia6_password) { "s6password" }
-  let(:builder) { described_class.new(sufia6_user: sufia6_user, sufia6_password: sufia6_password) }
+  let(:builder) { described_class.new(true) }
 
   let(:gf_metadata) { JSON.parse(json, symbolize_names: true) }
 
@@ -17,7 +17,7 @@ describe Sufia::Import::FileSetBuilder do
   end
 
   let(:permission_builder) { instance_double(Sufia::Import::PermissionBuilder) }
-  let(:version_builder) { instance_double(Sufia::Import::PermissionBuilder) }
+  let(:version_builder) { instance_double(Sufia::Import::VersionBuilder) }
   before do
     allow(Sufia::Import::PermissionBuilder).to receive(:new).and_return(permission_builder)
     allow(Sufia::Import::VersionBuilder).to receive(:new).and_return(version_builder)

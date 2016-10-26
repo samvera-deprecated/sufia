@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Sufia::Import::CollectionTranslator do
   let(:sufia6_user) { "s6user" }
   let(:sufia6_password) { "s6password" }
-  let(:translator) { described_class.new(sufia6_user: sufia6_user, sufia6_password: sufia6_password) }
+  let(:translator) { described_class.new }
 
   let(:import_directory) { File.join(fixture_path, 'import') }
   let(:col_metadata) { JSON.parse(File.read(File.join(import_directory, "collection_#{collection_id}.json")), symbolize_names: true) }
@@ -19,7 +19,7 @@ describe Sufia::Import::CollectionTranslator do
 
   describe '#import' do
     it 'Creates a collection with attached fileset' do
-      Sufia::Import::GenericFileTranslator.new(sufia6_user: sufia6_user, sufia6_password: sufia6_password, import_binary: false).import(import_directory, 'generic_file_')
+      Sufia::Import::GenericFileTranslator.new(import_binary: false).import(import_directory, 'generic_file_')
       expect(Rails.logger).to receive(:debug).with("Importing collection_2v23vt57t.json")
       translator.import(import_directory, 'collection_')
       expect(Collection.count).to eq 1

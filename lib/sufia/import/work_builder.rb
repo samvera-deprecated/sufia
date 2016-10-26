@@ -1,14 +1,12 @@
 # Builder for generating a work incluing permissions
 #
 module Sufia::Import
-  class WorkBuilder < Builder
+  class WorkBuilder
     attr_reader :work, :permission_builder
 
-    # @param settings see Sufia::Import::Builder for settings
-    def initialize(settings)
-      super
+    def initialize
       @work = Sufia.primary_work_type.new
-      @permission_builder = PermissionBuilder.new(settings, work)
+      @permission_builder = PermissionBuilder.new(work)
     end
 
     # Build a Work from GenericFile metadata

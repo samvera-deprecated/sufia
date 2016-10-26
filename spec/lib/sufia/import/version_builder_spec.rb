@@ -4,7 +4,7 @@ describe Sufia::Import::VersionBuilder do
   let(:user) { create(:user) }
   let(:sufia6_user) { "s6user" }
   let(:sufia6_password) { "s6password" }
-  let(:builder) { described_class.new({ sufia6_user: sufia6_user, sufia6_password: sufia6_password }, file_set) }
+  let(:builder) { described_class.new(file_set) }
   let(:file_set) { create(:file_set, user: user) }
   subject { file_set }
 
@@ -33,19 +33,26 @@ describe Sufia::Import::VersionBuilder do
     file
   end
 
-  before do
-    allow(builder).to receive(:open).with(version1_uri, http_basic_authentication: [sufia6_user, sufia6_password]).and_return(version1)
-    allow(builder).to receive(:open).with(version2_uri, http_basic_authentication: [sufia6_user, sufia6_password]).and_return(version2)
-    allow(CharacterizeJob).to receive(:perform_now).and_return(true)
-    builder.build(versions)
+  context "when username / password have not been configured" do
+    it "raises runtime error" do
+      expect { builder.build(versions) }.to raise_error RuntimeError
+    end
   end
-  after do
-    version1.close
-    version1.unlink
-    version2.close
-    version2.unlink
-  end
-  context "when adding permissions to the file set" do
+  context "when username / password are provided" do
+    before do
+      allow(builder).to receive(:sufia6_user).and_return(sufia6_user)
+      allow(builder).to receive(:sufia6_password).and_return(sufia6_password)
+      allow(builder).to receive(:open).with(version1_uri, http_basic_authentication: [sufia6_user, sufia6_password]).and_return(version1)
+      allow(builder).to receive(:open).with(version2_uri, http_basic_authentication: [sufia6_user, sufia6_password]).and_return(version2)
+      allow(CharacterizeJob).to receive(:perform_now).and_return(true)
+      builder.build(versions)
+    end
+    after do
+      version1.close
+      version1.unlink
+      version2.close
+      version2.unlink
+    end
     it "creates versions" do
       expect(file_set.original_file.versions.all.count).to eq(2)
       expect(file_set.original_file.versions.all.map(&:label)).to contain_exactly("version1", "version2")

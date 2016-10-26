@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Sufia::Import::GenericFileTranslator do
   let(:sufia6_user) { "s6user" }
   let(:sufia6_password) { "s6password" }
-  let(:translator) { described_class.new(sufia6_user: sufia6_user, sufia6_password: sufia6_password) }
+  let(:translator) { described_class.new(import_binary: false) }
 
   let(:import_directory) { File.join(fixture_path, 'import') }
   let(:gf_metadata) { JSON.parse(File.read(File.join(import_directory, "generic_file_#{work_id}.json")), symbolize_names: true) }
@@ -12,12 +12,9 @@ describe Sufia::Import::GenericFileTranslator do
   let(:work_id) { 'qr46r0963' }
 
   let(:permission_builder) { instance_double(Sufia::Import::PermissionBuilder) }
-  let(:version_builder) { instance_double(Sufia::Import::VersionBuilder) }
   before do
     allow(Sufia::Import::PermissionBuilder).to receive(:new).and_return(permission_builder)
-    allow(Sufia::Import::VersionBuilder).to receive(:new).and_return(version_builder)
     allow(permission_builder).to receive(:build).and_return([])
-    allow(version_builder).to receive(:build).and_return([])
   end
 
   describe '#import' do

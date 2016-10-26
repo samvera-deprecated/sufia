@@ -1,14 +1,13 @@
 module Sufia::Import
   # Imports a Sufia 6.0-exported GenericFile into a Sufia PCDM GernericWork and FileSet
   class GenericFileTranslator
-    # @param Hash settings needed to pass through to builder
-    #        @attr sufia6_user      - User name for accessing the sufia 6 fedora
-    #        @attr sufia6_password  - Password for accessing the sufia 6 fedora
-    #        @attr import_binary    - (default true) Import the binary content from fedora
+    # @param Hash settings
+    #   @attr import_binary    - (default true) Import the binary content from sufia6 fedora instance
+    #     If true, sufia6_user and sufia6_password must be set in the appropriate sections of fedora.yml
     def initialize(settings)
-      # TODO: work builder doesn't need settings; just file builder
-      @work_builder = WorkBuilder.new(settings)
-      @file_set_builder = FileSetBuilder.new(settings)
+      import_binary = settings.fetch(:import_binary, true)
+      @work_builder = WorkBuilder.new
+      @file_set_builder = FileSetBuilder.new(import_binary)
     end
 
     # loop through the files found in import_dir and map each GenericFile to a Sufia.primary_work and FileSet

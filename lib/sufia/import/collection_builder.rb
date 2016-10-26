@@ -1,14 +1,12 @@
 # Builder for generating a collection including permissions
 #
 module Sufia::Import
-  class CollectionBuilder < Builder
+  class CollectionBuilder
     attr_reader :collection, :permission_builder
 
-    # @param settings see Sufia::Import::Builder for settings
-    def initialize(settings)
-      super
+    def initialize
       @collection = Collection.new
-      @permission_builder = PermissionBuilder.new(settings, collection)
+      @permission_builder = PermissionBuilder.new(collection)
     end
 
     # Build a Collection from json data

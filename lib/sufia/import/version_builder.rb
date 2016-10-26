@@ -1,14 +1,10 @@
 module Sufia::Import
   # Build all the versions of a file and add it to a file set
-  #
-  #
-  class VersionBuilder < Builder
+  class VersionBuilder
     attr_reader :file_set
 
-    # @param settings see Sufia::Import::Builder for settings
     # @param file_set FileSet that will be modifed to include versions
-    def initialize(settings, file_set)
-      super(settings)
+    def initialize(file_set)
       @file_set = file_set
     end
 
@@ -55,6 +51,18 @@ module Sufia::Import
 
       def characterize(filename_on_disk)
         CharacterizeJob.perform_now(file_set, file_set.original_file.id, filename_on_disk)
+      end
+
+      def sufia6_user
+        ActiveFedora.fedora.sufia6_user
+      rescue NoMethodError
+        raise "Please configure sufia6_user in fedora.yml"
+      end
+
+      def sufia6_password
+        ActiveFedora.fedora.sufia6_password
+      rescue NoMethodError
+        raise "Please configure sufia6_password in fedora.yml"
       end
   end
 end
