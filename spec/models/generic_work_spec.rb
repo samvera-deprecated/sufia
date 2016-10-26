@@ -13,6 +13,26 @@ describe GenericWork do
     end
   end
 
+  describe "suppressed?" do
+    let(:work) { described_class.new(title: ['demoname']) { |gw| gw.apply_depositor_metadata("user") } }
+    before do
+      allow(work).to receive(:state).and_return(::RDF::URI(activity_uri))
+    end
+    context "When a work's state is inactive" do
+      let(:activity_uri) { 'http://fedora.info/definitions/1/0/access/ObjState#inactive' }
+      it "is suppressed" do
+        expect(work).to be_suppressed
+      end
+    end
+
+    context "When a work's state is active" do
+      let(:activity_uri) { 'http://fedora.info/definitions/1/0/access/ObjState#active' }
+      it "is not suppressed" do
+        expect(work).not_to be_suppressed
+      end
+    end
+  end
+
   describe "created for someone (proxy)" do
     let(:work) { described_class.new(title: ['demoname']) { |gw| gw.apply_depositor_metadata("user") } }
     let(:transfer_to) { create(:user) }

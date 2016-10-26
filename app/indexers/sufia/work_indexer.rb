@@ -12,6 +12,7 @@ module Sufia
         admin_set_label = object.admin_set.to_s
         solr_doc[Solrizer.solr_name('admin_set', :facetable)] = admin_set_label
         solr_doc[Solrizer.solr_name('admin_set', :stored_searchable)] = admin_set_label
+        solr_doc[Solrizer.solr_name('suppressed', STORED_BOOL)] = object.suppressed?
       end
     end
   end

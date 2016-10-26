@@ -6,6 +6,7 @@ module Sufia
     include Sufia::Works::Metadata
     include Sufia::Works::Featured
     include Sufia::WithEvents
+    include Sufia::Publishable
 
     included do
       self.indexer = Sufia::WorkIndexer
