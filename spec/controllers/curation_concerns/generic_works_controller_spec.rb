@@ -30,7 +30,7 @@ describe CurationConcerns::GenericWorksController do
 
     context "without a referer" do
       it "sets breadcrumbs" do
-        expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.title'), Sufia::Engine.routes.url_helpers.dashboard_index_path)
+        expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.title'), Sufia::Engine.routes.url_helpers.dashboard_index_path(locale: 'en'))
         get :edit, params: { id: work }
         expect(response).to be_successful
       end
@@ -42,9 +42,9 @@ describe CurationConcerns::GenericWorksController do
       end
 
       it "sets breadcrumbs" do
-        expect(controller).to receive(:add_breadcrumb).with('My Dashboard', Sufia::Engine.routes.url_helpers.dashboard_index_path)
-        expect(controller).to receive(:add_breadcrumb).with('My Works', Sufia::Engine.routes.url_helpers.dashboard_works_path)
-        expect(controller).to receive(:add_breadcrumb).with(I18n.t("sufia.work.browse_view"), Rails.application.routes.url_helpers.curation_concerns_generic_work_path(work))
+        expect(controller).to receive(:add_breadcrumb).with('My Dashboard', Sufia::Engine.routes.url_helpers.dashboard_index_path(locale: 'en'))
+        expect(controller).to receive(:add_breadcrumb).with('My Works', Sufia::Engine.routes.url_helpers.dashboard_works_path(locale: 'en'))
+        expect(controller).to receive(:add_breadcrumb).with(I18n.t("sufia.work.browse_view"), Rails.application.routes.url_helpers.curation_concerns_generic_work_path(work, locale: 'en'))
         get :edit, params: { id: work }
         expect(response).to be_successful
       end
@@ -79,7 +79,7 @@ describe CurationConcerns::GenericWorksController do
 
     context "without a referer" do
       it "sets breadcrumbs" do
-        expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.title'), Sufia::Engine.routes.url_helpers.dashboard_index_path)
+        expect(controller).to receive(:add_breadcrumb).with(I18n.t('sufia.dashboard.title'), Sufia::Engine.routes.url_helpers.dashboard_index_path(locale: 'en'))
         get :show, params: { id: work }
         expect(response).to be_successful
       end
@@ -91,9 +91,9 @@ describe CurationConcerns::GenericWorksController do
       end
 
       it "sets breadcrumbs" do
-        expect(controller).to receive(:add_breadcrumb).with('My Dashboard', Sufia::Engine.routes.url_helpers.dashboard_index_path)
-        expect(controller).to receive(:add_breadcrumb).with('My Works', Sufia::Engine.routes.url_helpers.dashboard_works_path)
-        expect(controller).to receive(:add_breadcrumb).with('test title', main_app.curation_concerns_generic_work_path(work.id))
+        expect(controller).to receive(:add_breadcrumb).with('My Dashboard', Sufia::Engine.routes.url_helpers.dashboard_index_path(locale: 'en'))
+        expect(controller).to receive(:add_breadcrumb).with('My Works', Sufia::Engine.routes.url_helpers.dashboard_works_path(locale: 'en'))
+        expect(controller).to receive(:add_breadcrumb).with('test title', main_app.curation_concerns_generic_work_path(work.id, locale: 'en'))
         get :show, params: { id: work }
         expect(response).to be_successful
       end
@@ -121,7 +121,7 @@ describe CurationConcerns::GenericWorksController do
         uploaded_files: ['777', '888']
       }
       expect(flash[:notice]).to eq "Your files are being processed by Sufia in the background. The metadata and access controls you specified are being applied. Files will be marked <span class=\"label label-danger\" title=\"Private\">Private</span> until this process is complete (shouldn't take too long, hang in there!). You may need to refresh this page to see these updates."
-      expect(response).to redirect_to main_app.curation_concerns_generic_work_path(work)
+      expect(response).to redirect_to main_app.curation_concerns_generic_work_path(work, locale: 'en')
     end
 
     context "from browse everything" do
@@ -181,7 +181,7 @@ describe CurationConcerns::GenericWorksController do
             generic_work: { title: ['First title'] }
           }
           expect(flash[:notice]).to eq "Your files are being processed by Sufia in the background. The metadata and access controls you specified are being applied. Files will be marked <span class=\"label label-danger\" title=\"Private\">Private</span> until this process is complete (shouldn't take too long, hang in there!). You may need to refresh this page to see these updates."
-          expect(response).to redirect_to main_app.curation_concerns_generic_work_path(work)
+          expect(response).to redirect_to main_app.curation_concerns_generic_work_path(work, locale: 'en')
         end
       end
     end

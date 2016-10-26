@@ -16,6 +16,12 @@ module Sufia
       t('sufia.institution_name_full', default: institution_name)
     end
 
+    # Which translations are available for the user to select
+    # @return [Hash<String,String>] locale abbreviations as keys and flags as values
+    def available_translations
+      { 'en' => '🇬🇧', 'es' => '🇪🇸' }
+    end
+
     def orcid_label(style_class = '')
       "#{image_tag 'orcid.png', alt: t('sufia.user_profile.orcid.alt'), class: style_class} #{t('sufia.user_profile.orcid.label')}".html_safe
     end
