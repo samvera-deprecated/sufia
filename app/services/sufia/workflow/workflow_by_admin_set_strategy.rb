@@ -9,7 +9,6 @@ module Sufia
 
       # @return [String] The name of the workflow by admin_set to use
       def workflow_name
-        #@work.model_name.singular
         @admin_set_id ||= 'default'
       end
     end
