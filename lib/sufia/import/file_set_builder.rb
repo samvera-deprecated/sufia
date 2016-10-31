@@ -1,15 +1,16 @@
 # Builder for generating a File set incluing permissions and versions
 #
 module Sufia::Import
-  class FileSetBuilder < Builder
+  class FileSetBuilder
     attr_reader :file_set, :permission_builder, :version_builder
 
-    # @param settings see Sufia::Import::Builder for settings
-    def initialize(settings)
-      super
+    # @param import_binary boolean indicating whether to import the binary from sufia6 fedora instance
+    #   If true, sufia6_user and sufia6_password must be set in the appropriate sections of fedora.yml
+    def initialize(import_binary)
+      @import_binary = import_binary
       @file_set = FileSet.new
-      @permission_builder = PermissionBuilder.new(settings, file_set)
-      @version_builder = VersionBuilder.new(settings, file_set)
+      @permission_builder = PermissionBuilder.new(file_set)
+      @version_builder = VersionBuilder.new(file_set)
     end
 
     # Build a FileSet from GenericFile metadata
@@ -37,7 +38,7 @@ module Sufia::Import
       file_set.apply_depositor_metadata(data[:depositor])
       permission_builder.build(data[:permissions])
       # bring over the File
-      version_builder.build(data[:versions]) if import_binary
+      version_builder.build(data[:versions]) if @import_binary
 
       file_set
     end

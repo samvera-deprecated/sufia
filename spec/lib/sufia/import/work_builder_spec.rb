@@ -5,7 +5,7 @@ describe Sufia::Import::WorkBuilder do
   let(:user) { create(:user) }
   let(:sufia6_user) { "s6user" }
   let(:sufia6_password) { "s6password" }
-  let(:builder) { described_class.new(sufia6_user: sufia6_user, sufia6_password: sufia6_password) }
+  let(:builder) { described_class.new }
 
   let(:gf_metadata) { JSON.parse(json, symbolize_names: true) }
 

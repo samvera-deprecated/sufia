@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Sufia::Import::PermissionBuilder do
   let(:user) { create(:user) }
-  let(:builder) { described_class.new({}, object) }
+  let(:builder) { described_class.new(object) }
   subject { object.permissions.map(&:to_hash) }
 
   let(:permissions) do

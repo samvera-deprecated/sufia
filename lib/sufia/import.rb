@@ -1,4 +1,3 @@
-require 'sufia/import/builder'
 require 'sufia/import/permission_builder'
 require 'sufia/import/version_builder'
 require 'sufia/import/file_set_builder'

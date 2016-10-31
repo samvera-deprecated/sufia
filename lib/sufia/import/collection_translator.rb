@@ -1,8 +1,8 @@
 module Sufia::Import
   # Imports a Sufia 6.0-exported Collection into a Sufia PCDM Collection
   class CollectionTranslator
-    def initialize(settings)
-      @collection_builder = CollectionBuilder.new(settings)
+    def initialize(_settings = {})
+      @collection_builder = CollectionBuilder.new
     end
 
     # loop through the files found in import_dir and map each Collection
