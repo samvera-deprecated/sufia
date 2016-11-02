@@ -2,7 +2,6 @@ require 'spec_helper'
 require 'support/export_json_helper'
 
 describe Sufia::Import::WorkBuilder do
-  let(:user) { create(:user) }
   let(:sufia6_user) { "s6user" }
   let(:sufia6_password) { "s6password" }
   let(:builder) { described_class.new }
