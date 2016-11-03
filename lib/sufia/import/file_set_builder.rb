@@ -5,7 +5,7 @@ module Sufia::Import
     attr_reader :file_set, :permission_builder, :version_builder
 
     # @param import_binary boolean indicating whether to import the binary from sufia6 fedora instance
-    #   If true, sufia6_user and sufia6_password must be set in the appropriate sections of fedora.yml
+    #     If true, fedora_sufia6_user and fedora_sufia6_password must be set in config/application.rb
     def initialize(import_binary)
       @import_binary = import_binary
       @file_set = FileSet.new

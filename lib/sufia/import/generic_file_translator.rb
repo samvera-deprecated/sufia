@@ -3,7 +3,7 @@ module Sufia::Import
   class GenericFileTranslator < Translator
     # @param Hash settings (see super for more)
     #   @attr import_binary    - (default true) Import the binary content from sufia6 fedora instance
-    #     If true, sufia6_user and sufia6_password must be set in the appropriate sections of fedora.yml
+    #     If true, fedora_sufia6_user and fedora_sufia6_password must be set in config/application.rb
     def initialize(settings)
       super
       import_binary = settings.fetch(:import_binary, true)

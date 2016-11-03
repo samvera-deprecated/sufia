@@ -54,15 +54,15 @@ module Sufia::Import
       end
 
       def sufia6_user
-        ActiveFedora.fedora.sufia6_user
+        Rails.configuration.fedora_sufia6_user
       rescue NoMethodError
-        raise "Please configure sufia6_user in fedora.yml"
+        raise "Please configure sufia6_user in config/application.rb"
       end
 
       def sufia6_password
-        ActiveFedora.fedora.sufia6_password
+        Rails.configuration.fedora_sufia6_password
       rescue NoMethodError
-        raise "Please configure sufia6_password in fedora.yml"
+        raise "Please configure sufia6_password in config/application.rb"
       end
   end
 end
