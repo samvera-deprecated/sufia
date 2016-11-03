@@ -24,7 +24,7 @@ args = OptionParser.new do |opts|
     options.mappings = mappings
   end
 
-  opts.on("--[no-]binary", "Whether to import the binary (useful to turn off for testing); default true. If true, sufia6_user and sufia6_password must be set in the appropriate sections of fedora.yml") do |import|
+  opts.on("--[no-]binary", "Whether to import the binary (useful to turn off for testing); default true. If true, fedora_sufia6_user and fedora_sufia6_password must be set in config/application.rb") do |import|
     options.import_binary = import
   end
 end
