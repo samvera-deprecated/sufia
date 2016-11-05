@@ -46,9 +46,9 @@ module Sufia
 
     protected
 
-      def _prefixes
+      def local_prefixes
         # This allows us to use the templates in curation_concerns/file_sets
-        @_prefixes ||= ['curation_concerns/file_sets'] + super
+        ['curation_concerns/file_sets'] + super
       end
 
       def initialize_edit_form

@@ -47,9 +47,8 @@ module Sufia
         add_breadcrumb I18n.t('sufia.dashboard.my.works'), sufia.dashboard_works_path
       end
 
-      def _prefixes
-        # This allows us to use the templates in curation_concerns/base
-        @_prefixes ||= super + ['curation_concerns/base']
+      def local_prefixes
+        super + ['curation_concerns/base']
       end
 
       def destroy_batch
