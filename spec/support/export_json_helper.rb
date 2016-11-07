@@ -66,8 +66,8 @@ module ExportJsonHelper
 
   def collection_json(options = {})
     "{
-      \"id\": \"2v23vt57t\",
-      \"title\": \"Fantasy\",
+      \"id\": \"#{options.fetch(:id, '2v23vt57t')}\",
+      \"title\": \"#{options.fetch(:title, 'Fantasy')}\",
       \"depositor\": \"archivist@example.com\",
       \"description\": \"Magic and power\",
       \"creator\": [
