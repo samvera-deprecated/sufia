@@ -2,12 +2,14 @@
 #
 module Sufia::Import
   class FileSetBuilder
-    attr_reader :import_binary
+    attr_reader :import_binary, :permission_builder, :version_builder
 
     # @param import_binary boolean indicating whether to import the binary from sufia6 fedora instance
     #     If true, fedora_sufia6_user and fedora_sufia6_password must be set in config/application.rb
     def initialize(import_binary)
       @import_binary = import_binary
+      @permission_builder = PermissionBuilder.new
+      @version_builder = VersionBuilder.new
     end
 
     # Build a FileSet from GenericFile metadata
@@ -26,8 +28,6 @@ module Sufia::Import
     #                permissions: [ { id: "b5911dfd-07b1-43ab-b11d-1bc0534d874c", agent: "http://projecthydra.org/ns/auth/person#cam156@psu.edu", mode: "http://www.w3.org/ns/auth/acl#Write", access_to: "44558d49x" }, ...] }
     def build(gf_metadata)
       file_set = FileSet.new
-      permission_builder = PermissionBuilder.new
-      version_builder = VersionBuilder.new
       data = gf_metadata.deep_symbolize_keys
       # TODO: Where did the filename property go?
       # file_set.filename = data.filename

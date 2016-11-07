@@ -2,6 +2,12 @@
 #
 module Sufia::Import
   class WorkBuilder
+    attr_reader :permission_builder
+
+    def initialize
+      @permission_builder = PermissionBuilder.new
+    end
+
     # Build a Work from GenericFile metadata
     #
     # @param hash gf_metadata metadata from the generic_file, e.g.:
@@ -17,7 +23,6 @@ module Sufia::Import
     #                permissions: [ { id: "b5911dfd-07b1-43ab-b11d-1bc0534d874c", agent: "http://projecthydra.org/ns/auth/person#cam156@psu.edu", mode: "http://www.w3.org/ns/auth/acl#Write", access_to: "44558d49x" } ] }
     def build(gf_metadata)
       work = Sufia.primary_work_type.new
-      permission_builder = PermissionBuilder.new
       data = gf_metadata.deep_symbolize_keys
       data.delete(:batch_id) # This attribute was removed in sufia 7
       data.delete(:versions) # works don't have versions; these are used in file set builder
