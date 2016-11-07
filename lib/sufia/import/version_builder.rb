@@ -1,27 +1,21 @@
 module Sufia::Import
   # Build all the versions of a file and add it to a file set
   class VersionBuilder
-    attr_reader :file_set
-
-    # @param file_set FileSet that will be modifed to include versions
-    def initialize(file_set)
-      @file_set = file_set
-    end
-
     # build versions based on the input
     #
+    # @param file_set FileSet that will be modifed to include versions
     # @param Array[hash] generic_file_versions, each with the keys below
-    # @option :uri Link to content in Sufia 6 repository
-    # @option :label Version label
-    # @option :created date the version was created
+    #   @option :uri Link to content in Sufia 6 repository
+    #   @option :label Version label
+    #   @option :created date the version was created
     #
-    def build(generic_file_versions)
+    def build(file_set, generic_file_versions)
       sorted_versions = generic_file_versions.sort_by { |ver| ver[:created] }
       sorted_versions.each_with_index do |gf_version, index|
-        filename_on_disk = create(gf_version)
+        filename_on_disk = create(file_set, gf_version)
 
         # characterize the current version
-        characterize(filename_on_disk) if index == (sorted_versions.count - 1)
+        characterize(file_set, filename_on_disk) if index == (sorted_versions.count - 1)
 
         File.delete(filename_on_disk)
       end
@@ -29,7 +23,7 @@ module Sufia::Import
 
     private
 
-      def create(version)
+      def create(file_set, version)
         filename_on_disk = File.join Dir.tmpdir, "#{file_set.id}_#{version[:label]}"
         Rails.logger.debug "[IMPORT] Downloading #{version} to #{filename_on_disk}"
         File.open(filename_on_disk, 'wb') do |file_to_upload|
@@ -49,7 +43,7 @@ module Sufia::Import
         open(content_uri, http_basic_authentication: [sufia6_user, sufia6_password])
       end
 
-      def characterize(filename_on_disk)
+      def characterize(file_set, filename_on_disk)
         CharacterizeJob.perform_now(file_set, file_set.original_file.id, filename_on_disk)
       end
 
