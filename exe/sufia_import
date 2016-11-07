@@ -5,8 +5,8 @@ require ::File.join(File.dirname(Bundler.default_gemfile), 'config/environment')
 options = OpenStruct.new
 options.verbose = false
 options.import_dir = "tmp/import"
-# TODO: add collection like options.mappings = ["Sufia::Import::CollectionTranslator=collection_", "Sufia::Import::GenericFileTranslator=generic_file_"]
-options.mappings = ["Sufia::Import::GenericFileTranslator=generic_file_"]
+# order matters here; genericfile must be run before collection so the collection's members exist
+options.mappings = ["Sufia::Import::GenericFileTranslator=generic_file_", "Sufia::Import::CollectionTranslator=collection_"]
 options.import_binary = true
 
 args = OptionParser.new do |opts|
@@ -47,6 +47,6 @@ end
 
 options.mappings.each do |pair|
   class_name, prefix = pair.split('=')
-  translator = class_name.constantize.new(import_binary: options.import_binary)
-  translator.import(options.import_dir, prefix)
+  translator = class_name.constantize.new(import_dir: options.import_dir, filename_prefix: prefix, import_binary: options.import_binary)
+  translator.import
 end
