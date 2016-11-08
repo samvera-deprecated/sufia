@@ -2,6 +2,12 @@
 #
 module Sufia::Import
   class CollectionBuilder
+    attr_reader :permission_builder
+
+    def initialize
+      @permission_builder = PermissionBuilder.new
+    end
+
     # Build a Collection from json data
     #
     # @param hash json metadata from the collection, e.g.:
@@ -12,7 +18,6 @@ module Sufia::Import
     #                "access_to": "2v23vt57t" } ] }
     def build(json)
       collection = Collection.new
-      permission_builder = PermissionBuilder.new
       data = json.deep_symbolize_keys
       members = get_members(data.delete(:members))
       # TODO: a couple fields exported as single-valued but are expected to be multi
