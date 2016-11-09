@@ -37,7 +37,7 @@ module Sufia
           end
 
           def all_ids
-            root_uri = ActiveFedora::Base.id_to_uri('')
+            root_uri = ActiveFedora.fedora.host + ActiveFedora.fedora.base_path
             # Fetches all the Fedora 4 descendant URIs for a given URI.
             # Stolen from: https://github.com/projecthydra/active_fedora/blob/master/lib/active_fedora/indexing.rb#L72-L79
             resource = Ldp::Resource::RdfSource.new(ActiveFedora.fedora.connection, root_uri)
