@@ -1,14 +1,14 @@
 module Sufia
   module Workflow
     class WorkflowByAdminSetStrategy
-      def initialize(work, attributes)
-        @work = work
-        @admin_set_id = attributes.fetch(:admin_set_id, 'default')
+      def initialize(_work, attributes)
+        @admin_set_id = attributes[:admin_set_id] if attributes[:admin_set_id].present?
       end
 
       # @return [String] The name of the workflow by admin_set to use
       def workflow_name
-        @admin_set_id
+        return 'default' unless @admin_set_id
+        Sufia::PermissionTemplate.find_by!(admin_set_id: @admin_set_id)
       end
     end
   end
