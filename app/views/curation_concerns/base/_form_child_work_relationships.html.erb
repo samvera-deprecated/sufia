@@ -49,7 +49,7 @@ HTML Properties:
     <tr class="new-row">
       <td>
         <a href="" class="title hidden"></a>
-        <%= render "find_work_widget", f: f, id_name: id_name %>
+        <%= render "find_work_widget", f: f, id_name: id_name, user_email: current_user.email, id: f.object.model.id %>
         <div class="message has-warning hidden"></div>
       </td>
       <td>

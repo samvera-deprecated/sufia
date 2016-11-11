@@ -17,7 +17,9 @@ export class Autocomplete {
               this.autocompleteLocation(selector);
               break;
             case "work":
-              this.autocompleteWork(selector);
+              var user = selector.data('user');
+              var id = selector.data('id');
+              this.autocompleteWork(selector, user, id);
               break;
           }
       });
@@ -52,8 +54,13 @@ export class Autocomplete {
       new lang.Language(field, field.data('autocomplete-url'))
   }
 
-  autocompleteWork(field) {
-    var lang = require('sufia/autocomplete/work');
-    new lang.Work(field, field.data('autocomplete-url'))
+  autocompleteWork(field, user, id) {
+    var work = require('sufia/autocomplete/work');
+    new work.Work(
+      field,
+      field.data('autocomplete-url'),
+      user,
+      id
+    )
   }
 }

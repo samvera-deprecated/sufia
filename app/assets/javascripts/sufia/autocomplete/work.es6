@@ -1,6 +1,9 @@
 export class Work {
-  constructor(element, url) {
-    this.url = url
+  // Autocomplete for finding related works.
+  constructor(element, url, user, id) {
+    this.url = url;
+    this.user = user;
+    this.work_id = id;
     element.autocomplete(this.options());
   }
 
@@ -9,7 +12,9 @@ export class Work {
       minLength: 2,
       source: ( request, response ) => {
         $.getJSON(this.url, {
-          q: request.term
+          q: request.term,
+          id: this.work_id,
+          user: this.user
         }, response );
       },
       focus: function() {
