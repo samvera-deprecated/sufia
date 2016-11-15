@@ -18,6 +18,10 @@ describe Sufia::Import::PermissionBuilder do
       { id: "db8e6b05-3fe1-4d3f-9905-5232ba49f8f5",
         agent: "http://projecthydra.org/ns/auth/person#other@psu.edu",
         mode: "http://www.w3.org/ns/auth/acl#Read",
+        access_to: "44558d49x" },
+      { id: "d49df87b-bda6-4fdd-8f14-3ff421339a1b",
+        agent: "http://projecthydra.org/ns/auth/group#umg/group.psu",
+        mode: "http://www.w3.org/ns/auth/acl#Read",
         access_to: "44558d49x" }
     ]
   end
@@ -31,7 +35,8 @@ describe Sufia::Import::PermissionBuilder do
     it do
       is_expected.to contain_exactly({ name: "cam156@psu.edu", type: "person", access: "edit" },
                                      { name: "other@psu.edu", type: "person", access: "read" },
-                                     name: user.user_key, type: "person", access: "edit")
+                                     { name: user.user_key, type: "person", access: "edit" },
+                                     name: "umg/group.psu", type: "group", access: "read")
     end
   end
   context "when adding permissions to the file set" do
@@ -40,7 +45,8 @@ describe Sufia::Import::PermissionBuilder do
     it do
       is_expected.to contain_exactly({ name: "cam156@psu.edu", type: "person", access: "edit" },
                                      { name: "other@psu.edu", type: "person", access: "read" },
-                                     name: user.user_key, type: "person", access: "edit")
+                                     { name: user.user_key, type: "person", access: "edit" },
+                                     name: "umg/group.psu", type: "group", access: "read")
     end
   end
 end

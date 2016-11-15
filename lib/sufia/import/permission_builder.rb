@@ -20,8 +20,8 @@ module Sufia::Import
       def create(object, gf_perm)
         return if permission_exists(object, gf_perm)
         # agent = http://projecthydra.org/ns/auth/person#cam156@psu.edu"
-        agent_parts = gf_perm[:agent].split("/").last.split("#") # e.g. "http://projecthydra.org/ns/auth/person#hjc14"
-        type = agent_parts.first
+        agent_parts = gf_perm[:agent].split("#") # e.g. "http://projecthydra.org/ns/auth/person#hjc14"
+        type = agent_parts[0].split('/').last
         name = agent_parts.last
 
         # acess = http://www.w3.org/ns/auth/acl#Write
