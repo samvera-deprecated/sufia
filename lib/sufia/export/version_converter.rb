@@ -14,7 +14,7 @@ module Sufia
       # @param [String] uri location of version to be converted in fedora (also id of version)
       # @param [ActiveFedora::VersionsGraph] version_graph the graph of versions associated with one GenericFile (gf.content.versions)
       def initialize(uri, version_graph)
-        @uri = uri
+        @uri = content_uri(uri)
         @created = find_triple(RDF::Vocab::Fcrepo4.created, version_graph)
         @label = find_triple(RDF::Vocab::Fcrepo4.hasVersionLabel, version_graph)
       end
@@ -22,8 +22,12 @@ module Sufia
       private
 
         def find_triple(predicate, graph)
-          triple = graph.find { |t| t.subject == uri && t.predicate == predicate }
+          triple = graph.find { |t| content_uri(t.subject) == uri && t.predicate == predicate }
           triple.object.to_s
+        end
+
+        def content_uri(uri)
+          uri.to_s.gsub('/fcr:metadata', '')
         end
     end
   end

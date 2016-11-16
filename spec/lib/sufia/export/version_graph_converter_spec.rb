@@ -7,7 +7,9 @@ describe Sufia::Export::VersionGraphConverter do
   let(:version2) { graph.all.last }
   let(:created1) { version1.created }
   let(:created2) { version2.created }
-  let(:json) { "{\"versions\":[{\"uri\":\"http://localhost:8983/fedora/rest/test/ab/c1/23/abc123/content/fcr:versions/version1\",\"created\":\"#{created1}\",\"label\":\"version1\"},{\"uri\":\"http://localhost:8983/fedora/rest/test/ab/c1/23/abc123/content/fcr:versions/version2\",\"created\":\"#{created2}\",\"label\":\"version2\"}]}" }
+  let(:uri1) { version1.uri }
+  let(:uri2) { version2.uri }
+  let(:json) { "{\"versions\":[{\"uri\":\"#{uri1}\",\"created\":\"#{created1}\",\"label\":\"version1\"},{\"uri\":\"#{uri2}\",\"created\":\"#{created2}\",\"label\":\"version2\"}]}" }
   let(:user) { FactoryGirl.create(:user) }
 
   subject { described_class.new(graph).to_json }
