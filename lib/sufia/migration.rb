@@ -1,4 +1,5 @@
 require 'sufia/migration/survey'
+require 'sufia/migration/validation'
 
 module Sufia
   module Migration
