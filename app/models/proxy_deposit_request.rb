@@ -56,7 +56,9 @@ class ProxyDepositRequest < ActiveRecord::Base
 
   # @param [TrueClass,FalseClass] reset (false)  if true, reset the access controls. This revokes edit access from the depositor
   def transfer!(reset = false)
-    ContentDepositorChangeEventJob.perform_later(work, receiving_user, reset)
+    log = CurationConcerns::Operation.create!(user: sending_user,
+                                              operation_type: 'Change Depositor')
+    ContentDepositorChangeEventJob.perform_later(work, receiving_user, log, reset)
     self.status = 'accepted'
     self.fulfillment_date = Time.current
     save!

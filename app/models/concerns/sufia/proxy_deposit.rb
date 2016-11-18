@@ -16,8 +16,11 @@ module Sufia
     end
 
     def create_transfer_request
-      ContentDepositorChangeEventJob.perform_later(self,
-                                                   ::User.find_by_user_key(on_behalf_of)) if on_behalf_of.present?
+      return unless on_behalf_of.present?
+      user = ::User.find_by_user_key(on_behalf_of)
+      log = CurationConcerns::Operation.create!(user: user,
+                                                operation_type: 'Change Depositor')
+      ContentDepositorChangeEventJob.perform_later(self, user, log)
     end
 
     def request_transfer_to(target)

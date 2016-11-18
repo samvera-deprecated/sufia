@@ -11,7 +11,7 @@ class CreateWorkJob < ActiveJob::Base
   # @param [User] user
   # @param [String] model
   # @param [Hash] attributes
-  # @param [BatchCreateOperation] log
+  # @param [CurationConcerns::Operation] a log storing the status of the job
   def perform(user, model, attributes, log)
     log.performing!
     work = model.constantize.new

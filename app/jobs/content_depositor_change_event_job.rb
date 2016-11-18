@@ -7,12 +7,20 @@ class ContentDepositorChangeEventJob < ContentEventJob
 
   attr_accessor :reset
 
+  before_enqueue do |job|
+    log = job.arguments.last
+    log.pending_job(self)
+  end
+
   # @param [ActiveFedora::Base] work the work to be transfered
   # @param [User] user the user the work is being transfered to.
+  # @param [CurationConcerns::Operation] a log storing the status of the job
   # @param [TrueClass,FalseClass] reset (false) if true, reset the access controls. This revokes edit access from the depositor
-  def perform(work, user, reset = false)
+  def perform(work, user, log, reset = false)
+    log.performing!
     @reset = reset
     super(work, user)
+    log.success!
   end
 
   def action
@@ -30,7 +38,7 @@ class ContentDepositorChangeEventJob < ContentEventJob
   alias log_file_set_event log_work_event
 
   def work
-    @work ||= Sufia::ChangeContentDepositorService.call(repo_object, depositor, reset)
+    @work ||= Sufia::ChangeContentDepositorService.call(repo_object, depositor, reset, log)
   end
 
   # overriding default to log the event to the depositor instead of their profile
