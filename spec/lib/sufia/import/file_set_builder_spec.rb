@@ -32,8 +32,10 @@ describe Sufia::Import::FileSetBuilder do
     expect(version_builder).to receive(:build).with(an_instance_of(FileSet), gf_metadata[:versions])
     file_set = builder.build(gf_metadata)
     expect(file_set.title).to eq(["My Great File"])
-    expect(file_set.date_uploaded).to eq "2015-09-28T20:00:14.243+00:00"
-    expect(file_set.date_modified).to eq "2015-10-28T20:00:14.243+00:00"
+    expect(file_set.date_uploaded.to_s).to eq "2015-09-28T20:00:14+00:00"
+    expect(file_set.date_uploaded).to be_a DateTime
+    expect(file_set.date_modified.to_s).to eq "2015-10-28T20:00:14+00:00"
+    expect(file_set.date_modified).to be_a DateTime
     expect(file_set.label).to eq "my label"
   end
 
