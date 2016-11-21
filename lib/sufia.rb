@@ -3,7 +3,6 @@ require 'nest'
 require 'redis-namespace'
 require 'mailboxer'
 require 'carrierwave'
-require 'sufia/migration'
 require 'rails_autolink'
 require 'font-awesome-rails'
 require 'tinymce-rails'
@@ -22,6 +21,7 @@ require 'sufia/version'
 require 'sufia/inflections'
 require 'sufia/import'
 require 'kaminari_route_prefix'
+require 'sufia/migration'
 
 module Sufia
   extend ActiveSupport::Autoload
