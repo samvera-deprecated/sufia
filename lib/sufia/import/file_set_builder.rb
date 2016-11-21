@@ -33,8 +33,8 @@ module Sufia::Import
       # file_set.filename = data.filename
       file_set.title << data[:title]
       file_set.label = data[:label]
-      file_set.date_uploaded = data[:date_uploaded]
-      file_set.date_modified = data[:date_modified]
+      file_set.date_uploaded = data[:date_uploaded].to_datetime
+      file_set.date_modified = data[:date_modified].to_datetime
       file_set.apply_depositor_metadata(data[:depositor])
       permission_builder.build(file_set, data[:permissions])
       # bring over the File
