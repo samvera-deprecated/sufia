@@ -30,6 +30,7 @@ module Sufia
           Rails.logger.debug "Importing #{File.basename(filename)}"
           file_str = File.read(filename)
           json = JSON.parse(file_str)
+          raise "Id exists in Fedora before import: #{json['id']}" if ActiveFedora::Base.exists?(json["id"])
           build_from_json(json)
         end
 

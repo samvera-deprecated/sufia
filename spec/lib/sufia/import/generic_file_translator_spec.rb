@@ -6,7 +6,8 @@ describe Sufia::Import::GenericFileTranslator do
   let(:translator) { described_class.new(import_dir: import_directory, import_binary: false) }
 
   let(:import_directory) { File.join(fixture_path, 'import') }
-  let(:gf_metadata) { JSON.parse(File.read(File.join(import_directory, "generic_file_#{work_id}.json")), symbolize_names: true) }
+  let(:json_file_name) { File.join(import_directory, "generic_file_#{work_id}.json") }
+  let(:gf_metadata) { JSON.parse(File.read(json_file_name), symbolize_names: true) }
   let(:work) { Sufia.primary_work_type.find(work_id) }
   # used to retrieve the fixture and then test that the object was created with the same id
   let(:work_id) { 'qr46r0963' }
@@ -33,6 +34,18 @@ describe Sufia::Import::GenericFileTranslator do
       let(:translator) { described_class.new(import_dir: 'totallynotadirectory') }
       it 'errors' do
         expect { translator.import }.to raise_error RuntimeError
+      end
+    end
+
+    context 'when the id is already taken' do
+      before do
+        create(:collection, id: work_id)
+        translator.import
+      end
+
+      it "Logs an error and does not process the work" do
+        expect(translator).not_to receive(:build_from_json)
+        expect(File.new(Sufia::Import::Log.file.path, 'rb').read).to include("\"#{json_file_name}\",\"Id exists in Fedora before import: qr46r0963\"")
       end
     end
   end
