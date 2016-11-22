@@ -45,7 +45,7 @@ describe Sufia::Import::GenericFileTranslator do
 
       it "Logs an error and does not process the work" do
         expect(translator).not_to receive(:build_from_json)
-        expect(File.new(Sufia::Import::Log.file.path, 'rb').read).to include("\"#{json_file_name}\",\"Id exists in Fedora before import: qr46r0963\"")
+        expect(File.new(Sufia::Import::ErrorLog.file.path, 'rb').read).to include("\"#{json_file_name}\",\"Id exists in Fedora before import: qr46r0963\"")
       end
     end
   end
