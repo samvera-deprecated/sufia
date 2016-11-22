@@ -5,8 +5,9 @@ describe Sufia::Import::CollectionTranslator do
   let(:sufia6_password) { "s6password" }
   let(:translator) { described_class.new(import_dir:  import_directory) }
 
+  let(:collection_file) { File.join(import_directory, "collection_#{collection_id}.json") }
   let(:import_directory) { File.join(fixture_path, 'import') }
-  let(:col_metadata) { JSON.parse(File.read(File.join(import_directory, "collection_#{collection_id}.json")), symbolize_names: true) }
+  let(:col_metadata) { JSON.parse(File.read(collection_file), symbolize_names: true) }
   let(:collection) { Collection.find(collection_id) }
   # used to retrieve the fixture and then test that the object was created with the same id
   let(:collection_id) { '2v23vt57t' }
@@ -35,7 +36,8 @@ describe Sufia::Import::CollectionTranslator do
     end
 
     it 'Errors when it tries to add a nonexistent work' do
-      expect { translator.import }.to raise_error RuntimeError
+      translator.import
+      expect(File.new(Sufia::Import::Log.file.path, 'rb').read).to include("\"#{collection_file}\",\"Error getting members qr46r0963.  GenericWork must be imported before Collections\"")
     end
   end
 end
