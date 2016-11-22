@@ -37,7 +37,7 @@ describe Sufia::Import::CollectionTranslator do
 
     it 'Errors when it tries to add a nonexistent work' do
       translator.import
-      expect(File.new(Sufia::Import::Log.file.path, 'rb').read).to include("\"#{collection_file}\",\"Error getting members qr46r0963.  GenericWork must be imported before Collections\"")
+      expect(File.new(Sufia::Import::ErrorLog.file.path, 'rb').read).to include("\"#{collection_file}\",\"Error getting members qr46r0963.  GenericWork must be imported before Collections\"")
     end
   end
 end
