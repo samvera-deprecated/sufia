@@ -34,12 +34,20 @@ module Sufia::Import
 
     def get_members(data)
       members = []
-      data.each do |i|
-        members << Sufia.primary_work_type.find(i)
+      missing_files = []
+      data.each do |id|
+        begin
+          members << Sufia.primary_work_type.find(id)
+        rescue ActiveFedora::ObjectNotFoundError
+          missing_files << id
+        end
+      end
+      if missing_files.count > 0
+        message = "Error getting members #{missing_files.join(', ')}."
+        message += "  #{Sufia.primary_work_type} must be imported before Collections" if missing_files.count == data.count
+        raise message
       end
       members
-    rescue ActiveFedora::ObjectNotFoundError
-      raise "GenericFiles must be imported before Collections"
     end
   end
 end

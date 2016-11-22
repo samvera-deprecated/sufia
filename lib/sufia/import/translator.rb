@@ -15,7 +15,13 @@ module Sufia
         raise "No such directory: '#{@import_dir}'" unless Dir.exist?(@import_dir)
         # get filenames
         files = Dir.glob(File.join(@import_dir, '*')).select { |f| exported_json?(f, @filename_prefix) }
-        files.each { |f| import_file(f) }
+        files.each do |file|
+          begin
+            import_file(file)
+          rescue RuntimeError => e
+            Sufia::Import::Log.error("\"#{file}\",\"#{e.message}\"\n")
+          end
+        end
       end
 
       protected
