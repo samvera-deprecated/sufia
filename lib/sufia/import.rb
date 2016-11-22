@@ -7,7 +7,7 @@ require 'sufia/import/work_builder'
 require 'sufia/import/collection_builder'
 require 'sufia/import/generic_file_translator'
 require 'sufia/import/collection_translator'
-require 'sufia/import/log'
+require 'sufia/import/error_log'
 
 module Sufia
   module Permissions

@@ -1,6 +1,6 @@
 module Sufia
   module Import
-    class Log
+    class ErrorLog
       class << self
         def error(message)
           file.write(message)
@@ -20,7 +20,7 @@ module Sufia
         end
 
         def open_file
-          File.open("import_log.out", (File::WRONLY | File::APPEND | File::CREAT))
+          File.open("import_error_log.out", (File::WRONLY | File::APPEND | File::CREAT))
         end
       end
     end

@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'support/export_json_helper'
 
-describe Sufia::Import::Log do
+describe Sufia::Import::ErrorLog do
   let(:log_name) { described_class.file.path }
   let(:message) { "My Error\n" }
   subject { File.new(log_name, 'rb').read }

@@ -19,7 +19,7 @@ module Sufia
           begin
             import_file(file)
           rescue RuntimeError => e
-            Sufia::Import::Log.error("\"#{file}\",\"#{e.message}\"\n")
+            Sufia::Import::ErrorLog.error("\"#{file}\",\"#{e.message}\"\n")
           end
         end
       end
