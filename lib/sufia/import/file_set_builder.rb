@@ -38,6 +38,7 @@ module Sufia::Import
       file_set.apply_depositor_metadata(data[:depositor])
       permission_builder.build(file_set, data[:permissions])
       # bring over the File
+      file_set.save # save here so version_builder has an ID to use
       version_builder.build(file_set, data[:versions]) if @import_binary
 
       file_set

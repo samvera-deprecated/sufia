@@ -60,5 +60,10 @@ describe Sufia::Import::VersionBuilder do
       expect(file_set.original_file.date_created).to eq(["2016-09-29T15:58:00.639Z"])
       expect(file_set.original_file.versions.all.map { |v| Hydra::PCDM::File.new(v.uri).date_created.first }).to contain_exactly("2016-09-28T20:00:14.658Z", "2016-09-29T15:58:00.639Z")
     end
+    context "when fileset has nil id" do
+      it "raises runtime error" do
+        expect { builder.build(FileSet.new, versions) }.to raise_error("FileSet must have an id before importing any versions")
+      end
+    end
   end
 end
