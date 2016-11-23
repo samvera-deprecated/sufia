@@ -20,7 +20,7 @@ args = OptionParser.new do |opts|
     options.import_dir = dir
   end
 
-  opts.on("--json_mapping [class=prefix, ...]", Array, "For each class: prefix pair, import the files discovedrable by the prefix as objects ot the class. Defaults to Sufia::Import::CollectionTranslator=collection_, Sufia::Import::GenericFileTranslator=generic_file_ ") do |mappings|
+  opts.on("--json_mapping [class=prefix, ...]", Array, "For each class: prefix pair, import the files discovedrable by the prefix as objects ot the class. Defaults to Sufia::Import::CollectionTranslator=collection_,Sufia::Import::GenericFileTranslator=generic_file_ ") do |mappings|
     options.mappings = mappings
   end
 
