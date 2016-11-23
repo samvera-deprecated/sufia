@@ -10,6 +10,9 @@ module Sufia::Import
     #   @option :created date the version was created
     #
     def build(file_set, generic_file_versions)
+      if file_set.id.nil?
+        raise "FileSet must have an id before importing any versions"
+      end
       sorted_versions = generic_file_versions.sort_by { |ver| ver[:created] }
       sorted_versions.each_with_index do |gf_version, index|
         filename_on_disk = create(file_set, gf_version)
