@@ -7,8 +7,6 @@ module Qa::Authorities
       @q = q
     end
 
-    # TODO: Limit results to not self, editable, no existing parents, and no existing children
-
     def search(q, controller)
 
       repo = CatalogController.new.repository
