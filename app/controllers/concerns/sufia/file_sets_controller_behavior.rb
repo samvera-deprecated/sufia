@@ -4,15 +4,6 @@ module Sufia
     include Sufia::Breadcrumbs
 
     included do
-      include Blacklight::Configurable
-
-      with_themed_layout '1_column'
-
-      copy_blacklight_config_from(CatalogController)
-
-      # actions: index, create, new, edit, show, update,
-      #          destroy, permissions, citation, stats
-
       # prepend this hook so that it comes before load_and_authorize
       prepend_before_action :authenticate_user!, except: [:show, :citation, :stats]
       before_action :build_breadcrumbs, only: [:show, :edit, :stats]
@@ -44,12 +35,12 @@ module Sufia
       end
     end
 
-    protected
+    # This allows us to use the templates in curation_concerns/file_sets
+    def self.local_prefixes
+      ['curation_concerns/file_sets']
+    end
 
-      def _prefixes
-        # This allows us to use the templates in curation_concerns/file_sets
-        @_prefixes ||= ['curation_concerns/file_sets'] + super
-      end
+    protected
 
       def initialize_edit_form
         @version_list = version_list
