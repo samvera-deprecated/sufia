@@ -16,6 +16,10 @@ module Sufia
       t('sufia.institution_name_full', default: institution_name)
     end
 
+    def banner_image
+      Sufia.config.banner_image
+    end
+
     def orcid_label(style_class = '')
       "#{image_tag 'orcid.png', alt: t('sufia.user_profile.orcid.alt'), class: style_class} #{t('sufia.user_profile.orcid.label')}".html_safe
     end
@@ -143,7 +147,7 @@ module Sufia
       end
     end
 
-    # *Sometimes* a Blacklight helper_method
+    # *Sometimes* a Blacklight index field helper_method
     # @param [String,User,Hash{Symbol=>Array}] args if a hash, the user_key must be under :value
     # @return [ActiveSupport::SafeBuffer] the html_safe link
     def link_to_profile(args)
@@ -167,7 +171,7 @@ module Sufia
     end
     deprecation_deprecate rights_statement_links: "use licence_links instead"
 
-    # A Blacklight helper_method
+    # A Blacklight index field helper_method
     # @param [Hash] options from blacklight helper_method invocation. Maps rights URIs to links with labels.
     # @return [ActiveSupport::SafeBuffer] rights statement links, html_safe
     def license_links(options)
@@ -210,8 +214,9 @@ module Sufia
       user.respond_to?(:name) ? "#{user.name} (#{user_key})" : user_key
     end
 
+    # Used by the gallery view
     def collection_thumbnail(_document, _image_options = {}, _url_options = {})
-      content_tag(:span, "", class: ["fa", "fa-cubes", "collection-icon-search"])
+      content_tag(:span, "", class: [Sufia::ModelIcon.css_class_for(Collection), "collection-icon-search"])
     end
 
     private

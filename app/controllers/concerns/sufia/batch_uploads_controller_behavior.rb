@@ -5,7 +5,8 @@ module Sufia
     include CurationConcerns::CurationConcernController
 
     included do
-      self.curation_concern_type = form_class.model_class
+      self.work_form_service = BatchUploadFormService
+      self.curation_concern_type = work_form_service.form_class.model_class
     end
 
     def create
@@ -15,19 +16,14 @@ module Sufia
       redirect_after_update
     end
 
-    module ClassMethods
-      def form_class
+    # Gives the class of the form.
+    class BatchUploadFormService < CurationConcerns::WorkFormService
+      def self.form_class(_ = nil)
         ::Sufia::Forms::BatchUploadForm
       end
     end
 
     protected
-
-      # Gives the class of the form.
-      # This overrides CurationConcerns
-      def form_class
-        self.class.form_class
-      end
 
       def redirect_after_update
         if uploading_on_behalf_of?
@@ -40,11 +36,12 @@ module Sufia
       def create_update_job
         log = BatchCreateOperation.create!(user: current_user,
                                            operation_type: "Batch Create")
+        # ActionController::Parameters are not serializable, so cast to a hash
         BatchCreateJob.perform_later(current_user,
-                                     params[:title],
-                                     params[:resource_type],
+                                     params[:title].permit!.to_h,
+                                     params[:resource_type].permit!.to_h,
                                      params[:uploaded_files],
-                                     attributes_for_actor,
+                                     attributes_for_actor.to_h,
                                      log)
       end
 

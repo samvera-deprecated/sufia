@@ -11,15 +11,12 @@
   }
 }
 
-.heading-tile {
-  border: 0;
-}
-
 .heading-row {
   border: 0;
 }
 
-#content-header .heading-row:nth-child(2) {
+.heading-tile {
+  border: 0;
   padding-top: .5em;
   a:link,
   a:visited {
@@ -37,31 +34,30 @@
     transition-duration: .35s;
     transition-timing-function: ease-out;
   }
-}
+  .glyphicon {
+    background: $icon-background-color;
+    color: $icon-font-color;
+    display: block;
+    width: 2em;
+    height: 2em;
+    line-height: 1.75em;
+    margin: 0 auto;
+    border-radius: 50%;
+    border: 2px solid $icon-border-color;
+    overflow: hidden;
+    transition-property: background-color, color;
+    transition-duration: .35s;
+    transition-timing-function: ease-out;
+  }
 
-div.heading-tile .glyphicon {
-  background: $icon-background-color;
-  color: $icon-font-color;
-  display: block;
-  width: 2em;
-  height: 2em;
-  line-height: 1.75em;
-  margin: 0 auto;
-  border-radius: 50%;
-  border: 2px solid $icon-border-color;
-  overflow: hidden;
-  transition-property: background-color, color;
-  transition-duration: .35s;
-  transition-timing-function: ease-out;
-}
-
-div.heading-tile:hover .glyphicon {
-  background-color: $icon-background-color-hover;
-  border-color: $icon-border-color-hover;
-  color: $icon-font-color-hover;
-  transition-property: background-color, color;
-  transition-duration: .35s;
-  transition-timing-function: ease-out;
+  &:hover .glyphicon {
+    background-color: $icon-background-color-hover;
+    border-color: $icon-border-color-hover;
+    color: $icon-font-color-hover;
+    transition-property: background-color, color;
+    transition-duration: .35s;
+    transition-timing-function: ease-out;
+  }
 }
 
 .panel-body h4 {
@@ -118,5 +114,30 @@ div.heading-tile:hover .glyphicon {
 #user_info {
   dt {
     margin-top: $padding-small-vertical;
+  }
+}
+
+// submenu items
+ul.collapse > li > a,
+ul.collapsing > li > a {
+  padding-left: 40px;
+}
+
+.collapse-toggle {
+  margin-bottom: 0;
+
+  &::after {
+    content: "❯";
+    float: right;
+    transform: rotate(90deg);
+  }
+
+  &.collapsed {
+    border-bottom: 0;
+
+    &::after {
+      transform: rotate(0deg);
+      transition: transform 0.1s ease;
+    }
   }
 }

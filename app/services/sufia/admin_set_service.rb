@@ -1,22 +1,35 @@
+# frozen_string_literal: true
 module Sufia
-  # Creates AdminSets
-  class AdminSetService
-    # @param admin_set [AdminSet] the admin set to operate on
-    # @param creating_user [User] the user who created the admin set.
-    def initialize(admin_set, creating_user)
-      @admin_set = admin_set
-      @creating_user = creating_user
+  # Returns AdminSets that the current user has permission to use.
+  class AdminSetService < CurationConcerns::AdminSetService
+    # This performs a two pass query, first getting the AdminSets and then getting the work counts
+    # @param [Symbol] access :read or :edit
+    # @return [Array<Array>] a list with document, then work count
+    def search_results_with_work_count(access)
+      documents = search_results(access)
+      ids = documents.map(&:id).join(',')
+      join_field = "isPartOf_ssim"
+      query = "{!terms f=#{join_field}}#{ids}"
+      results = ActiveFedora::SolrService.instance.conn.get(
+        ActiveFedora::SolrService.select_path,
+        params: { fq: query,
+                  'facet.field' => join_field }
+      )
+      counts = results['facet_counts']['facet_fields'][join_field].each_slice(2).to_h
+      documents.map do |doc|
+        [doc, counts[doc.id]]
+      end
     end
 
-    attr_reader :creating_user, :admin_set
-
-    # Creates an admin set, setting the creator and the default access controls.
-    # @return [TrueClass, FalseClass] true if it was successful
-    def create
-      admin_set.read_groups = ['public']
-      admin_set.edit_groups = ['admin']
-      admin_set.creator = [creating_user.user_key]
-      admin_set.save
+    # @param [Symbol] access :read or :edit
+    def select_options(access = :read)
+      search_results(access).map do |element|
+        permission_template = PermissionTemplate.find_by(admin_set_id: element.id)
+        visibility = permission_template.visibility if permission_template
+        # Add HTML5 'data' attributes corresponding to permission template fields
+        # Used to limit visibility options of new works (via JS) when an AdminSet is selected
+        [element.to_s, element.id, { 'data-visibility' => visibility }]
+      end
     end
   end
 end

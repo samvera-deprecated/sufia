@@ -43,6 +43,7 @@ module Sufia
 
     def update
       if @admin_set.update(admin_set_params)
+        permission_template.update(permission_template_params)
         redirect_to sufia.admin_admin_sets_path
       else
         setup_form
@@ -52,6 +53,9 @@ module Sufia
 
     def create
       if create_admin_set
+        permission_template_holder = permission_template
+        permission_template_holder.attributes = permission_template_params
+        permission_template_holder.save! # to create permission template on create
         redirect_to sufia.admin_admin_sets_path
       else
         setup_form
@@ -83,7 +87,7 @@ module Sufia
       end
 
       def create_admin_set
-        AdminSetService.new(@admin_set, current_user).create
+        AdminSetCreateService.new(@admin_set, current_user).create
       end
 
       def setup_form
@@ -91,7 +95,12 @@ module Sufia
         add_breadcrumb t(:'sufia.toolbar.admin.menu'), sufia.admin_path
         add_breadcrumb t(:'sufia.admin.sidebar.admin_sets'), sufia.admin_admin_sets_path
         add_breadcrumb action_breadcrumb, request.path
-        @form = form_class.new(@admin_set)
+        @form = form_class.new(@admin_set, permission_template)
+      end
+
+      # Find or create the permission_template object for this admin set
+      def permission_template
+        PermissionTemplate.find_or_initialize_by(admin_set_id: @admin_set.id)
       end
 
       def action_breadcrumb
@@ -109,6 +118,10 @@ module Sufia
 
       def repository_class
         blacklight_config.repository_class
+      end
+
+      def permission_template_params
+        { "workflow_name" => params[:admin_set][:workflow_name] }
       end
   end
 end
