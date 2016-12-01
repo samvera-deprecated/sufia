@@ -183,6 +183,11 @@ RSpec.configure do |config|
 
   config.include EngineRoutes, type: :controller
   config.include Warden::Test::Helpers, type: :feature
+
+  # optimizing partial lookup time using only the formats actually in use.
+  config.before(:each, type: :helper) { helper.formats = [:html, :js, :json, :xml] }
+  config.before(:each, type: :view) { view.formats = [:html, :js, :json, :xml] }
+
   config.after(:each, type: :feature) { Warden.test_reset! }
 
   config.include Capybara::RSpecMatchers, type: :input
