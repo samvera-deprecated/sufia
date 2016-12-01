@@ -66,7 +66,8 @@ describe Sufia::Admin::AdminSetsController do
         it 'creates file sets' do
           expect(service).to receive(:create).and_return(true)
           post :create, params: { admin_set: { title: 'Test title',
-                                               description: 'test description' } }
+                                               description: 'test description',
+                                               workflow_name: 'default' } }
           expect(response).to be_redirect
         end
       end
@@ -113,10 +114,12 @@ describe Sufia::Admin::AdminSetsController do
         expect_any_instance_of(AdminSet).to receive(:save).and_return(true)
         patch :update, params: { id: admin_set,
                                  admin_set: { title: "Improved title",
-                                              thumbnail_id: "mw22v559x" } }
+                                              thumbnail_id: "mw22v559x",
+                                              workflow_name: "one_step_mediated_deposit" } }
         expect(response).to be_redirect
         expect(assigns[:admin_set].title).to eq ['Improved title']
         expect(assigns[:admin_set].thumbnail_id).to eq 'mw22v559x'
+        expect(Sufia::PermissionTemplate.find_by(admin_set_id: admin_set).workflow_name).to eq 'one_step_mediated_deposit'
       end
     end
   end
