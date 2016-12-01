@@ -119,7 +119,6 @@ describe Sufia::Admin::AdminSetsController do
         expect(response).to be_redirect
         expect(assigns[:admin_set].title).to eq ['Improved title']
         expect(assigns[:admin_set].thumbnail_id).to eq 'mw22v559x'
-        expect(Sufia::PermissionTemplate.find_by(admin_set_id: admin_set).workflow_name).to eq 'one_step_mediated_deposit'
       end
     end
   end
