@@ -12,4 +12,3 @@ RSpec.describe 'sufia/admin/admin_sets/_form.html.erb', type: :view do
     expect(rendered).to have_select('admin_set[workflow_name]', selected: 'default')
   end
 end
-  
