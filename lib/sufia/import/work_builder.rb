@@ -26,14 +26,35 @@ module Sufia::Import
       data = gf_metadata.deep_symbolize_keys
       data.delete(:batch_id) # This attribute was removed in sufia 7
       data.delete(:versions) # works don't have versions; these are used in file set builder
-      work.keyword << data.delete(:tag)
+      data[:keyword] = data.delete(:tag)
       # "All rights reserved" was changed to a legit URI
       if data[:rights].delete("All rights reserved")
         data[:rights] << "http://www.europeana.eu/portal/rights/rr-r.html"
       end
       work.apply_depositor_metadata(data.delete(:depositor))
       permission_builder.build(work, data.delete(:permissions))
-      work.update_attributes(data)
+
+      work.id = data.delete(:id)
+
+      # work through all fields, saving the first value from each in one batch
+      # then the second, and so on until we've got them all.
+      single_value_fields = {}
+      until data.count < 1
+        data.keys.each do |field|
+          if data[field].nil? or data[field].empty?
+            data.delete(field)
+          elsif data[field].respond_to?(:to_str)
+            single_value_fields[field] = data.delete(field)
+          else
+            tmp = work.send(field).to_a || []
+            tmp << data[field].shift
+            work.send("#{field.to_s}=", Array(tmp))
+          end
+        end
+        work.save
+      end
+
+      work.update_attributes(single_value_fields)
 
       work
     end
