@@ -22,6 +22,10 @@ module Sufia::Import
 
         File.delete(filename_on_disk)
       end
+      # give the actual file its original file_name as opposed to the one we
+      # used for convenience in this script
+      file_set.original_file.file_name = file_set.label
+      file_set.original_file.save
     end
 
     private
