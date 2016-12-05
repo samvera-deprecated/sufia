@@ -21,21 +21,14 @@ HTML Properties:
       <th>Parent Work</th>
       <th>Actions</th>
     </tr>
-    </thead>
+  </thead>
     <tbody>
-    <tr class="hidden">
-      <td>
-        <% f.object.in_work_members.each do |fileset| %>
-          <input class="related_works_ids work_filesets_ids" name="<%= f.object.model_name.param_key %>[in_works_ids][]" type="hidden" value="<%= fileset.id %>">
-        <% end %>
-      </td>
-      <td></td>
-    </tr>
+
     <% f.object.in_work_members.each do |member| %>
         <tr>
           <td>
             <%= link_to member.title.first, [main_app, member] %>
-            <input class="string multi_value optional form-control related_works_ids work_parent_members_ids form-control multi-text-field hidden" value="<%= member.id %>" id="work_parent_members_ids" aria-labelledby="work_parent_members_ids_label" name="<%= f.object.model_name.param_key %>[in_works_ids][]" type="text">
+            <input class="string multi_value optional form-control related_works_ids form-control multi-text-field hidden" value="<%= member.id %>" id="work_in_works_ids" aria-labelledby="work_in_works_ids_label" name="<%= f.object.model_name.param_key %>[in_works_ids][]" type="text">
           </td>
           <td>
             <div class="child-actions">

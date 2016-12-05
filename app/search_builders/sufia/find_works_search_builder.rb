@@ -7,7 +7,8 @@ class Sufia::FindWorksSearchBuilder < Sufia::SearchBuilder
     @id = context.params[:id]
   end
 
-  self.default_processor_chain += [:add_advanced_search_to_solr, :show_only_resources_deposited_by_current_user]
+  #self.default_processor_chain += [:add_advanced_search_to_solr, :show_only_resources_deposited_by_current_user]
+  self.default_processor_chain += [:show_only_resources_deposited_by_current_user]
   self.default_processor_chain += [:show_only_other_works, :show_only_works_not_child, :show_only_works_not_parent]
 
   def show_only_other_works(solr_parameters)
