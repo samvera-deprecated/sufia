@@ -3,6 +3,12 @@ require 'generators/curation_concerns/work/work_generator'
 module Sufia
   class WorkGenerator < CurationConcerns::WorkGenerator
     source_root CurationConcerns::WorkGenerator.source_root
+
+    # Allows us to pull templates from sufia as well as from curation_concerns
+    def self.source_paths
+      [File.expand_path('../templates/', __FILE__)]
+    end
+
     desc """
   This generator makes the following changes to your application:
    1. Generates work model
@@ -15,6 +21,10 @@ module Sufia
       super
     end
 
+    def create_i18n
+      template 'locale.en.yml.erb', "config/locales/#{file_name}.en.yml"
+    end
+
     def register_work
       inject_into_file 'config/initializers/sufia.rb', after: "Sufia.config do |config|\n" do
         "  # Injected via `rails g sufia:work #{class_name}`\n" \
@@ -23,9 +33,10 @@ module Sufia
     end
 
     def inject_sufia_work_behavior
-      insert_into_file "app/models/#{name.underscore}.rb", after: 'include ::CurationConcerns::BasicMetadata' do
+      underscored_name = name.underscore
+      insert_into_file "app/models/#{underscored_name}.rb", after: 'include ::CurationConcerns::BasicMetadata' do
         "\n  include Sufia::WorkBehavior" \
-        "\n  self.human_readable_type = 'Work'"
+        "\n  self.human_readable_type = '#{underscored_name.titleize}'"
       end
     end
 

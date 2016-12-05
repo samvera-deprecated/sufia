@@ -63,7 +63,15 @@ module Sufia
     end
 
     def admin_set_abilities
-      can :manage, AdminSet if admin?
+      can :create, AdminSet if admin?
+
+      can [:create, :edit, :update, :destroy], Sufia::PermissionTemplate do |template|
+        test_edit(template.admin_set_id)
+      end
+
+      can [:create, :edit, :update, :destroy], Sufia::PermissionTemplateAccess do |access|
+        test_edit(access.permission_template.admin_set_id)
+      end
     end
 
     private

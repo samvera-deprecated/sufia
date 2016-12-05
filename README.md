@@ -27,15 +27,10 @@ Jump in: [![Slack Status](http://slack.projecthydra.org/badge.svg)](http://slack
     * [Environments](#environments)
     * [Ruby](#ruby)
   * [Creating a Sufia\-based app](#creating-a-sufia-based-app)
+    * [Redis](#redis)
     * [Rails](#rails)
-    * [Sufia's Ruby\-related dependencies](#sufias-ruby-related-dependencies)
-    * [Install Sufia](#install-sufia)
     * [Generate a primary work type](#generate-a-primary-work-type)
-    * [Database tables and indexes](#database-tables-and-indexes)
-    * [Start Redis](#start-redis)
-    * [Start Solr](#start-solr)
-    * [Start FCRepo](#start-fcrepo)
-    * [Spin up the web server](#spin-up-the-web-server)
+    * [Start servers](#start-servers)
   * [Managing a Sufia\-based app](#managing-a-sufia-based-app)
   * [License](#license)
   * [Contributing](#contributing)
@@ -115,15 +110,15 @@ After installing the Prerequisites:
 
 Sufia 7.x requires the following software to work:
 
-1. Solr version >= 5.x (tested up to 6.2.0)
-1. [Fedora Commons](http://www.fedora-commons.org/) digital repository version >= 4.5.1 (tested up to 4.6.0)
+1. [Solr](http://lucene.apache.org/solr/) version >= 5.x (tested up to 6.3.0)
+1. [Fedora Commons](http://www.fedora-commons.org/) digital repository version >= 4.5.1 (tested up to 4.7.0)
 1. A SQL RDBMS (MySQL, PostgreSQL), though **note** that SQLite will be used by default if you're looking to get up and running quickly
 1. [Redis](http://redis.io/), a key-value store
 1. [ImageMagick](http://www.imagemagick.org/) with JPEG-2000 support
 1. [FITS](#characterization) version 0.8.x (0.8.5 is known to be good)
 1. [LibreOffice](#derivatives)
 
-**NOTE: If you do not already have Solr and Fedora instances you can use in your development environment, you may use hydra-jetty (instructions are provided below to get you up and running quickly and with minimal hassle).**
+**NOTE: The [Sufia Development Guide](https://github.com/projecthydra/sufia/wiki/Sufia-Development-Guide) has instructions for installing Solr and Fedora in a development environment.**
 
 ### Characterization
 
@@ -154,32 +149,28 @@ We recommend either Ruby 2.3 or the latest 2.2 version.
 
 # Creating a Sufia-based app
 
+## Redis
+
+[Redis](http://redis.io/) is a key-value store that Sufia uses to provide activity streams on repository objects and users, and to prevent race conditions as a global mutex when modifying order-persisting objects.
+
+Starting up Redis will depend on your operating system, and may in fact already be started on your system. You may want to consult the [Redis documentation](http://redis.io/documentation) for help doing this.
+
 ## Rails
 
 Generate a new Rails application. We recommend the latest Rails 5.0 or 4.2 release.
 
 ```
+# If you don't already have Rails at your disposal...
 gem install rails -v 5.0.0.1
-rails new my_app
+rails new my_app -m https://raw.githubusercontent.com/projecthydra/sufia/master/template.rb
 ```
 
-## Sufia's Ruby-related dependencies
+Generating a new Rails application using Sufia's template above takes cares of a number of steps for you, including:
 
-Add the following lines to your application's Gemfile.
-
-```
-gem 'sufia', '7.2.0'
-```
-
-Then install Sufia as a dependency of your app via `bundle install`
-
-## Install Sufia
-
-Install Sufia into your app using its built-in install generator. This step adds a number of files that Sufia requires within your Rails app, including e.g. a number of database migrations.
-
-```
-rails generate sufia:install -f
-```
+* Adding Sufia (and any of its dependencies) to your application `Gemfile`, to declare that Sufia is a dependency of your application
+* Running `bundle install`, to install Sufia and its dependencies
+* Running Sufia's install generator, to add a number of files that Sufia requires within your Rails app, including e.g. database migrations
+* Loading all of Sufia's database migrations into your application's database
 
 ## Generate a primary work type
 
@@ -197,45 +188,12 @@ or
 rails generate sufia:work MovingImage
 ```
 
-## Database tables and indexes
+## Start servers
 
-Now that Sufia's required database migrations have been generated into your app, you'll need to load them into your application's database.
-
-```
-rake db:migrate
-```
-
-## Start Redis
-
-[Redis](http://redis.io/) is a key-value store that Sufia uses to provide activity streams on repository objects and users, and to prevent race conditions as a global mutex when modifying order-persisting objects.
-
-Starting up Redis will depend on your operating system, and may in fact already be started on your system. You may want to consult the [Redis documentation](http://redis.io/documentation) for help doing this.
-
-## Start Solr
-
-If you already have an instance of Solr that you would like to use, you may skip this step.  Open a new terminal window and type:
-```
-solr_wrapper -d solr/config/ --collection_name hydra-development
-```
-
-You can check to see if Solr is started by going to [localhost:8983](http://localhost:8983/).
-
-## Start FCRepo
-
-If you already have an instance of FCRepo that you would like to use, you may skip this step.  Open a new terminal window and type:
+To test-drive your new Sufia application in development mode, spin up the servers that Sufia needs (Solr, Fedora, and Rails):
 
 ```
-fcrepo_wrapper -p 8984
-```
-
-You can check to see if FCRepo is started by going to [localhost:8984](http://localhost:8984/).
-
-## Spin up the web server
-
-To test-drive your new Sufia application, spin up the web server that Rails provides:
-
-```
-rails server
+rake hydra:server
 ```
 
 And now you should be able to browse to [localhost:3000](http://localhost:3000/) and see the application. Note that this web server is purely for development purposes; you will want to use a more fully featured [web server](#web-server) for production-like environments.

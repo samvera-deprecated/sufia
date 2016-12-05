@@ -38,7 +38,32 @@ describe Sufia::Ability, type: :model do
     it { is_expected.to be_able_to(:read, ContentBlock) }
     it { is_expected.to be_able_to(:read, Sufia::Statistics) }
     it { is_expected.to be_able_to(:read, :admin_dashboard) }
-    it { is_expected.to be_able_to(:manage, AdminSet) }
+    it { is_expected.not_to be_able_to(:manage, AdminSet) }
+    it { is_expected.to be_able_to(:create, AdminSet) }
+  end
+
+  describe "AdminSets and PermissionTemplates" do
+    let(:permission_template) { build(:permission_template, admin_set_id: admin_set.id) }
+    let(:permission_template_access) { build(:permission_template_access, permission_template: permission_template) }
+    describe "a user with edit access" do
+      let(:user) { create(:user) }
+      let(:admin_set) { create(:admin_set, edit_users: [user]) }
+      it { is_expected.to be_able_to(:edit, admin_set) }
+      it { is_expected.to be_able_to(:update, admin_set) }
+      it { is_expected.to be_able_to(:destroy, admin_set) }
+      it { is_expected.to be_able_to(:create, permission_template) }
+      it { is_expected.to be_able_to(:create, permission_template_access) }
+    end
+
+    describe "a user without edit access" do
+      let(:user) { create(:user) }
+      let(:admin_set) { create(:admin_set) }
+      it { is_expected.not_to be_able_to(:edit, admin_set) }
+      it { is_expected.not_to be_able_to(:update, admin_set) }
+      it { is_expected.not_to be_able_to(:destroy, admin_set) }
+      it { is_expected.not_to be_able_to(:create, permission_template) }
+      it { is_expected.not_to be_able_to(:create, permission_template_access) }
+    end
   end
 
   describe "proxies and transfers" do
@@ -46,7 +71,7 @@ describe Sufia::Ability, type: :model do
     let(:user) { create(:user) }
     let(:work) { create(:work, user: sender) }
 
-    it { should_not be_able_to(:transfer, work.id) }
+    it { is_expected.not_to be_able_to(:transfer, work.id) }
 
     describe "user_is_depositor?" do
       subject { ability.send(:user_is_depositor?, work.id) }
@@ -55,34 +80,34 @@ describe Sufia::Ability, type: :model do
 
     context "with a ProxyDepositRequest for a work they have deposited" do
       subject { Ability.new(sender) }
-      it { should be_able_to(:transfer, work.id) }
+      it { is_expected.to be_able_to(:transfer, work.id) }
     end
 
     context "with a ProxyDepositRequest that they receive" do
       let(:request) { ProxyDepositRequest.create!(work_id: work.id, receiving_user: user, sending_user: sender) }
-      it { should be_able_to(:accept, request) }
-      it { should be_able_to(:reject, request) }
-      it { should_not be_able_to(:destroy, request) }
+      it { is_expected.to be_able_to(:accept, request) }
+      it { is_expected.to be_able_to(:reject, request) }
+      it { is_expected.not_to be_able_to(:destroy, request) }
 
       context "and the request has already been accepted" do
         let(:request) { ProxyDepositRequest.create!(work_id: work.id, receiving_user: user, sending_user: sender, status: 'accepted') }
-        it { should_not be_able_to(:accept, request) }
-        it { should_not be_able_to(:reject, request) }
-        it { should_not be_able_to(:destroy, request) }
+        it { is_expected.not_to be_able_to(:accept, request) }
+        it { is_expected.not_to be_able_to(:reject, request) }
+        it { is_expected.not_to be_able_to(:destroy, request) }
       end
     end
 
     context "with a ProxyDepositRequest they are the sender of" do
       let(:request) { ProxyDepositRequest.create!(work_id: work.id, receiving_user: sender, sending_user: user) }
-      it { should_not be_able_to(:accept, request) }
-      it { should_not be_able_to(:reject, request) }
-      it { should be_able_to(:destroy, request) }
+      it { is_expected.not_to be_able_to(:accept, request) }
+      it { is_expected.not_to be_able_to(:reject, request) }
+      it { is_expected.to be_able_to(:destroy, request) }
 
       context "and the request has already been accepted" do
         let(:request) { ProxyDepositRequest.create!(work_id: work.id, receiving_user: sender, sending_user: user, status: 'accepted') }
-        it { should_not be_able_to(:accept, request) }
-        it { should_not be_able_to(:reject, request) }
-        it { should_not be_able_to(:destroy, request) }
+        it { is_expected.not_to be_able_to(:accept, request) }
+        it { is_expected.not_to be_able_to(:reject, request) }
+        it { is_expected.not_to be_able_to(:destroy, request) }
       end
     end
   end

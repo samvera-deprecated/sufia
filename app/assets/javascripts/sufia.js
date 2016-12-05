@@ -52,6 +52,9 @@
 //= require sufia/flot_stats
 // Provide AMD module support
 //= require almond
+//= require sufia/admin/admin_set_controls
+//= require sufia/admin/admin_set/participants
+//= require sufia/admin/admin_set/visibility
 //= require sufia/save_work
 //= require sufia/permissions
 //= require sufia/notifications
@@ -68,6 +71,7 @@
 //= require curation_concerns/file_manager/save_manager
 //= require curation_concerns/file_manager/member
 //= require curation_concerns/file_manager
+//= require sufia/workflow_actions_affix
 
 // this needs to be after batch_select so that the form ids get setup correctly
 //= require sufia/batch_edit

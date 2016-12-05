@@ -99,8 +99,8 @@ module Sufia
     def inject_routes
       gsub_file 'config/routes.rb', /root (:to =>|to:) "catalog#index"/, ''
       gsub_file 'config/routes.rb', /'welcome#index'/, "'sufia/homepage#index'" # Replace the root path injected by CurationConcerns
-      routing_code = "\n mount Sufia::Engine => '/'\n"
-      sentinel = /end\Z/
+      routing_code = "\n  mount Sufia::Engine, at: '/'\n"
+      sentinel = /\s+mount CurationConcerns::Engine/
       inject_into_file 'config/routes.rb', routing_code, before: sentinel, verbose: false
     end
 
@@ -144,6 +144,10 @@ module Sufia
 
     def datatables
       generate 'jquery:datatables:install bootstrap3'
+    end
+
+    def create_workflow
+      template('workflow.json.erb', "config/workflows/one_step_mediated_deposit_workflow.json")
     end
   end
 end
