@@ -5,11 +5,16 @@ class Sufia::FindWorksSearchBuilder < Sufia::SearchBuilder
   def initialize(context)
     super(context)
     @id = context.params[:id]
+    @q = context.params[:q]
   end
 
-  #self.default_processor_chain += [:add_advanced_search_to_solr, :show_only_resources_deposited_by_current_user]
-  self.default_processor_chain += [:show_only_resources_deposited_by_current_user]
+  self.default_processor_chain += [:filter_on_title, :show_only_resources_deposited_by_current_user]
   self.default_processor_chain += [:show_only_other_works, :show_only_works_not_child, :show_only_works_not_parent]
+
+  def filter_on_title(solr_parameters)
+    solr_parameters[:fq] ||= []
+    solr_parameters[:fq] += [ActiveFedora::SolrQueryBuilder.construct_query(title_tesim: @q)]
+  end
 
   def show_only_other_works(solr_parameters)
     solr_parameters[:fq] ||= []
@@ -21,8 +26,8 @@ class Sufia::FindWorksSearchBuilder < Sufia::SearchBuilder
   def show_only_works_not_child(solr_parameters)
     ids = begin
             ActiveFedora::SolrService
-            .query("{!field f=id}#{@id}",fl: "member_ids_ssim")
-            .flat_map { |x| x.fetch("member_ids_ssim", [])}
+          .query("{!field f=id}#{@id}", fl: "member_ids_ssim")
+          .flat_map { |x| x.fetch("member_ids_ssim", []) }
           end
     solr_parameters[:fq] ||= []
     solr_parameters[:fq]  += [

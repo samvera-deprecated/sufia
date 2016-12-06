@@ -1,6 +1,10 @@
+require 'rails_helper'
+
 describe Qa::Authorities::Local::FindWorks do
-  let(:find_works) { FindWorks.new }
-  it "returns list of works" do
-    # TODO: Write test.
+  subject { described_class.new(q: "Query") }
+
+  describe "#properties" do
+    it { is_expected.to respond_to("q") }
+    it { is_expected.to respond_to("search") }
   end
 end

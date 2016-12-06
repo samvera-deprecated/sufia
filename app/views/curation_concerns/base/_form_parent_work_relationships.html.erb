@@ -1,17 +1,3 @@
-<%# Form UI behavior code and details;
-Code:
-  app/assets/javascripts/sufia/relationships
-CSS:
-  table.relationships-ajax-enabled : Used by sufia JS app as selector to wire up the UI functionality
-  tr.new-row : The basic template row for cloning when user clicks "Add"
-  .btn-remove-row : Button to remove its parent TR from the table
-  .btn-add-row : Button to clone its parent TR and inject a new row into the table
-  input.new-form-control : Input field for client client side validation and additional features
-  .message.has-warning : Used to display UI errors related to input values and server errors
-HTML Properties:
-  table:
-    data-query-url : URL base to append newly added work ID to for querying details (title, href)
-%>
 <div class="form-group multi_value optional managed">
 
   <table class="table table-striped related-files relationships-ajax-enabled"

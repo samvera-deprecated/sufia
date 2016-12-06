@@ -49,7 +49,7 @@ module Sufia::Forms
       model.ordered_members.to_a.select { |m| m.model_name.singular.to_sym != :file_set }
     end
 
-    # The in_work members
+    # The in_work items
     # @return [Array] All of the works in the in_works
     def in_work_members
       model.in_works.to_a

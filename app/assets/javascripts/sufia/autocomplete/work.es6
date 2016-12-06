@@ -1,5 +1,5 @@
 export class Work {
-  // Autocomplete for finding related works.
+  // Autocomplete for finding possible related works (child and parent).
   constructor(element, url, user, id) {
     this.url = url;
     this.user = user;
