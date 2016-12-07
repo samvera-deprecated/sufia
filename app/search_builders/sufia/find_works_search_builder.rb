@@ -24,11 +24,7 @@ class Sufia::FindWorksSearchBuilder < Sufia::SearchBuilder
   end
 
   def show_only_works_not_child(solr_parameters)
-    ids = begin
-            ActiveFedora::SolrService
-          .query("{!field f=id}#{@id}", fl: "member_ids_ssim")
-          .flat_map { |x| x.fetch("member_ids_ssim", []) }
-          end
+    ids = ActiveFedora::SolrService.query("{!field f=id}#{@id}", fl: "member_ids_ssim").flat_map { |x| x.fetch("member_ids_ssim", []) }
     solr_parameters[:fq] ||= []
     solr_parameters[:fq]  += [
       "-" + ActiveFedora::SolrQueryBuilder.construct_query_for_ids([ids])
