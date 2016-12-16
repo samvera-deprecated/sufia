@@ -18,7 +18,7 @@ module Sufia
         files.each do |file|
           begin
             import_file(file)
-          rescue RuntimeError => e
+          rescue StandardError => e
             Sufia::Import::ErrorLog.error("\"#{file}\",\"#{e.message}\"\n")
           end
         end
