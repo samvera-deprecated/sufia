@@ -31,7 +31,7 @@ module Sufia::Import
     private
 
       def create(file_set, version)
-        filename_on_disk = File.join Dir.tmpdir, "#{file_set.id}_#{version[:label]}"
+        filename_on_disk = File.join Dir.tmpdir, "#{file_set.id}_#{version[:label]}_#{file_set.label}"
         Rails.logger.debug "[IMPORT] Downloading #{version} to #{filename_on_disk}"
         File.open(filename_on_disk, 'wb') do |file_to_upload|
           source_uri = sufia6_version_open_uri(version[:uri])
