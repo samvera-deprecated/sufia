@@ -8,6 +8,8 @@
       <ul class="dropdown-menu">
         <li><%= link_to t("sufia.toolbar.dashboard.my"), sufia.dashboard_index_path %></li>
         <li class="divider"></li>
+        <li><%= link_to t("sufia.toolbar.dashboard.operations"), curation_concerns.user_operations_path(current_user) %></li>
+        <li class="divider"></li>
         <li><%= link_to t("sufia.toolbar.dashboard.transfers"), sufia.transfers_path %></li>
         <li class="divider"></li>
         <li><%= link_to t("sufia.toolbar.dashboard.highlights"), sufia.dashboard_highlights_path %></li>

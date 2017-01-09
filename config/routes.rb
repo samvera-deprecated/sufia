@@ -72,10 +72,6 @@ Sufia::Engine.routes.draw do
   # User profile
   resources :users, only: [:index, :show, :edit, :update], as: :profiles
 
-  resources :users, only: [] do
-    resources :operations, only: [:index, :show], controller: 'sufia/operations'
-  end
-
   # Dashboard page
   resources :dashboard, only: :index do
     collection do

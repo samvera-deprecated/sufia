@@ -33,7 +33,7 @@ module Sufia
       # @return [TrueClass]
       def attach_files
         return true unless uploaded_files
-        AttachFilesToWorkJob.perform_later(curation_concern, uploaded_files)
+        AttachFilesToWorkJob.perform_later(curation_concern, uploaded_files, log)
         true
       end
 
@@ -42,5 +42,10 @@ module Sufia
         return [] if uploaded_file_ids.empty?
         @uploaded_files ||= UploadedFile.find(uploaded_file_ids)
       end
-  end
+
+      # Create an operation to store status of job
+      def job
+        CurationConcerns::Operation.create!(user: user,
+                                            operation_type: 'Attach File')
+      end
 end

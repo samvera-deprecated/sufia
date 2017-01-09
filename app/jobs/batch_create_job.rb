@@ -13,7 +13,7 @@ class BatchCreateJob < ActiveJob::Base
   # @param [Array<String>] resource_types
   # @param [Array<Sufia::UploadedFile>] uploaded_files
   # @param [Hash] attributes attributes to apply to all works
-  # @param [BatchCreateOperation] log
+  # @param [CurationConcerns::Operation] a log storing the status of the job
   def perform(user, titles, resource_types, uploaded_files, attributes, log)
     log.performing!
 
@@ -21,6 +21,7 @@ class BatchCreateJob < ActiveJob::Base
     resource_types ||= {}
 
     create(user, titles, resource_types, uploaded_files, attributes, log)
+    log.success!
   end
 
   private
