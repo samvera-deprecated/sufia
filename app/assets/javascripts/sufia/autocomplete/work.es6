@@ -1,15 +1,20 @@
-export class Language {
-  constructor(element, url) {
-    this.url = url
+export class Work {
+  // Autocomplete for finding possible related works (child and parent).
+  constructor(element, url, user, id) {
+    this.url = url;
+    this.user = user;
+    this.work_id = id;
     element.autocomplete(this.options());
   }
 
   options() {
     return {
       minLength: 2,
-      source: (request, response) => {
+      source: ( request, response ) => {
         $.getJSON(this.url, {
-          q: request.term
+          q: request.term,
+          id: this.work_id,
+          user: this.user
         }, response );
       },
       focus: function() {

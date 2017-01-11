@@ -122,3 +122,5 @@ boot_files:
 # rack_options:
 #   server: 'thin'
 
+rack_options:
+  Host: 0.0.0.0
