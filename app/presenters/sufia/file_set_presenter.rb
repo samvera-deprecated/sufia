@@ -9,6 +9,14 @@ module Sufia
       title.first
     end
 
+    def default_thumbnail
+      "default.png"
+    end
+
+    def reader?
+      current_ability.can?(:read, id)
+    end
+
     def link_name
       current_ability.can?(:read, id) ? page_title : 'File'
     end
