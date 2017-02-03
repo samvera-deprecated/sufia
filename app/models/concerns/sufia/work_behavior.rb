@@ -10,5 +10,11 @@ module Sufia
     included do
       self.indexer = Sufia::WorkIndexer
     end
+
+    # TODO: Move this into ActiveFedora
+    def etag
+      raise "Unable to produce an etag for a unsaved object" unless persisted?
+      ldp_source.head.etag
+    end
   end
 end

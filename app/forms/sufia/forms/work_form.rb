@@ -7,6 +7,10 @@ module Sufia::Forms
     # is merged and hydra-editor 3.0.0 is released
     delegate :model_name, to: :model
 
+    def version
+      model.etag
+    end
+
     attr_reader :agreement_accepted
 
     self.terms += [:collection_ids, :admin_set_id]
@@ -61,7 +65,7 @@ module Sufia::Forms
     end
 
     def self.build_permitted_params
-      super + [:on_behalf_of, { collection_ids: [] }]
+      super + [:on_behalf_of, :version, { collection_ids: [] }]
     end
   end
 end
