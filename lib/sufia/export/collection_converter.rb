@@ -11,6 +11,7 @@ module Sufia
         @id = collection.id
         @title = collection.title
         @description = collection.description
+        @depositor = collection.depositor
         @creator = collection.creator.map { |c| c }
         @members = collection.members.map(&:id)
         @permissions = permissions(collection)
