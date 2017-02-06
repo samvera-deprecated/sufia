@@ -1,11 +1,10 @@
-require: rubocop-rspec
-
 AllCops:
   TargetRubyVersion: 2.2
   DisplayCopNames: true
   Include:
     - '**/Rakefile'
     - '**/config.ru'
+    - rubocop-rspec
   Exclude:
     - 'db/**/*'
     - 'script/**/*'
