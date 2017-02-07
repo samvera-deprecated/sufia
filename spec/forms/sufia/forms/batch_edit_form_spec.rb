@@ -61,6 +61,7 @@ describe Sufia::Forms::BatchEditForm do
                          { related_url: [] },
                          { permissions_attributes: [:type, :name, :access, :id, :_destroy] },
                          :on_behalf_of,
+                         :version,
                          { collection_ids: [] },
                          :visibility_during_embargo,
                          :embargo_release_date,

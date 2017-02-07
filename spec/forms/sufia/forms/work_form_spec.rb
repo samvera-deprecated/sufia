@@ -25,13 +25,24 @@ describe Sufia::Forms::WorkForm, :no_clean do
     end
   end
 
+  describe "#version" do
+    before do
+      allow(work).to receive(:etag).and_return('123456')
+    end
+    subject { form.version }
+    it { is_expected.to eq '123456' }
+  end
+
   describe ".build_permitted_params" do
     before do
       allow(described_class).to receive(:model_class).and_return(GenericWork)
     end
     subject { described_class.build_permitted_params }
     context "without mediated deposit" do
-      it { is_expected.to include(permissions_attributes: [:type, :name, :access, :id, :_destroy]) }
+      it do
+        is_expected.to include(:version,
+                               permissions_attributes: [:type, :name, :access, :id, :_destroy])
+      end
     end
   end
 
@@ -40,6 +51,56 @@ describe Sufia::Forms::WorkForm, :no_clean do
       allow(described_class).to receive(:model_class).and_return(GenericWork)
     end
     subject { described_class.model_attributes(ActionController::Parameters.new(attributes)) }
+
+    context "with metadata" do
+      let(:attributes) do
+        { "title" => ["Test", "second title"],
+          "creator" => ["foo", ""],
+          "keyword" => ["bar", ""],
+          "rights" => ["http://www.europeana.eu/portal/rights/rr-r.html", ""],
+          "representative_id" => "pz50gw130",
+          "thumbnail_id" => "pz50gw130",
+          "admin_set_id" => "hm50tr726",
+          "ordered_member_ids" => ["pz50gw130", ""],
+          "visibility" => "open",
+          "visibility_during_embargo" => "restricted",
+          "embargo_release_date" => "2017-02-04",
+          "visibility_after_embargo" => "open",
+          "visibility_during_lease" => "open",
+          "lease_expiration_date" => "2017-02-04",
+          "visibility_after_lease" => "restricted",
+          "version" => "W/\"7fca5692a270f8d92228cf2ff3af1a6bf2095b48\"" }
+      end
+
+      let(:expected_results) do
+        {
+          "title" => ["Test", "second title"],
+          "creator" => ["foo"],
+          "keyword" => ["bar"],
+          "rights" => ["http://www.europeana.eu/portal/rights/rr-r.html"],
+          "representative_id" => "pz50gw130",
+          "thumbnail_id" => "pz50gw130",
+          "visibility_during_embargo" => "restricted",
+          "embargo_release_date" => "2017-02-04",
+          "visibility_after_embargo" => "open",
+          "visibility_during_lease" => "open",
+          "lease_expiration_date" => "2017-02-04",
+          "visibility_after_lease" => "restricted",
+          "visibility" => "open",
+          "ordered_member_ids" => ["pz50gw130"],
+          "admin_set_id" => "hm50tr726",
+          "version" => "W/\"7fca5692a270f8d92228cf2ff3af1a6bf2095b48\""
+        }
+      end
+      it do
+        is_expected.to eq ActionController::Parameters.new(expected_results).permit!
+      end
+    end
+
+    context "when a user is granted edit access" do
+      let(:attributes) { { permissions_attributes: [{ type: 'person', name: 'justin', access: 'edit' }] } }
+      it { is_expected.to eq ActionController::Parameters.new(permissions_attributes: [ActionController::Parameters.new(type: 'person', name: 'justin', access: 'edit')]).permit! }
+    end
 
     context "when a user is granted edit access" do
       let(:attributes) { { permissions_attributes: [{ type: 'person', name: 'justin', access: 'edit' }] } }
