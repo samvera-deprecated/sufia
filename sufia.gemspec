@@ -49,6 +49,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'flipflop', '~> 2.2'
   spec.add_dependency 'jquery-datatables-rails', '~> 3.4.0'
   spec.add_dependency 'rdf-rdfxml'
+  spec.add_dependency 'sprockets-rails', '~> 3.1.1'
 
   spec.add_development_dependency 'engine_cart', '~> 1.0'
   spec.add_development_dependency 'mida', '~> 0.3'
@@ -64,7 +65,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "equivalent-xml", '~> 0.5'
   spec.add_development_dependency "jasmine", '~> 2.3'
   spec.add_development_dependency 'rubocop', '~> 0.42.0'
-  spec.add_development_dependency 'rubocop-rspec', '~> 1.5'
+  spec.add_development_dependency 'rubocop-rspec', '~> 1.9.1'
   spec.add_development_dependency 'shoulda-matchers', '~> 3.1'
   spec.add_development_dependency 'rails-controller-testing', '~> 0'
 end
