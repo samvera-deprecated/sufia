@@ -27,7 +27,7 @@ module Sufia::Import
       collection.apply_depositor_metadata(data.delete(:depositor))
       permission_builder.build(collection, data.delete(:permissions))
       collection.update_attributes(data)
-      members.each { |w| collection.ordered_members << w }
+      members.each { |w| collection.members << w }
 
       collection
     end

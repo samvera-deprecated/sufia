@@ -24,7 +24,7 @@ describe Sufia::Import::CollectionTranslator do
       expect(Rails.logger).to receive(:debug).with("Importing collection_2v23vt57t.json")
       translator.import
       expect(Collection.count).to eq 1
-      expect(collection.ordered_members.ids.count).to eq 1
+      expect(collection.member_ids.count).to eq 1
       expect(collection.title).to include 'Fantasy'
     end
 
