@@ -12,7 +12,7 @@ module ExportJsonHelper
       \"creator\": [ \"cam156@psu.edu\" ],
       \"contributor\": [\"contributor1\", \"contribnutor2\"],
       \"description\": [\"description of the file\"],
-      \"tag\": [\"tag1\", \"tag2\"],
+      \"tag\": [\"tag1\", \"tag2\", \"tag3\", \"tag4\", \"tag5\"],
       \"rights\": [\"#{options.fetch(:rights, 'Attribution 3.0')}\"],
       \"publisher\": [\"publisher joe\"],
       \"date_created\": [\"a long time ago\"],
