@@ -1,5 +1,5 @@
 Blacklight.onLoad(function() {
-  if ($('.workflow-actions').length) {
+  if ($('.workflow-actions').length > 0) {
     $(document).on('scroll', function() {
       var workflowDiv = $('#workflow_controls');
       var workflowDivPos = $('.workflow-actions').offset().top + $('#workflow_controls').height();
