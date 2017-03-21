@@ -13,7 +13,7 @@ Docs: [![Documentation Status](https://inch-ci.org/github/projecthydra/sufia.svg
 [![Apache 2.0 License](http://img.shields.io/badge/APACHE2-license-blue.svg)](./LICENSE)
 
 Jump in: [![Slack Status](http://slack.projecthydra.org/badge.svg)](http://slack.projecthydra.org/)
-[![Ready Tickets](https://badge.waffle.io/projecthydra/sufia.png?label=ready&milestone=7.3.0&title=Ready)](https://waffle.io/projecthydra/sufia?milestone=7.3.0)
+[![Ready Tickets](https://badge.waffle.io/projecthydra/sufia.png?label=ready&title=Ready)](https://waffle.io/projecthydra/sufia)
 
 # Table of Contents
 
@@ -67,7 +67,7 @@ After installing the Prerequisites:
 
 ## Prerequisites
 
-Sufia 7.x requires the following software to work:
+Sufia 7 requires the following software to work:
 
 1. [Solr](http://lucene.apache.org/solr/) version >= 5.x (tested up to 6.4.1)
 1. [Fedora Commons](http://www.fedora-commons.org/) digital repository version >= 4.5.1 (tested up to 4.7.1)
@@ -136,9 +136,9 @@ Generating a new Rails application using Sufia's template above takes cares of a
 * Loading all of Sufia's database migrations into your application's database
 * Loading Sufia's default workflows into your application's database
 
-## Generate a primary work type
+## Generate a work type
 
-While earlier versions of Sufia came with a pre-defined object model, Sufia 7.x and greater allow you to specify your primary work type by using tooling provided by the CurationConcerns gem. Work on the 7.x series will include adding support for users to generate an arbitrary number of work types, not **just** a primary work type. At this time we do *not* recommend generating multiple work types.
+While earlier versions of Sufia came with a pre-defined object model, Sufia 7 allows you to generate an arbitrary number of work types. Let's start by generating one.
 
 Pass a (CamelCased) model name to Sufia's work generator to get started, e.g.:
 
