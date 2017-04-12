@@ -4,7 +4,7 @@ module Sufia
       [CurationConcerns::OptimisticLockValidator,
        CreateWithRemoteFilesActor,
        CreateWithFilesActor,
-       CurationConcerns::Actors::AddToCollectionActor,
+       CurationConcerns::Actors::AddAsMemberOfCollectionsActor,
        CurationConcerns::Actors::AddToWorkActor,
        CurationConcerns::Actors::AssignRepresentativeActor,
        CurationConcerns::Actors::AttachFilesActor,

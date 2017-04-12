@@ -8,7 +8,7 @@ describe Sufia::ActorFactory, :no_clean do
       is_expected.to eq [CurationConcerns::OptimisticLockValidator,
                          Sufia::CreateWithRemoteFilesActor,
                          Sufia::CreateWithFilesActor,
-                         CurationConcerns::Actors::AddToCollectionActor,
+                         CurationConcerns::Actors::AddAsMemberOfCollectionsActor,
                          CurationConcerns::Actors::AddToWorkActor,
                          CurationConcerns::Actors::AssignRepresentativeActor,
                          CurationConcerns::Actors::AttachFilesActor,
@@ -28,7 +28,7 @@ describe Sufia::ActorFactory, :no_clean do
       expect(subject.more_actors).to eq [
         Sufia::CreateWithRemoteFilesActor,
         Sufia::CreateWithFilesActor,
-        CurationConcerns::Actors::AddToCollectionActor,
+        CurationConcerns::Actors::AddAsMemberOfCollectionsActor,
         CurationConcerns::Actors::AddToWorkActor,
         CurationConcerns::Actors::AssignRepresentativeActor,
         CurationConcerns::Actors::AttachFilesActor,
