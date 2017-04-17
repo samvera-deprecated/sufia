@@ -26,6 +26,14 @@ module Sufia
       end
     end
 
+    def display_feature_link?
+      false
+    end
+
+    def display_unfeature_link?
+      false
+    end
+
     def rights
       return if solr_document.rights.nil?
       solr_document.rights.first
