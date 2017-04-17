@@ -59,4 +59,11 @@ class TestAppGenerator < Rails::Generators::Base
   def relax_routing_constraint
     gsub_file 'config/initializers/arkivo_constraint.rb', 'false', 'true'
   end
+
+  def sprockets_assets
+    append_file 'config/initializers/assets.rb' do
+      "\n" + "Rails.application.config.assets.precompile += %w( default.png )" + 
+      "\n" + "Rails.application.config.assets.precompile += %w( missing_thumb.png )"
+    end
+  end
 end
