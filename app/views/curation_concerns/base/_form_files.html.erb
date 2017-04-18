@@ -1,4 +1,27 @@
      <div id="fileupload">
+         <% if f.object.file_sets.present? > 0 %>
+             <fieldset id="uploaded-files">
+                 <legend>Previously Uploaded Files</legend>
+                 <table role="presentation" class="table table-striped uploaded-files">
+                     <tbody>
+                     <tr>
+                         <th>Filename</th>
+                         <th>Display Label</th>
+                     </tr>
+                     <% f.object.file_sets.each do |file| %>
+                         <tr>
+                             <td>
+                                 <span><%= file.solr_document.label %></span>
+                             </td>
+                             <td>
+                                 <span><%= file.title %></span>
+                             </td>
+                         </tr>
+                     <% end %>
+                     </tbody>
+                 </table>
+             </fieldset>
+         <% end %>
         <!-- Redirect browsers with JavaScript disabled to the origin page -->
         <noscript><input type="hidden" name="redirect" value="<%= main_app.root_path %>"></noscript>
         <!-- The table listing the files available for upload/download -->

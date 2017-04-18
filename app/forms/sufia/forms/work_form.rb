@@ -8,6 +8,7 @@ module Sufia::Forms
     delegate :model_name, to: :model
 
     attr_reader :agreement_accepted
+    attr_accessor :file_sets
 
     self.terms += [:collection_ids, :admin_set_id]
     self.required_fields = [:title, :creator, :keyword, :rights]
