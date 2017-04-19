@@ -30,4 +30,8 @@ class Sufia::ConfigGenerator < Rails::Generators::Base
   def inject_i18n
     copy_file "config/locales/sufia.en.yml", "config/locales/sufia.en.yml"
   end
+
+  def legato_config
+    copy_file 'config/legato.rb', 'config/initializers/legato.rb'
+  end
 end
