@@ -19,6 +19,7 @@
 
 //= require jquery.validate
 //= require select2
+//= require select2-full
 //= require fixedsticky
 
 //= require jquery.flot
