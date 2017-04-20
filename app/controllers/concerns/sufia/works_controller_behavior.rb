@@ -85,7 +85,7 @@ module Sufia
       def additional_response_formats(format)
         format.endnote do
           send_data(presenter.solr_document.export_as_endnote,
-                    type: "application/x-endnote-refer",
+                    type: "application/x-endnote-refer; charset=utf-8",
                     filename: presenter.solr_document.endnote_filename)
         end
       end
