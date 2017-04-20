@@ -18,6 +18,7 @@ require 'curation_concerns'
 require 'sufia/engine'
 require 'sufia/version'
 require 'sufia/inflections'
+require 'sufia/import'
 require 'kaminari_route_prefix'
 
 module Sufia
