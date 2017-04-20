@@ -32,6 +32,7 @@ describe 'curation_concerns/base/items', type: :view do
     before do
       stub_template 'curation_concerns/base/_actions.html.erb' => 'Actions'
       allow(presenter).to receive(:member_presenters).and_return([file_set, member])
+      allow(member).to receive(:reader?).and_return(true)
       allow(view).to receive(:blacklight_config).and_return(Blacklight::Configuration.new)
       allow(view).to receive(:blacklight_configuration_context).and_return(blacklight_configuration_context)
       allow(view).to receive(:contextual_path).and_return("/whocares")

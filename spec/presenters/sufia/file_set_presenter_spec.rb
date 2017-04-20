@@ -23,6 +23,32 @@ describe Sufia::FileSetPresenter do
   it { is_expected.to delegate_method(:date_modified).to(:solr_document) }
   it { is_expected.to delegate_method(:itemtype).to(:solr_document) }
 
+  describe '#default_thumbnail' do
+    it 'has a default thumbnail file name' do
+      expect(presenter.default_thumbnail).to eq 'default.png'
+    end
+  end
+
+  describe '#reader?' do
+    context "with a user who can view the file" do
+      before do
+          allow(ability).to receive(:can?).with(:read, "123abc").and_return(true)
+      end
+      it 'returns true' do
+        expect(presenter.reader?).to eq true
+      end
+    end
+
+    context "with a user who cannot view the file" do
+      before do
+          allow(ability).to receive(:can?).with(:read, "123abc").and_return(false)
+      end
+      it 'returns false' do
+        expect(presenter.reader?).to eq false
+      end
+    end
+  end
+
   describe '#link_name' do
     context "with a user who can view the file" do
       before do
