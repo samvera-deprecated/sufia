@@ -19,7 +19,7 @@ module Sufia
     def initialize(admin_set, creating_user, workflow_name)
       @admin_set = admin_set
       @creating_user = creating_user
-      @workflow_name = workflow_name
+      @workflow_name = workflow_name || AdminSet::DEFAULT_WORKFLOW_NAME
     end
 
     attr_reader :creating_user, :admin_set, :workflow_name
