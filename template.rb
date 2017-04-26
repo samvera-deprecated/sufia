@@ -1,4 +1,4 @@
-gem 'sufia', '7.3.0'
+gem 'sufia', '7.3.1'
 
 run 'bundle install'
 

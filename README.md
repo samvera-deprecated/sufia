@@ -56,7 +56,7 @@ If you have questions or need help, please email [the Hydra community tech list]
 # Getting started
 
 This document contains instructions specific to setting up an app with __Sufia
-v7.3.0__. If you are looking for instructions on installing a different
+v7.3.1__. If you are looking for instructions on installing a different
 version, be sure to select the appropriate branch or tag from the drop-down
 menu above.
 
