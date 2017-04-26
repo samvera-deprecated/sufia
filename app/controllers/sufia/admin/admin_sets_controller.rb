@@ -95,7 +95,7 @@ module Sufia
       end
 
       def create_admin_set
-        AdminSetCreateService.new(@admin_set, current_user).create
+        AdminSetCreateService.new(@admin_set, current_user, params[:admin_set][:workflow_name]).create
       end
 
       def setup_form
