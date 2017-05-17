@@ -18,6 +18,7 @@ describe 'sufia/batch_uploads/_form.html.erb', type: :view do
 
   it "draws the page" do
     expect(page).to have_selector("form[action='/batch_uploads']")
+    expect(page).to have_selector("form[action='/batch_uploads'][data-behavior='work-form']")
     # No title, because it's captured per file (e.g. Display label)
     expect(page).not_to have_selector("input#generic_work_title")
     expect(view.content_for(:files_tab)).to have_link("New Work", href: "/concern/generic_works/new")
