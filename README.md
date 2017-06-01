@@ -1,19 +1,19 @@
-![Logo](https://raw.githubusercontent.com/projecthydra-labs/sufia.io/gh-pages/assets/images/sufia_logo_white_bg_small.png)
+![Logo](https://raw.githubusercontent.com/samvera-labs/sufia.io/gh-pages/assets/images/sufia_logo_white_bg_small.png)
 
 Code: [![Version](https://badge.fury.io/rb/sufia.png)](http://badge.fury.io/rb/sufia)
-[![Build Status](https://travis-ci.org/projecthydra/sufia.png?branch=master)](https://travis-ci.org/projecthydra/sufia)
-[![Coverage Status](https://coveralls.io/repos/github/projecthydra/sufia/badge.svg?branch=master)](https://coveralls.io/github/projecthydra/sufia?branch=master)
-[![Code Climate](https://codeclimate.com/github/projecthydra/sufia/badges/gpa.svg)](https://codeclimate.com/github/projecthydra/sufia)
-[![Dependency Update Status](https://gemnasium.com/projecthydra/sufia.png)](https://gemnasium.com/projecthydra/sufia)
-[![Dependency Maintenance Status](https://dependencyci.com/github/projecthydra/sufia/badge)](https://dependencyci.com/github/projecthydra/sufia)
+[![Build Status](https://travis-ci.org/samvera/sufia.png?branch=master)](https://travis-ci.org/samvera/sufia)
+[![Coverage Status](https://coveralls.io/repos/github/samvera/sufia/badge.svg?branch=master)](https://coveralls.io/github/samvera/sufia?branch=master)
+[![Code Climate](https://codeclimate.com/github/samvera/sufia/badges/gpa.svg)](https://codeclimate.com/github/samvera/sufia)
+[![Dependency Update Status](https://gemnasium.com/samvera/sufia.png)](https://gemnasium.com/samvera/sufia)
+[![Dependency Maintenance Status](https://dependencyci.com/github/samvera/sufia/badge)](https://dependencyci.com/github/samvera/sufia)
 
-Docs: [![Documentation Status](https://inch-ci.org/github/projecthydra/sufia.svg?branch=master)](https://inch-ci.org/github/projecthydra/sufia)
+Docs: [![Documentation Status](https://inch-ci.org/github/samvera/sufia.svg?branch=master)](https://inch-ci.org/github/samvera/sufia)
 [![API Docs](http://img.shields.io/badge/API-docs-blue.svg)](http://rubydoc.info/gems/sufia)
 [![Contribution Guidelines](http://img.shields.io/badge/CONTRIBUTING-Guidelines-blue.svg)](./.github/CONTRIBUTING.md)
 [![Apache 2.0 License](http://img.shields.io/badge/APACHE2-license-blue.svg)](./LICENSE)
 
 Jump in: [![Slack Status](http://slack.projecthydra.org/badge.svg)](http://slack.projecthydra.org/)
-[![Ready Tickets](https://badge.waffle.io/projecthydra/sufia.png?label=ready&title=Ready)](https://waffle.io/projecthydra/sufia)
+[![Ready Tickets](https://badge.waffle.io/samvera/sufia.png?label=ready&title=Ready)](https://waffle.io/samvera/sufia)
 
 # Table of Contents
 
@@ -45,7 +45,7 @@ Sufia uses the full power of [Hydra](http://projecthydra.org/) and extends it to
 
 ## Feature list
 
-Sufia has many features. [Read more about what they are and how to turn them on](https://github.com/projecthydra/sufia/wiki/Feature-matrix). See the [Sufia Management Guide](https://github.com/projecthydra/sufia/wiki/Sufia-Management-Guide) to learn more.
+Sufia has many features. [Read more about what they are and how to turn them on](https://github.com/samvera/sufia/wiki/Feature-matrix). See the [Sufia Management Guide](https://github.com/samvera/sufia/wiki/Sufia-Management-Guide) to learn more.
 
 For non-technical documentation about Sufia, see its [documentation site](http://sufia.io/).
 
@@ -77,7 +77,7 @@ Sufia 7 requires the following software to work:
 1. [FITS](#characterization) version 0.8.x (0.8.5 is known to be good)
 1. [LibreOffice](#derivatives)
 
-**NOTE: The [Sufia Development Guide](https://github.com/projecthydra/sufia/wiki/Sufia-Development-Guide) has instructions for installing Solr and Fedora in a development environment.**
+**NOTE: The [Sufia Development Guide](https://github.com/samvera/sufia/wiki/Sufia-Development-Guide) has instructions for installing Solr and Fedora in a development environment.**
 
 ### Characterization
 
@@ -125,7 +125,7 @@ gem install rails -v 5.0.1
 Generate a new Rails application using the template.
 
 ```
-rails new my_app -m https://raw.githubusercontent.com/projecthydra/sufia/master/template.rb
+rails new my_app -m https://raw.githubusercontent.com/samvera/sufia/master/template.rb
 ```
 
 Generating a new Rails application using Sufia's template above takes cares of a number of steps for you, including:
@@ -178,7 +178,7 @@ rake curation_concerns:workflow:load
 
 # Managing a Sufia-based app
 
-The [Sufia Management Guide](https://github.com/projecthydra/sufia/wiki/Sufia-Management-Guide) provides tips for how to manage, customize, and enhance your Sufia application, including guidance specific to:
+The [Sufia Management Guide](https://github.com/samvera/sufia/wiki/Sufia-Management-Guide) provides tips for how to manage, customize, and enhance your Sufia application, including guidance specific to:
 
 * Production implementations
 * Configuration of background workers
@@ -195,19 +195,19 @@ Sufia is available under [the Apache 2.0 license](LICENSE.md).
 
 We'd love to accept your contributions.  Please see our guide to [contributing to Sufia](./.github/CONTRIBUTING.md).
 
-If you'd like to help the development effort and you're not sure where to get started, you can always grab a ticket in the "Ready" column from our [Waffle board](https://waffle.io/projecthydra/sufia). There are other ways to help, too.
+If you'd like to help the development effort and you're not sure where to get started, you can always grab a ticket in the "Ready" column from our [Waffle board](https://waffle.io/samvera/sufia). There are other ways to help, too.
 
-* [Contribute a user story](https://github.com/projecthydra/sufia/issues/new).
-* Help us improve [Sufia's test coverage](https://coveralls.io/r/projecthydra/sufia) or [documentation coverage](https://inch-ci.org/github/projecthydra/sufia).
-* Refactor away [code smells](https://codeclimate.com/github/projecthydra/sufia).
+* [Contribute a user story](https://github.com/samvera/sufia/issues/new).
+* Help us improve [Sufia's test coverage](https://coveralls.io/r/samvera/sufia) or [documentation coverage](https://inch-ci.org/github/samvera/sufia).
+* Refactor away [code smells](https://codeclimate.com/github/samvera/sufia).
 
 # Development
 
-The [Sufia Development Guide](https://github.com/projecthydra/sufia/wiki/Sufia-Development-Guide) is for people who want to modify Sufia itself, not an application that uses Sufia.
+The [Sufia Development Guide](https://github.com/samvera/sufia/wiki/Sufia-Development-Guide) is for people who want to modify Sufia itself, not an application that uses Sufia.
 
 # Release process
 
-See the [release management process](https://github.com/projecthydra/sufia/wiki/Release-management-process).
+See the [release management process](https://github.com/samvera/sufia/wiki/Release-management-process).
 
 # Acknowledgments
 
