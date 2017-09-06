@@ -48,6 +48,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'flipflop', '~> 2.3'
   spec.add_dependency 'jquery-datatables-rails', '~> 3.4.0'
   spec.add_dependency 'rdf-rdfxml'
+  # https://github.com/svenfuchs/i18n/issues/379
+  spec.add_dependency 'i18n', '0.8.1'
 
   spec.add_development_dependency 'engine_cart', '~> 1.0'
   spec.add_development_dependency 'mida', '~> 0.3'
