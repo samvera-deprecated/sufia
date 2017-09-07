@@ -531,3 +531,9 @@ en:
         create: 'Add'
       create: 'Save'
       update: 'Save'
+  errors:
+    messages:
+      carrierwave_processing_error: "Cannot resize image."
+      carrierwave_integrity_error: "Not an image."
+      carrierwave_download_error: "Couldn't download image."
+      extension_whitelist_error: "You are not allowed to upload %{extension} files, allowed types: %{allowed_types}"
