@@ -12,7 +12,7 @@ Docs: [![Documentation Status](https://inch-ci.org/github/samvera/sufia.svg?bran
 [![Contribution Guidelines](http://img.shields.io/badge/CONTRIBUTING-Guidelines-blue.svg)](./.github/CONTRIBUTING.md)
 [![Apache 2.0 License](http://img.shields.io/badge/APACHE2-license-blue.svg)](./LICENSE)
 
-Jump in: [![Slack Status](http://slack.projecthydra.org/badge.svg)](http://slack.projecthydra.org/)
+Jump in: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samvera.org/)
 [![Ready Tickets](https://badge.waffle.io/samvera/sufia.png?label=ready&title=Ready)](https://waffle.io/samvera/sufia)
 
 # Table of Contents
@@ -41,7 +41,7 @@ Jump in: [![Slack Status](http://slack.projecthydra.org/badge.svg)](http://slack
 
 # What is Sufia?
 
-Sufia uses the full power of [Hydra](http://projecthydra.org/) and extends it to provide a user interface around common repository features and social features (see below). Sufia offers self-deposit and proxy deposit workflows, and mediated deposit workflows are being developed in a community sprint running from September-December 2016. Sufia delivers its rich and growing set of features via a modern, responsive user interface. It is implemented as a Rails engine, so it is meant to be added to existing Rails apps.
+Sufia uses the full power of [Samvera](http://samvera.org/) and extends it to provide a user interface around common repository features and social features (see below). Sufia offers self-deposit and proxy deposit workflows, and mediated deposit workflows are being developed in a community sprint running from September-December 2016. Sufia delivers its rich and growing set of features via a modern, responsive user interface. It is implemented as a Rails engine, so it is meant to be added to existing Rails apps.
 
 ## Feature list
 
@@ -51,12 +51,12 @@ For non-technical documentation about Sufia, see its [documentation site](http:/
 
 # Help
 
-If you have questions or need help, please email [the Hydra community tech list](mailto:hydra-tech@googlegroups.com) or stop by the #dev channel in [the Hydra community Slack team](https://wiki.duraspace.org/pages/viewpage.action?pageId=43910187#Getintouch!-Slack).
+If you have questions or need help, please email [the Samvera community tech list](mailto:samvera-tech@googlegroups.com) or stop by the #dev channel in [the Samvera community Slack team](https://wiki.duraspace.org/pages/viewpage.action?pageId=43910187#Getintouch!-Slack).
 
 # Getting started
 
 This document contains instructions specific to setting up an app with __Sufia
-v7.4.0__. If you are looking for instructions on installing a different
+v7.4.1__. If you are looking for instructions on installing a different
 version, be sure to select the appropriate branch or tag from the drop-down
 menu above.
 
@@ -211,9 +211,9 @@ See the [release management process](https://github.com/samvera/sufia/wiki/Relea
 
 # Acknowledgments
 
-This software has been developed by and is brought to you by the Hydra community.  Learn more at the
-[Project Hydra website](http://projecthydra.org/).
+This software has been developed by and is brought to you by the Samvera community.  Learn more at the
+[Samvera website](http://samvera.org/).
 
-![Project Hydra Logo](http://sufia.io/assets/images/hydra_logo.png)
+![Samvera Logo](http://sufia.io/assets/images/samvera_logo.png)
 
 The Sufia logo uses the Hong Kong Hustle font, thanks to [Iconian's](http://www.iconian.com/) non-commercial use policy.
