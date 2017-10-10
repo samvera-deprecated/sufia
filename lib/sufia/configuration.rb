@@ -155,5 +155,16 @@ module Sufia
     def model_to_create
       @model_to_create ||= ->(_attributes) { Sufia.primary_work_type.model_name.name }
     end
+
+    attr_writer :whitelisted_ingest_dirs
+    # List of directories which can be used for local file system ingestion.
+    def whitelisted_ingest_dirs
+      @whitelisted_ingest_dirs ||= \
+        if defined? BrowseEverything
+          Array.wrap(BrowseEverything.config['file_system'].try(:[], :home)).compact
+        else
+          []
+        end
+    end
   end
 end

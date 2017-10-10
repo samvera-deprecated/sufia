@@ -28,4 +28,5 @@ describe Sufia::Configuration do
   it { is_expected.to respond_to(:contact_email) }
   it { is_expected.to respond_to(:subject_prefix) }
   it { is_expected.to respond_to(:model_to_create) }
+  it { is_expected.to respond_to(:whitelisted_ingest_dirs) }
 end
