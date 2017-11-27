@@ -15,6 +15,16 @@ Docs: [![Documentation Status](https://inch-ci.org/github/samvera/sufia.svg?bran
 Jump in: [![Slack Status](http://slack.samvera.org/badge.svg)](http://slack.samvera.org/)
 [![Ready Tickets](https://badge.waffle.io/samvera/sufia.png?label=ready&title=Ready)](https://waffle.io/samvera/sufia)
 
+# End of Life Notice
+
+We envision the 7.x releases as the end-of-life for Sufia. During 2017, the [Samvera community](http://samvera.org/) consolidated Sufia and [CurationConcerns](https://github.com/samvera/curation_concerns) into [Hyrax](https://github.com/samvera/hyrax):
+
+* [planning notes on consolidation](https://wiki.duraspace.org/pages/viewpage.action?pageId=78161232))
+* [release notes on the bridge of Sufia to Hyrax](https://github.com/samvera/hyrax/releases/tag/v1.0.0.rc2)
+* [Samvera documentation for developers and managers](https://samvera.github.io)
+
+
+
 # Table of Contents
 
   * [What is Sufia?](#what-is-sufia)
