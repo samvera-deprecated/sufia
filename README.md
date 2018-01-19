@@ -160,7 +160,7 @@ To test-drive your new Sufia application in development mode, spin up the server
 rake hydra:server
 ```
 
-And now you should be able to browse to [localhost:3000](http://localhost:3000/) and see the application. Note that this web server is purely for development purposes; you will want to use a more fully featured web server for production-like environments, such as [Phusion's Passenger](https://www.phusionpassenger.com/library/walkthroughs/deploy/ruby/).
+And now you should be able to browse to [localhost:3000](http://localhost:3000/) and see the application. Note that this web server is purely for development purposes; you will want to use a more fully featured [web server](https://github.com/samvera/sufia/wiki/Sufia-Management-Guide#web-server) for production-like environments.
 
 ## Add Default Admin Set
 
