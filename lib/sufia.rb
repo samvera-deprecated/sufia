@@ -20,6 +20,8 @@ require 'sufia/version'
 require 'sufia/inflections'
 require 'kaminari_route_prefix'
 
+require 'sufia/hydra_derivatives_compat'
+
 module Sufia
   extend ActiveSupport::Autoload
 
