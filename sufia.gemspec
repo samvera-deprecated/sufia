@@ -69,4 +69,11 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop-rspec', '~> 1.8.0'
   spec.add_development_dependency 'shoulda-matchers', '~> 3.1'
   spec.add_development_dependency 'rails-controller-testing', '~> 0'
+
+  ########################################################
+  # Temporarily pinned dependencies. INCLUDE EXPLANATIONS.
+  #
+  # simple_form 3.5.1 broke hydra-editor for certain model types;
+  #   see: https://github.com/plataformatec/simple_form/issues/1549
+  spec.add_dependency 'simple_form', '~> 3.2', '<= 3.5.0'
 end
